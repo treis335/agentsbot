@@ -1,1 +1,1 @@
-from .server import DashboardServer
+﻿from .server import start_dashboard

@@ -50,20 +50,20 @@ class APIHandler(BaseHTTPRequestHandler):
         params = parse_qs(parsed.query)
 
         try:
-            if path == "/health":
+            if path in ("/health", "/api/health"):
                 self._handle_health()
-            elif path == "/agents":
+            elif path in ("/agents", "/api/agents"):
                 self._handle_list_agents()
-            elif path.startswith("/agents/"):
+            elif path.startswith("/agents/") or path.startswith("/api/agents/"):
                 agent_id = path.split("/")[-1]
                 self._handle_get_agent(agent_id)
-            elif path == "/tasks":
+            elif path in ("/tasks", "/api/tasks"):
                 self._handle_list_tasks()
-            elif path == "/metrics":
+            elif path in ("/metrics", "/api/metrics"):
                 self._handle_metrics()
-            elif path == "/memory":
+            elif path in ("/memory", "/api/memory"):
                 self._handle_memory()
-            elif path == "/audit":
+            elif path in ("/audit", "/api/audit"):
                 self._handle_audit()
             else:
                 self._send_error("Endpoint nao encontrado", 404)
@@ -83,11 +83,11 @@ class APIHandler(BaseHTTPRequestHandler):
             data = {}
 
         try:
-            if path == "/agents":
+            if path in ("/agents", "/api/agents"):
                 self._handle_create_agent(data)
-            elif path == "/tasks":
+            elif path in ("/tasks", "/api/tasks"):
                 self._handle_create_task(data)
-            elif path == "/shutdown":
+            elif path in ("/shutdown", "/api/shutdown"):
                 self._handle_shutdown()
             else:
                 self._send_error("Endpoint nao encontrado", 404)
