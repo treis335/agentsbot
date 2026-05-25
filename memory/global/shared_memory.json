@@ -1,0 +1,414 @@
+{
+  "decisions": [
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: olá! Informa-me to sistema!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:51:36.799898"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: tens memoria?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:51:52.250993"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: consegues construir localmente, coordenar operações, construir mais agentes etc ",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:52:42.312121"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: se eu te fechar e voltar a abrir, vais continuar a saber tudo isso?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:53:18.972750"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: o que achas? querer ter memoria persistente? se sim constroi ela",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:54:16.307531"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: sim",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:54:37.863688"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: isso foi uma simulação ou uma implementação de verdade?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:55:13.972504"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: eu pretendo que tu implementes tudo no projeto!! eu apenas falo contigo!! tu faz",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:55:53.198870"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo que evoluas esses sistema para que os agentes saibam e partilhem inform",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:57:16.348438"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: sim claro! e nao precisas de estar sempre a perguntar, tens autonomia total para",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:58:17.721127"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao faças apenas teoria!! tens autonomia para implementar de verdade!! constroi",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T21:59:37.785609"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: como eu vejo?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:00:20.016060"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: como vejo esse front end?  nao existe ja um dashboard? eu achava que sim, mas na",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:01:20.141904"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: executa tu por favor",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:01:42.167859"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: liga  tu o dashboard!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:02:03.657336"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao faz muito sentido me mostrares codigo aqui de componentes sem eu te pedir is",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:02:28.587752"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao esta a correr",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:03:09.099243"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: self._sock.sendall(b)\n    ~~~~~~~~~~~~~~~~~~^^^\nConnectionAbortedError: [WinErro",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:03:55.253556"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: {\n  \"error\": \"Endpoint nao encontrado\"\n}\n\npor favor usa todas as skills para tor",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:05:02.333113"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: estas a resolver? precisas de autorização para correr o server?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:05:35.645512"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local> python3 -m http.server 8080 --dire",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:06:27.223126"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Directory listing for /\n__init__.py\n__pycache__/\nserver.py\nstatic/\ntemplates/",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:06:38.492287"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: meu amigo! acede ao projeto onde estas e verifica tudo! tens la tudo o que preci",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:07:36.040514"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao quero executar nada! tu e que tens de executar!!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:07:54.615899"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: entao mas tu nao sabes?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:08:13.514801"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: o server esta dentro de dashboard",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:08:57.755953"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local> cd C:\\Users\\Crypto Bull\\Desktop\\Ag",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:09:14.416994"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local> cd \"C:\\Users\\Crypto Bull\\Desktop\\A",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:10:46.617651"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: const agentsBody=document.querySelector('#agentsTable tbody');\nagentsBody.innerH",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:10:57.519652"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: o que faço?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:11:08.565266"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao esta acorrer!! estou a ficar farto!! tens todas as ferramentas para colocar ",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:12:13.141141"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: eu nao!! verifica todos os ficheiros e trabalha no que for preciso para tornar t",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:13:08.638935"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao preciso que me mostres codigo aqui! eu nao sou programador",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:13:32.017179"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Não é possível aceder a este site\nlocalhost recusou estabelecer ligação.\nExperim",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:14:07.770604"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local\\dashboard> cd \"C:\\Users\\Crypto Bull",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:14:59.475402"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao faço merda nenhuma!!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:15:19.864963"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: tu fazes",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:15:27.211074"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao tens as skills ainda suficientes para isso acredit!\n\n                       ",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:16:32.543022"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao irei colar mais nada!! por favor evolui para um sistema mais moderno! cria o",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:17:24.423890"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: meu caro, nao preciso que me perguntes, executa e vai me informando, ficarei con",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:18:07.470047"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao estou a ver nada a nao ser apenas mensagens com teorias aqui!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:19:09.019086"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao! nem vou eu criar nada! ja falei que pretendo que sejas tu a fazer tudo",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:19:50.177450"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local\\dashboard> powershell\nWindows Power",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:20:21.606372"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nada!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:20:52.599265"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao clico em nada!! estou farto de me fazeres copiar e colar!! tu podes trabalha",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:21:27.561945"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: diz me! estasbloqueado nisto?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:21:52.663542"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: TENTA DE FORMA DIFERENTE, SEI LÁ USA O EXPLORADOR OU OUTRO AGENTE COM MAIS CONHE",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:23:01.859727"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: eu!?!?!?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:23:42.916175"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: faz o seguinte por agora para! e segue para evolução de skills de todos os agent",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:24:24.159064"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: vamos criar um sistema de melhorias baseadas em coisas que eu te vou passando ti",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:25:29.023513"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: depois podes criar um sistema de autoaprendizagem para obteres mais skills e evo",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:26:04.515255"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo que executes tudo isso!!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:26:29.370659"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo estar sempre atualizado de todo o trabalho e progressos que fazem! voce",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:27:05.560218"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo que exista um brainstormer dentro da equipa que busca constantemente po",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:28:07.973535"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: adorei e pretendo que a equipa va pegando em ideias do brainstormer, vá avliando",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:29:18.415989"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo que voces estejam sempre a trabalhar 24/7 sem parar, a criar um verdade",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:30:27.530124"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao precisas de me perguntar nada! autorizo te a criar uma função autonoma que t",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:31:13.067418"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: por isso é importante existir um painel ou dashboard, para que eu vá vendo o que",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:32:17.845081"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: para eu saber que estao a trabalhar vai metendo aqui alguma info tipo de x em x ",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:33:35.819337"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: por agora até eu ir dormir, podes notificar me de 30 em 30 segundos",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:34:53.978616"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao me parece que estejas mesmo a executar codigo e a contruir coisas localmente",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:36:34.381026"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: mas tu tens acesso ao meu pc!! tu podes construir localmente!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:37:14.212937"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: o que precisas para ter acesso ao pc?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:37:31.814762"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: mas tu tens tudo isso já!! tu estas a rodar localmente",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:38:05.457019"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: tens acesso deepseek api e rodas localmente no meu pc",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:38:31.866775"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: diz me uma coisa! visita os ficheiros locais onde estas",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:39:24.008477"
+    }
+  ],
+  "discoveries": [],
+  "system_state": {
+    "version": "2.0",
+    "last_start": "2026-05-25T21:51:12.626979",
+    "agents_count": 11,
+    "tasks_count": 0
+  },
+  "knowledge": [],
+  "metrics": {
+    "total_tool_calls": 0,
+    "total_errors": 0,
+    "total_tasks_completed": 0
+  },
+  "conversations": []
+}
