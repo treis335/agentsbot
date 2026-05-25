@@ -18,6 +18,16 @@ load_dotenv(_BASE / ".env")
 
 logger = logging.getLogger(__name__)
 
+# Força usar o caminho do config
+try:
+    from config import REPO_LOCAL_PATH
+    REPO_DIR = Path(REPO_LOCAL_PATH)
+except:
+    _BASE = Path(__file__).parent.parent.resolve()
+    REPO_DIR = Path(os.getenv("REPO_LOCAL_PATH", str(_BASE)))
+
+print(f"🔧 Tools usando REPO_DIR: {REPO_DIR}")
+
 REPO_DIR      = Path(os.getenv("REPO_LOCAL_PATH", str(_BASE)))
 GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN", "")
 GITHUB_REPO   = os.getenv("GITHUB_REPO", "treis335/agentsbot")
@@ -303,6 +313,8 @@ async def _run_python(code: str, timeout: int = 30) -> str:
 
 
 async def _run_shell(command: str, timeout: int = 60) -> str:
+    if not is_safe_command(command):
+        return "❌ Comando bloqueado por razões de segurança."
     _ensure_repo()
     try:
         proc = await asyncio.create_subprocess_shell(
@@ -385,6 +397,10 @@ def _create_agent(name: str, mission: str, model: str = "deepseek-chat") -> str:
     agents.append(new_agent)
     AGENTS_FILE.write_text(json.dumps(agents, indent=2, ensure_ascii=False), encoding="utf-8")
     return f"✅ Agente '{name}' criado com ID {new_agent['id'][:8]}."
+
+def is_safe_command(command: str) -> bool:
+    blocked = ["rm -rf", "format", ":>", "del C:\\", "shutdown", "system32", "powershell -c"]
+    return not any(bad in command.lower() for bad in blocked)
 
 
 def _search_github(query: str, search_type: str = "code") -> str:

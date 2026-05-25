@@ -485,13 +485,127 @@
       "decision": "Telegram: configura acesso local",
       "context": "Telegram",
       "timestamp": "2026-05-25T22:48:58.593849"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: git_status",
+      "context": "## 📋 **GIT STATUS ATUAL**\n\n### 🔴 **Ficheiros modificados (sem commit):**\n| Ficheiro | Estado |\n|----------|--------|\n| `config.py` | Modificado |\n| `memory/global/shared_memory.json` | Modificado |\n| ",
+      "timestamp": "2026-05-25T23:04:41.699532"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: git_status",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:04:41.713132"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: list_files",
+      "context": "## 📋 **ESTRUTURA DO REPOSITÓRIO LOCAL**\n\n```\n📁 CORREOTO (raiz)\n├── 📄 main.py              ← Ponto de entrada\n├── 📄 config.py            ← Configuração\n├── 📄 executor.py          ← Executor de tarefas\n",
+      "timestamp": "2026-05-25T23:05:02.664977"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: list_files",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:05:02.680984"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: write_file path=teste_local.txt content=Teste de execução local funcionando 100%",
+      "context": "## ✅ **FICHEIRO CRIADO COM SUCESSO!**\n\n```\n📄 teste_local.txt\n├── Path: /teste_local.txt\n├── Tamanho: 40 caracteres\n└── Conteúdo: \"Teste de execução local funcionando 100%\"\n```\n\n**O sistema local está ",
+      "timestamp": "2026-05-25T23:05:26.555310"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: write_file path=teste_local.txt content=Teste de execução local funcionando 100%",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:05:26.569234"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: read_file path=teste_local.txt",
+      "context": "## ✅ **CONTEÚDO DO FICHEIRO**\n\n```\n📄 teste_local.txt\n├── Conteúdo: \"Teste de execução local funcionando 100%\"\n├── Tamanho: 40 caracteres\n└── Estado: ✅ Lido com sucesso\n```\n\n**O sistema local está oper",
+      "timestamp": "2026-05-25T23:05:42.393107"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: read_file path=teste_local.txt",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:05:42.407240"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: ENTAO SIGNIFICA QUE JA CONSEGUES TRABALHAR AGORA",
+      "context": "## ✅ **SIM! SISTEMA 100% OPERACIONAL!**\n\n### 🔥 **O QUE POSSO FAZER AGORA NO TEU PC:**\n\n| Ação | Status |\n|------|--------|\n| 📝 **Criar/editar ficheiros** | ✅ `write_file` |\n| 📖 **Ler ficheiros** | ✅ `",
+      "timestamp": "2026-05-25T23:05:58.488850"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ENTAO SIGNIFICA QUE JA CONSEGUES TRABALHAR AGORA",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:05:58.503020"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: lista de pendentes",
+      "context": "## 📋 **LISTA DE PENDENTES**\n\n### 🔴 **Ficheiros modificados sem commit:**\n| Ficheiro | Estado |\n|----------|--------|\n| `config.py` | Modificado |\n| `memory/global/shared_memory.json` | Modificado |\n| ",
+      "timestamp": "2026-05-25T23:06:15.020301"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: lista de pendentes",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:06:15.034252"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: repara o dashboard e mete a funcionar corretamente",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:08:23.470813"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: nao te esqueças do brainstormer ir gerando ideias",
+      "context": "## ✅ **BRAINSTORMER CRIADO E ATIVO!**\n\n### 📋 **Detalhes do agente:**\n| Atributo | Valor |\n|----------|-------|\n| **Nome** | Brainstormer |\n| **ID** | `c680eec8` |\n| **Missão** | Gerar ideias criativas",
+      "timestamp": "2026-05-25T23:08:29.899113"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao te esqueças do brainstormer ir gerando ideias",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:08:29.913933"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: corre o server do dashboard para eu poder visualizar tudo",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:10:03.179043"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: quero ver o dashboard ligado no meu browser, trata de tudo!! e corre o server, m",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:12:08.052326"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: tens que criar um sistema que trabalha sozinho, caso atinjas limite de iterações",
+      "context": "## ✅ **SISTEMA DE AUTO-RECUPERAÇÃO 100% FUNCIONAL!**\n\n### 📋 **Resultados do teste:**\n\n| Métrica | Valor |\n|---------|-------|\n| Limite de iterações | 3 |\n| Cooldown inicial | 3s (com backoff: 6s, 9s) ",
+      "timestamp": "2026-05-25T23:17:15.274647"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: tens que criar um sistema que trabalha sozinho, caso atinjas limite de iterações",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:17:15.294212"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-25T22:46:58.551091",
-    "agents_count": 11,
+    "last_start": "2026-05-25T23:10:37.803053",
+    "agents_count": 12,
     "tasks_count": 0
   },
   "knowledge": [],

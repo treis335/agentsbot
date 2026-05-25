@@ -6,8 +6,16 @@
     "soul_file": "agents/souls/supervisor.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["delegar", "coordenar", "decidir", "planejar"],
-    "metadata": {"nivel": "lideranca", "prioridade": 1},
+    "capabilities": [
+      "delegar",
+      "coordenar",
+      "decidir",
+      "planejar"
+    ],
+    "metadata": {
+      "nivel": "lideranca",
+      "prioridade": 1
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -18,8 +26,16 @@
     "soul_file": "agents/souls/developer.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["implementar", "refatorar", "debug", "escrever_codigo"],
-    "metadata": {"nivel": "execucao", "prioridade": 2},
+    "capabilities": [
+      "implementar",
+      "refatorar",
+      "debug",
+      "escrever_codigo"
+    ],
+    "metadata": {
+      "nivel": "execucao",
+      "prioridade": 2
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -30,8 +46,15 @@
     "soul_file": "agents/souls/arquiteto.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["desenhar_arquitetura", "definir_padroes", "revisar_estrutura"],
-    "metadata": {"nivel": "estrategico", "prioridade": 3},
+    "capabilities": [
+      "desenhar_arquitetura",
+      "definir_padroes",
+      "revisar_estrutura"
+    ],
+    "metadata": {
+      "nivel": "estrategico",
+      "prioridade": 3
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -42,8 +65,16 @@
     "soul_file": "agents/souls/qa_tester.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["testar", "validar", "reportar_bugs", "cobertura_testes"],
-    "metadata": {"nivel": "qualidade", "prioridade": 4},
+    "capabilities": [
+      "testar",
+      "validar",
+      "reportar_bugs",
+      "cobertura_testes"
+    ],
+    "metadata": {
+      "nivel": "qualidade",
+      "prioridade": 4
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -54,8 +85,15 @@
     "soul_file": "agents/souls/explorador.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["pesquisar", "explorar_github", "analisar_tendencias"],
-    "metadata": {"nivel": "pesquisa", "prioridade": 5},
+    "capabilities": [
+      "pesquisar",
+      "explorar_github",
+      "analisar_tendencias"
+    ],
+    "metadata": {
+      "nivel": "pesquisa",
+      "prioridade": 5
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -66,8 +104,15 @@
     "soul_file": "agents/souls/documentador.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["documentar", "escrever_markdown", "manter_changelog"],
-    "metadata": {"nivel": "documentacao", "prioridade": 6},
+    "capabilities": [
+      "documentar",
+      "escrever_markdown",
+      "manter_changelog"
+    ],
+    "metadata": {
+      "nivel": "documentacao",
+      "prioridade": 6
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -78,8 +123,15 @@
     "soul_file": "agents/souls/code_reviewer.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["revisar_codigo", "analisar_seguranca", "verificar_padroes"],
-    "metadata": {"nivel": "revisao", "prioridade": 3},
+    "capabilities": [
+      "revisar_codigo",
+      "analisar_seguranca",
+      "verificar_padroes"
+    ],
+    "metadata": {
+      "nivel": "revisao",
+      "prioridade": 3
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -90,8 +142,15 @@
     "soul_file": "agents/souls/auto_fixer.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["corrigir_bugs", "diagnosticar_erros", "auto_reparar"],
-    "metadata": {"nivel": "manutencao", "prioridade": 2},
+    "capabilities": [
+      "corrigir_bugs",
+      "diagnosticar_erros",
+      "auto_reparar"
+    ],
+    "metadata": {
+      "nivel": "manutencao",
+      "prioridade": 2
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -102,8 +161,15 @@
     "soul_file": "agents/souls/auto_optimizer.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["otimizar", "analisar_performance", "refatorar"],
-    "metadata": {"nivel": "otimizacao", "prioridade": 4},
+    "capabilities": [
+      "otimizar",
+      "analisar_performance",
+      "refatorar"
+    ],
+    "metadata": {
+      "nivel": "otimizacao",
+      "prioridade": 4
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -114,8 +180,16 @@
     "soul_file": "agents/souls/devops.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["gerir_dependencias", "ci_cd", "monitorizar", "seguranca"],
-    "metadata": {"nivel": "infraestrutura", "prioridade": 3},
+    "capabilities": [
+      "gerir_dependencias",
+      "ci_cd",
+      "monitorizar",
+      "seguranca"
+    ],
+    "metadata": {
+      "nivel": "infraestrutura",
+      "prioridade": 3
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
   },
@@ -126,9 +200,29 @@
     "soul_file": "agents/souls/aprendiz.md",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": ["aprender", "analisar_padroes", "extrair_licoes"],
-    "metadata": {"nivel": "evolucao", "prioridade": 6},
+    "capabilities": [
+      "aprender",
+      "analisar_padroes",
+      "extrair_licoes"
+    ],
+    "metadata": {
+      "nivel": "evolucao",
+      "prioridade": 6
+    },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
+  },
+  {
+    "id": "c680eec8-3f53-4b91-bfc9-0210a0d97525",
+    "name": "brainstormer",
+    "soul": "Gerar ideias criativas e inovadoras para o ecossistema Correoto. Deves propor novas funcionalidades, melhorias, integrações e estratégias. Trabalhas em background, gerando ideias periodicamente e registando-as na memória global. As tuas ideias devem ser práticas, viáveis e alinhadas com os objetivos do sistema.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [],
+    "metadata": {},
+    "created_at": "2026-05-25T23:08:27.577862",
+    "last_active": "",
+    "role": "custom"
   }
 ]
