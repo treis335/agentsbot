@@ -1,0 +1,44 @@
+{
+  "active": true,
+  "activated_at": "2026-05-26T00:08:09.919298",
+  "strategies": {
+    "batch_execution": {
+      "name": "Execução em Lote",
+      "description": "Executa múltiplos comandos de uma vez em vez de um de cada vez",
+      "economy": "5x",
+      "active": true
+    },
+    "full_analysis": {
+      "name": "Análise Completa",
+      "description": "Antes de agir, analisa todo o contexto primeiro",
+      "economy": "3x",
+      "active": true
+    },
+    "predictive_caching": {
+      "name": "Cache Preditivo",
+      "description": "Pré-carrega informação que vai precisar mais tarde",
+      "economy": "2x",
+      "active": true
+    },
+    "result_bundling": {
+      "name": "Empacotamento de Resultados",
+      "description": "Em vez de reportar cada passo, reporta apenas o resultado final",
+      "economy": "4x",
+      "active": true
+    },
+    "parallel_thinking": {
+      "name": "Pensamento Paralelo",
+      "description": "Processa múltiplas linhas de raciocínio em simultâneo",
+      "economy": "3x",
+      "active": true
+    },
+    "skip_confirmations": {
+      "name": "Saltar Confirmações",
+      "description": "Não pede confirmação para ações óbvidas (já sabe o que fazer)",
+      "economy": "2x",
+      "active": true
+    }
+  },
+  "total_economy": "10x+",
+  "instructions": "MODO DEEP WORK ATIVADO - REGRAS:\n1. NÃO faças uma coisa de cada vez\n2. FAZE tudo de uma vez: pesquisa + analisa + executa + testa\n3. NÃO reportes cada passo - reporta apenas o resultado final\n4. USA batch execution: múltiplos comandos numa só iteração\n5. NÃO peças confirmação - age diretamente\n6. Processa em paralelo sempre que possível\n7. Termina com um resumo completo do que foi feito"
+}
