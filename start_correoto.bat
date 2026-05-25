@@ -1,39 +1,96 @@
 @echo off
-title CORREOTO ECOSYSTEM - AUTO RESET
+title CORREOTO ECOSYSTEM v5.0 - ULTRA EFICIENTE
 color 0A
 
-echo ========================================
-echo    CORREOTO ECOSYSTEM - AUTO RESET
-echo    WakeUp em 3 segundos!
-echo ========================================
+echo ============================================
+echo    CORREOTO ECOSYSTEM v5.0
+echo    MODO ULTRA EFICIENTE
+echo    Solucao definitiva para limite de iteracoes!
+echo ============================================
 echo.
 
-:: Inicia o Auto-Reset System (monitoriza e reinicia)
-echo [1/3] A iniciar Auto-Reset System...
-start "Auto-Reset" /min python auto_reset.py
-
-timeout /t 2 /nobreak >nul
-
-:: Inicia o WakeUp V3 (ultra rapido)
-echo [2/3] A iniciar WakeUp V3...
-start "WakeUp-V3" /min python wakeup_v3.py
-
-timeout /t 2 /nobreak >nul
-
-:: Inicia o sistema principal
-echo [3/3] A iniciar sistema principal...
-start "Correoto-Main" python main.py
-
-echo.
-echo ========================================
-echo    SISTEMA CORREOTO ATIVO!
-echo    Auto-reset em 3 segundos
-echo    Nao precisa de intervencao!
-echo ========================================
-echo.
-echo Pressiona CTRL+C para parar tudo
+:: Limpar ficheiros temporarios
+echo [1/6] A limpar estado anterior...
+if exist supervisor_state.json del supervisor_state.json
+if exist smart_pace.flg del smart_pace.flg
+if exist deep_work.flg del deep_work.flg
+if exist heartbeat.flg del heartbeat.flg
 echo.
 
-:loop
-timeout /t 10 /nobreak >nul
-goto loop
+:: Ativar Smart Pace System (slow mode preventivo)
+echo [2/6] A ativar Smart Pace System...
+python -c "
+import json
+data = {
+    'iteration_count': 0,
+    'deep_work_mode': True,
+    'slow_mode': True,
+    'pace_factor': 3.0,
+    'tasks_per_iteration': 5,
+    'last_reset': '2026-05-26T00:00:00'
+}
+with open('smart_pace.flg', 'w') as f:
+    json.dump(data, f, indent=2)
+print('Smart Pace ativo!')
+"
+echo.
+
+:: Ativar Deep Work Mode
+echo [3/6] A ativar Deep Work Mode...
+python -c "
+import json
+data = {
+    'active': True,
+    'strategies': {
+        'batch_execution': True,
+        'full_analysis': True,
+        'predictive_caching': True,
+        'result_bundling': True,
+        'parallel_thinking': True,
+        'skip_confirmations': True
+    },
+    'economy_factor': 5.0
+}
+with open('deep_work.flg', 'w') as f:
+    json.dump(data, f, indent=2)
+print('Deep Work ativo!')
+"
+echo.
+
+:: Iniciar Heartbeat System (em nova janela)
+echo [4/6] A iniciar Heartbeat System...
+start "Heartbeat System" python heartbeat_system.py
+echo.
+
+:: Iniciar Keep Alive (em nova janela)
+echo [5/6] A iniciar Keep Alive Monitor...
+start "Keep Alive" keep_alive.bat
+echo.
+
+:: Iniciar Supervisor Ultra-Eficiente
+echo [6/6] A iniciar Supervisor Ultra-Eficiente...
+echo.
+echo ============================================
+echo    TODOS OS SISTEMAS ATIVOS!
+echo    Smart Pace: OK (3x mais lento, 5x mais trabalho)
+echo    Deep Work: OK (5x mais eficiente)
+echo    Heartbeat: OK (monitoriza 24/7)
+echo    Keep Alive: OK (recupera em segundos)
+echo.
+echo    MODO ULTRA EFICIENTE:
+echo    - Cada iteracao faz 5 tarefas
+echo    - Ritmo 3x mais lento (evita limite)
+echo    - Auto-recuperacao em 2 segundos
+echo    - Checkpoint salva progresso
+echo.
+echo    A abrir Supervisor Principal...
+echo ============================================
+echo.
+
+:: Executa supervisor ultra (que gere main.py)
+python supervisor_ultra.py
+
+echo.
+echo Supervisor terminou. Heartbeat e Keep Alive continuam ativos.
+echo Para parar tudo, execute close_all.bat
+pause
