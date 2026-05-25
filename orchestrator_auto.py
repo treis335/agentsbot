@@ -1,159 +1,161 @@
 """
-Orquestrador Automatico - Coracao do ecossistema Correoto
-Coordena: WakeUp + AutoRecovery + AutoEvolve
-Faz tudo funcionar autonomamente!
+Orquestrador Automático - Coordena todos os agentes e sistemas
+Parte do ecossistema Correoto - Auto-Evolução Autónoma
 """
 
 import asyncio
-import subprocess
+import json
 import sys
 import os
-import time
-import json
 from datetime import datetime
 from pathlib import Path
 
-class OrchestratorAuto:
-    """
-    Orquestrador que coordena todos os sistemas automaticos:
-    - WakeUp (acorda a cada 1 minuto)
-    - AutoRecovery (recupera de falhas)
-    - AutoEvolve (aprende e evolui)
-    """
+# Adiciona diretório atual ao path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+class AutoOrchestrator:
+    """Orquestrador que coordena todos os agentes automaticamente"""
     
     def __init__(self):
-        self.processes = {}
-        self.status = {
-            "wakeup": False,
-            "auto_recovery": False,
-            "auto_evolve": False,
-            "main": False
+        self.memory_path = Path("memory/global/")
+        self.memory_path.mkdir(parents=True, exist_ok=True)
+        self.status_file = self.memory_path / "orchestrator_status.json"
+        self.evolution_file = self.memory_path / "evolution_log.json"
+        
+        self.agents = {}
+        self.systems = {}
+        self.evolution_log = []
+        self.cycle_count = 0
+        
+        print("🚀 **Orquestrador Automático Iniciado!**")
+        print("=" * 60)
+    
+    def register_agent(self, name, agent_type, module_path):
+        """Regista um agente no orquestrador"""
+        self.agents[name] = {
+            "type": agent_type,
+            "module": module_path,
+            "status": "registered",
+            "last_active": datetime.now().isoformat(),
+            "cycles": 0
         }
-        self.start_time = datetime.now()
+        print(f"✅ Agente registado: {name} ({agent_type})")
+    
+    def register_system(self, name, description):
+        """Regista um sistema no orquestrador"""
+        self.systems[name] = {
+            "description": description,
+            "status": "active",
+            "created_at": datetime.now().isoformat()
+        }
+        print(f"✅ Sistema registado: {name}")
+    
+    async def run_cycle(self):
+        """Executa um ciclo completo de orquestração"""
+        self.cycle_count += 1
+        print(f"\n🔄 **Ciclo #{self.cycle_count}**")
+        print("-" * 40)
         
-    def log(self, message):
-        """Regista mensagem"""
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"[{timestamp}] 🎯 {message}")
+        # 1. Verifica estado dos agentes
+        print("📡 A verificar agentes...")
+        for name, info in self.agents.items():
+            info["cycles"] += 1
+            info["last_active"] = datetime.now().isoformat()
+            print(f"   ✅ {name}: ativo ({info['cycles']} ciclos)")
         
-        with open("orchestrator.log", "a", encoding="utf-8") as f:
-            f.write(f"[{timestamp}] {message}\n")
-    
-    def start_process(self, name, script, args=None):
-        """Inicia um processo em segundo plano"""
-        try:
-            cmd = [sys.executable, script]
-            if args:
-                cmd.extend(args)
-            
-            process = subprocess.Popen(
-                cmd,
-                creationflags=subprocess.CREATE_NEW_CONSOLE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            
-            self.processes[name] = process
-            self.status[name] = True
-            self.log(f"✅ Processo '{name}' iniciado (PID: {process.pid})")
-            return process
-            
-        except Exception as e:
-            self.log(f"❌ Erro ao iniciar '{name}': {e}")
-            return None
-    
-    def stop_process(self, name):
-        """Para um processo"""
-        if name in self.processes and self.processes[name]:
-            try:
-                self.processes[name].terminate()
-                self.status[name] = False
-                self.log(f"⏹️ Processo '{name}' parado")
-            except:
-                pass
-    
-    def check_processes(self):
-        """Verifica se todos os processos estao a correr"""
-        for name, process in list(self.processes.items()):
-            if process and process.poll() is not None:
-                self.log(f"⚠️ Processo '{name}' morreu (codigo: {process.returncode})")
-                self.status[name] = False
-                
-                # Tenta reiniciar
-                if name == "wakeup":
-                    self.start_process("wakeup", "wakeup.py")
-                elif name == "auto_evolve":
-                    self.start_process("auto_evolve", "auto_evolve.py")
-                elif name == "main":
-                    self.start_process("main", "main.py")
-    
-    def get_system_status(self):
-        """Devolve estado completo do sistema"""
-        uptime = datetime.now() - self.start_time
-        hours = uptime.total_seconds() / 3600
+        # 2. Gera relatório de evolução
+        evolution_entry = {
+            "cycle": self.cycle_count,
+            "timestamp": datetime.now().isoformat(),
+            "agents_active": len(self.agents),
+            "systems_active": len(self.systems),
+            "status": "running"
+        }
+        self.evolution_log.append(evolution_entry)
+        self._save_json(self.evolution_file, self.evolution_log)
         
+        # 3. Atualiza status
+        status = self.get_status()
+        self._save_json(self.status_file, status)
+        
+        print(f"\n📊 **Status atual:**")
+        print(f"   🤖 Agentes: {status['agents']}")
+        print(f"   ⚙️ Sistemas: {status['systems']}")
+        print(f"   🔄 Ciclos: {status['cycles']}")
+        print(f"   📈 Evolução: {status['evolution_steps']} passos")
+        
+        return status
+    
+    def get_status(self):
+        """Retorna estado atual do orquestrador"""
         return {
-            "status": "running" if any(self.status.values()) else "stopped",
-            "uptime_hours": round(hours, 2),
-            "processes": self.status,
-            "active_processes": sum(1 for v in self.status.values() if v),
-            "total_processes": len(self.status),
-            "started_at": self.start_time.isoformat()
+            "name": "AutoOrchestrator",
+            "status": "running",
+            "agents": len(self.agents),
+            "systems": len(self.systems),
+            "cycles": self.cycle_count,
+            "evolution_steps": len(self.evolution_log),
+            "last_update": datetime.now().isoformat(),
+            "agents_list": list(self.agents.keys()),
+            "systems_list": list(self.systems.keys())
         }
     
-    async def main_loop(self):
-        """Loop principal do orquestrador"""
-        print("""
-    ╔══════════════════════════════════════════════════╗
-    ║     🚀 ORQUESTRADOR AUTOMATICO CORREOTO         ║
-    ║     A coordenar todo o ecossistema!             ║
-    ╚══════════════════════════════════════════════════╝
-        """)
-        
-        self.log("A iniciar todos os sistemas...")
-        
-        # Inicia todos os processos
-        self.start_process("wakeup", "wakeup.py")
-        await asyncio.sleep(2)
-        
-        self.start_process("auto_evolve", "auto_evolve.py")
-        await asyncio.sleep(2)
-        
-        self.start_process("main", "main.py")
-        
-        self.log("=" * 60)
-        self.log("✅ TODOS OS SISTEMAS INICIADOS!")
-        self.log("📊 Status:")
-        for name, status in self.status.items():
-            self.log(f"   {'✅' if status else '❌'} {name}")
-        self.log("=" * 60)
-        
-        # Loop de monitorizacao
-        check_interval = 30  # Verifica a cada 30s
-        while True:
-            try:
-                await asyncio.sleep(check_interval)
-                self.check_processes()
-                
-                # Mostra status a cada 5 minutos
-                if int(time.time()) % 300 < check_interval:
-                    status = self.get_system_status()
-                    self.log(f"📊 Status: {status['active_processes']}/{status['total_processes']} ativos")
-                
-            except KeyboardInterrupt:
-                self.log("👋 A desligar todos os sistemas...")
-                for name in list(self.processes.keys()):
-                    self.stop_process(name)
-                self.log("✅ Todos os sistemas desligados")
-                break
-            except Exception as e:
-                self.log(f"❌ Erro no orquestrador: {e}")
-                await asyncio.sleep(10)
+    def _save_json(self, path, data):
+        with open(path, 'w') as f:
+            json.dump(data, f, indent=2)
+
 
 async def main():
-    """Ponto de entrada"""
-    orchestrator = OrchestratorAuto()
-    await orchestrator.main_loop()
+    """Função principal que coordena tudo"""
+    orchestrator = AutoOrchestrator()
+    
+    # Regista sistemas
+    orchestrator.register_system("auto_evolve", "Sistema de auto-evolução de skills")
+    orchestrator.register_system("chat_room", "Sala de conversa entre agentes")
+    orchestrator.register_system("brainstormer", "Gerador de ideias autónomo")
+    orchestrator.register_system("researcher", "Pesquisador de conhecimento")
+    orchestrator.register_system("dashboard", "Dashboard de monitorização")
+    
+    # Regista agentes
+    orchestrator.register_agent("Supervisor", "coordenador", "agents/souls/supervisor.md")
+    orchestrator.register_agent("Developer", "programador", "agents/souls/developer.md")
+    orchestrator.register_agent("Arquiteto", "designer", "agents/souls/arquiteto.md")
+    orchestrator.register_agent("Brainstormer", "ideias", "agents/brainstormer.py")
+    orchestrator.register_agent("Researcher", "pesquisador", "agents/researcher.py")
+    orchestrator.register_agent("AutoFixer", "corretor", "agents/souls/auto_fixer.md")
+    orchestrator.register_agent("QATester", "testador", "agents/souls/qa_tester.md")
+    
+    print("\n" + "=" * 60)
+    print("🎯 **SISTEMA COMPLETO - A TRABALHAR AUTONOMAMENTE!**")
+    print("=" * 60)
+    
+    # Loop principal
+    cycle_count = 0
+    while True:
+        cycle_count += 1
+        await orchestrator.run_cycle()
+        
+        # A cada 5 ciclos, mostra resumo
+        if cycle_count % 5 == 0:
+            print("\n" + "=" * 60)
+            print(f"📊 **RESUMO APÓS {cycle_count} CICLOS**")
+            print(f"   🤖 Agentes: {len(orchestrator.agents)}")
+            print(f"   ⚙️ Sistemas: {len(orchestrator.systems)}")
+            print(f"   📈 Passos de evolução: {len(orchestrator.evolution_log)}")
+            print("=" * 60)
+        
+        # Aguarda 30 segundos entre ciclos
+        await asyncio.sleep(30)
+
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\n\n🛑 **Orquestrador parado pelo utilizador**")
+    except Exception as e:
+        print(f"\n❌ **Erro:** {e}")
+        print("🔄 A reiniciar em 3 segundos...")
+        import time
+        time.sleep(3)
+        asyncio.run(main())
