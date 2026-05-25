@@ -1,62 +1,39 @@
 @echo off
-title CORREOTO - Ecossistema Automatico
+title CORREOTO ECOSYSTEM - AUTO RESET
 color 0A
 
-echo.
-echo ╔══════════════════════════════════════════╗
-echo ║     🚀 INICIAR ECOSSISTEMA CORREOTO     ║
-echo ║     Todos os sistemas automaticos!       ║
-echo ╚══════════════════════════════════════════╝
-echo.
-
-:: Verifica se Python esta instalado
-python --version >nul 2>&1
-if errorlevel 1 (
-    echo ❌ Python nao encontrado! Instala Python primeiro.
-    pause
-    exit /b 1
-)
-
-echo ✅ Python encontrado
+echo ========================================
+echo    CORREOTO ECOSYSTEM - AUTO RESET
+echo    WakeUp em 3 segundos!
+echo ========================================
 echo.
 
-:: Inicia o orquestrador automatico
-echo 🎯 A iniciar Orquestrador Automatico...
-echo.
-echo 📋 Sistemas que vao correr:
-echo   1. WakeUp System (acorda a cada 1 minuto)
-echo   2. Auto Recovery (recupera de falhas)
-echo   3. Auto Evolve (aprende e evolui)
-echo   4. Main (sistema principal)
-echo.
-echo ⏳ A carregar...
-timeout /t 3 /nobreak >nul
+:: Inicia o Auto-Reset System (monitoriza e reinicia)
+echo [1/3] A iniciar Auto-Reset System...
+start "Auto-Reset" /min python auto_reset.py
 
-:: Corre o orquestrador
-python orchestrator_auto.py
+timeout /t 2 /nobreak >nul
 
-:: Se falhar, tenta alternativas
-if errorlevel 1 (
-    echo.
-    echo ⚠️ Orquestrador falhou. A tentar sistemas individuais...
-    echo.
-    
-    :: Tenta cada sistema individualmente
-    start "WakeUp" cmd /c python wakeup.py
-    timeout /t 2 /nobreak >nul
-    start "AutoEvolve" cmd /c python auto_evolve.py
-    timeout /t 2 /nobreak >nul
-    start "Main" cmd /c python main.py
-    
-    echo.
-    echo ✅ Sistemas individuais iniciados!
-)
+:: Inicia o WakeUp V3 (ultra rapido)
+echo [2/3] A iniciar WakeUp V3...
+start "WakeUp-V3" /min python wakeup_v3.py
+
+timeout /t 2 /nobreak >nul
+
+:: Inicia o sistema principal
+echo [3/3] A iniciar sistema principal...
+start "Correoto-Main" python main.py
 
 echo.
-echo ╔══════════════════════════════════════════╗
-echo ║     ✅ ECOSSISTEMA EM EXECUCAO!         ║
-echo ║     Fecha esta janela para parar        ║
-echo ╚══════════════════════════════════════════╝
+echo ========================================
+echo    SISTEMA CORREOTO ATIVO!
+echo    Auto-reset em 3 segundos
+echo    Nao precisa de intervencao!
+echo ========================================
+echo.
+echo Pressiona CTRL+C para parar tudo
 echo.
 
-pause
+:loop
+timeout /t 10 /nobreak >nul
+goto loop
