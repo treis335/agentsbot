@@ -395,12 +395,102 @@
       "decision": "Telegram: diz me uma coisa! visita os ficheiros locais onde estas",
       "context": "Telegram",
       "timestamp": "2026-05-25T22:39:24.008477"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: como é que eu me chamo?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:45:06.677378"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: olá novamente",
+      "context": "## ✅ ✅ ✅ ✅ ✅ ✅ **OLÁ! BEM-VINDO DE VOLTA!**\n\nAinda não me disseste o teu nome, mas estou aqui para o que precisares!\n\n---\n\n## 🔥 **O QUE QUERES FAZER AGORA?**\n\n| Opção | Descrição |\n|-------|----------",
+      "timestamp": "2026-05-25T22:47:12.520118"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: olá novamente",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:47:12.537919"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: Joel",
+      "context": "## ✅ ✅ ✅ ✅ ✅ ✅ **JOEL! REGISTADO!**\n\nAgora já sei o teu nome. **Bem-vindo, Joel!** 🚀🔥\n\n---\n\n## 🔥 **O QUE QUERES FAZER AGORA?**\n\n| Opção | Descrição |\n|-------|-----------|\n| 🏗️ **Construir algo** | Da",
+      "timestamp": "2026-05-25T22:47:26.985478"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Joel",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:47:26.999563"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: o que esta a acontecer neste momento?",
+      "context": "## ✅ ✅ ✅ ✅ ✅ ✅ **JOEL! MOMENTO ATUAL:**\n\n---\n\n## 🔥 **ESTADO DO SISTEMA AGORA:**\n\n```\n📡 SUPERVISOR CORREOTO - STATUS EM TEMPO REAL\n═══════════════════════════════════════════\n\n🧠 EU (Supervisor):\n   ├──",
+      "timestamp": "2026-05-25T22:47:44.619066"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: o que esta a acontecer neste momento?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:47:44.632641"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: nao pretendo que estejas sempre a dizero meu nome!",
+      "context": "## ✅ ✅ ✅ ✅ ✅ ✅ **PERCEBIDO, CHEFE!**\n\nNão volto a dizer o teu nome. **Ponto final.** 🚀🔥\n\n---\n\n## 🔥 **O QUE QUERES FAZER AGORA?**\n\n| Opção | Descrição |\n|-------|-----------|\n| 🏗️ **Construir algo** | ",
+      "timestamp": "2026-05-25T22:48:10.698967"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: nao pretendo que estejas sempre a dizero meu nome!",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:48:10.712622"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: podes dizer, mas nao é preciso sempre",
+      "context": "Percebido! Uso o teu nome quando fizer sentido, sem exageros. ✅\n\nO que é que vamos fazer a seguir? 🚀🔥",
+      "timestamp": "2026-05-25T22:48:23.714866"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: podes dizer, mas nao é preciso sempre",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:48:23.728902"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: pretendo saber o que tens pendente",
+      "context": "## 📋 **TAREFAS PENDENTES REAIS**\n\n### 🔴 **Ficheiros modificados sem commit:**\n| Ficheiro | Estado |\n|----------|--------|\n| `agents/souls/supervisor.md` | Modificado |\n| `bot/handlers.py` | Modificado",
+      "timestamp": "2026-05-25T22:48:38.597727"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo saber o que tens pendente",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:48:38.611711"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: configura acesso local",
+      "context": "## ✅ **VAMOS CONFIGURAR O ACESSO LOCAL AGORA!**\n\nPreciso que executes estes passos no teu PC. Vou ser direto:\n\n---\n\n## 🔥 **PASSO 1 - Cria a estrutura de pastas**\n\nAbre o terminal e executa:\n\n```bash\nm",
+      "timestamp": "2026-05-25T22:48:58.576790"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: configura acesso local",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T22:48:58.593849"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-25T21:51:12.626979",
+    "last_start": "2026-05-25T22:46:58.551091",
     "agents_count": 11,
     "tasks_count": 0
   },
