@@ -1,0 +1,38 @@
+name: Correoto Bot
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+      - name: Setup Git
+        run: |
+          git config --global user.email "correoto-bot@auto.ai"
+          git config --global user.name "Correoto Bot"
+      - name: Criar pastas
+        run: mkdir -p memory/agents
+      - name: Iniciar bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          OWNER_TELEGRAM_ID:  ${{ secrets.OWNER_TELEGRAM_ID }}
+          DEEPSEEK_API_KEY:   ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_BASE_URL:  https://api.deepseek.com
+          GITHUB_TOKEN:       ${{ secrets.GH_PAT }}
+          GITHUB_REPO:        ${{ github.repository }}
+          AGENT_INTERVAL:     "300"
+          LOG_LEVEL:          INFO
+          REPO_LOCAL_PATH:    /tmp/correoto_repo
+        run: python main.py
