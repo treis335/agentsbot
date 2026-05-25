@@ -197,8 +197,14 @@ async def main():
         app = init_telegram()
         if app:
             logger.info("[Telegram] Bot a correr...")
-            # O run_polling e bloqueante, corre na main thread
-            app.run_polling()
+            # Iniciar o bot de forma async (compativel com event loop ja existente)
+            await app.initialize()
+            await app.start()
+            await app.updater.start_polling()
+            logger.info("[Telegram] Bot online. A aguardar mensagens...")
+            # Manter vivo
+            while True:
+                await asyncio.sleep(1)
         else:
             logger.info("[Telegram] Bot nao disponivel. A manter API + Dashboard.")
             # Manter vivo
