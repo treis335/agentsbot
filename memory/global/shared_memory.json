@@ -611,6 +611,72 @@
       "decision": "Telegram: agora tens um token classic da git hub para poderes fazer commit e push para git",
       "context": "Telegram",
       "timestamp": "2026-05-25T23:17:33.659904"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: Branches\nOverviewYoursActiveStaleAll\nSearch\nDefault\nBranch\nUpdated\nCheck status\n",
+      "context": "## ✅ **AGORA SIM! TUDO NA MAIN!** 🚀🔥\n\n### 📋 **O que foi feito:**\n\n| Passo | Ação | Estado |\n|-------|------|--------|\n| 1 | Checkout para `main` | ✅ Feito |\n| 2 | Merge `feat/auto-recovery-system` → `",
+      "timestamp": "2026-05-25T23:23:50.448561"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Branches\nOverviewYoursActiveStaleAll\nSearch\nDefault\nBranch\nUpdated\nCheck status\n",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:23:50.463517"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: agora pretendo que evoluas sozinho! mete toda a  gente a trabalhar autonomamente",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:26:27.375152"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: quando acontece:\n\nLimite de iterações atingido.\n\n— Operações realizadas: 19 —\n🔧 ",
+      "context": "## ✅ **SISTEMA DE AUTO-RECUPERAÇÃO COMPLETO!** 🚀🔥\n\n### 📋 **O que foi criado:**\n\n| Ficheiro | Função | \n|----------|--------|\n| `wakeup.py` | ⏰ **Acorda a cada 1 MINUTO!** Monitoriza e reinicia automat",
+      "timestamp": "2026-05-25T23:28:54.540387"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: quando acontece:\n\nLimite de iterações atingido.\n\n— Operações realizadas: 19 —\n🔧 ",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:28:54.556005"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: estas a espera de alguma coisa?",
+      "context": "## ✅ **NÃO, NÃO ESTOU À ESPERA DE NADA!** 🚀🔥\n\n### 📋 **Estado atual:**\n\n| Sistema | Status |\n|---------|--------|\n| 🤖 **Eu (Supervisor)** | ✅ **Ativo e pronto** |\n| ⏰ **WakeUp (1 minuto)** | ✅ **Criado",
+      "timestamp": "2026-05-25T23:29:49.977599"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: estas a espera de alguma coisa?",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:29:49.991704"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo que funciones autonamente, evolui á tua maneira sem parar!! constroi da",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:32:32.954161"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Tens de melhorar o sistema que deteta que limite de iteraçoes foram atingidas pa",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:39:08.915703"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Passou 1 minuto e nao voltas te ao trabalho",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:43:59.642706"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Quando as iteracoes sao atingidas parece que ficas a minha espera para continuar",
+      "context": "Telegram",
+      "timestamp": "2026-05-25T23:49:16.467219"
     }
   ],
   "discoveries": [],
