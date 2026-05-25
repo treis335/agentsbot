@@ -1,15 +1,54 @@
-# Environment
-.env
+# ============================================================
+# CORREOTO - GITIGNORE
+# ============================================================
 
-# Python cache
+# --- SEGURANCA: nunca versionar tokens/chaves ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.cert
+
+# --- Python cache ---
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
 
-# IDE
+# --- Memoria local (contextos de agentes) ---
+memory/agents/*
+memory/master_context.json
+memory/episodica/*
+memory/semantica/*
+!memory/global/*.md
+
+# --- Logs ---
+*.log
+monitoring/logs/*
+monitoring/metrics/*
+
+# --- IDE ---
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
-# OS
+# --- OS ---
 Thumbs.db
 .DS_Store
+Desktop.ini
+
+# --- Dados temporarios ---
+data/vectors/*
+data/embeddings/*
+tmp/
+temp/
+
+# --- Dashboard build ---
+dashboard/static/bundle.*
+node_modules/
