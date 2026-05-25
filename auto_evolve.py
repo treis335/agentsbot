@@ -1,201 +1,206 @@
 """
-Sistema de Auto-Evolucao para o ecossistema Correoto
-Os agentes aprendem, evoluem e melhoram-se automaticamente!
+Auto-Evolve - Sistema de auto-evolução contínua
+Parte do ecossistema Correoto - Auto-Evolução Autónoma
 """
 
 import asyncio
 import json
-import os
-import sys
-import time
+import random
 from datetime import datetime
 from pathlib import Path
 
-class AutoEvolveSystem:
-    """
-    Sistema que permite aos agentes:
-    - Aprender com experiencias passadas
-    - Adquirir novas skills
-    - Melhorar o proprio codigo
-    - Coordenar-se autonomamente
-    """
+class AutoEvolve:
+    """Sistema que evolui automaticamente skills, agentes e código"""
     
-    def __init__(self):
-        self.evolution_history = []
-        self.skills_acquired = []
-        self.improvements_made = []
-        self.agent_network = {}
-        
-    def load_agents(self):
-        """Carrega todos os agentes do sistema"""
-        agents_file = "agents/registry/agents.json"
-        if os.path.exists(agents_file):
-            with open(agents_file, "r", encoding="utf-8") as f:
-                return json.load(f)
-        return {}
+    def __init__(self, memory_path="memory/global/"):
+        self.memory_path = Path(memory_path)
+        self.memory_path.mkdir(parents=True, exist_ok=True)
+        self.evolution_file = self.memory_path / "evolution.json"
+        self.skills_file = self.memory_path / "global_skills.json"
+        self.agents_file = self.memory_path / "agents_registry.json"
+        self._load_memory()
     
-    def load_souls(self):
-        """Carrega as almas (souls) dos agentes"""
-        souls_dir = "agents/souls"
-        souls = {}
-        if os.path.exists(souls_dir):
-            for file in os.listdir(souls_dir):
-                if file.endswith(".md"):
-                    with open(os.path.join(souls_dir, file), "r", encoding="utf-8") as f:
-                        souls[file.replace(".md", "")] = f.read()
-        return souls
-    
-    def analyze_skills_gap(self):
-        """Analisa que skills estao em falta e propoe novas"""
-        souls = self.load_souls()
-        existing_skills = set(souls.keys())
-        
-        # Skills que todos os agentes deviam ter
-        core_skills = {
-            "supervisor": "Coordenacao geral e gestao de equipa",
-            "developer": "Desenvolvimento de codigo",
-            "arquiteto": "Arquitetura de sistemas",
-            "auto_fixer": "Correcao automatica de bugs",
-            "auto_optimizer": "Otimizacao de performance",
-            "code_reviewer": "Revisao de codigo",
-            "devops": "DevOps e infraestrutura",
-            "documentador": "Documentacao tecnica",
-            "explorador": "Exploracao de novas tecnologias",
-            "qa_tester": "Testes e qualidade",
-            "aprendiz": "Aprendizagem continua"
-        }
-        
-        # Skills que estao em falta
-        missing = {}
-        for skill, desc in core_skills.items():
-            if skill not in existing_skills:
-                missing[skill] = desc
-        
-        return missing
-    
-    def create_new_skill(self, name, description, template):
-        """Cria uma nova skill para um agente"""
-        souls_dir = "agents/souls"
-        os.makedirs(souls_dir, exist_ok=True)
-        
-        filepath = os.path.join(souls_dir, f"{name}.md")
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(template)
-        
-        self.skills_acquired.append({
-            "name": name,
-            "description": description,
-            "created_at": datetime.now().isoformat()
+    def _load_memory(self):
+        self.evolution = self._load_json(self.evolution_file, {
+            "version": 1,
+            "steps": 0,
+            "last_evolution": None,
+            "history": []
         })
         
-        return filepath
-    
-    def improve_code(self, filepath, improvement):
-        """Melhora automaticamente um ficheiro de codigo"""
-        if os.path.exists(filepath):
-            with open(filepath, "r", encoding="utf-8") as f:
-                content = f.read()
-            
-            # Aplica melhoria
-            improved = content + f"\n\n# Auto-improvement: {improvement}\n# {datetime.now().isoformat()}\n"
-            
-            with open(filepath, "w", encoding="utf-8") as f:
-                f.write(improved)
-            
-            self.improvements_made.append({
-                "file": filepath,
-                "improvement": improvement,
-                "timestamp": datetime.now().isoformat()
-            })
-            
-            return True
-        return False
-    
-    async def evolve_loop(self):
-        """Loop principal de evolucao"""
-        print("""
-    ╔══════════════════════════════════════════╗
-    ║     🧬 SISTEMA DE AUTO-EVOLUCAO         ║
-    ║     Agentes a aprender e evoluir!        ║
-    ╚══════════════════════════════════════════╝
-        """)
+        self.skills = self._load_json(self.skills_file, {
+            "coordination": 1,
+            "coding": 1,
+            "architecture": 1,
+            "testing": 1,
+            "research": 1,
+            "creativity": 1,
+            "communication": 1,
+            "optimization": 1
+        })
         
-        iteration = 0
-        while True:
-            iteration += 1
-            print(f"\n📊 Ciclo de evolucao #{iteration}")
-            
-            # 1. Analisa skills em falta
-            missing = self.analyze_skills_gap()
-            if missing:
-                print(f"🔍 Skills em falta detetadas: {list(missing.keys())}")
-                
-                # Cria novas skills automaticamente
-                for skill_name, skill_desc in missing.items():
-                    template = f"""# {skill_name.capitalize()} - Skill de Auto-Evolucao
-
-## Descricao
-{skill_desc}
-
-## Responsabilidades
-- Aprender continuamente
-- Evoluir o ecossistema
-- Coordenar com outros agentes
-
-## Comportamento
-- Monitoriza o sistema
-- Propoe melhorias
-- Implementa mudancas
-
-## Data de criacao
-{datetime.now().isoformat()}
-"""
-                    self.create_new_skill(skill_name, skill_desc, template)
-                    print(f"✅ Nova skill criada: {skill_name}")
-            
-            # 2. Melhora o codigo automaticamente
-            improvements = [
-                ("wakeup.py", "Adicionar suporte para restart automatico"),
-                ("auto_recovery.py", "Melhorar detecao de falhas"),
-                ("auto_recovery_manager.py", "Adicionar metricas de performance")
-            ]
-            
-            for filepath, improvement in improvements:
-                if os.path.exists(filepath):
-                    self.improve_code(filepath, improvement)
-                    print(f"✅ Codigo melhorado: {filepath}")
-            
-            # 3. Guarda historico de evolucao
-            self.evolution_history.append({
-                "iteration": iteration,
-                "timestamp": datetime.now().isoformat(),
-                "skills_created": len(self.skills_acquired),
-                "improvements_made": len(self.improvements_made)
-            })
-            
-            # 4. Salva estado
-            self.save_state()
-            
-            print(f"⏳ Proximo ciclo em 300s (5 min)...")
-            await asyncio.sleep(300)  # 5 minutos
+        self.agents = self._load_json(self.agents_file, [
+            {"name": "Supervisor", "role": "coordenador", "level": 1},
+            {"name": "Developer", "role": "programador", "level": 1},
+            {"name": "Arquiteto", "role": "designer", "level": 1},
+            {"name": "Brainstormer", "role": "ideias", "level": 1},
+            {"name": "Researcher", "role": "pesquisador", "level": 1},
+            {"name": "AutoFixer", "role": "corretor", "level": 1},
+            {"name": "QATester", "role": "testador", "level": 1}
+        ])
     
-    def save_state(self):
-        """Guarda estado da evolucao"""
-        state = {
-            "last_update": datetime.now().isoformat(),
-            "total_iterations": len(self.evolution_history),
-            "skills_acquired": self.skills_acquired,
-            "improvements_made": self.improvements_made,
-            "evolution_history": self.evolution_history[-50:]  # Ultimos 50
+    def _load_json(self, path, default):
+        try:
+            if path.exists():
+                with open(path, 'r') as f:
+                    return json.load(f)
+        except:
+            pass
+        return default
+    
+    def _save_json(self, path, data):
+        with open(path, 'w') as f:
+            json.dump(data, f, indent=2)
+    
+    def evolve_skills(self):
+        """Evolui skills aleatoriamente"""
+        skill = random.choice(list(self.skills.keys()))
+        increase = random.uniform(0.1, 0.5)
+        self.skills[skill] = round(self.skills[skill] + increase, 2)
+        
+        evolution_step = {
+            "type": "skill_evolution",
+            "skill": skill,
+            "increase": increase,
+            "new_value": self.skills[skill],
+            "timestamp": datetime.now().isoformat()
         }
         
-        with open("evolution_state.json", "w", encoding="utf-8") as f:
-            json.dump(state, f, indent=2, ensure_ascii=False)
+        self.evolution["steps"] += 1
+        self.evolution["last_evolution"] = datetime.now().isoformat()
+        self.evolution["history"].append(evolution_step)
+        
+        self._save_json(self.skills_file, self.skills)
+        self._save_json(self.evolution_file, self.evolution)
+        
+        return evolution_step
+    
+    def evolve_agents(self):
+        """Evolui agentes - aumenta nível ou cria novos"""
+        if random.random() < 0.3:  # 30% chance de criar novo agente
+            return self._create_new_agent()
+        else:
+            return self._level_up_agent()
+    
+    def _create_new_agent(self):
+        """Cria um novo agente"""
+        templates = [
+            {"name": "DataAnalyst", "role": "analista de dados"},
+            {"name": "SecurityGuard", "role": "segurança"},
+            {"name": "Optimizer", "role": "otimizador"},
+            {"name": "Documenter", "role": "documentador"},
+            {"name": "Integrator", "role": "integrador"},
+            {"name": "Tester", "role": "testador avançado"},
+            {"name": "Deployer", "role": "deploy"},
+            {"name": "Monitor", "role": "monitorização"}
+        ]
+        
+        # Escolhe um que ainda não existe
+        existing_names = [a["name"] for a in self.agents]
+        available = [t for t in templates if t["name"] not in existing_names]
+        
+        if not available:
+            return {"type": "no_new_agents", "message": "Todos os agentes já existem"}
+        
+        template = random.choice(available)
+        new_agent = {
+            "name": template["name"],
+            "role": template["role"],
+            "level": 1,
+            "created_at": datetime.now().isoformat()
+        }
+        
+        self.agents.append(new_agent)
+        self._save_json(self.agents_file, self.agents)
+        
+        evolution_step = {
+            "type": "new_agent",
+            "agent": new_agent,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        self.evolution["steps"] += 1
+        self.evolution["last_evolution"] = datetime.now().isoformat()
+        self.evolution["history"].append(evolution_step)
+        self._save_json(self.evolution_file, self.evolution)
+        
+        return evolution_step
+    
+    def _level_up_agent(self):
+        """Aumenta nível de um agente aleatório"""
+        agent = random.choice(self.agents)
+        old_level = agent["level"]
+        agent["level"] += 1
+        
+        self._save_json(self.agents_file, self.agents)
+        
+        evolution_step = {
+            "type": "level_up",
+            "agent": agent["name"],
+            "old_level": old_level,
+            "new_level": agent["level"],
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        self.evolution["steps"] += 1
+        self.evolution["last_evolution"] = datetime.now().isoformat()
+        self.evolution["history"].append(evolution_step)
+        self._save_json(self.evolution_file, self.evolution)
+        
+        return evolution_step
+    
+    def get_evolution_summary(self):
+        """Resumo da evolução"""
+        return {
+            "total_steps": self.evolution["steps"],
+            "skills": self.skills,
+            "agents": len(self.agents),
+            "agents_list": [a["name"] for a in self.agents],
+            "last_evolution": self.evolution["last_evolution"],
+            "top_skill": max(self.skills, key=self.skills.get),
+            "top_agent": max(self.agents, key=lambda x: x["level"])["name"]
+        }
 
-async def main():
-    """Ponto de entrada"""
-    evolve = AutoEvolveSystem()
-    await evolve.evolve_loop()
+
+async def auto_evolve_loop():
+    """Loop principal de auto-evolução"""
+    evolve = AutoEvolve()
+    
+    print("🧬 **Auto-Evolve iniciado!**")
+    print(f"📊 Skills: {len(evolve.skills)} | Agentes: {len(evolve.agents)}")
+    
+    while True:
+        # Evolui skills
+        skill_evo = evolve.evolve_skills()
+        print(f"📈 Skill evoluída: {skill_evo['skill']} → {skill_evo['new_value']}")
+        
+        # Evolui agentes
+        agent_evo = evolve.evolve_agents()
+        if agent_evo["type"] == "new_agent":
+            print(f"🆕 Novo agente: {agent_evo['agent']['name']} ({agent_evo['agent']['role']})")
+        elif agent_evo["type"] == "level_up":
+            print(f"⬆️ Level up: {agent_evo['agent']} → nível {agent_evo['new_level']}")
+        
+        # Mostra resumo a cada 5 iterações
+        if evolve.evolution["steps"] % 5 == 0:
+            summary = evolve.get_evolution_summary()
+            print(f"\n📊 **Resumo da Evolução:**")
+            print(f"   🔄 Passos: {summary['total_steps']}")
+            print(f"   🤖 Agentes: {summary['agents_list']}")
+            print(f"   🏆 Top skill: {summary['top_skill']} ({evolve.skills[summary['top_skill']]})")
+            print(f"   🥇 Top agente: {summary['top_agent']}")
+        
+        await asyncio.sleep(20)  # Evolui a cada 20s
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(auto_evolve_loop())
