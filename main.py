@@ -115,6 +115,18 @@ def init_telegram():
         app.add_handler(CommandHandler("clear_memory", cmd_clear_memory))
         app.add_handler(CommandHandler("help",         cmd_help))
         app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+        # ── Comandos do loop autónomo ──────────────────────────────────────
+        from bot.handlers import (
+            cmd_auto_status, cmd_auto_pause, cmd_auto_resume,
+            cmd_auto_backlog, cmd_auto_task, set_auto_loop
+        )
+        app.add_handler(CommandHandler("auto_status",  cmd_auto_status))
+        app.add_handler(CommandHandler("pausar",       cmd_auto_pause))
+        app.add_handler(CommandHandler("retomar",      cmd_auto_resume))
+        app.add_handler(CommandHandler("backlog",      cmd_auto_backlog))
+        app.add_handler(CommandHandler("tarefa",       cmd_auto_task))
+        # ──────────────────────────────────────────────────────────────────
+
 
         telegram_application = app
         logger.info("[Telegram] Bot configurado com sucesso.")
