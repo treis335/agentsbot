@@ -1,38 +1,6 @@
 [
   {
     "role": "user",
-    "content": "Continua"
-  },
-  {
-    "role": "assistant",
-    "content": "Limite de iterações atingido."
-  },
-  {
-    "role": "user",
-    "content": "Continua e executa o que te foi pedido"
-  },
-  {
-    "role": "assistant",
-    "content": "Limite de iterações atingido."
-  },
-  {
-    "role": "user",
-    "content": "Continua"
-  },
-  {
-    "role": "assistant",
-    "content": "Limite de iterações atingido."
-  },
-  {
-    "role": "user",
-    "content": "Continua"
-  },
-  {
-    "role": "assistant",
-    "content": "Limite de iterações atingido."
-  },
-  {
-    "role": "user",
     "content": "Faz git pull origin main.\n\nForam feitas 3 alterações importantes:\n1. main.py — integrado o loop autónomo em background thread\n2. bot/handlers.py — adicionados novos comandos\n3. autonomous_loop.py — motor de autonomia\n\nReinicia o sistema com python main.py e confirma que arranca sem erros."
   },
   {
@@ -194,6 +162,38 @@
   {
     "role": "user",
     "content": "Continua"
+  },
+  {
+    "role": "assistant",
+    "content": "Limite de iterações atingido."
+  },
+  {
+    "role": "user",
+    "content": "Continua"
+  },
+  {
+    "role": "assistant",
+    "content": "Limite de iterações atingido."
+  },
+  {
+    "role": "user",
+    "content": "Continua"
+  },
+  {
+    "role": "assistant",
+    "content": "Limite de iterações atingido."
+  },
+  {
+    "role": "user",
+    "content": "Continua"
+  },
+  {
+    "role": "assistant",
+    "content": "Limite de iterações atingido."
+  },
+  {
+    "role": "user",
+    "content": "Continia"
   },
   {
     "role": "assistant",

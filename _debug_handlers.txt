@@ -1,0 +1,21 @@
+Total lines: 488
+456:     done = [t for t in backlog if t["status"] == "done"]
+457:     if not pending:
+458:         msg = "📭 Backlog vazio — agentes em brainstorm!"
+459:     else:
+460:         lines = [f"📋 Backlog ({len(pending)} pendentes):
+461: "]
+462:         for i, t in enumerate(pending[:10], 1):
+463:             lines.append(f"{i}. [{t['priority']}⭐] {t['title']}")
+464:         if done:
+465:             lines.append(f"
+466: ✅ Concluídas: {len(done)}")
+467:         msg = "
+468: ".join(lines)
+469:     await _send(update, msg)
+470: 
+471: 
+472: async def cmd_auto_task(update, context):
+473:     """Adicionar tarefa urgente: /tarefa Título | Descrição"""
+474:     if not context.args:
+475:         await _send(update, "Uso: /tarefa Título | Descrição

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "T1",
+    "title": "Auditar seguranca do sistema",
+    "description": "Verificar se ha secrets expostos, permissoes, e vulnerabilidades.",
+    "status": "todo",
+    "priority": "alta",
+    "created": "2026-05-26"
+  },
+  {
+    "id": "T2",
+    "title": "Otimizar ciclo autonomo",
+    "description": "Melhorar eficiencia do autonomous_loop, reduzir overhead.",
+    "status": "todo",
+    "priority": "media",
+    "created": "2026-05-26"
+  },
+  {
+    "id": "T3",
+    "title": "Melhorar documentacao dos agentes",
+    "description": "Atualizar README.md e docs com estado atual do sistema.",
+    "status": "todo",
+    "priority": "media",
+    "created": "2026-05-26"
+  },
+  {
+    "id": "T4",
+    "title": "Dashboard de metricas",
+    "description": "Criar dashboard simples para monitorizar agentes e tarefas.",
+    "status": "todo",
+    "priority": "baixa",
+    "created": "2026-05-26"
+  },
+  {
+    "id": "T5",
+    "title": "Testar integracao Telegram",
+    "description": "Verificar se o bot Telegram responde e processa comandos.",
+    "status": "todo",
+    "priority": "alta",
+    "created": "2026-05-26"
+  }
+]
