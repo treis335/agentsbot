@@ -1,8 +1,11 @@
 """
 pipelines/engine.py — Motor de execucao de pipelines multi-agente.
 
-Executa pipelines passo a passo, gerindo dependencias
-e passagem de contexto entre passos.
+Suporta dois modos:
+  1. Sequencial simples (Pipeline/PipelineStep — legado)
+  2. State Machine com workflow templates YAML (StateMachine — novo, Batch 5)
+
+Para tarefas complexas, usar StateMachine com os templates em workflow_templates/.
 """
 import asyncio
 import json
@@ -14,6 +17,7 @@ from typing import Optional
 from core.config import Config
 from core.bus import bus
 from .models import Pipeline, PipelineStep, PipelineStatus
+from .state_machine import StateMachine, WorkflowRun, RunState
 
 logger = logging.getLogger(__name__)
 
@@ -126,6 +130,86 @@ class PipelineEngine:
             steps=steps, status=PipelineStatus(data["status"]),
             created_at=data.get("created_at", ""), updated_at=data.get("updated_at", ""),
         )
+
+    # ── State Machine (Batch 5) ─────────────────────────────────────────────────
+
+    def run_workflow(self, workflow_name: str, context: dict,
+                     executor=None) -> str:
+        """
+        Inicia um workflow via StateMachine.
+
+        Args:
+            workflow_name: nome do template YAML (dev_cycle, bug_fix, research)
+            context: dict com variáveis para os task_templates (ex: {"task": "Fix login"})
+            executor: callable(step_def, run) → str  (opcional; sem ele, simula)
+
+        Returns:
+            run_id para acompanhar com get_workflow_run()
+        """
+        sm = StateMachine.from_yaml(workflow_name)
+        if executor:
+            sm.set_executor(executor)
+        run_id = sm.start(context=context)
+        logger.info(f"[Engine] Workflow iniciado: {workflow_name} run={run_id}")
+        return run_id
+
+    async def run_workflow_async(self, workflow_name: str, context: dict,
+                                 executor=None) -> dict:
+        """
+        Executa um workflow completo de forma assíncrona, passo a passo.
+        Publica eventos no bus por cada transição.
+
+        Returns:
+            dict com run_id, estado final e resumo.
+        """
+        sm = StateMachine.from_yaml(workflow_name)
+        if executor:
+            sm.set_executor(executor)
+
+        run_id = sm.start(context=context)
+        max_ticks = len(sm.definition.steps) * 4  # máximo de ticks (inclui retries)
+
+        for _ in range(max_ticks):
+            run = sm.tick(run_id)
+
+            await bus.publish("pipeline.step_completed", {
+                "run_id": run_id,
+                "workflow": workflow_name,
+                "current_step": run.current_step_id,
+                "state": run.state.value,
+            })
+
+            if run.state in (RunState.COMPLETED, RunState.FAILED):
+                break
+
+            await asyncio.sleep(0.1)  # yield para o event loop
+
+        final_run = sm.get_state(run_id)
+        summary = sm.summary(run_id)
+        logger.info(f"[Engine] Workflow terminado: {workflow_name} run={run_id} → {final_run.state}")
+
+        return {
+            "run_id": run_id,
+            "state": final_run.state.value,
+            "summary": summary,
+            "context": final_run.context,
+        }
+
+    def get_workflow_run(self, workflow_name: str, run_id: str) -> Optional[dict]:
+        """Retorna o estado atual de uma run."""
+        try:
+            sm = StateMachine.from_yaml(workflow_name)
+            run = sm.get_state(run_id)
+            if not run:
+                return None
+            return {"summary": sm.summary(run_id), "state": run.state.value, "run": run.to_dict()}
+        except FileNotFoundError:
+            return None
+
+    def list_workflows(self) -> list[str]:
+        """Lista templates de workflow disponíveis."""
+        templates_dir = Config.PIPELINES_DIR / "workflow_templates"
+        return [f.stem for f in templates_dir.glob("*.yaml")]
 
     def list_pipelines(self) -> list[dict]:
         """Lista todos os pipelines."""
