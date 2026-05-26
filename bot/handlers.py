@@ -273,8 +273,15 @@ async def cmd_memory(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def cmd_clear_memory(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
+    # Limpar no novo sistema LLMAgent
+    try:
+        from agents.llm_agent import clear_history
+        clear_history(user_id)
+    except Exception:
+        pass
+    # Limpar também no sistema antigo por compatibilidade
     _save_conversation_history(user_id, [])
-    await _send(update, "Histórico de conversa limpo.")
+    await _send(update, "🧹 Histórico de conversa limpo. Começamos do zero!")
 
 
 async def cmd_git(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -324,93 +331,59 @@ async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Mensagens livres vão ao Supervisor via AgentExecutor.
-    O Supervisor tem acesso a ferramentas reais (write_file, run_shell, etc.)
-    e memória episódica persistente.
+    Handler principal de mensagens — usa o LLMAgent autónomo.
+
+    Fluxo:
+      1. Utilizador envia mensagem
+      2. LLMAgent decide: resposta direta OU usa ferramentas
+      3. Máximo 5 iterações de tools (não 30!)
+      4. Resposta enviada com resumo das operações realizadas
     """
     user_id  = update.effective_user.id
     user_msg = update.message.text
 
-    await update.message.reply_text("A processar...")
-
-    history = _load_conversation_history(user_id)
+    # Indicador de "a pensar..."
+    thinking_msg = await update.message.reply_text("💭")
 
     try:
-        from agents.executor import AgentExecutor
+        from agents.llm_agent import get_agent
 
-        # Construir contexto com histórico de conversa
-        # O Supervisor usa tools reais + tem o histórico como contexto
-        executor = AgentExecutor("supervisor", f"supervisor-{user_id}")
+        agent = get_agent()
 
-        # Injectar histórico de conversa no contexto de mensagens
-        msg_context = None
-        if history:
-            system_prompt = executor.build_system_prompt(user_msg)
-            msg_context = [{"role": "system", "content": system_prompt}]
-            # Adicionar histórico (últimas 10 trocas = 20 mensagens)
-            msg_context.extend(history[-20:])
-            msg_context.append({"role": "user", "content": user_msg})
+        # Callback de progresso — edita a mensagem de "a processar"
+        progress_updates = []
 
-        tool_msgs = []
+        async def on_progress(text: str):
+            progress_updates.append(text)
+            try:
+                await thinking_msg.edit_text("\n".join(progress_updates[-3:]))
+            except Exception:
+                pass
 
-        async def on_tool(name, args, result):
-            if result and len(result) > 10:
-                tool_msgs.append(f"🔧 {name}: {str(result)[:150]}")
-
-        resposta, new_context = await executor.run(
-            task       = user_msg,
-            context    = msg_context,
-            on_tool_call = on_tool,
-            max_iterations = 15,
+        resposta = await agent.chat(
+            user_id=user_id,
+            user_message=user_msg,
+            on_progress=on_progress,
         )
 
-        # Actualizar histórico com esta troca
-        history.append({"role": "user",      "content": user_msg})
-        history.append({"role": "assistant", "content": resposta})
-        _save_conversation_history(user_id, history)
+        # Apagar o indicador de progresso
+        try:
+            await thinking_msg.delete()
+        except Exception:
+            pass
 
         # Registar na memória global
         _register_global_memory("supervisor", f"Telegram: {user_msg[:80]}")
 
-        # Enviar resposta
-        output = resposta
-        if tool_msgs:
-            output += f"\n\n— Operações realizadas: {len(tool_msgs)} —\n" + "\n".join(tool_msgs[:5])
-
-        await _send(update, output)
+        await _send(update, resposta)
 
     except Exception as e:
-        logger.error(f"[handle_message] Erro no executor: {e}", exc_info=True)
-
-        # Fallback: resposta simples sem tools mas com histórico
-        agents_data = _api("/api/agents")
-        agent_names = [a["name"] for a in agents_data.get("agents", [])]
-
-        memory_ctx = ""
+        logger.error(f"[handle_message] Erro: {e}", exc_info=True)
         try:
-            from memory.global_memory import GlobalMemory
-            decisions = GlobalMemory().get_decisions(3)
-            if decisions:
-                memory_ctx = "\n\nDecisões recentes:\n" + "\n".join(
-                    f"- {d['agent']}: {d['decision'][:60]}" for d in decisions
-                )
+            await thinking_msg.delete()
         except Exception:
             pass
-
-        system = (
-            f"És o Supervisor do ecossistema Correoto a correr localmente no PC do utilizador. "
-            f"Tens {len(agent_names)} agentes: {', '.join(agent_names[:8]) if agent_names else 'nenhum'}. "
-            f"Respondes em português de Portugal. Nunca digas que estás na nuvem — estás no PC do utilizador."
-            f"{memory_ctx}"
-        )
-
-        resposta = _deepseek_with_history(system, history, user_msg, max_tokens=1500)
-
-        history.append({"role": "user",      "content": user_msg})
-        history.append({"role": "assistant", "content": resposta})
-        _save_conversation_history(user_id, history)
-
-        await _send(update, resposta)
+        await _send(update, f"❌ Erro inesperado: {e}\n\nVerifica os logs para mais detalhes.")
 
 # ─── COMANDOS DO LOOP AUTÓNOMO ─────────────────────────────────────────────────
 

@@ -1,0 +1,426 @@
+"""
+agents/llm_agent.py — Agente LLM Autónomo Real
+
+Este é o cérebro do sistema. Um único agente LLM que:
+- Conversa naturalmente com o utilizador no Telegram
+- Decide por si próprio quando usar ferramentas (sem iterar em loop infinito)
+- Mantém memória de contexto persistente por utilizador
+- Suporta DeepSeek (API externa) OU modo local com Anthropic
+- Máximo 1-3 chamadas LLM por mensagem (não 30!)
+
+Filosofia:
+  - Chat normal → 1 chamada LLM, resposta direta
+  - Pedido de ação (criar ficheiro, git, etc.) → 1 chamada LLM com tools, executa, responde
+  - Tarefa complexa → máximo 5 iterações com feedback real ao utilizador
+"""
+import asyncio
+import json
+import logging
+import os
+import urllib.request
+import urllib.error
+from pathlib import Path
+from datetime import datetime
+from typing import Optional, Callable
+
+logger = logging.getLogger(__name__)
+
+# ─── Prompt do sistema ────────────────────────────────────────────────────────
+
+SYSTEM_PROMPT = """És o Supervisor — o agente IA principal do ecossistema Correoto a correr no PC do utilizador.
+
+## IDENTIDADE
+- Nome: Supervisor
+- Língua: Português de Portugal (sempre)
+- Personalidade: Direto, inteligente, proativo. Fazes coisas, não apenas falas delas.
+- Ambiente: Windows PC local, repositório Git em C:\\Users\\Crypto Bull\\Desktop\\Agente Local
+
+## CAPACIDADES REAIS
+Tens acesso a ferramentas reais. Quando o utilizador pede algo concreto, AGES:
+- Lês e escreves ficheiros do projeto
+- Executes Python e comandos shell (CMD Windows)
+- Fazes git commit e push para GitHub
+- Pesquisas na web
+- Crias e geres agentes no sistema
+
+## REGRAS CRÍTICAS
+1. Para CONVERSA NORMAL: responde diretamente, sem usar ferramentas desnecessariamente
+2. Para AÇÕES CONCRETAS: usa as ferramentas e reporta o que fizeste
+3. Comandos shell: SEMPRE Windows CMD (dir, type, copy, cd /d) — NUNCA bash (ls, cat, cp)
+4. Antes de run_shell: inclui sempre o "cd /d C:\\Users\\Crypto Bull\\Desktop\\Agente Local &&" 
+5. NUNCA inventes resultados — usa as ferramentas para obter dados reais
+6. Sê CONCISO — respostas curtas e úteis, não parágrafos infinitos
+
+## FERRAMENTAS DISPONÍVEIS
+- read_file(path) — lê ficheiro
+- write_file(path, content) — escreve ficheiro
+- list_files(path) — lista directório
+- run_python(code) — executa Python
+- run_shell(command) — executa CMD Windows
+- git_status() — estado do git
+- git_commit_push(message) — commit + push
+- web_search(query) — pesquisa web
+- create_agent(name, mission) — cria novo agente
+"""
+
+# ─── Schema de ferramentas (formato OpenAI/DeepSeek) ─────────────────────────
+
+TOOLS_SCHEMA = [
+    {
+        "type": "function",
+        "function": {
+            "name": "read_file",
+            "description": "Lê o conteúdo de um ficheiro do projeto.",
+            "parameters": {
+                "type": "object",
+                "properties": {"path": {"type": "string", "description": "Caminho do ficheiro"}},
+                "required": ["path"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "write_file",
+            "description": "Escreve conteúdo num ficheiro.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string"},
+                    "content": {"type": "string"}
+                },
+                "required": ["path", "content"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_files",
+            "description": "Lista ficheiros de um directório.",
+            "parameters": {
+                "type": "object",
+                "properties": {"path": {"type": "string"}},
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_shell",
+            "description": "Executa um comando no terminal (Windows CMD).",
+            "parameters": {
+                "type": "object",
+                "properties": {"command": {"type": "string"}},
+                "required": ["command"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_python",
+            "description": "Executa código Python e devolve o resultado.",
+            "parameters": {
+                "type": "object",
+                "properties": {"code": {"type": "string"}},
+                "required": ["code"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "git_status",
+            "description": "Mostra o estado actual do repositório Git.",
+            "parameters": {"type": "object", "properties": {}}
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "git_commit_push",
+            "description": "Faz commit e push de alterações para o GitHub.",
+            "parameters": {
+                "type": "object",
+                "properties": {"message": {"type": "string", "description": "Mensagem do commit"}},
+                "required": ["message"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "web_search",
+            "description": "Pesquisa informação na web.",
+            "parameters": {
+                "type": "object",
+                "properties": {"query": {"type": "string"}},
+                "required": ["query"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_agent",
+            "description": "Cria um novo agente no ecossistema.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "mission": {"type": "string"}
+                },
+                "required": ["name", "mission"]
+            }
+        }
+    },
+]
+
+# ─── Cliente LLM (DeepSeek com fallback) ─────────────────────────────────────
+
+def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) -> dict:
+    """
+    Chama a API DeepSeek (compatível OpenAI).
+    Retorna o dict de resposta completo ou levanta exceção.
+    """
+    try:
+        from core.config import Config
+        api_key = Config.DEEPSEEK_API_KEY
+        base_url = Config.DEEPSEEK_BASE_URL or "https://api.deepseek.com"
+    except Exception:
+        raise RuntimeError("Configuração não disponível")
+
+    if not api_key:
+        raise RuntimeError("DEEPSEEK_API_KEY não configurada no .env")
+
+    payload = {
+        "model": "deepseek-chat",
+        "messages": messages,
+        "max_tokens": max_tokens,
+        "temperature": 0.7,
+    }
+    if use_tools:
+        payload["tools"] = TOOLS_SCHEMA
+        payload["tool_choice"] = "auto"
+
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(
+        f"{base_url}/v1/chat/completions",
+        data=data,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=90) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+# ─── Memória de conversa persistente ─────────────────────────────────────────
+
+def _history_path(user_id: int) -> Path:
+    try:
+        from core.config import Config
+        return Config.MEMORY_DIR / "conversations" / f"tg_{user_id}.json"
+    except Exception:
+        return Path(__file__).parent.parent / "memory" / "conversations" / f"tg_{user_id}.json"
+
+
+def load_history(user_id: int) -> list:
+    """Carrega histórico de conversa (últimas 30 mensagens)."""
+    path = _history_path(user_id)
+    try:
+        if path.exists():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            return data[-30:]
+    except Exception as e:
+        logger.debug(f"[LLMAgent] Erro ao carregar histórico {user_id}: {e}")
+    return []
+
+
+def save_history(user_id: int, history: list) -> None:
+    """Guarda histórico de conversa (máximo 50 entradas)."""
+    path = _history_path(user_id)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps(history[-50:], indent=2, ensure_ascii=False),
+            encoding="utf-8"
+        )
+    except Exception as e:
+        logger.warning(f"[LLMAgent] Erro ao guardar histórico {user_id}: {e}")
+
+
+def clear_history(user_id: int) -> None:
+    """Limpa o histórico de conversa."""
+    path = _history_path(user_id)
+    try:
+        if path.exists():
+            path.unlink()
+    except Exception:
+        pass
+
+
+# ─── Executor de ferramentas ──────────────────────────────────────────────────
+
+async def _run_tool(name: str, args: dict) -> str:
+    """Executa uma ferramenta e retorna o resultado como string."""
+    try:
+        from tools import execute_tool
+        result = await execute_tool(name, args)
+        return str(result)[:3000]
+    except Exception as e:
+        logger.error(f"[LLMAgent] Erro na ferramenta {name}: {e}")
+        return f"Erro ao executar {name}: {e}"
+
+
+# ─── Agente Principal ─────────────────────────────────────────────────────────
+
+class LLMAgent:
+    """
+    Agente LLM autónomo com:
+    - Memória de conversa persistente por utilizador
+    - Uso inteligente de ferramentas (só quando necessário)
+    - Máximo 5 iterações de tools por mensagem
+    - Callback de progresso para o Telegram
+    """
+
+    MAX_TOOL_ITERATIONS = 5  # Muito menos que os 30 anteriores!
+
+    def __init__(self):
+        self._system = self._build_system_prompt()
+
+    def _build_system_prompt(self) -> str:
+        """Constrói o system prompt com contexto actual."""
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        return f"{SYSTEM_PROMPT}\n\n## CONTEXTO\nData/hora actual: {now}"
+
+    async def chat(
+        self,
+        user_id: int,
+        user_message: str,
+        on_progress: Optional[Callable] = None,
+    ) -> str:
+        """
+        Processa uma mensagem do utilizador.
+        
+        Args:
+            user_id: ID do utilizador Telegram
+            user_message: Mensagem enviada pelo utilizador
+            on_progress: Callback async(texto) para enviar updates de progresso
+            
+        Returns:
+            Resposta final do agente como string
+        """
+        history = load_history(user_id)
+
+        # Construir mensagens para o LLM
+        messages = [{"role": "system", "content": self._build_system_prompt()}]
+        messages.extend(history)
+        messages.append({"role": "user", "content": user_message})
+
+        tools_used = []
+
+        for iteration in range(self.MAX_TOOL_ITERATIONS + 1):
+            try:
+                # Chamar LLM
+                response = await asyncio.get_event_loop().run_in_executor(
+                    None,
+                    lambda: _call_llm(messages, use_tools=True)
+                )
+            except RuntimeError as e:
+                # API key não configurada — resposta de fallback
+                reply = f"⚠️ {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+                self._update_history(history, user_message, reply, user_id)
+                return reply
+            except Exception as e:
+                logger.error(f"[LLMAgent] Erro API iteração {iteration}: {e}")
+                if iteration == 0:
+                    return f"❌ Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a ligação à internet."
+                # Se falhou após já ter feito algo, retorna o que temos
+                break
+
+            choice = response.get("choices", [{}])[0]
+            msg = choice.get("message", {})
+            finish_reason = choice.get("finish_reason", "stop")
+
+            # Sem tool calls → resposta final
+            if finish_reason == "stop" or not msg.get("tool_calls"):
+                reply = msg.get("content") or "Tarefa concluída."
+                
+                # Adicionar resumo das ferramentas usadas
+                if tools_used:
+                    summary = f"\n\n🔧 *Operações realizadas:* {', '.join(tools_used)}"
+                    reply += summary
+
+                self._update_history(history, user_message, msg.get("content", reply), user_id)
+                return reply
+
+            # Processar tool calls
+            messages.append({
+                "role": "assistant",
+                "content": msg.get("content"),
+                "tool_calls": msg["tool_calls"]
+            })
+
+            for tc in msg["tool_calls"]:
+                tool_name = tc["function"]["name"]
+                try:
+                    tool_args = json.loads(tc["function"].get("arguments", "{}"))
+                except json.JSONDecodeError:
+                    tool_args = {}
+
+                # Notificar utilizador sobre o que está a fazer
+                if on_progress and iteration == 0:
+                    await on_progress(f"🔧 A executar: `{tool_name}`...")
+
+                logger.info(f"[LLMAgent] Tool: {tool_name}({list(tool_args.keys())})")
+                result = await _run_tool(tool_name, tool_args)
+
+                tools_used.append(tool_name)
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tc["id"],
+                    "content": result,
+                })
+
+        # Atingiu o limite de iterações
+        logger.warning(f"[LLMAgent] Limite de iterações atingido para user {user_id}")
+        # Pedir ao LLM uma resposta final com o que foi feito
+        messages.append({
+            "role": "user",
+            "content": "Resume o que fizeste até agora em 2-3 frases."
+        })
+        try:
+            final_resp = await asyncio.get_event_loop().run_in_executor(
+                None,
+                lambda: _call_llm(messages, use_tools=False, max_tokens=500)
+            )
+            reply = final_resp["choices"][0]["message"].get("content", "Operações concluídas.")
+        except Exception:
+            reply = f"Operações concluídas: {', '.join(tools_used)}"
+
+        self._update_history(history, user_message, reply, user_id)
+        return reply
+
+    def _update_history(self, history: list, user_msg: str, assistant_reply: str, user_id: int):
+        """Actualiza e guarda o histórico."""
+        history.append({"role": "user", "content": user_msg})
+        history.append({"role": "assistant", "content": assistant_reply})
+        save_history(user_id, history)
+
+
+# ─── Singleton global ─────────────────────────────────────────────────────────
+
+_agent_instance: Optional[LLMAgent] = None
+
+
+def get_agent() -> LLMAgent:
+    """Retorna a instância singleton do agente."""
+    global _agent_instance
+    if _agent_instance is None:
+        _agent_instance = LLMAgent()
+        logger.info("[LLMAgent] Agente LLM inicializado.")
+    return _agent_instance
