@@ -67,10 +67,18 @@ class AgentExecutor:
         self.memory      = EpisodicMemory(self.agent_id)
         self.audit       = AuditLogger()
         self.metrics     = MetricsCollector()
-        self.client      = AsyncOpenAI(
+
+        # Batch 6 — Inference Router: cliente escolhido dinamicamente por tarefa
+        # O cliente estático DeepSeek mantém-se como fallback se o router falhar
+        from inference.router import router as _router
+        self._router = _router
+        self._deepseek_client = AsyncOpenAI(
             api_key  = self.config.DEEPSEEK_API_KEY,
             base_url = self.config.DEEPSEEK_BASE_URL,
         )
+        # Compatibilidade: self.client aponta para DeepSeek por defeito
+        # mas run() vai usar o router para escolher dinamicamente
+        self.client = self._deepseek_client
 
     def _load_soul(self) -> str:
         """Carrega a personalidade do agente: primeiro de souls/<name>.md,
@@ -211,19 +219,62 @@ class AgentExecutor:
                 "content": "Executa a tarefa indicada no system prompt. Usa as ferramentas disponíveis para agir de verdade."
             })
 
+        # Batch 6 — escolher cliente via router (DeepSeek vs Ollama)
+        try:
+            active_client, active_model, routing = await self._router.get_client(
+                task,
+                context_size=len(str(messages)),
+            )
+            logger.debug(
+                f"[{self.agent_name}] Router: {routing.provider.upper()} "
+                f"{active_model} (score={routing.complexity_score:.2f}, {routing.complexity_label})"
+            )
+        except Exception as router_err:
+            logger.warning(f"[{self.agent_name}] Router falhou, usando DeepSeek: {router_err}")
+            active_client = self._deepseek_client
+            active_model = "deepseek-chat"
+            routing = None
+
+        # Ollama não suporta tools — se local, desativar tool_use
+        use_tools = (routing is None or not routing.use_local)
+
         for iteration in range(max_iterations):
             try:
-                response = await self.client.chat.completions.create(
-                    model       = "deepseek-chat",
+                call_kwargs = dict(
+                    model       = active_model,
                     messages    = messages,
-                    tools       = TOOLS,
-                    tool_choice = "auto",
                     temperature = 0.3,
                     max_tokens  = 2000,
                 )
+                if use_tools:
+                    call_kwargs["tools"]       = TOOLS
+                    call_kwargs["tool_choice"] = "auto"
+
+                response = await active_client.chat.completions.create(**call_kwargs)
             except Exception as e:
-                logger.error(f"[{self.agent_name}] Erro API: {e}")
-                return f"Erro na API: {e}", messages
+                # Se Ollama falhou, tentar DeepSeek como fallback
+                if routing and routing.use_local:
+                    logger.warning(f"[{self.agent_name}] Ollama falhou ({e}), fallback DeepSeek")
+                    self._router.invalidate_ollama_cache()
+                    active_client = self._deepseek_client
+                    active_model  = "deepseek-chat"
+                    use_tools     = True
+                    routing       = None
+                    try:
+                        response = await active_client.chat.completions.create(
+                            model       = active_model,
+                            messages    = messages,
+                            tools       = TOOLS,
+                            tool_choice = "auto",
+                            temperature = 0.3,
+                            max_tokens  = 2000,
+                        )
+                    except Exception as e2:
+                        logger.error(f"[{self.agent_name}] Erro API (fallback): {e2}")
+                        return f"Erro na API: {e2}", messages
+                else:
+                    logger.error(f"[{self.agent_name}] Erro API: {e}")
+                    return f"Erro na API: {e}", messages
 
             msg    = response.choices[0].message
             finish = response.choices[0].finish_reason
@@ -232,7 +283,7 @@ class AgentExecutor:
             # Registar uso de tokens
             if hasattr(response, "usage") and response.usage:
                 self.metrics.track_token_usage(
-                    self.agent_name, "deepseek-chat",
+                    self.agent_name, active_model,
                     response.usage.prompt_tokens,
                     response.usage.completion_tokens,
                 )
