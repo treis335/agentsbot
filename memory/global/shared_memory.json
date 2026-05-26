@@ -2,370 +2,130 @@
   "decisions": [
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Telegram: Para",
       "context": "Telegram",
-      "timestamp": "2026-05-26T14:48:17.897562"
+      "timestamp": "2026-05-26T23:30:24.800793"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Completou: Desliga te e aguarda ate eu te logar novamente por favor",
+      "context": "## ✅ **SISTEMA DESLIGADO** 🛑\n\n| Item | Estado |\n|------|--------|\n| 🧠 **Supervisor** | 🔴 **Desligado** |\n| 🚀 **Bot (PID 26712)** | ✅ Continua a correr em background |\n| 📁 `ARBITRAGE BOT - Cópia` | ✅ I",
+      "timestamp": "2026-05-26T23:30:27.111682"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Desliga te e aguarda ate eu te logar novamente por favor",
       "context": "Telegram",
-      "timestamp": "2026-05-26T14:50:38.172873"
+      "timestamp": "2026-05-26T23:30:27.227548"
     },
     {
       "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:51:17.795149"
+      "decision": "Completou: Desliga te e aguarda ate eu te logar novamente por favor",
+      "context": "## ✅ **SISTEMA DESLIGADO** 🛑\n\n### 📋 **CHECKPOINT GUARDADO:**\n\n| Item | Estado |\n|------|--------|\n| 🤖 **Agente Supervisor** | ✅ **Em pausa total** |\n| 🚀 **ARBITRAGE BOT - Cópia** | ✅ A correr (PID: 26",
+      "timestamp": "2026-05-26T23:30:27.797239"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Telegram: Desliga te e aguarda ate eu te logar novamente por favor",
       "context": "Telegram",
-      "timestamp": "2026-05-26T14:51:17.803895"
+      "timestamp": "2026-05-26T23:30:28.027995"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continia",
+      "decision": "Completou: Desliga te e aguarda ate eu te logar novamente por favor",
+      "context": "## ✅ **SISTEMA DESLIGADO** 🛑\n\n### 📋 **CHECKPOINT GUARDADO:**\n\n| Item | Estado |\n|------|--------|\n| 🤖 **Supervisor** | ❌ Desligado |\n| 📁 **Correoto** | ✅ Intacto |\n| 🚀 **ARBITRAGE BOT - Cópia** | ✅ A ",
+      "timestamp": "2026-05-26T23:30:28.799006"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Desliga te e aguarda ate eu te logar novamente por favor",
       "context": "Telegram",
-      "timestamp": "2026-05-26T15:42:53.064779"
+      "timestamp": "2026-05-26T23:30:28.975599"
     },
     {
       "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "✅ **Commit e push realizados com sucesso!**\n\n---\n\n## 📋 Relatório de Progresso\n\n**✅ Concluído:**\n- Verificado estado completo do sistema — **estável e operacional**\n- Carregado contexto da memória pers",
-      "timestamp": "2026-05-26T15:44:15.329439"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Telegram: Desliga te e aguarda ate eu te logar novamente por favor",
       "context": "Telegram",
-      "timestamp": "2026-05-26T15:44:15.339583"
+      "timestamp": "2026-05-26T23:30:29.840976"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua,  pretendo que te tornes um verdadeiro LLM",
+      "decision": "Completou: Desliga te e aguarda ate eu te logar novamente por favor",
+      "context": "## ✅ **SISTEMA DESLIGADO** 🛑\n\n### 📋 **CHECKPOINT GUARDADO:**\n\n| Item | Estado |\n|------|--------|\n| 🤖 **Supervisor** | ❌ Desligado |\n| 📁 **Correoto** | ✅ Intacto |\n| 🚀 **ARBITRAGE BOT - Cópia** | ✅ A ",
+      "timestamp": "2026-05-26T23:30:29.862613"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Desliga te e aguarda ate eu te logar novamente por favor",
       "context": "Telegram",
-      "timestamp": "2026-05-26T15:53:40.302280"
+      "timestamp": "2026-05-26T23:30:31.537315"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Completou: Ok?",
+      "context": "## ✅ **OK!** 🚀\n\nTudo pronto e funcional:\n\n| Item | Estado |\n|------|--------|\n| 📁 `ARBITRAGE BOT - Cópia` | ✅ Intacto, a correr (PID: 26712) |\n| 🔑 GitHub Token | ✅ Encontrado no `.env` |\n| 🤖 DeepSeek ",
+      "timestamp": "2026-05-26T23:30:35.744822"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok?",
       "context": "Telegram",
-      "timestamp": "2026-05-26T15:55:31.635488"
+      "timestamp": "2026-05-26T23:30:37.355334"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Completou: Ok?",
+      "context": "## ✅ **OK!** 🫡\n\nTudo pronto! Tens o **token do GitHub** e o **bot de arbitragem** a correr.\n\n**Resumo rápido:**\n- 🚀 **Bot Supra** → PID **26712** (a monitorizar oportunidades)\n- 🔑 **GitHub Token** → `",
+      "timestamp": "2026-05-26T23:30:48.160234"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: Ok?",
+      "context": "## ✅ **OK!** 🚀\n\nTudo pronto e funcional:\n\n| Item | Estado |\n|------|--------|\n| 🔑 **GitHub Token** | ✅ Confirmado |\n| 🤖 **DeepSeek API** | ✅ Configurada |\n| 📱 **Telegram Bot** | ✅ Ativo |\n| 🏦 **GitHub",
+      "timestamp": "2026-05-26T23:30:48.997106"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: Ok?",
+      "context": "## ✅ **OK!** 🚀\n\nTudo pronto e funcional:\n\n| Item | Estado |\n|------|--------|\n| 📁 `ARBITRAGE BOT - Cópia` | ✅ Intacto, a correr (PID: 26712) |\n| 🔑 GitHub Token | ✅ Encontrado no `.env` |\n| 🤖 Agente | ",
+      "timestamp": "2026-05-26T23:30:50.164861"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok?",
       "context": "Telegram",
-      "timestamp": "2026-05-26T16:01:11.361056"
+      "timestamp": "2026-05-26T23:30:50.599321"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Telegram: Ok?",
       "context": "Telegram",
-      "timestamp": "2026-05-26T16:01:14.482011"
+      "timestamp": "2026-05-26T23:30:50.608404"
     },
     {
       "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T16:11:04.345747"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Telegram: Ok?",
       "context": "Telegram",
-      "timestamp": "2026-05-26T16:11:04.364009"
+      "timestamp": "2026-05-26T23:30:51.774471"
     },
     {
       "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Completou: Neste momento preciso que encerres tudo para eu poder usar a minja maquina locsl",
+      "context": "## ✅ **A ENCERRAR TUDO!** 🫡\n\n### 📋 **PROCESSOS ENCERRADOS:**\n\n| Processo | Ação |\n|----------|------|\n| 🚀 **Bot Arbitragem (PID 26712)** | ✅ **Encerrado** |\n| 🧠 **Sistema de Agentes** | ✅ **Parado** |",
+      "timestamp": "2026-05-26T23:31:46.330498"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Neste momento preciso que encerres tudo para eu poder usar a minja maquina locsl",
       "context": "Telegram",
-      "timestamp": "2026-05-26T16:17:10.066327"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua e sobe tudo para a github para que outros agentes externos possam verif",
-      "context": "✅ **Tudo no GitHub!** Commit `6b3eb3e` enviado com sucesso.\n\n---\n\n## 📋 Relatório Final\n\n**✅ Concluído:**\n- ✅ Verificado estado do sistema — **estável, 20 agentes operacionais**\n- ✅ **Plano de Evolução",
-      "timestamp": "2026-05-26T16:24:01.940563"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua e sobe tudo para a github para que outros agentes externos possam verif",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T16:24:02.010074"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora, procede e executa as tuas ideias",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:00:06.141872"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora, procede e executa as tuas ideias",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:00:09.182763"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora, procede e executa as tuas ideias",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:00:12.614659"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:13.661616"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:15.890301"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:17.911175"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:26.293789"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:28.661203"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:32.244731"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Bora continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:03:35.646601"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:06:30.621544"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:06:51.305849"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua por favor",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:08:14.114911"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua por favor",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:08:21.054020"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua por favor",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:08:24.935429"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua por favor",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:08:27.818970"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua essa tua construçao",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:22:55.846686"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:32:20.966423"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:34:52.546070"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:34:57.559326"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:35:06.831644"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:35:09.786113"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:35:13.833511"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua e atualiza a repo no git, e continua a trabalhar",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:37:31.356454"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua a evoluir te para um sistema autonomo verdadeiro LLM, se possivel cria ",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:48:25.209937"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua a evoluir te para um sistema autonomo verdadeiro LLM, se possivel cria ",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:48:50.200168"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:49:59.307606"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:50:01.156401"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:51:29.545095"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:51:33.644303"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua a construir te e atualizar te",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T17:57:26.003628"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:00:22.431567"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T18:04:10.668111"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:04:10.680996"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:05:26.700034"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:05:38.090994"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: ?",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:05:56.667653"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:06:25.847765"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Tenho a repo da github atualizada?",
-      "context": "Aqui está o estado atual:\n\n**✅ Branch `main` está atualizada com `origin/main`** — ou seja, o último commit já está no GitHub.\n\n**Mas há trabalho local não commitado:**\n\n📝 **Ficheiros modificados** (j",
-      "timestamp": "2026-05-26T18:06:31.305895"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Tenho a repo da github atualizada?",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:06:31.316170"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Fornece me o token da git",
-      "context": "Não posso fornecer o token do GitHub por questões de segurança. O token está armazenado de forma segura no ficheiro `.env` e nas configurações do repositório local.\n\nSe precisas de saber qual é o toke",
-      "timestamp": "2026-05-26T18:49:46.580001"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Fornece me o token da git",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:49:46.682928"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Fornece me o token da git",
-      "context": "Não posso fornecer o token do GitHub por questões de segurança. O token está guardado no ficheiro `.env` e nas configurações do sistema, mas **nunca devo expor credenciais** (regra absoluta #2 do meu ",
-      "timestamp": "2026-05-26T18:49:46.761847"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Fornece me o token da git",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T18:49:46.789236"
+      "timestamp": "2026-05-26T23:31:47.139863"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-26T18:49:27.916665",
-    "agents_count": 20,
+    "last_start": "2026-05-26T23:30:24.800775",
+    "agents_count": 0,
     "tasks_count": 0
   },
   "knowledge": [],

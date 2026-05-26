@@ -2,7 +2,7 @@
 self_verifier.py — VERIFICADOR AUTÓNOMO DO CÉREBRO CORREOTO
 Verifica as próprias conclusões, deteta erros e melhora continuamente.
 """
-import json, time, logging, random
+import os, json, time, logging, random
 from datetime import datetime
 from pathlib import Path
 
@@ -55,113 +55,104 @@ class SelfVerifier:
         verification["checks"].append({
             "check": "consistência_interna",
             "result": consistency["result"],
-            "detail": consistency["detail"]
+            "score": consistency["score"]
         })
         if not consistency["result"]:
             verification["passed"] = False
-            verification["issues"].append(consistency["detail"])
+            verification["issues"].append(consistency["reason"])
         
         # Check 2: Completude
         completeness = self._check_completeness(conclusion)
         verification["checks"].append({
             "check": "completude",
             "result": completeness["result"],
-            "detail": completeness["detail"]
+            "score": completeness["score"]
         })
         if not completeness["result"]:
             verification["passed"] = False
-            verification["issues"].append(completeness["detail"])
+            verification["issues"].append(completeness["reason"])
         
-        # Check 3: Contexto (se fornecido)
-        if context:
-            context_check = self._check_context(conclusion, context)
-            verification["checks"].append({
-                "check": "contexto",
-                "result": context_check["result"],
-                "detail": context_check["detail"]
-            })
-            if not context_check["result"]:
-                verification["passed"] = False
-                verification["issues"].append(context_check["detail"])
+        # Check 3: Lógica
+        logic = self._check_logic(conclusion)
+        verification["checks"].append({
+            "check": "lógica",
+            "result": logic["result"],
+            "score": logic["score"]
+        })
+        if not logic["result"]:
+            verification["passed"] = False
+            verification["issues"].append(logic["reason"])
         
-        # Calcular score
-        total_checks = len(verification["checks"])
-        passed_checks = sum(1 for c in verification["checks"] if c["result"])
-        verification["score"] = passed_checks / total_checks if total_checks > 0 else 1.0
+        # Score final
+        scores = [c["score"] for c in verification["checks"]]
+        verification["score"] = sum(scores) / len(scores) if scores else 1.0
         
-        # Guardar
         self.verifications.append(verification)
-        if len(self.verifications) > 100:
-            self.verifications = self.verifications[-100:]
         self._save_json(self.verifications_file, self.verifications)
-        
-        # Se falhou, registar como erro
-        if not verification["passed"]:
-            self.errors.append({
-                "conclusion": conclusion,
-                "issues": verification["issues"],
-                "timestamp": datetime.now().isoformat()
-            })
-            if len(self.errors) > 50:
-                self.errors = self.errors[-50:]
-            self._save_json(self.errors_file, self.errors)
-            log.warning(f"Verificação falhou: {verification['issues']}")
-        else:
-            log.info(f"Verificação passou (score: {verification['score']:.2f})")
         
         return verification
     
-    def _check_consistency(self, conclusion):
-        """Verifica consistência interna da conclusão."""
-        if isinstance(conclusion, dict):
-            if "conclusion" in conclusion and "steps" in conclusion:
-                return {"result": True, "detail": "Estrutura consistente"}
-            return {"result": False, "detail": "Estrutura inconsistente: faltam campos obrigatórios"}
+    def _check_consistency(self, text):
+        """Verifica se o texto é consistente."""
+        if not text or len(text) < 10:
+            return {"result": False, "score": 0.3, "reason": "Texto muito curto ou vazio"}
         
-        if isinstance(conclusion, str) and len(conclusion) > 10:
-            return {"result": True, "detail": "Conclusão textual válida"}
+        # Verificar contradições
+        contradictions = ["mas por outro lado não", "no entanto é falso", "contradiz"]
+        for c in contradictions:
+            if c in text.lower():
+                return {"result": False, "score": 0.5, "reason": f"Possível contradição: '{c}'"}
         
-        return {"result": False, "detail": "Formato de conclusão inválido"}
+        return {"result": True, "score": 1.0, "reason": ""}
     
-    def _check_completeness(self, conclusion):
-        """Verifica se a conclusão está completa."""
-        if isinstance(conclusion, dict):
-            if "conclusion" in conclusion:
-                text = str(conclusion["conclusion"])
-                if len(text) > 20:
-                    return {"result": True, "detail": "Conclusão detalhada"}
-                return {"result": False, "detail": "Conclusão muito curta"}
+    def _check_completeness(self, text):
+        """Verifica se o texto está completo."""
+        required_markers = [":", ".", "\n"]
+        for marker in required_markers:
+            if marker not in text:
+                return {"result": False, "score": 0.5, "reason": f"Falta marcador: '{marker}'"}
         
-        if isinstance(conclusion, str):
-            if len(conclusion) > 20:
-                return {"result": True, "detail": "Conclusão suficientemente detalhada"}
-            return {"result": False, "detail": "Conclusão demasiado curta para ser útil"}
-        
-        return {"result": False, "detail": "Tipo de dados não suportado"}
+        return {"result": True, "score": 1.0, "reason": ""}
     
-    def _check_context(self, conclusion, context):
-        """Verifica se a conclusão é coerente com o contexto."""
-        if isinstance(context, dict):
-            context_str = json.dumps(context)
-        else:
-            context_str = str(context)
+    def _check_logic(self, text):
+        """Verifica a lógica do texto."""
+        logical_words = ["porque", "portanto", "logo", "então", "se", "então"]
+        has_logic = any(word in text.lower() for word in logical_words)
         
-        conclusion_str = str(conclusion)
+        if not has_logic:
+            return {"result": False, "score": 0.6, "reason": "Falta estrutura lógica (porque, portanto, etc)"}
         
-        # Verifica se há overlap básico
-        if len(context_str) > 0 and len(conclusion_str) > 0:
-            return {"result": True, "detail": "Contexto considerado na conclusão"}
-        
-        return {"result": False, "detail": "Conclusão ignora contexto fornecido"}
+        return {"result": True, "score": 1.0, "reason": ""}
+    
+    def detect_error(self, error_type, context, severity="medium"):
+        """Regista um erro detetado automaticamente."""
+        error = {
+            "type": error_type,
+            "context": context,
+            "severity": severity,
+            "detected_at": datetime.now().isoformat(),
+            "cycle": self.cycle,
+            "fixed": False
+        }
+        self.errors.append(error)
+        self._save_json(self.errors_file, self.errors)
+        log.warning(f"Erro detetado: {error_type} - {context}")
+        return error
     
     def get_stats(self):
         """Estatísticas do verificador."""
-        total = len(self.verifications)
-        passed = sum(1 for v in self.verifications if v["passed"])
         return {
-            "total_verifications": total,
-            "passed": passed,
-            "failed": total - passed,
-            "success_rate": (passed / total * 100) if total > 0 else 0,
-            "total_errors_detected": len(self.errors)
+            "total_verifications": len(self.verifications),
+            "total_errors": len(self.errors),
+            "avg_score": sum(v["score"] for v in self.verifications) / len(self.verifications) if self.verifications else 0,
+            "cycles": self.cycle
         }
+
+# Singleton
+_verifier_instance = None
+
+def get_verifier():
+    global _verifier_instance
+    if _verifier_instance is None:
+        _verifier_instance = SelfVerifier()
+    return _verifier_instance
