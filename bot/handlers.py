@@ -411,3 +411,78 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _save_conversation_history(user_id, history)
 
         await _send(update, resposta)
+
+# ─── COMANDOS DO LOOP AUTÓNOMO ─────────────────────────────────────────────────
+
+# Referência global ao loop (preenchida pelo main.py)
+_auto_loop = None
+
+def set_auto_loop(loop):
+    global _auto_loop
+    _auto_loop = loop
+
+
+async def cmd_auto_status(update, context):
+    """Ver estado do loop autónomo."""
+    if _auto_loop:
+        await _send(update, _auto_loop.status())
+    else:
+        await _send(update, "⚠️ Loop autónomo não iniciado.")
+
+
+async def cmd_auto_pause(update, context):
+    """Pausar o loop autónomo."""
+    if _auto_loop:
+        _auto_loop.pause()
+        await _send(update, "⏸️ Loop autónomo pausado. Usa /retomar para continuar.")
+    else:
+        await _send(update, "⚠️ Loop autónomo não iniciado.")
+
+
+async def cmd_auto_resume(update, context):
+    """Retomar o loop autónomo."""
+    if _auto_loop:
+        _auto_loop.resume()
+        await _send(update, "▶️ Loop autónomo retomado!")
+    else:
+        await _send(update, "⚠️ Loop autónomo não iniciado.")
+
+
+async def cmd_auto_backlog(update, context):
+    """Ver tarefas no backlog."""
+    from autonomous_loop import load_backlog
+    backlog = load_backlog()
+    pending = [t for t in backlog if t["status"] == "pending"]
+    done = [t for t in backlog if t["status"] == "done"]
+    if not pending:
+        msg = "📭 Backlog vazio — agentes em brainstorm!"
+    else:
+        lines = [f"📋 Backlog ({len(pending)} pendentes):
+"]
+        for i, t in enumerate(pending[:10], 1):
+            lines.append(f"{i}. [{t['priority']}⭐] {t['title']}")
+        if done:
+            lines.append(f"
+✅ Concluídas: {len(done)}")
+        msg = "
+".join(lines)
+    await _send(update, msg)
+
+
+async def cmd_auto_task(update, context):
+    """Adicionar tarefa urgente: /tarefa Título | Descrição"""
+    if not context.args:
+        await _send(update, "Uso: /tarefa Título | Descrição
+Ex: /tarefa Melhorar logs | Adicionar rotação automática de logs")
+        return
+    text = " ".join(context.args)
+    parts = text.split("|", 1)
+    title = parts[0].strip()
+    description = parts[1].strip() if len(parts) > 1 else title
+    if _auto_loop:
+        task = _auto_loop.add_priority_task(title, description)
+        await _send(update, f"✅ Tarefa urgente adicionada!
+📌 {title}
+Será executada no próximo ciclo.")
+    else:
+        await _send(update, "⚠️ Loop autónomo não iniciado.")
