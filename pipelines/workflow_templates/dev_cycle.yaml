@@ -1,0 +1,88 @@
+# pipelines/workflow_templates/dev_cycle.yaml
+# Ciclo completo de desenvolvimento: analisar → implementar → testar → commit
+# Usado para features novas e melhorias estruturais.
+
+name: dev_cycle
+description: "Ciclo completo de desenvolvimento — análise, implementação, testes, commit"
+version: "1.0"
+initial_step: analyze
+
+steps:
+  - id: analyze
+    name: "Analisar"
+    agent_role: arquiteto
+    task_template: |
+      Analisa a seguinte tarefa e produz um plano de implementação detalhado:
+
+      TAREFA: {task}
+
+      Responde com:
+      1. Ficheiros a criar/modificar
+      2. Abordagem técnica (máx 3 parágrafos)
+      3. Riscos identificados
+      4. Estimativa de complexidade (baixa/média/alta)
+
+      Sê conciso e directo. Não implementes ainda.
+    on_success: next
+    on_failure: fail
+    max_retries: 1
+
+  - id: implement
+    name: "Implementar"
+    agent_role: developer
+    task_template: |
+      Implementa a tarefa seguindo o plano de análise:
+
+      TAREFA: {task}
+
+      PLANO:
+      {analyze_result}
+
+      Regras:
+      - Código Python limpo, tipado, com docstrings
+      - Trata erros com try/except específicos
+      - Não quebras interfaces existentes
+      - Commits atómicos com mensagem clara
+    on_success: next
+    on_failure: retry
+    max_retries: 2
+
+  - id: test
+    name: "Testar"
+    agent_role: qa_tester
+    task_template: |
+      Verifica a implementação:
+
+      TAREFA: {task}
+
+      IMPLEMENTAÇÃO:
+      {implement_result}
+
+      Verifica:
+      1. Sintaxe Python: python -m py_compile nos ficheiros modificados
+      2. Imports funcionam: python -c "import <módulo>"
+      3. Lógica básica: há casos óbvios não tratados?
+      4. Testes existentes ainda passam (se houver)
+
+      Reporta: OK ou lista de problemas encontrados.
+    on_success: next
+    on_failure: implement   # Se testes falham, volta a implementar
+    max_retries: 1
+
+  - id: commit
+    name: "Commit & Push"
+    agent_role: developer
+    task_template: |
+      Faz commit e push das alterações:
+
+      TAREFA: {task}
+      RESULTADO DOS TESTES: {test_result}
+
+      1. git add -A
+      2. git commit -m "feat: {task_short}"
+      3. git push origin main
+
+      Se push falhar por conflitos: git pull --rebase && git push
+    on_success: end
+    on_failure: fail
+    max_retries: 2
