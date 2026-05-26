@@ -26,7 +26,7 @@ except:
     _BASE = Path(__file__).parent.parent.resolve()
     REPO_DIR = Path(os.getenv("REPO_LOCAL_PATH", str(_BASE)))
 
-print(f"🔧 Tools usando REPO_DIR: {REPO_DIR}")
+print(f"[Tools] REPO_DIR: {REPO_DIR}")
 
 REPO_DIR      = Path(os.getenv("REPO_LOCAL_PATH", str(_BASE)))
 GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN", "")

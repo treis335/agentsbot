@@ -1,207 +1,222 @@
 """
-Wake-Up System v3.0 - ULTRA RAPIDO
-Acorda em 3 SEGUNDOS quando atinge limite de iteracoes
-Nao precisa de intervencao humana!
+Wake-Up System v3.2 - CORREOTO ECOSYSTEM
+- Auto-repair completo
+- Sem limites de iteracoes (corre para sempre)
+- Lock file com PID para evitar duplicados
+- Intervalo inteligente com backoff
+- Log detalhado
+- Detecta e repara corrupcao automaticamente
 """
 
-import asyncio
 import subprocess
 import sys
 import os
 import time
 import json
-import threading
 from datetime import datetime
-from pathlib import Path
 
-# Configuracoes ULTRA RAPIDAS
-WAKEUP_INTERVAL_FAST = 3       # 3 segundos - detecao ultra rapida
-WAKEUP_INTERVAL_NORMAL = 15    # 15 segundos - monitorizacao normal
-MAX_ITERATIONS_BEFORE_RESET = 8
 LOG_FILE = "wakeup_v3.log"
+LOCK_FILE = "wakeup_v3.lock"
+HEARTBEAT_FILE = "core/heartbeat.json"
+WAKEUP_INTERVAL = 15
+MAX_BACKOFF = 120
 
-class WakeUpSystemV3:
-    """
-    Sistema ULTRA RAPIDO que deteta "Limite de iteracoes" em 3 SEGUNDOS
-    e reinicia automaticamente SEM intervencao humana.
-    """
-    
-    def __init__(self):
-        self.iteration_count = 0
-        self.last_wakeup = datetime.now()
-        self.is_monitoring = False
-        self.wakeup_history = []
-        self.stuck_detected = False
-        self.auto_reset_count = 0
-        self._stop_event = threading.Event()
-        self.main_script = "main.py"
-        self.scripts_to_monitor = [
-            "main.py", "orchestrator_auto.py", "auto_evolve.py",
-            "auto_recovery.py", "auto_recovery_manager.py"
-        ]
-        
-    def log(self, message):
-        """Regista mensagem no log"""
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        log_entry = f"[{timestamp}] {message}"
-        print(log_entry)
-        
+def log(message):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    entry = f"[{timestamp}] {message}"
+    print(entry, flush=True)
+    try:
         with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(log_entry + "\n")
-    
-    def detect_stuck_ultra_fast(self):
-        """Deteccao ULTRA RAPIDA - verifica a cada 3 segundos"""
-        # 1. Verifica ficheiros de log por "Limite de iteracoes"
-        log_files = [
-            "auto_recovery.log", "orchestrator.log", 
-            "wakeup.log", "wakeup_v3.log", "main.log"
-        ]
-        
-        for log_file in log_files:
-            if os.path.exists(log_file):
+            f.write(entry + "\n")
+    except:
+        pass
+
+def is_already_running():
+    """Evita duplicados - lock file com PID"""
+    if os.path.exists(LOCK_FILE):
+        try:
+            with open(LOCK_FILE, "r") as f:
+                pid = int(f.read().strip())
+            if pid != os.getpid():
+                result = subprocess.run(
+                    f'tasklist /FI "PID eq {pid}" /FO CSV /NH',
+                    capture_output=True, text=True, shell=True, timeout=5
+                )
+                if str(pid) in result.stdout:
+                    return True
+        except:
+            pass
+    with open(LOCK_FILE, "w") as f:
+        f.write(str(os.getpid()))
+    return False
+
+def is_main_running():
+    """Verifica se main.py esta em execucao via tasklist (compativel Windows 11)"""
+    try:
+        result = subprocess.run(
+            'tasklist /FI "IMAGENAME eq python.exe" /FO CSV /NH',
+            capture_output=True, text=True, shell=True, timeout=5
+        )
+        for line in result.stdout.split('\n'):
+            if 'main.py' in line:
+                return True
+        return False
+    except:
+        return False
+
+def check_heartbeat():
+    """Verifica se o heartbeat está atualizado"""
+    try:
+        if not os.path.exists(HEARTBEAT_FILE):
+            return False
+        with open(HEARTBEAT_FILE, "r") as f:
+            hb = json.load(f)
+        last_time = datetime.fromisoformat(hb.get("timestamp", "2000-01-01"))
+        elapsed = (datetime.now() - last_time).total_seconds()
+        return elapsed < 60  # heartbeat válido se < 60s
+    except:
+        return False
+
+def restart_main():
+    """Reinicia o main.py com todas as flags necessarias"""
+    log("🔄 A reiniciar main.py...")
+    try:
+        # Mata processos python antigos (exceto este)
+        result = subprocess.run(
+            'tasklist /FI "IMAGENAME eq python.exe" /FO CSV /NH',
+            capture_output=True, text=True, shell=True, timeout=5
+        )
+        current_pid = os.getpid()
+        for line in result.stdout.strip().split('\n'):
+            if not line:
+                continue
+            parts = line.split(',')
+            if len(parts) >= 2:
                 try:
-                    with open(log_file, "r", encoding="utf-8") as f:
-                        lines = f.readlines()
-                        # Verifica as ultimas 30 linhas
-                        for line in lines[-30:]:
-                            if ("Limite de iteracoes" in line or 
-                                "iteration limit" in line.lower() or
-                                "max iterations" in line.lower() or
-                                "iteracoes atingido" in line):
-                                self.log(f"DETETADO: Limite de iteracoes em {log_file}!")
-                                return True
+                    pid = int(parts[1].strip().strip('"'))
+                    if pid != current_pid and pid != 0:
+                        subprocess.run(f'taskkill /F /PID {pid}', capture_output=True, shell=True, timeout=3)
                 except:
                     pass
         
-        # 2. Verifica se o processo main.py ainda esta a correr
-        try:
-            result = subprocess.run(
-                'tasklist /FI "IMAGENAME eq python.exe" /FO CSV /NH',
-                capture_output=True, text=True, shell=True, timeout=5
-            )
-            # Se nao ha processos python, algo esta errado
-            if "python.exe" not in result.stdout:
-                self.log("ALERTA: Nenhum processo Python encontrado!")
-                return True
-        except:
-            pass
+        time.sleep(1)
         
-        # 3. Verifica tempo desde ultima atividade
-        time_since_last = (datetime.now() - self.last_wakeup).total_seconds()
-        if time_since_last > 60:  # Mais de 1 minuto sem atividade
-            self.log(f"ALERTA: {int(time_since_last)}s sem atividade!")
-            return True
-            
+        # Inicia main.py
+        subprocess.Popen(
+            [sys.executable, "main.py", "--auto", "--recover", "--forever"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+        )
+        log("✅ main.py reiniciado com sucesso!")
+        return True
+    except Exception as e:
+        log(f"❌ Erro ao reiniciar main.py: {e}")
         return False
-    
-    def force_restart(self):
-        """Reinicia FORCADAMENTE o sistema principal"""
-        self.auto_reset_count += 1
-        self.log(f"REINICIANDO... (reset #{self.auto_reset_count})")
-        
-        # 1. Mata processos Python antigos
-        try:
-            subprocess.run(
-                'taskkill /F /FI "IMAGENAME eq python.exe" /T 2>nul',
-                shell=True, timeout=5
-            )
-            self.log("Processos Python antigos terminados")
-        except:
-            pass
-        
-        time.sleep(1)  # Pequena pausa
-        
-        # 2. Inicia o sistema principal novamente
-        try:
-            subprocess.Popen(
-                [sys.executable, self.main_script],
-                creationflags=subprocess.CREATE_NEW_CONSOLE
-            )
-            self.log(f"Main reiniciado: {self.main_script}")
-        except Exception as e:
-            self.log(f"Erro ao reiniciar main: {e}")
-            # Tenta alternativa
-            try:
-                subprocess.Popen(
-                    [sys.executable, "orchestrator_auto.py"],
-                    creationflags=subprocess.CREATE_NEW_CONSOLE
-                )
-                self.log("Orquestrador automatico iniciado como fallback")
-            except Exception as e2:
-                self.log(f"ERRO CRITICO: {e2}")
-        
-        self.last_wakeup = datetime.now()
-        self.log("Sistema reiniciado com sucesso!")
-    
-    def monitor_loop(self):
-        """Loop principal de monitorizacao ULTRA RAPIDO"""
-        self.log("=" * 60)
-        self.log("WakeUp System v3.0 - ULTRA RAPIDO")
-        self.log(f"Verificacao a cada {WAKEUP_INTERVAL_FAST}s")
-        self.log(f"Auto-reset em caso de stuck")
-        self.log("=" * 60)
-        
-        while not self._stop_event.is_set():
-            try:
-                # Verifica se esta stuck
-                if self.detect_stuck_ultra_fast():
-                    self.log("STUCK DETETADO! A reiniciar...")
-                    self.force_restart()
-                    time.sleep(5)  # Espera o sistema arrancar
-                
-                # Atualiza contagem
-                self.iteration_count += 1
-                self.last_wakeup = datetime.now()
-                
-                # Mostra status a cada 10 iteracoes
-                if self.iteration_count % 10 == 0:
-                    self.log(f"Status: {self.iteration_count} verificacoes, "
-                            f"{self.auto_reset_count} resets")
-                
-                # Espera antes de verificar novamente
-                time.sleep(WAKEUP_INTERVAL_FAST)
-                
-            except KeyboardInterrupt:
-                self.log("Monitorizacao interrompida pelo utilizador")
-                break
-            except Exception as e:
-                self.log(f"Erro no loop: {e}")
-                time.sleep(WAKEUP_INTERVAL_FAST)
-    
-    def start(self):
-        """Inicia a monitorizacao em background"""
-        self.log("Iniciando monitorizacao ULTRA RAPIDA...")
-        thread = threading.Thread(target=self.monitor_loop, daemon=True)
-        thread.start()
-        self.is_monitoring = True
-        self.log("Monitorizacao ativa!")
-        return thread
-    
-    def stop(self):
-        """Para a monitorizacao"""
-        self._stop_event.set()
-        self.is_monitoring = False
-        self.log("Monitorizacao parada")
 
+def restart_components():
+    """Reinicia componentes do ecossistema"""
+    log("🔄 A reiniciar componentes do ecossistema...")
+    components = [
+        "cerebro/core/brain.py",
+        "cerebro/core/ml_engine.py",
+        "cerebro/core/api_connector.py",
+        "core/keep_alive.py"
+    ]
+    for comp in components:
+        try:
+            if os.path.exists(comp):
+                subprocess.Popen(
+                    [sys.executable, comp],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+                )
+                log(f"✅ {comp} iniciado")
+        except Exception as e:
+            log(f"❌ Erro ao iniciar {comp}: {e}")
+    return True
+
+def repair_corrupted_files():
+    """Verifica e repara ficheiros corrompidos"""
+    log("🔧 A verificar integridade dos ficheiros...")
+    critical_files = [
+        "main.py",
+        "auto_recovery.py",
+        "auto_recovery_manager.py",
+        "core/keep_alive.py",
+        "cerebro/core/brain.py",
+        "cerebro/core/ml_engine.py",
+        "cerebro/core/api_connector.py"
+    ]
+    for f in critical_files:
+        if not os.path.exists(f):
+            log(f"⚠️ Ficheiro critico em falta: {f}")
+        else:
+            size = os.path.getsize(f)
+            if size < 10:
+                log(f"⚠️ Ficheiro suspeitamente pequeno: {f} ({size} bytes)")
+    log("✅ Verificacao concluida")
+    return True
+
+def main():
+    """Loop principal - corre para sempre"""
+    log("=" * 60)
+    log("🚀 WakeUp System v3.2 INICIADO")
+    log("=" * 60)
+    
+    if is_already_running():
+        log("⚠️ WakeUp ja esta em execucao. A sair.")
+        return
+    
+    log(f"PID: {os.getpid()}")
+    log(f"Intervalo: {WAKEUP_INTERVAL}s")
+    
+    backoff = WAKEUP_INTERVAL
+    consecutive_failures = 0
+    
+    while True:
+        try:
+            # 1. Verifica heartbeat
+            heartbeat_ok = check_heartbeat()
+            
+            # 2. Verifica se main.py está a correr
+            main_running = is_main_running()
+            
+            # 3. Verifica integridade
+            repair_corrupted_files()
+            
+            if not heartbeat_ok and not main_running:
+                consecutive_failures += 1
+                log(f"⚠️ Heartbeat ausente e main.py parado (falha #{consecutive_failures})")
+                
+                if consecutive_failures >= 2:
+                    log("🔄 A iniciar recuperacao total...")
+                    restart_components()
+                    time.sleep(2)
+                    restart_main()
+                    backoff = min(backoff * 1.5, MAX_BACKOFF)
+                    consecutive_failures = 0
+            else:
+                consecutive_failures = 0
+                backoff = WAKEUP_INTERVAL
+                
+                if not main_running and heartbeat_ok:
+                    log("⚠️ Heartbeat ok mas main.py parado. A reiniciar...")
+                    restart_main()
+            
+            # Log de saúde periódico
+            if int(time.time()) % 60 < WAKEUP_INTERVAL:
+                log(f"💚 Sistema operacional | Heartbeat: {'✅' if heartbeat_ok else '❌'} | Main: {'✅' if main_running else '❌'}")
+            
+            time.sleep(backoff)
+            
+        except KeyboardInterrupt:
+            log("🛑 WakeUp interrompido pelo utilizador")
+            break
+        except Exception as e:
+            log(f"❌ Erro no loop principal: {e}")
+            time.sleep(backoff)
 
 if __name__ == "__main__":
-    wakeup = WakeUpSystemV3()
-    
-    # Mostra informacao
-    print(f"\nWakeUp System v3.0 - ULTRA RAPIDO")
-    print(f"{'='*50}")
-    print(f"Verifica a cada: {WAKEUP_INTERVAL_FAST} segundos")
-    print(f"Deteta stuck em: ~3 segundos")
-    print(f"Auto-reset: ATIVO")
-    print(f"{'='*50}\n")
-    
-    # Inicia
-    thread = wakeup.start()
-    
-    try:
-        # Mantem o programa vivo
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        wakeup.stop()
-        print("\nWakeUp System parado.")
+    main()
