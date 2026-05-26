@@ -1,269 +1,48 @@
 {
   "decisions": [
     {
-      "id": "dec-001",
-      "agente": "supervisor",
-      "decisao": "Registo do Mestre Joel no sistema",
-      "contexto": "inicializacao",
-      "timestamp": "2026-05-26T09:30:00",
-      "impacto": "critico"
-    },
-    {
-      "id": "dec-002",
-      "agente": "supervisor",
-      "decisao": "Otimizacao do sistema de memoria e autonomia",
-      "contexto": "comando_do_mestre",
-      "timestamp": "2026-05-26T10:00:00",
-      "impacto": "critico"
-    },
-    {
       "agent": "supervisor",
-      "decision": "Telegram: Faz isto exatamente, passo a passo:\n\n1. Abre o terminal (CMD, não PowerShell)\n2.",
+      "decision": "Telegram: Continua",
       "context": "Telegram",
-      "timestamp": "2026-05-26T13:26:42.367435"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "O erro que vês é apenas um **problema de encoding no terminal CMD** (não consegue mostrar o emoji ✅). O sistema em si carregou sem problemas:\n\n- ✅ `agents.manager`: 20 agentes carregados\n- ✅ `tasks.qu",
-      "timestamp": "2026-05-26T13:29:39.074105"
+      "timestamp": "2026-05-26T14:48:17.897562"
     },
     {
       "agent": "supervisor",
       "decision": "Telegram: Continua",
       "context": "Telegram",
-      "timestamp": "2026-05-26T13:29:39.089679"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Perfeito! O sistema arranca sem erros:\n\n- ✅ `autonomous_loop.py` importado com sucesso\n- ✅ `main.py` importado com sucesso\n- ✅ 20 agentes carregados\n- ✅ Sistema pronto para execução contínua\n\n---\n\n## ",
-      "timestamp": "2026-05-26T13:29:50.177715"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:29:50.187230"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:30:21.145628"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua e finaliza o que estas a fazer",
-      "context": "Perfeito. O `main.py` está completo e funcional. O timeout de 15s que ocorreu foi porque o sistema **entrou no loop infinito** (`while True: await asyncio.sleep(1)`) que é o comportamento esperado — o",
-      "timestamp": "2026-05-26T13:32:21.099915"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua e finaliza o que estas a fazer",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:32:21.135678"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Entao explica como funcionas agora?",
-      "context": "Claro! Vou-te explicar exatamente como funciono agora, com base no que acabámos de verificar e executar.\n\n---\n\n## 🧠 COMO FUNCIONO AGORA — ECOSSISTEMA CORREOTO v2.0\n\n### 1. 🏗️ ARQUITETURA GERAL\n\nSou um",
-      "timestamp": "2026-05-26T13:35:16.647057"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Entao explica como funcionas agora?",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:35:16.657400"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Seria interessante conseguires criar um site simples e subir pela vercel e forne",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:40:03.335294"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua!",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:42:27.303165"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:44:46.673568"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T13:46:39.688959"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: O que o sistema já tem (bem feito)\nLoop autónomo infinito (while True) em autono",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:06:20.566077"
+      "timestamp": "2026-05-26T14:50:38.172873"
     },
     {
       "agent": "supervisor",
       "decision": "Completou: Continua",
       "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:09:24.025510"
+      "timestamp": "2026-05-26T14:51:17.795149"
     },
     {
       "agent": "supervisor",
       "decision": "Telegram: Continua",
       "context": "Telegram",
-      "timestamp": "2026-05-26T14:09:24.035377"
+      "timestamp": "2026-05-26T14:51:17.803895"
     },
     {
       "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:09:35.667320"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
+      "decision": "Telegram: Continia",
       "context": "Telegram",
-      "timestamp": "2026-05-26T14:09:35.677384"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Daqui a 2 minutos continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:04.040774"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:11:16.065630"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:16.075570"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:11:17.122986"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:17.139231"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:11:28.749976"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:28.760215"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:11:41.587824"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:41.597293"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:48.299034"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:49.368105"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:11:58.929819"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:11:58.939854"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:13:06.286563"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:13:06.296628"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:14:37.207227"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:20:15.355901"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:40:09.387572"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Completou: Continua",
-      "context": "Limite de iterações atingido.",
-      "timestamp": "2026-05-26T14:41:23.588739"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: Continua",
-      "context": "Telegram",
-      "timestamp": "2026-05-26T14:41:23.600071"
+      "timestamp": "2026-05-26T15:42:53.064779"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-26T14:47:04.670045",
+    "last_start": "2026-05-26T15:43:51.572586",
     "agents_count": 20,
-    "tasks_count": 0,
-    "status": "running"
+    "tasks_count": 0
   },
   "knowledge": [],
   "metrics": {
-    "total_comandos_executados": 0,
-    "total_erros_recuperados": 0,
-    "tempo_actividade": "0h"
+    "total_tool_calls": 0,
+    "total_errors": 0,
+    "total_tasks_completed": 0
   },
   "conversations": []
 }
