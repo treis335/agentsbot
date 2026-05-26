@@ -25,6 +25,7 @@ from pathlib import Path
 from core.config import Config
 from core.orchestrator import Orchestrator
 from core.bus import bus
+from core.bus_replay import replay_pending_events, compact_old_logs
 
 # Agentes
 from agents.manager import AgentManager
@@ -157,6 +158,15 @@ async def main():
     # Registar arranque na memória global
     global_memory.update_system_state("last_start", __import__("datetime").datetime.now().isoformat())
     global_memory.update_system_state("agents_count", len(agent_manager.list_agents()))
+
+    # Batch 3 — replay de eventos não processados (crashes anteriores)
+    try:
+        replayed = await replay_pending_events(bus)
+        if replayed:
+            logger.info(f"[Bus] {replayed} evento(s) reenviado(s) do WAL")
+        compact_old_logs()  # limpar logs antigos (>7 dias)
+    except Exception as e:
+        logger.warning(f"[Bus] Replay falhou (não crítico): {e}")
 
     await orchestrator.start()
 
