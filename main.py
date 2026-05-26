@@ -49,6 +49,9 @@ from monitoring.health import HealthChecker
 
 # Pipelines
 from pipelines.engine import PipelineEngine
+# Autonomia
+from autonomous_loop import AutonomousLoop, _seed_initial_backlog, load_backlog
+
 
 # API
 from api.server import start_api
