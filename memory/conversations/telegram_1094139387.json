@@ -1,14 +1,6 @@
 [
   {
     "role": "user",
-    "content": "O meu nome é Joel regista na memoria"
-  },
-  {
-    "role": "assistant",
-    "content": "## ✅ **MEMÓRIA REGISTADA COM SUCESSO!** 🧠🔥\n\n**Joel**, o teu nome foi registado na memória persistente do sistema em **3 locais diferentes**:\n\n| Ficheiro | O que contém |\n|----------|-------------|\n| `memory/global/shared_memory.json` | Perfil do utilizador + decisões |\n| `memory/user_profile.json` | **Novo** - Perfil dedicado com preferências |\n| `memory/conversations/telegram_1094139387.json` | Histórico da conversa atualizado |\n\n### 🧠 O que o sistema sabe sobre ti agora:\n- **Nome:** Joel\n- **Role:** Chefe / Criador do ecossistema\n- **Preferências:** Português PT, autonomia total, comunicação direta\n- **Projeto:** Correoto Ecosystem (auto-sustentável, 37 agentes)\n\n### 🌿 Branch: `feat/sistema-autonomia-total-v1`\n### ✅ Commit: `29c7625` - já está no GitHub\n\n**Agora, mesmo que me feches e voltes a abrir, eu sei quem tu és!** 💪🔥\n\nQueres que faça mais alguma coisa?"
-  },
-  {
-    "role": "user",
     "content": "Sou o mestre de todo o ecossistema, voces sao os meus agentes pessoais"
   },
   {
@@ -194,6 +186,14 @@
   {
     "role": "user",
     "content": "Continua"
+  },
+  {
+    "role": "assistant",
+    "content": "Limite de iterações atingido."
+  },
+  {
+    "role": "user",
+    "content": "Continua e executa"
   },
   {
     "role": "assistant",
