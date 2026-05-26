@@ -141,15 +141,49 @@ class AgentExecutor:
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
 
+                # Lições aprendidas (Batch 4)
+        try:
+            from memory.lesson_extractor import LessonExtractor
+            lessons = LessonExtractor().get_lessons_for_agent(self.agent_id, limit=4)
+            if lessons:
+                lines.append("\n### Lições Aprendidas (evita estes erros)")
+                for lesson in lessons:
+                    lines.append(f"⚡ {lesson}")
+        except Exception as e:
+            logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
+
         return "\n".join(lines)
 
     def build_system_prompt(self, task: str) -> str:
         """Constrói o system prompt completo: soul + memória + tools + tarefa."""
         memory_ctx = self._build_memory_context()
+
+        # Procedimentos HOW-TO relevantes (Batch 4)
+        proc_ctx = ""
+        try:
+            from memory.procedural import ProceduralMemory
+            proc_mem = ProceduralMemory()
+            relevant_procs = proc_mem.get_relevant(task, limit=2)
+            if relevant_procs:
+                proc_ctx = "\n" + proc_mem.format_for_prompt(relevant_procs)
+        except Exception as e:
+            logger.debug(f"[{self.agent_name}] Procedimentos indisponíveis: {e}")
+
+        # Falhas similares (Batch 4)
+        failure_ctx = ""
+        try:
+            from memory.failure_memory import FailureMemory
+            fm = FailureMemory(self.agent_id)
+            similar = fm.get_similar_failures(task, limit=2)
+            if similar:
+                failure_ctx = "\n" + fm.format_for_prompt(similar)
+        except Exception as e:
+            logger.debug(f"[{self.agent_name}] Failure memory indisponível: {e}")
+
         return (
             f"{self.soul}\n\n"
             f"{TOOL_SCHEMA}\n\n"
-            f"{memory_ctx}\n\n"
+            f"{memory_ctx}{proc_ctx}{failure_ctx}\n\n"
             f"## TAREFA ATUAL\n{task}"
         )
 

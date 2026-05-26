@@ -100,6 +100,28 @@ class EpisodicMemory:
         lessons = [e["lesson"] for e in self._episodes if e.get("lesson")]
         return lessons[-limit:]
 
+
+    def get_similar_failures(self, task: str, limit: int = 3) -> list[dict]:
+        """
+        Retorna falhas similares à tarefa atual (matching local por palavras).
+        Delega para FailureMemory se disponível, senão usa episódios internos.
+        """
+        try:
+            from memory.failure_memory import FailureMemory
+            fm = FailureMemory(self.agent_id)
+            return fm.get_similar_failures(task, limit=limit)
+        except Exception:
+            # Fallback: usar episódios internos
+            task_words = set(task.lower().split())
+            failures = [e for e in self._episodes if not e.get("success", True)]
+            scored = []
+            for ep in failures:
+                ctx = ep.get("episode", {}).get("context", "").lower()
+                common = task_words & set(ctx.split())
+                if common:
+                    scored.append((len(common), ep))
+            scored.sort(reverse=True)
+            return [ep for _, ep in scored[:limit]]
     def clear(self) -> None:
         """Limpa memoria episodica."""
         self._episodes = []
