@@ -1,195 +1,209 @@
 """
-ml_engine.py - MOTOR DE MACHINE LEARNING NATIVO
-Classificacao, recomendacao, clustering, detecao de anomalias.
-Corre em loop infinito a treinar e evoluir.
+ml_engine.py — MOTOR DE APRENDIZAGEM AUTÓNOMA DO CORREOTO
+Aprende padrões, classifica informação e faz recomendações baseadas em experiência.
+Usa ML leve (sem dependências pesadas) para funcionar 100% local.
 """
-import os, sys, json, time, random, math, logging
+import json, time, logging, random, math
 from datetime import datetime
 from pathlib import Path
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 BASE = Path(__file__).parent.parent.parent
 MEMORY_DIR = BASE / "memory" / "global"
 os.makedirs(MEMORY_DIR, exist_ok=True)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [ML] %(message)s",
-    handlers=[
-        logging.FileHandler(BASE / "cerebro" / "ml.log", encoding="utf-8"),
-        logging.StreamHandler()
-    ]
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [ML] %(message)s")
 log = logging.getLogger("ml_engine")
 
+
 class MLClassifier:
-    """Classificador simples baseado em frequencia."""
+    """Classificador simples baseado em frequência de palavras-chave.
+    Aprende padrões e classifica texto em categorias."""
     
     def __init__(self):
-        self.classes = {}
-        self.features = defaultdict(lambda: defaultdict(int))
-        self.trained = False
-    
-    def train(self, data):
-        """Treina com dados de exemplo."""
-        for item in data:
-            cls = item.get("class", "unknown")
-            features = item.get("features", [])
-            self.classes[cls] = self.classes.get(cls, 0) + 1
-            for f in features:
-                self.features[cls][f] += 1
-        self.trained = True
-        log.info("ML treinado com " + str(len(data)) + " exemplos, " + str(len(self.classes)) + " classes")
-    
-    def classify(self, features):
-        """Classifica um conjunto de features."""
-        if not self.trained:
-            return "unknown", 0.0
-        
-        scores = {}
-        for cls in self.classes:
-            score = 0
-            for f in features:
-                score += self.features[cls].get(f, 0)
-            total = sum(self.features[cls].values()) or 1
-            scores[cls] = score / total
-        
-        if not scores:
-            return "unknown", 0.0
-        
-        best = max(scores, key=scores.get)
-        return best, scores[best]
-
-class MLRecommender:
-    """Recomendador baseado em historico."""
-    
-    def __init__(self):
-        self.history = []
-        self.weights = {}
-    
-    def add_interaction(self, action, outcome, reward):
-        """Regista uma interacao e seu resultado."""
-        self.history.append({
-            "action": action,
-            "outcome": outcome,
-            "reward": reward,
-            "timestamp": datetime.now().isoformat()
+        self.model_file = MEMORY_DIR / "ml_classifier_model.json"
+        self.model = self._load_json(self.model_file, {
+            "categories": {},
+            "word_freq": {},
+            "total_trained": 0
         })
-        if action not in self.weights:
-            self.weights[action] = 0.5
-        self.weights[action] += reward * 0.1
-        self.weights[action] = max(0, min(1, self.weights[action]))
-    
-    def recommend(self, context=None):
-        """Recomenda a melhor acao baseada no historico."""
-        if not self.weights:
-            return random.choice(["learn", "explore", "create", "analyze"])
-        return max(self.weights, key=self.weights.get)
-
-class MLAnomalyDetector:
-    """Detetor de anomalias simples."""
-    
-    def __init__(self):
-        self.baseline = {}
-        self.threshold = 2.0
-    
-    def learn_baseline(self, data):
-        """Aprende a linha de base do que e normal."""
-        values = list(data.values()) if isinstance(data, dict) else data
-        if values:
-            mean = sum(values) / len(values)
-            variance = sum((x - mean) ** 2 for x in values) / len(values)
-            self.baseline = {"mean": mean, "std": math.sqrt(variance) if variance > 0 else 1}
-    
-    def is_anomaly(self, value):
-        """Verifica se um valor e anomalo."""
-        if not self.baseline:
-            return False
-        z_score = abs(value - self.baseline["mean"]) / self.baseline["std"]
-        return z_score > self.threshold
-
-class MLEngine:
-    """Motor principal de ML."""
-    
-    def __init__(self):
-        self.classifier = MLClassifier()
-        self.recommender = MLRecommender()
-        self.anomaly_detector = MLAnomalyDetector()
-        self.model_file = MEMORY_DIR / "ml_model.json"
         self.cycle = 0
-        self._load_model()
-        self._train_initial()
     
-    def _load_model(self):
-        """Carrega modelo guardado."""
+    def _load_json(self, path, default):
         try:
-            if self.model_file.exists():
-                with open(self.model_file, encoding="utf-8") as f:
-                    data = json.load(f)
-                    self.classifier.classes = data.get("classes", {})
-                    self.classifier.trained = data.get("trained", False)
-                    log.info("Modelo ML carregado do disco")
-        except:
-            pass
+            if path.exists():
+                with open(path, encoding="utf-8") as f:
+                    return json.load(f)
+        except: pass
+        return default
     
-    def _save_model(self):
-        """Guarda modelo em disco."""
-        data = {
-            "classes": self.classifier.classes,
-            "trained": self.classifier.trained,
-            "timestamp": datetime.now().isoformat()
-        }
-        with open(self.model_file, "w", encoding="utf-8") as f:
+    def _save_json(self, path, data):
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
     
-    def _train_initial(self):
-        """Treino inicial com dados de exemplo."""
-        training_data = [
-            {"class": "comando", "features": ["executar", "fazer", "criar", "lancar", "iniciar"]},
-            {"class": "pergunta", "features": ["o que", "como", "porque", "quando", "onde"]},
-            {"class": "critica", "features": ["nao", "erro", "falhou", "problema", "bug"]},
-            {"class": "pedido_info", "features": ["mostra", "ver", "status", "relatorio", "dados"]},
-            {"class": "negocio", "features": ["dinheiro", "receita", "lucro", "vender", "cliente"]}
-        ]
-        self.classifier.train(training_data)
-        self._save_model()
+    def _extract_features(self, text):
+        """Extrai palavras-chave como features."""
+        words = text.lower().split()
+        # Filtrar palavras curtas e comuns
+        stopwords = {"o", "a", "os", "as", "um", "uma", "de", "da", "do", "em", "para", 
+                     "com", "por", "que", "é", "não", "se", "mais", "como", "dos", "das"}
+        return [w for w in words if len(w) > 3 and w not in stopwords]
     
-    def run_cycle(self):
-        """Um ciclo do motor ML."""
+    def train(self, text, category):
+        """Treina o classificador com um exemplo."""
         self.cycle += 1
+        features = self._extract_features(text)
         
-        if self.cycle % 10 == 0:
-            synthetic_data = [
-                {"class": random.choice(["comando", "pergunta", "negocio"]), 
-                 "features": ["feature_" + str(i) for i in range(random.randint(1, 3))]}
-                for _ in range(5)
-            ]
-            self.classifier.train(synthetic_data)
-            self._save_model()
+        if category not in self.model["categories"]:
+            self.model["categories"][category] = 0
         
-        if self.cycle % 7 == 0:
-            action = self.recommender.recommend()
-            log.info("ML recomenda: " + action)
+        self.model["categories"][category] += 1
         
-        if self.cycle % 15 == 0:
-            test_value = random.gauss(10, 2)
-            if self.anomaly_detector.is_anomaly(test_value):
-                log.warning("Anomalia detetada: " + str(round(test_value, 2)))
+        for word in features:
+            if word not in self.model["word_freq"]:
+                self.model["word_freq"][word] = {}
+            if category not in self.model["word_freq"][word]:
+                self.model["word_freq"][word][category] = 0
+            self.model["word_freq"][word][category] += 1
         
-        time.sleep(5)
+        self.model["total_trained"] += 1
+        self._save_json(self.model_file, self.model)
+        log.info(f"Treinado: '{text[:30]}...' -> {category}")
+    
+    def classify(self, text):
+        """Classifica um texto numa categoria."""
+        features = self._extract_features(text)
+        if not features or not self.model["categories"]:
+            return {"category": "desconhecido", "confidence": 0.0}
+        
+        scores = {}
+        total_cats = sum(self.model["categories"].values())
+        
+        for category in self.model["categories"]:
+            # Prior probability
+            prior = self.model["categories"][category] / total_cats
+            # Likelihood
+            likelihood = 1.0
+            for word in features:
+                word_data = self.model["word_freq"].get(word, {})
+                freq_in_cat = word_data.get(category, 0)
+                total_word = sum(word_data.values()) if word_data else 1
+                # Laplace smoothing
+                prob = (freq_in_cat + 1) / (total_word + len(self.model["categories"]))
+                likelihood *= prob
+            
+            scores[category] = prior * likelihood
+        
+        # Normalizar
+        total_score = sum(scores.values()) or 1
+        for cat in scores:
+            scores[cat] /= total_score
+        
+        best_cat = max(scores, key=scores.get)
+        return {
+            "category": best_cat,
+            "confidence": scores[best_cat],
+            "all_scores": scores
+        }
+    
+    def get_stats(self):
+        return {
+            "total_trained": self.model["total_trained"],
+            "categories": list(self.model["categories"].keys()),
+            "vocabulary_size": len(self.model["word_freq"])
+        }
+
+
+class MLRecommender:
+    """Sistema de recomendação baseado em histórico de decisões.
+    Aprende o que funciona melhor e recomenda ações futuras."""
+    
+    def __init__(self):
+        self.model_file = MEMORY_DIR / "ml_recommender_model.json"
+        self.model = self._load_json(self.model_file, {
+            "action_history": [],
+            "action_scores": {},
+            "context_patterns": []
+        })
+        self.cycle = 0
+    
+    def _load_json(self, path, default):
+        try:
+            if path.exists():
+                with open(path, encoding="utf-8") as f:
+                    return json.load(f)
+        except: pass
+        return default
+    
+    def _save_json(self, path, data):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+    
+    def record_action(self, action, context, outcome_score=0.5):
+        """Regista uma ação e o seu resultado."""
+        self.cycle += 1
+        record = {
+            "action": action,
+            "context": context,
+            "outcome_score": outcome_score,
+            "timestamp": datetime.now().isoformat(),
+            "cycle": self.cycle
+        }
+        self.model["action_history"].append(record)
+        
+        # Atualizar score da ação
+        if action not in self.model["action_scores"]:
+            self.model["action_scores"][action] = []
+        self.model["action_scores"][action].append(outcome_score)
+        
+        # Manter apenas últimos 1000 registos
+        if len(self.model["action_history"]) > 1000:
+            self.model["action_history"] = self.model["action_history"][-1000:]
+        
+        self._save_json(self.model_file, self.model)
+        log.info(f"Ação registada: {action} (score: {outcome_score})")
+    
+    def recommend(self, context=None, top_n=3):
+        """Recomenda as melhores ações com base no histórico."""
+        if not self.model["action_scores"]:
+            return []
+        
+        avg_scores = {}
+        for action, scores in self.model["action_scores"].items():
+            avg_scores[action] = sum(scores) / len(scores)
+        
+        # Ordenar por score médio
+        sorted_actions = sorted(avg_scores.items(), key=lambda x: x[1], reverse=True)
+        
+        recommendations = []
+        for action, score in sorted_actions[:top_n]:
+            recommendations.append({
+                "action": action,
+                "avg_score": round(score, 3),
+                "times_tried": len(self.model["action_scores"][action])
+            })
+        
+        return recommendations
+    
+    def get_stats(self):
+        return {
+            "total_actions": len(self.model["action_history"]),
+            "unique_actions": len(self.model["action_scores"]),
+            "best_action": self.recommend(top_n=1)[0] if self.model["action_scores"] else None
+        }
+
 
 if __name__ == "__main__":
-    log.info("=" * 50)
-    log.info("ML ENGINE A INICIAR...")
-    log.info("=" * 50)
+    # Teste rápido
+    classifier = MLClassifier()
+    classifier.train("Criar um site de vendas online", "desenvolvimento")
+    classifier.train("Integrar API do PayPal", "financeiro")
+    classifier.train("Otimizar código Python", "programacao")
     
-    engine = MLEngine()
+    result = classifier.classify("Fazer integração com Stripe")
+    print(f"Classificação: {result}")
     
-    try:
-        while True:
-            engine.run_cycle()
-    except KeyboardInterrupt:
-        log.info("ML Engine interrompido")
-    except Exception as e:
-        log.error("Erro no ML: " + str(e))
-        time.sleep(5)
+    recommender = MLRecommender()
+    recommender.record_action("criar modulo", {"tipo": "api"}, 0.8)
+    recommender.record_action("otimizar codigo", {"tipo": "performance"}, 0.6)
+    print(f"Recomendações: {recommender.recommend()}")

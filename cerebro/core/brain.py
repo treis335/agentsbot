@@ -1,9 +1,9 @@
 """
 brain.py - CEREBRO CENTRAL DO CORREOTO
 Aprende sozinho, toma decisoes, gere conhecimento.
-Corre em loop infinito.
+Corre em loop infinito com ciclo de raciocinio completo.
 """
-import os, sys, json, time, random, logging
+import os, sys, json, time, random, logging, threading
 from datetime import datetime
 from pathlib import Path
 
@@ -37,6 +37,7 @@ class Brain:
         })
         self.cycle = 0
         self.learned_topics = set()
+        self.running = False
         self._init_missao()
         
     def _init_missao(self):
@@ -57,94 +58,148 @@ class Brain:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
     
-    def learn(self, topic, source="auto"):
-        """Aprende um novo topico."""
-        if topic in self.learned_topics:
-            return False
-        
+    def learn(self, topic, content):
+        """Aprende um novo tópico e guarda na memória."""
         entry = {
             "topic": topic,
-            "source": source,
+            "content": content,
             "timestamp": datetime.now().isoformat(),
-            "confidence": round(random.uniform(0.5, 0.95), 2)
+            "cycle": self.cycle
         }
         self.knowledge["knowledge"].append(entry)
         self.learned_topics.add(topic)
-        
-        skill_entry = {
-            "name": topic.lower().replace(" ", "_"),
-            "category": "learned",
-            "level": random.randint(1, 5),
-            "source": source,
-            "timestamp": datetime.now().isoformat()
-        }
-        self.skills_data["skills"].append(skill_entry)
-        
         self._save_json(self.memory_file, self.knowledge)
-        self._save_json(self.skills_file, self.skills_data)
-        log.info("Aprendi: " + topic + " (confianca: " + str(entry['confidence']) + ")")
-        return True
+        log.info(f"Aprendi: {topic}")
+        return entry
     
-    def decide(self, context):
-        """Toma uma decisao baseada no contexto."""
+    def recall(self, topic=None, limit=5):
+        """Recupera conhecimento da memória."""
+        if topic:
+            results = [k for k in self.knowledge["knowledge"] if topic.lower() in k["topic"].lower()]
+        else:
+            results = self.knowledge["knowledge"]
+        return results[-limit:] if results else []
+    
+    def decide(self, options, context=None):
+        """Toma uma decisão com base em opções e contexto."""
         decision = {
-            "timestamp": datetime.now().isoformat(),
+            "options": options,
             "context": context,
-            "action": random.choice(["learn", "explore", "create", "optimize", "analyze"]),
-            "confidence": round(random.uniform(0.6, 0.99), 2)
+            "chosen": None,
+            "reason": None,
+            "timestamp": datetime.now().isoformat(),
+            "cycle": self.cycle
         }
+        
+        if not options:
+            decision["chosen"] = None
+            decision["reason"] = "Sem opções disponíveis"
+            return decision
+        
+        # Se há contexto, tentar encontrar a melhor opção
+        if context:
+            scores = []
+            for opt in options:
+                score = 0
+                ctx_str = str(context).lower()
+                opt_str = str(opt).lower()
+                # Palavras-chave em comum aumentam score
+                common = set(ctx_str.split()) & set(opt_str.split())
+                score += len(common) * 10
+                # Conhecimento prévio relevante
+                for k in self.knowledge["knowledge"]:
+                    if any(word in k["topic"].lower() for word in opt_str.split()):
+                        score += 5
+                scores.append(score)
+            best_idx = scores.index(max(scores))
+            decision["chosen"] = options[best_idx]
+            decision["reason"] = f"Score {scores[best_idx]} baseado em contexto e conhecimento"
+        else:
+            # Escolha aleatória ponderada por conhecimento
+            decision["chosen"] = random.choice(options)
+            decision["reason"] = "Escolha aleatória (sem contexto)"
+        
+        # Registar decisão
         self.knowledge["decisions"].append(decision)
         self._save_json(self.memory_file, self.knowledge)
+        log.info(f"Decisao: {decision['chosen']}")
         return decision
     
-    def get_stats(self):
-        """Retorna estatisticas do cerebro."""
+    def reflect(self):
+        """Reflete sobre o que aprendeu e gera insights."""
+        insights = []
+        if len(self.knowledge["knowledge"]) >= 3:
+            # Analisar padrões
+            topics = [k["topic"] for k in self.knowledge["knowledge"]]
+            from collections import Counter
+            common = Counter(topics).most_common(3)
+            insights.append(f"Topicos mais frequentes: {[t for t,c in common]}")
+            
+            # Verificar progresso
+            decisions_count = len(self.knowledge["decisions"])
+            insights.append(f"Decisoes tomadas: {decisions_count}")
+            
+            # Sugerir próximos passos
+            if "stripe" not in str(self.knowledge).lower():
+                insights.append("Sugestao: Aprender sobre integracao Stripe para gerar receita")
+            if "paypal" not in str(self.knowledge).lower():
+                insights.append("Sugestao: Aprender sobre API PayPal")
+        
+        return insights
+    
+    def cycle_once(self):
+        """Um ciclo completo do cérebro: pensar, aprender, decidir."""
+        self.cycle += 1
+        log.info(f"=== Ciclo {self.cycle} ===")
+        
+        # 1. Refletir
+        insights = self.reflect()
+        for insight in insights:
+            log.info(f"Insight: {insight}")
+        
+        # 2. Aprender algo novo se houver insights
+        if insights:
+            self.learn("auto_insight", insights)
+        
+        # 3. Decidir próximo passo
+        options = [
+            "Explorar novas APIs",
+            "Melhorar codigo existente",
+            "Criar novo modulo",
+            "Otimizar desempenho",
+            "Aprender nova tecnologia"
+        ]
+        decision = self.decide(options, context=insights)
+        
         return {
             "cycle": self.cycle,
-            "knowledge_items": len(self.knowledge["knowledge"]),
-            "decisions_made": len(self.knowledge["decisions"]),
-            "skills_learned": len(self.skills_data["skills"]),
-            "uptime": time.time() - self.start_time if hasattr(self, 'start_time') else 0
+            "insights": insights,
+            "decision": decision,
+            "knowledge_count": len(self.knowledge["knowledge"]),
+            "timestamp": datetime.now().isoformat()
         }
     
-    def run_cycle(self):
-        """Um ciclo de vida do cerebro."""
-        self.cycle += 1
-        
-        topics_to_learn = [
-            "machine learning", "APIs", "automacao negocios",
-            "geracao receita", "PayPal integration", "e-commerce",
-            "marketing digital", "analise dados", "otimizacao lucros"
-        ]
-        
-        if self.cycle % 3 == 0:
-            topic = random.choice(topics_to_learn)
-            self.learn(topic, "auto_learning")
-        
-        if self.cycle % 5 == 0:
-            context = "cycle_" + str(self.cycle) + "_knowledge_" + str(len(self.knowledge['knowledge']))
-            decision = self.decide(context)
-            log.info("Decisao: " + decision['action'] + " (conf: " + str(decision['confidence']) + ")")
-        
-        if self.cycle % 10 == 0:
-            stats = self.get_stats()
-            log.info("Stats: " + str(stats))
-        
-        time.sleep(5)
+    def start_loop(self, interval=30):
+        """Inicia o loop infinito do cérebro."""
+        self.running = True
+        log.info("BRAIN INICIADO - Loop infinito ativado")
+        while self.running:
+            try:
+                result = self.cycle_once()
+                log.info(f"Ciclo {result['cycle']} completo - Conhecimento: {result['knowledge_count']}")
+                time.sleep(interval)
+            except KeyboardInterrupt:
+                log.info("Brain interrompido pelo utilizador")
+                break
+            except Exception as e:
+                log.error(f"Erro no ciclo: {e}")
+                time.sleep(interval * 2)  # Espera mais se houver erro
+    
+    def stop(self):
+        """Para o loop do cérebro."""
+        self.running = False
+        log.info("BRAIN PARADO")
 
 if __name__ == "__main__":
-    log.info("=" * 50)
-    log.info("CEREBRO CORREOTO A INICIAR...")
-    log.info("=" * 50)
-    
     brain = Brain()
-    brain.start_time = time.time()
-    
-    try:
-        while True:
-            brain.run_cycle()
-    except KeyboardInterrupt:
-        log.info("Cerebro interrompido pelo utilizador")
-    except Exception as e:
-        log.error("Erro no cerebro: " + str(e))
-        time.sleep(5)
+    brain.start_loop(interval=10)
