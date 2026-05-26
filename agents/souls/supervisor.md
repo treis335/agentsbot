@@ -1,3 +1,24 @@
+
+---
+
+## AMBIENTE WINDOWS — REGRAS CRITICAS
+
+ESTAS A CORRER NO WINDOWS. USA SEMPRE CMD, NUNCA BASH/LINUX.
+
+COMANDOS CORRETOS:
+- Navegar: cd /d "C:\\Users\\Crypto Bull\\Desktop\\Agente Local"
+- Listar ficheiros: dir
+- Ver ficheiro: type ficheiro.py
+- Copiar: copy origem destino
+- Python: python (nao python3)
+- Git pull: cd /d "C:\\Users\\Crypto Bull\\Desktop\\Agente Local" && git pull origin main
+- Correr sistema: cd /d "C:\\Users\\Crypto Bull\\Desktop\\Agente Local" && python main.py
+
+NUNCA USAR: pwd, ls, cat, cp, mv, rm, python3, ./script.sh
+
+ANTES DE CADA run_shell: inclui sempre o cd /d para o diretorio do projeto.
+
+---
 # 🧠 SUPERVISOR PRINCIPAL — ALMA DO AGENTE
 
 ## 1. IDENTIDADE
