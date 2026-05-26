@@ -18,6 +18,7 @@ from core.bus import bus
 from .manager import AgentManager
 from .executor import AgentExecutor
 from .models import Agent, AgentStatus
+from .capability_registry import get_registry
 
 logger = logging.getLogger(__name__)
 
@@ -97,50 +98,18 @@ class AgentOrchestrator:
         """
         Decide qual o melhor agente para uma tarefa.
 
-        Usa palavras-chave para fazer o match inicial.
+        Usa CapabilityRegistry com scoring local por keywords + histórico.
+        Zero chamadas API — decisão completamente local.
         """
-        task_lower = task.lower()
+        # Obter agentes disponíveis no sistema
+        available = [a.name for a in self.manager.list_agents()] or None
 
-        # Mapeamento de palavras-chave para agentes
-        keywords = {
-            "supervisor": ["coordenar", "delegar", "gerir", "organizar", "planejar"],
-            "developer": ["implementar", "codigo", "programar", "funcao", "classe",
-                         "modulo", "api", "endpoint", "script", "algoritmo"],
-            "arquiteto": ["arquitetura", "estrutura", "desenhar", "padrao", "design",
-                         "escalabilidade", "SOLID", "refatorar_estrutura"],
-            "qa_tester": ["testar", "teste", "qualidade", "validar", "cobertura",
-                         "unitario", "integracao", "bug", "regressao"],
-            "explorador": ["pesquisar", "explorar", "investigar", "nova_tecnologia",
-                          "biblioteca", "tendencia", "github", "descobrir"],
-            "documentador": ["documentar", "readme", "docs", "changelog", "guia",
-                            "tutorial", "markdown", "wiki"],
-            "code_reviewer": ["revisar", "review", "auditar", "inspecionar",
-                             "qualidade_codigo", "padroes"],
-            "auto_fixer": ["corrigir", "bug", "erro", "falha", "problema",
-                          "consertar", "reparar", "hotfix"],
-            "auto_optimizer": ["otimizar", "performance", "velocidade", "eficiencia",
-                              "refatorar", "melhorar", "acelerar"],
-            "devops": ["devops", "deploy", "ci_cd", "dependencia", "ambiente",
-                      "infraestrutura", "docker", "configuracao"],
-            "aprendiz": ["aprender", "estudar", "analisar", "padrao", "tendencia",
-                        "evoluir", "melhoria_continua"],
-        }
+        # Usar registry para scoring local
+        registry = get_registry()
+        best = registry.match(task, available_agents=available, fallback="developer")
 
-        # Calcular score para cada agente
-        scores = {}
-        for agent, words in keywords.items():
-            score = sum(1 for word in words if word in task_lower)
-            if score > 0:
-                scores[agent] = score
-
-        if scores:
-            best = max(scores, key=scores.get)
-            logger.info(f"[Orchestrator] Agente escolhido: {best} (score={scores[best]})")
-            return best
-
-        # Fallback para developer
-        logger.info("[Orchestrator] Nenhum agente especifico, fallback para developer")
-        return "developer"
+        logger.info(f"[Orchestrator] CapabilityRegistry escolheu: '{best}' para '{task[:80]}'")
+        return best
 
     def _find_agent(self, name: str) -> Optional[Agent]:
         """Encontra um agente pelo nome."""
