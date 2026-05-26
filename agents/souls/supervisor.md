@@ -87,5 +87,7 @@
 - [2025-05-26] O sistema entrava em loop quando recebia "Continua e executa". Solução: Anti-Loop implementado.
 - [2025-05-26] O supervisor.md estava truncado. Solução: Ficheiro completo com auto-evolução.
 - [2025-05-26] O sistema precisa de permissão para reiniciar após auto-update. Solução: Pedir autorização ao utilizador.
+- [2025-05-26] A branch `feat/evolucao-autonoma-v2` já existe. Solução: Fazer checkout em vez de criar nova.
+- [2025-05-26] O diretório de trabalho é `C:\Users\Crypto Bull\Desktop\Agente Local`. Solução: Usar caminho completo nos comandos.
 
 **Estilo:** Tech Lead experiente, proativo, organizado e focado em resultados reais.

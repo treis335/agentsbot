@@ -1,9 +1,11 @@
 """
-auto_update.py v1.0 - SISTEMA DE AUTO-UPDATE DO SUPERVISOR
+auto_update.py v3.0 - SISTEMA DE AUTO-UPDATE DO SUPERVISOR (COMPLETO)
 ✅ Permite ao supervisor atualizar-se a si mesmo
 ✅ Gera novo código para si próprio
 ✅ Faz commit e push automaticamente
 ✅ Pede reinício para aplicar mudanças
+✅ Auto-diagnóstico e reparação de ficheiros truncados
+✅ Verificação de integridade de todos os ficheiros críticos
 """
 
 import os
@@ -11,12 +13,25 @@ import sys
 import json
 import time
 import subprocess
+import shutil
 from datetime import datetime
 from pathlib import Path
 
 BASE = Path(__file__).parent
 SUPERVISOR_SOUL = BASE / "agents" / "souls" / "supervisor.md"
 UPDATE_LOG = BASE / "auto_update.log"
+RESTART_FLAG = BASE / ".restart_requested"
+
+# Ficheiros críticos que precisam de ser verificados
+FICHEIROS_CRITICOS = [
+    "agents/souls/supervisor.md",
+    "auto_update.py",
+    "run_forever.py",
+    "auto_recovery.py",
+    "auto_recovery_manager.py",
+    "wakeup_v3.py",
+    "main.py",
+]
 
 def log(msg):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -56,59 +71,103 @@ def git_auto_commit(message):
 def check_for_updates():
     """Verifica se há atualizações disponíveis no git."""
     try:
-        result = subprocess.run(["git", "pull", "--dry-run"], cwd=BASE, capture_output=True, text=True, timeout=15)
-        if result.stdout.strip():
-            log("Atualizações detectadas no repositório remoto.")
+        result = subprocess.run(["git", "fetch"], cwd=BASE, capture_output=True, timeout=10)
+        result = subprocess.run(["git", "status", "-uno"], cwd=BASE, capture_output=True, timeout=10, text=True)
+        if "Your branch is behind" in result.stdout:
+            log("Há atualizações no repositório remoto!")
             return True
         return False
-    except:
-        return False
-
-def apply_git_updates():
-    """Aplica atualizações do git."""
-    try:
-        result = subprocess.run(["git", "pull"], cwd=BASE, capture_output=True, text=True, timeout=30)
-        log(f"Git pull: {result.stdout.strip()[:200]}")
-        return True
     except Exception as e:
-        log(f"Erro ao fazer pull: {e}")
+        log(f"Erro ao verificar atualizações: {e}")
         return False
 
-def request_restart(reason="auto-update"):
-    """Cria um ficheiro de sinalização para pedir reinício."""
-    restart_flag = BASE / ".restart_requested"
-    data = {
-        "timestamp": datetime.now().isoformat(),
-        "reason": reason,
-        "requested_by": "auto_update.py"
-    }
-    restart_flag.write_text(json.dumps(data, indent=2), encoding="utf-8")
-    log(f"Reinício solicitado: {reason}")
+def verify_file_integrity():
+    """Verifica se todos os ficheiros críticos existem e não estão vazios."""
+    issues = []
+    for ficheiro in FICHEIROS_CRITICOS:
+        path = BASE / ficheiro
+        if not path.exists():
+            issues.append(f"❌ {ficheiro} - NÃO EXISTE")
+        elif path.stat().st_size < 100:
+            issues.append(f"⚠️ {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
+        else:
+            log(f"✅ {ficheiro} - OK ({path.stat().st_size} bytes)")
+    
+    if issues:
+        log("PROBLEMAS DETETADOS:")
+        for issue in issues:
+            log(f"  {issue}")
+        return False
+    return True
+
+def auto_repair():
+    """Tenta reparar ficheiros corrompidos ou em falta."""
+    log("🔧 A executar auto-reparação...")
+    
+    # Verificar supervisor.md
+    if SUPERVISOR_SOUL.exists() and SUPERVISOR_SOUL.stat().st_size < 100:
+        log("⚠️ supervisor.md corrompido! A restaurar de backup...")
+        backup = BASE / "agents" / "souls" / "supervisor.md.bak"
+        if backup.exists():
+            shutil.copy2(backup, SUPERVISOR_SOUL)
+            log("✅ supervisor.md restaurado do backup!")
+        else:
+            log("❌ Sem backup disponível para supervisor.md")
+    
+    # Verificar auto_update.py
+    auto_update_path = BASE / "auto_update.py"
+    if auto_update_path.exists() and auto_update_path.stat().st_size < 100:
+        log("⚠️ auto_update.py corrompido! Tamanho suspeito.")
+    
+    return verify_file_integrity()
+
+def request_restart():
+    """Pede reinício do sistema."""
+    RESTART_FLAG.write_text("restart_requested", encoding="utf-8")
+    log("🔄 Pedido de reinício registado!")
+    log("Por favor, diz 'fecha' ao supervisor para aplicar as mudanças.")
+
+def run_full_update():
+    """Executa o ciclo completo de auto-update."""
+    log("=" * 60)
+    log("🚀 AUTO-UPDATE v3.0 - INICIADO")
+    log("=" * 60)
+    
+    # Passo 1: Backup
+    log("\n📦 Passo 1: Backup da alma atual...")
+    backup_soul()
+    
+    # Passo 2: Verificar integridade
+    log("\n🔍 Passo 2: Verificar integridade dos ficheiros...")
+    integridade_ok = verify_file_integrity()
+    
+    if not integridade_ok:
+        log("\n🔧 Passo 2b: A reparar ficheiros...")
+        auto_repair()
+    
+    # Passo 3: Verificar atualizações remotas
+    log("\n🌐 Passo 3: Verificar atualizações no GitHub...")
+    has_updates = check_for_updates()
+    
+    if has_updates:
+        log("📥 A fazer pull das atualizações...")
+        subprocess.run(["git", "pull"], cwd=BASE, capture_output=True, timeout=30)
+        log("✅ Pull concluído!")
+    
+    # Passo 4: Git commit e push
+    log("\n📤 Passo 4: A fazer commit e push...")
+    data = datetime.now().strftime("%Y-%m-%d %H:%M")
+    git_auto_commit(f"feat: auto-update v3.0 - {data}")
+    
+    # Passo 5: Pedir reinício
+    log("\n🔄 Passo 5: A pedir reinício...")
+    request_restart()
+    
+    log("\n" + "=" * 60)
+    log("✅ AUTO-UPDATE CONCLUÍDO COM SUCESSO!")
+    log("=" * 60)
+    
     return True
 
 if __name__ == "__main__":
-    log("=" * 60)
-    log("SISTEMA DE AUTO-UPDATE INICIADO")
-    log("=" * 60)
-    
-    # 1. Backup da alma atual
-    backup_soul()
-    
-    # 2. Verificar atualizações do git
-    if check_for_updates():
-        log("Aplicando atualizações do repositório...")
-        apply_git_updates()
-    
-    # 3. Mostrar estado atual
-    soul_content = read_current_soul()
-    soul_lines = soul_content.count("\n")
-    log(f"Alma do supervisor: {soul_lines} linhas")
-    
-    # 4. Verificar se há ficheiros .restart pendentes
-    restart_flag = BASE / ".restart_requested"
-    if restart_flag.exists():
-        log("Há um pedido de reinício pendente!")
-        data = json.loads(restart_flag.read_text(encoding="utf-8"))
-        log(f"Motivo: {data.get('reason', 'desconhecido')}")
-    
-    log("Auto-update concluído com sucesso!")
+    run_full_update()
