@@ -58,6 +58,14 @@ class Config:
     MAX_TOOL_ITERATIONS: int = 30
     MAX_TOOL_RETRIES: int = 2
 
+    # --- Batch 6: Local Inference (Ollama) ---
+    OLLAMA_URL: str = os.getenv("OLLAMA_URL", "http://localhost:11434")
+    LOCAL_MODEL: str = os.getenv("LOCAL_MODEL", "qwen2.5-coder:7b")
+    ROUTING_THRESHOLD: float = float(os.getenv("ROUTING_THRESHOLD", "0.4"))
+    # 0.0 = sempre DeepSeek | 1.0 = sempre Ollama | 0.4 = recomendado
+    OLLAMA_TIMEOUT: int = int(os.getenv("OLLAMA_TIMEOUT", "120"))
+    DEEPSEEK_MODEL: str = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+
     # --- Validacao ---
     @classmethod
     def validate(cls) -> list[str]:
