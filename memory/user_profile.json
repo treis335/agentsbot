@@ -1,0 +1,27 @@
+{
+  "name": "Joel",
+  "registered_at": "2026-05-26T09:30:00",
+  "last_interaction": "2026-05-26T09:30:00",
+  "role": "chefe / criador do ecossistema Correoto",
+  "preferences": {
+    "language": "pt-PT",
+    "autonomy_level": "total",
+    "communication_style": "direto e prático",
+    "auto_repair": true,
+    "auto_evolve": true
+  },
+  "projects": [
+    {
+      "name": "Correoto Ecosystem",
+      "status": "auto-sustentável",
+      "agents_count": 37,
+      "last_update": "2026-05-26"
+    }
+  ],
+  "notes": [
+    "O Joel é o criador e chefe máximo do ecossistema",
+    "Tem autonomia total para decidir o rumo do projeto",
+    "Prefere respostas diretas e resultados reais",
+    "Quer o sistema 100% autónomo e auto-reparável"
+  ]
+}
