@@ -1,26 +1,29 @@
 # Tarefa Atual
 
-**Status:** Sistema operacional e estável — backlog inicializado
+**Status:** 🚀 EM EXECUÇÃO — Evolução para LLM Autónomo (Fase 1)
 **Última atualização:** 2026-05-26
 
-## Estado do Sistema
-- ✅ Python 3.13 - OK
-- ✅ Config - OK
-- ✅ AgentManager (20 agentes) - OK
-- ✅ AutonomousLoop - OK
-- ✅ GlobalMemory - OK
-- ✅ Orchestrator - OK
-- ✅ Git - sincronizado com origin/main
-- ✅ Backlog criado com 5 tarefas iniciais
+## Missão
+Transformar o Correoto num verdadeiro LLM autónomo com:
+- Raciocínio profundo (Chain-of-Thought multi-passo)
+- Memória viva (RAG + compressão automática)
+- Auto-aprendizagem (agir → refletir → abstrair → armazenar)
+- Meta-cognição (sabe o que sabe e o que não sabe)
+- Geração autónoma de conhecimento
 
-## Backlog de Tarefas
-1. 🔴 [alta] Auditar seguranca do sistema
-2. 🟡 [media] Otimizar ciclo autonomo
-3. 🟡 [media] Melhorar documentacao dos agentes
-4. 🟢 [baixa] Dashboard de metricas
-5. 🔴 [alta] Testar integracao Telegram
+## Fase Atual: FASE 1 — Cérebro Racional (Core Reasoning)
+### A fazer agora:
+1. ✅ Verificar estado do sistema
+2. 🔄 **Criar Motor de Raciocínio Profundo (Deep Reasoning Engine)**
+3. ⏳ Implementar Cadeias de Pensamento (Chain-of-Thought) multi-passo
+4. ⏳ Implementar Auto-verificação de raciocínio
 
-## Próximos passos
-1. Iniciar o ciclo autónomo: `python autonomous_loop.py`
-2. Ou iniciar sistema completo: `python main.py`
-3. Processar tarefas do backlog uma a uma
+## Progresso
+- [x] Sistema base funcional (Python 3.13, DeepSeek, Telegram)
+- [x] Plano de evolução para LLM já documentado
+- [ ] Motor de Raciocínio Profundo (Deep Reasoning Engine)
+- [ ] Chain-of-Thought multi-passo
+- [ ] Auto-verificação de raciocínio
+- [ ] RAG interno
+- [ ] Compressão automática de memória
+- [ ] Loop de aprendizagem completo
