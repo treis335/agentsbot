@@ -105,9 +105,34 @@ def mark_task_failed(task_id: str, reason: str = ""):
     backlog = load_backlog()
     for task in backlog:
         if task["id"] == task_id:
-            task["status"] = "failed"
-            task["failed_at"] = datetime.now().isoformat()
-            task["reason"] = reason
+            retry_count = task.get("retry_count", 0)
+            max_retries = task.get("max_retries", 2)
+
+            if retry_count < max_retries:
+                # Ainda há tentativas disponíveis — voltar para pending com contador
+                task["status"]      = "pending"
+                task["retry_count"] = retry_count + 1
+                task["last_error"]  = reason
+                task["last_retry"]  = datetime.now().isoformat()
+                # Aumentar prioridade ligeiramente para não ficar no fundo
+                task["priority"]    = min(task.get("priority", 5) + 1, 9)
+            else:
+                # Esgotou retries — falha definitiva
+                task["status"]     = "failed"
+                task["failed_at"]  = datetime.now().isoformat()
+                task["reason"]     = reason
+                task["retry_count"] = retry_count
+    save_backlog(backlog)
+
+
+def mark_task_needs_retry(task_id: str, reason: str = ""):
+    """Marca uma tarefa como precisando de retry imediato (sem consumir contador)."""
+    backlog = load_backlog()
+    for task in backlog:
+        if task["id"] == task_id:
+            task["status"]     = "pending"
+            task["last_error"] = reason
+            task["priority"]   = max(task.get("priority", 5) - 1, 1)  # sobe prioridade
     save_backlog(backlog)
 
 
@@ -278,9 +303,21 @@ class AutonomousLoop:
                 tasks_done_this_cycle.append(f"✅ {task['title']}")
                 log(f"Tarefa concluída: '{task['title']}'", "SUCCESS")
             else:
+                retry_count = task.get("retry_count", 0)
+                max_retries = task.get("max_retries", 2)
                 mark_task_failed(task["id"], result)
-                tasks_done_this_cycle.append(f"❌ {task['title']} — {result}")
-                log(f"Tarefa falhou: '{task['title']}' — {result}", "ERROR")
+                if retry_count < max_retries:
+                    tasks_done_this_cycle.append(
+                        f"🔄 {task['title']} — retry {retry_count + 1}/{max_retries}"
+                    )
+                    log(
+                        f"Tarefa agendada para retry ({retry_count + 1}/{max_retries}): "
+                        f"'{task['title']}'",
+                        "INFO"
+                    )
+                else:
+                    tasks_done_this_cycle.append(f"❌ {task['title']} — {result}")
+                    log(f"Tarefa falhou definitivamente: '{task['title']}' — {result}", "ERROR")
 
             task = get_next_task()
 

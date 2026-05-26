@@ -18,8 +18,17 @@ from tools import TOOLS, execute_tool
 from memory.episodica import EpisodicMemory
 from security.auditor import AuditLogger
 from monitoring.metrics import MetricsCollector
+from agents.verifier import verifier as tool_verifier
+from agents.retry_policy import retry_policy
 
 logger = logging.getLogger(__name__)
+
+
+def RETRY_CONFIGS_MAX(tool_name: str) -> int:
+    """Helper: devolve o max_retries configurado para uma ferramenta."""
+    from agents.retry_policy import RETRY_CONFIGS
+    cfg = RETRY_CONFIGS.get(tool_name, RETRY_CONFIGS["_default"])
+    return cfg.max_retries
 
 TOOL_SCHEMA = """
 ## FERRAMENTAS DISPONÍVEIS
@@ -216,7 +225,7 @@ class AgentExecutor:
                     pass
                 return msg.content or "Tarefa concluída.", messages
 
-            # Executar tool calls
+            # Executar tool calls (com verificação e retry automático)
             for tc in msg.tool_calls:
                 name = tc.function.name
                 try:
@@ -229,12 +238,48 @@ class AgentExecutor:
                 if on_tool_call:
                     await on_tool_call(name, args, "")
 
-                start_time = asyncio.get_event_loop().time()
-                result     = await execute_tool(name, args)
-                elapsed    = (asyncio.get_event_loop().time() - start_time) * 1000
+                # ── Loop de execução + verificação + retry ────────────────
+                retry_state = retry_policy.new_state(name)
+                result      = None
+                verified_ok = False
 
-                success = not (str(result)[:10].upper().startswith("ERRO") or
-                               str(result)[:10].lower().startswith("erro"))
+                while True:
+                    start_time = asyncio.get_event_loop().time()
+                    result     = await execute_tool(name, args)
+                    elapsed    = (asyncio.get_event_loop().time() - start_time) * 1000
+
+                    # Verificar resultado heuristicamente (zero API)
+                    check = tool_verifier.verify(name, args, result)
+                    retry_state.record_attempt(str(result), "" if check["ok"] else check["reason"])
+
+                    if check["ok"]:
+                        verified_ok = True
+                        logger.debug(f"[{self.agent_name}] Verificação OK: {name}")
+                        break
+
+                    # Falhou verificação
+                    logger.warning(
+                        f"[{self.agent_name}] Verificação falhou: {name} — {check['reason']}"
+                    )
+
+                    if not check["recoverable"] or not retry_state.can_retry:
+                        logger.warning(
+                            f"[{self.agent_name}] Sem retry para {name} "
+                            f"(recuperável={check['recoverable']}, tentativas={retry_state.attempt})"
+                        )
+                        break
+
+                    # Ajustar args e aguardar antes de retry
+                    args = retry_policy.adjust_args(name, args, retry_state)
+                    delay = retry_state.next_delay
+                    logger.info(
+                        f"[{self.agent_name}] Retry {retry_state.attempt}/{RETRY_CONFIGS_MAX(name)}"
+                        f" para '{name}' em {delay:.1f}s"
+                    )
+                    await asyncio.sleep(delay)
+                # ─────────────────────────────────────────────────────────
+
+                success = verified_ok
 
                 # Registar métricas
                 self.metrics.track_tool_call(self.agent_name, name, elapsed, success)
@@ -251,13 +296,16 @@ class AgentExecutor:
                 )
 
                 # Registar memória episódica — aprende de cada tool call
+                lesson = ""
+                if not success:
+                    lesson = retry_policy.format_retry_log(retry_state)
                 self.memory.record(
                     action  = name,
                     args    = args,
                     result  = str(result)[:200],
                     success = success,
                     context = f"Tarefa: {task[:80]}, Iteração {iteration + 1}",
-                    lesson  = "" if success else f"'{name}' com args {list(args.keys())} falhou",
+                    lesson  = lesson,
                 )
 
                 if on_tool_call:
