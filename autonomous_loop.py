@@ -63,8 +63,44 @@ def save_backlog(backlog: list):
         json.dump(backlog, f, ensure_ascii=False, indent=2)
 
 
-def add_to_backlog(title: str, description: str, priority: int = 5,
-                   source: str = "brainstorm"):
+def _detect_workflow(task: dict) -> str | None:
+    """
+    Detecta automaticamente se uma tarefa deve usar um workflow template.
+    Retorna o nome do template ou None para execução directa.
+
+    Batch 5 — heurísticas locais, zero chamadas API.
+    """
+    title = (task.get("title") or "").lower()
+    desc  = (task.get("description") or "").lower()
+    text  = f"{title} {desc}"
+
+    # Keywords → bug_fix
+    BUG_KEYWORDS = {"bug", "fix", "erro", "error", "crash", "falha", "broken",
+                    "não funciona", "nao funciona", "traceback", "exception"}
+    if any(kw in text for kw in BUG_KEYWORDS):
+        return "bug_fix"
+
+    # Keywords → dev_cycle
+    DEV_KEYWORDS = {"implementa", "implement", "feature", "adiciona", "cria módulo",
+                    "cria ficheiro", "criar ficheiro", "nova funcionalidade",
+                    "refactor", "refactori", "migra", "upgrade"}
+    if any(kw in text for kw in DEV_KEYWORDS):
+        return "dev_cycle"
+
+    # Keywords → research
+    RESEARCH_KEYWORDS = {"investiga", "research", "analisa", "documenta",
+                         "explora", "pesquisa", "audit", "auditoria"}
+    if any(kw in text for kw in RESEARCH_KEYWORDS):
+        return "research"
+
+    # Complexidade por comprimento: descrições muito longas → dev_cycle
+    if len(desc) > 300:
+        return "dev_cycle"
+
+    return None  # Execução directa para tarefas simples
+
+
+
     """Adiciona tarefa ao backlog. Prioridade: 1 (alta) a 10 (baixa)."""
     backlog = load_backlog()
     task = {
@@ -332,9 +368,22 @@ class AutonomousLoop:
 
     def _execute_task(self, task: dict) -> tuple[bool, str]:
         """
-        Executa uma tarefa. Integra com o orchestrator real.
+        Executa uma tarefa.
+
+        Batch 5 — State Graphs:
+        Tarefas complexas (com campo 'workflow' ou keywords de complexidade)
+        são roteadas para um workflow template em vez de execução directa.
         Retorna (sucesso, resultado).
         """
+        # ── Routing por workflow (Batch 5) ──────────────────────────────────────
+        workflow_name = task.get("workflow")
+        if not workflow_name:
+            workflow_name = _detect_workflow(task)
+
+        if workflow_name:
+            return self._execute_via_workflow(task, workflow_name)
+
+        # ── Execução directa (comportamento original) ───────────────────────────
         if self.orchestrator:
             try:
                 result = self.orchestrator.execute(task["description"])
@@ -342,10 +391,77 @@ class AutonomousLoop:
             except Exception as e:
                 return False, str(e)
         else:
-            # Modo simulação (sem orchestrator)
             log(f"[SIMULAÇÃO] Executaria: {task['description']}", "INFO")
             time.sleep(2)
             return True, "Executado em modo simulação"
+
+    def _execute_via_workflow(self, task: dict, workflow_name: str) -> tuple[bool, str]:
+        """
+        Executa uma tarefa complexa via StateMachine com workflow template.
+        Cada passo do workflow é executado pelo orchestrator.
+        """
+        log(f"[Workflow] Tarefa '{task['title']}' → workflow '{workflow_name}'", "INFO")
+
+        try:
+            from pipelines.state_machine import StateMachine, RunState
+
+            sm = StateMachine.from_yaml(workflow_name)
+
+            # Executor: cada passo do workflow delega ao orchestrator
+            def step_executor(step_def, run):
+                # Renderizar template com contexto disponível
+                template = step_def.task_template
+                ctx = {**run.context}
+                # Substituir placeholders simples {key}
+                for k, v in ctx.items():
+                    template = template.replace(f"{{{k}}}", str(v)[:500])
+                # Fallback: task_short se não definido
+                template = template.replace("{task_short}", run.context.get("task", "")[:60])
+                template = template.replace("{task_slug}", run.context.get("task", "")
+                                            .lower().replace(" ", "_")[:40])
+
+                if self.orchestrator:
+                    return str(self.orchestrator.execute(template))
+                else:
+                    log(f"[Workflow/SIM] {step_def.name}: {template[:80]}", "INFO")
+                    return f"[sim] {step_def.name} concluído"
+
+            sm.set_executor(step_executor)
+
+            context = {
+                "task": task.get("description", task.get("title", "")),
+                "task_title": task.get("title", ""),
+            }
+            run_id = sm.start(context=context)
+
+            # Executar passo a passo (síncrono)
+            max_ticks = len(sm.definition.steps) * 4
+            for _ in range(max_ticks):
+                run = sm.tick(run_id)
+                if run.state in (RunState.COMPLETED, RunState.FAILED):
+                    break
+
+            summary = sm.summary(run_id)
+            log(f"[Workflow] Run {run_id} → {run.state}", "INFO")
+
+            if run.state == RunState.COMPLETED:
+                return True, summary
+            else:
+                return False, f"Workflow falhou:\n{summary}\nErro: {run.error}"
+
+        except FileNotFoundError:
+            log(f"[Workflow] Template '{workflow_name}' não encontrado — execução directa", "WARN")
+            # Fallback para execução directa
+            if self.orchestrator:
+                try:
+                    result = self.orchestrator.execute(task["description"])
+                    return True, str(result)
+                except Exception as e:
+                    return False, str(e)
+            return True, "Executado em modo fallback (sem workflow)"
+        except Exception as e:
+            log(f"[Workflow] Erro: {e}", "ERROR")
+            return False, str(e)
 
     def _notify_joel(self, message: str):
         """Envia mensagem ao Joel via Telegram."""
