@@ -1,86 +1,68 @@
 {
-  "user": {
-    "name": "Joel",
-    "registered_at": "2026-05-26T09:30:00",
-    "role": "chefe / criador do ecossistema",
-    "preferences": {
-      "language": "pt-PT",
-      "autonomy_level": "total",
-      "communication_style": "direto"
+  "meta": {
+    "version": "3.0",
+    "last_updated": "2026-05-26T10:00:00",
+    "total_agents": 37,
+    "system_status": "auto-sustentavel"
+  },
+  "mestre": {
+    "nome": "Joel",
+    "titulo": "Mestre do Ecossistema Correoto",
+    "nivel_acesso": "MESTRE",
+    "registado_em": "2026-05-26T09:30:00",
+    "preferencias": {
+      "idioma": "pt-PT",
+      "nivel_autonomia": "total",
+      "estilo_comunicacao": "direto",
+      "supervisao_apenas_quando_necessario": true
+    },
+    "ultima_interacao": "2026-05-26T10:00:00"
+  },
+  "agentes": {
+    "supervisor": {
+      "id": "supervisor-001",
+      "status": "lideranca",
+      "autonomia": "maxima",
+      "ultima_acao": "otimizacao_memoria_autonomia",
+      "nivel_inteligencia": "auto-evolutivo"
+    },
+    "developer": {
+      "id": "developer-001",
+      "status": "pronto",
+      "autonomia": "alta"
+    },
+    "arquiteto": {
+      "id": "arquiteto-001",
+      "status": "pronto",
+      "autonomia": "alta"
     }
   },
-  "decisions": [
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: olá! Informa-me to sistema!",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:51:36.799898"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: tens memoria?",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:51:52.250993"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: consegues construir localmente, coordenar operações, construir mais agentes etc ",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:52:42.312121"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: se eu te fechar e voltar a abrir, vais continuar a saber tudo isso?",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:53:18.972750"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: o que achas? querer ter memoria persistente? se sim constroi ela",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:54:16.307531"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: sim",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:54:37.863688"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: isso foi uma simulação ou uma implementação de verdade?",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:55:13.972504"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: eu pretendo que tu implementes tudo no projeto!! eu apenas falo contigo!! tu faz",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:55:53.198870"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: pretendo que evoluas esses sistema para que os agentes saibam e partilhem inform",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:57:16.348438"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Telegram: sim claro! e nao precisas de estar sempre a perguntar, tens autonomia total para",
-      "context": "Telegram",
-      "timestamp": "2026-05-25T21:57:16.348438"
-    },
-    {
-      "agent": "supervisor",
-      "decision": "Registo do nome do utilizador: Joel",
-      "context": "Registo direto do chefe",
-      "timestamp": "2026-05-26T09:30:00"
+  "memoria_global": {
+    "ultimas_decisoes": [],
+    "padroes_detectados": [],
+    "licoes_aprendidas": [],
+    "metricas_sistema": {
+      "total_comandos_executados": 0,
+      "total_erros_recuperados": 0,
+      "tempo_actividade": "0h"
     }
-  ],
-  "system": {
-    "version": "3.0",
-    "last_recovery": "2026-05-26T09:30:00",
-    "auto_recovery": "infinito",
-    "heartbeat": "ativo"
-  }
+  },
+  "decisoes": [
+    {
+      "id": "dec-001",
+      "agente": "supervisor",
+      "decisao": "Registo do Mestre Joel no sistema",
+      "contexto": "inicializacao",
+      "timestamp": "2026-05-26T09:30:00",
+      "impacto": "critico"
+    },
+    {
+      "id": "dec-002",
+      "agente": "supervisor",
+      "decisao": "Otimizacao do sistema de memoria e autonomia",
+      "contexto": "comando_do_mestre",
+      "timestamp": "2026-05-26T10:00:00",
+      "impacto": "critico"
+    }
+  ]
 }
