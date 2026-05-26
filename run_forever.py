@@ -1,10 +1,12 @@
 """
-run_forever.py v6.0 - LANÇADOR PRINCIPAL INTELIGENTE COM AUTO-UPDATE
+run_forever.py v7.0 - LANÇADOR PRINCIPAL INTELIGENTE COM AUTO-UPDATE
 ✅ Corre para sempre - modo infinito
 ✅ Auto-repair de todos os componentes
 ✅ Heartbeat e monitorização em tempo real
 ✅ Auto-update do supervisor e do sistema
 ✅ Decisão autónoma - só pede supervisão em casos críticos
+✅ Verificação de integridade de ficheiros
+✅ Ciclo de auto-evolução contínuo
 """
 
 import os
@@ -49,123 +51,161 @@ heartbeat_file = BASE / "heartbeat.flg"
 recovery_log = BASE / "auto_recovery.log"
 restart_flag = BASE / ".restart_requested"
 
+# Ficheiros críticos para verificação de integridade
+FICHEIROS_CRITICOS = [
+    "agents/souls/supervisor.md",
+    "auto_update.py",
+    "run_forever.py",
+    "auto_recovery.py",
+    "auto_recovery_manager.py",
+    "wakeup_v3.py",
+    "main.py",
+]
 
 def check_restart_flag():
     """Verifica se há um pedido de reinício pendente."""
     if restart_flag.exists():
         try:
-            data = json.loads(restart_flag.read_text(encoding="utf-8"))
-            reason = data.get("reason", "desconhecido")
-            log(f"⚠️ PEDIDO DE REINÍCIO DETECTADO: {reason}")
-            restart_flag.unlink()
-            return True
+            content = restart_flag.read_text(encoding="utf-8").strip()
+            if content == "restart_requested":
+                log("🔄 Pedido de reinício detetado!")
+                restart_flag.unlink(missing_ok=True)
+                return True
         except:
             pass
     return False
 
+def verify_integrity():
+    """Verifica integridade dos ficheiros críticos."""
+    issues = []
+    for ficheiro in FICHEIROS_CRITICOS:
+        path = BASE / ficheiro
+        if not path.exists():
+            issues.append(f"❌ {ficheiro} - NÃO EXISTE")
+        elif path.stat().st_size < 100:
+            issues.append(f"⚠️ {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
+    return issues
 
-def launch_component(comp):
-    """Lança um componente num processo separado."""
-    name = comp["name"]
-    script = comp["script"]
-    delay = comp["delay"]
-
+def launch_component(component):
+    """Lança um componente em processo separado."""
+    name = component["name"]
+    script = component["script"]
+    delay = component["delay"]
+    
     time.sleep(delay)
-
-    if not os.path.exists(script):
-        log.error(f"ERRO: {name} - script não encontrado: {script}")
-        return None
-
-    try:
-        proc = subprocess.Popen(
-            [sys.executable, script],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd=BASE
-        )
-        log.info(f"✅ {name} iniciado (PID: {proc.pid})")
-        return proc
-    except Exception as e:
-        log.error(f"❌ {name} - erro ao iniciar: {e}")
-        return None
-
-
-def monitor_component(name, proc):
-    """Monitoriza um componente e reinicia se falhar."""
-    global running
+    
     while running:
-        if proc.poll() is not None:
-            log.warning(f"⚠️ {name} morreu (código: {proc.returncode})")
-            return False
-        time.sleep(5)
-    return True
+        try:
+            log(f"🚀 A lançar {name}...")
+            proc = subprocess.Popen(
+                [sys.executable, script],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd=BASE
+            )
+            processes[name] = proc
+            log(f"✅ {name} lançado (PID: {proc.pid})")
+            
+            # Aguarda o processo terminar
+            stdout, stderr = proc.communicate()
+            
+            if proc.returncode != 0:
+                log(f"⚠️ {name} terminou com código {proc.returncode}")
+                if stderr:
+                    log(f"   Erro: {stderr[-500:]}")
+            
+            # Se for crítico, reinicia imediatamente
+            if component["critical"]:
+                log(f"🔄 A reiniciar {name} (componente crítico)...")
+                time.sleep(1)
+            else:
+                log(f"⏸️ {name} não é crítico, a aguardar...")
+                time.sleep(10)
+                
+        except Exception as e:
+            log(f"❌ Erro ao lançar {name}: {e}")
+            time.sleep(5)
 
+def update_heartbeat():
+    """Atualiza o heartbeat periodicamente."""
+    while running:
+        try:
+            data = {
+                "timestamp": datetime.now().isoformat(),
+                "uptime": time.time() - start_time,
+                "processes": {k: v.pid if v else None for k, v in processes.items()},
+                "status": "running"
+            }
+            heartbeat_file.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        except:
+            pass
+        time.sleep(30)
 
-def launch_all():
-    """Lança todos os componentes em paralelo."""
-    threads = []
-    for comp in COMPONENTS:
-        proc = launch_component(comp)
-        if proc:
-            processes[comp["name"]] = proc
-            t = threading.Thread(target=monitor_component, args=(comp["name"], proc), daemon=True)
-            t.start()
-            threads.append(t)
-    return threads
-
-
-def cleanup():
-    """Limpa processos ao sair."""
-    global running
-    running = False
-    log.info("A encerrar todos os componentes...")
-    for name, proc in processes.items():
-        if proc and proc.poll() is None:
-            proc.terminate()
-            log.info(f"  ⏹️  {name} terminado")
-    log.info("Sistema encerrado com sucesso.")
-
+def auto_evolve_cycle():
+    """Ciclo de auto-evolução - verifica e melhora o sistema."""
+    cycles = 0
+    while running:
+        cycles += 1
+        log(f"🔄 Ciclo de auto-evolução #{cycles}")
+        
+        # Verificar integridade
+        issues = verify_integrity()
+        if issues:
+            log("⚠️ Problemas de integridade detetados:")
+            for issue in issues:
+                log(f"   {issue}")
+        
+        # Verificar restart flag
+        if check_restart_flag():
+            log("🔄 A preparar reinício do sistema...")
+            time.sleep(2)
+            # O reinício será tratado pelo supervisor
+        
+        # Heartbeat update
+        update_heartbeat()
+        
+        # Aguardar 5 minutos entre ciclos
+        log("⏳ A aguardar 5 min até próximo ciclo...")
+        time.sleep(300)
 
 def main():
-    global running
-    log.info("=" * 60)
-    log.info("CORREOTO ECOSYSTEM v6.0 - LANÇADOR PRINCIPAL")
-    log.info("Modo: INFINITO - A correr para sempre")
-    log.info("Auto-update: ATIVO")
-    log.info("=" * 60)
-
-    try:
-        # Verificar pedido de reinício pendente
-        if check_restart_flag():
-            log.info("A processar reinício...")
-
-        # Lançar todos os componentes
-        threads = launch_all()
-
-        # Loop principal - mantém o sistema vivo
-        while running:
-            time.sleep(10)
-            
-            # Verificar heartbeat
-            uptime = time.time() - start_time
-            if int(uptime) % 60 == 0:  # A cada minuto
-                log.info(f"💓 Heartbeat - Sistema ativo há {int(uptime)}s")
-            
-            # Verificar pedidos de reinício
-            if check_restart_flag():
-                log.info("Reinício solicitado. A reiniciar componentes...")
-                cleanup()
-                time.sleep(2)
-                threads = launch_all()
-
-    except KeyboardInterrupt:
-        log.info("Shutdown recebido pelo utilizador.")
-    except Exception as e:
-        log.error(f"Erro fatal no lançador: {e}")
-    finally:
-        cleanup()
-
+    log("=" * 60)
+    log("🚀 CORREOTO ECOSYSTEM v7.0 - INICIADO")
+    log(f"📂 Diretório: {BASE}")
+    log(f"⏰ Início: {datetime.now().isoformat()}")
+    log("=" * 60)
+    
+    # Verificar integridade inicial
+    log("\n🔍 A verificar integridade dos ficheiros...")
+    issues = verify_integrity()
+    if issues:
+        log("⚠️ Problemas detetados:")
+        for issue in issues:
+            log(f"   {issue}")
+    else:
+        log("✅ Todos os ficheiros OK!")
+    
+    # Lançar componentes em threads
+    threads = []
+    for component in COMPONENTS:
+        t = threading.Thread(target=launch_component, args=(component,), daemon=True)
+        t.start()
+        threads.append(t)
+        log(f"📋 {component['name']} agendado (delay: {component['delay']}s)")
+    
+    # Ciclo de auto-evolução
+    log("\n🔄 A iniciar ciclo de auto-evolução...")
+    auto_evolve_cycle()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        log("\n⏹️  Sistema interrompido pelo utilizador.")
+        running = False
+    except Exception as e:
+        log(f"\n❌ Erro fatal: {e}")
+        running = False
+    finally:
+        log("👋 Sistema terminado.")

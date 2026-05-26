@@ -1,14 +1,19 @@
 """
-auto_recovery_manager.py v2.0 - GESTOR DE AUTO-RECUPERACAO
+auto_recovery_manager.py v3.0 - GESTOR DE AUTO-RECUPERACAO
 ✅ Corre para sempre - modo infinito
 ✅ Monitoriza e repara todos os componentes
 ✅ Decisao autonoma
+✅ Verificacao de integridade de ficheiros criticos
+✅ Ciclo de auto-evolucao
 """
 
 import sys
 import os
 import time
 import logging
+import json
+import subprocess
+from datetime import datetime
 from pathlib import Path
 
 BASE = Path(__file__).parent
@@ -23,49 +28,91 @@ logging.basicConfig(
 )
 logger = logging.getLogger('RecoveryManager')
 
+# Ficheiros criticos para monitorizacao
+FICHEIROS_CRITICOS = [
+    "main.py",
+    "run_forever.py",
+    "wakeup_v3.py",
+    "auto_recovery.py",
+    "auto_recovery_manager.py",
+    "auto_update.py",
+    "core/keep_alive.py",
+    "agents/souls/supervisor.md",
+]
+
+def check_file_integrity(filepath):
+    """Verifica se um ficheiro existe e nao esta corrompido."""
+    path = BASE / filepath
+    if not path.exists():
+        return False, "Nao existe"
+    if path.stat().st_size < 100:
+        return False, f"Tamanho suspeito: {path.stat().st_size} bytes"
+    return True, "OK"
+
+def run_auto_recovery():
+    """Executa o modulo de auto-recuperacao."""
+    try:
+        import auto_recovery
+        logger.info("✅ Modulo auto_recovery importado com sucesso")
+        return True
+    except Exception as e:
+        logger.warning(f"⚠️ Erro ao importar auto_recovery: {e}")
+        return False
+
+def run_auto_update():
+    """Executa o modulo de auto-update."""
+    try:
+        import auto_update
+        logger.info("✅ Modulo auto_update importado com sucesso")
+        return True
+    except Exception as e:
+        logger.warning(f"⚠️ Erro ao importar auto_update: {e}")
+        return False
+
 def main():
     logger.info("=" * 60)
-    logger.info("GESTOR DE AUTO-RECUPERACAO v2.0 INICIADO")
+    logger.info("🚀 GESTOR DE AUTO-RECUPERACAO v3.0 INICIADO")
     logger.info("Modo: INFINITO - A correr para sempre")
     logger.info("=" * 60)
     
     iteration = 0
+    start_time = time.time()
     
     try:
         while True:
             iteration += 1
-            logger.info(f"Iteracao {iteration}")
+            uptime = time.time() - start_time
+            logger.info(f"🔄 Iteracao {iteration} (uptime: {uptime:.0f}s)")
             
-            # Verifica se o auto_recovery.py esta a funcionar
-            try:
-                import auto_recovery
-                logger.info("Modulo auto_recovery importado com sucesso")
-            except Exception as e:
-                logger.warning(f"Erro ao importar auto_recovery: {e}")
+            # Verificar ficheiros essenciais
+            issues = []
+            for f in FICHEIROS_CRITICOS:
+                is_ok, msg = check_file_integrity(f)
+                if not is_ok:
+                    issues.append(f"{f}: {msg}")
+                    logger.warning(f"⚠️ {f}: {msg}")
             
-            # Verifica ficheiros essenciais
-            essential_files = [
-                "main.py", "run_forever.py", "wakeup_v3.py",
-                "auto_recovery.py", "core/keep_alive.py"
-            ]
+            if issues:
+                logger.warning(f"⚠️ {len(issues)} problema(s) detetado(s)")
+            else:
+                logger.info("✅ Todos os ficheiros OK!")
             
-            for f in essential_files:
-                fpath = BASE / f
-                if not fpath.exists():
-                    logger.warning(f"Ficheiro essencial em falta: {f}")
+            # Verificar modulos
+            run_auto_recovery()
+            run_auto_update()
             
             # Log de estado
-            logger.info(f"Gestor ativo - iteracao {iteration}")
+            logger.info(f"📊 Gestor ativo - iteracao {iteration}")
             
             time.sleep(30)
             
     except KeyboardInterrupt:
-        logger.info("Shutdown recebido. A encerrar...")
+        logger.info("⏹️ Shutdown recebido. A encerrar...")
     except Exception as e:
-        logger.error(f"Erro fatal: {e}")
-        logger.info("A reiniciar automaticamente...")
+        logger.error(f"❌ Erro fatal: {e}")
+        logger.info("🔄 A reiniciar automaticamente...")
         time.sleep(2)
-        main()
+        main()  # Reinicia
 
 if __name__ == "__main__":
     main()

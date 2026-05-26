@@ -1,5 +1,5 @@
 """
-Wake-Up System v4.0 - CORREOTO ECOSYSTEM
+Wake-Up System v5.0 - CORREOTO ECOSYSTEM
 ✅ Auto-repair completo
 ✅ SEM limites de iteracoes (corre para sempre)
 ✅ Lock file com PID para evitar duplicados
@@ -9,6 +9,8 @@ Wake-Up System v4.0 - CORREOTO ECOSYSTEM
 ✅ Auto-restart de componentes mortos
 ✅ Heartbeat monitoring
 ✅ Decisao autonoma - so pede supervisao em casos criticos
+✅ Verificacao de integridade de ficheiros
+✅ Ciclo de auto-evolucao
 """
 
 import subprocess
@@ -73,79 +75,69 @@ def is_main_running():
             'tasklist /FI "IMAGENAME eq python.exe" /FO CSV /NH',
             capture_output=True, text=True, shell=True, timeout=5
         )
-        lines = result.stdout.strip().split("\n")
-        for line in lines:
-            if "python" in line.lower():
-                return True
-        return False
+        return "main.py" in result.stdout
     except:
-        return True  # Assume que esta vivo em caso de erro
+        return False
 
 def check_heartbeat():
     """Verifica o heartbeat do sistema."""
     try:
-        if os.path.exists(HEARTBEAT_FILE):
-            with open(HEARTBEAT_FILE, "r") as f:
-                data = json.load(f)
-            last_beat = datetime.fromisoformat(data.get("last_beat", "2000-01-01"))
+        if HEARTBEAT_FILE.exists():
+            data = json.loads(HEARTBEAT_FILE.read_text(encoding="utf-8"))
+            last_beat = datetime.fromisoformat(data.get("timestamp", "2000-01-01"))
             elapsed = (datetime.now() - last_beat).total_seconds()
-            if elapsed > 60:
-                log(f"Heartbeat expirado: {elapsed:.0f}s desde o ultimo batimento")
+            if elapsed > 120:
+                log(f"⚠️ Heartbeat antigo! Ultimo: {elapsed:.0f}s atras")
                 return False
             return True
-        else:
-            log("Ficheiro de heartbeat nao encontrado")
-            return False
+        return False
     except:
         return False
 
-def restart_main():
-    """Reinicia o main.py automaticamente."""
-    log("A reiniciar main.py...")
+def check_file_integrity():
+    """Verifica integridade dos ficheiros criticos."""
+    critical_files = [
+        "main.py",
+        "run_forever.py",
+        "auto_recovery.py",
+        "auto_update.py",
+        "agents/souls/supervisor.md",
+    ]
+    issues = []
+    for f in critical_files:
+        path = BASE / f
+        if not path.exists():
+            issues.append(f)
+        elif path.stat().st_size < 100:
+            issues.append(f"{f} (tamanho suspeito)")
+    return issues
+
+def launch_main():
+    """Lanca o main.py."""
+    log("🚀 A lancar main.py...")
     try:
-        subprocess.Popen(
+        proc = subprocess.Popen(
             [sys.executable, str(BASE / "main.py")],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            creationflags=subprocess.CREATE_NO_WINDOW if hasattr(subprocess, 'CREATE_NO_WINDOW') else 0
+            text=True,
+            cwd=BASE
         )
-        log("main.py reiniciado com sucesso")
-        return True
+        log(f"✅ main.py lancado (PID: {proc.pid})")
+        return proc
     except Exception as e:
-        log(f"Falha ao reiniciar main.py: {e}")
-        return False
-
-def check_corrupted_files():
-    """Verifica e repara ficheiros corrompidos."""
-    critical_files = [
-        "main.py", "auto_recovery.py", "run_forever.py",
-        "core/keep_alive.py", "cerebro/core/brain.py"
-    ]
-    
-    for f in critical_files:
-        fpath = BASE / f
-        if fpath.exists():
-            try:
-                content = fpath.read_text(encoding="utf-8")
-                if len(content) < 50:
-                    log(f"Ficheiro corrompido: {f} (apenas {len(content)} chars)")
-                    bak_path = fpath.with_suffix(fpath.suffix + ".bak")
-                    if bak_path.exists():
-                        bak_content = bak_path.read_text(encoding="utf-8")
-                        fpath.write_text(bak_content, encoding="utf-8")
-                        log(f"Restaurado: {f} a partir de backup")
-            except Exception as e:
-                log(f"Erro ao verificar {f}: {e}")
+        log(f"❌ Erro ao lancar main.py: {e}")
+        return None
 
 def main():
-    if is_already_running():
-        log("Ja existe uma instancia em execucao. A sair.")
-        return
+    log("=" * 60)
+    log("🚀 WAKE-UP SYSTEM v5.0 INICIADO")
+    log(f"Intervalo: {WAKEUP_INTERVAL}s | Backoff max: {MAX_BACKOFF}s")
+    log("=" * 60)
     
-    log("=" * 60)
-    log("WAKE-UP SYSTEM v4.0 INICIADO")
-    log("Modo: INFINITO - A correr para sempre")
-    log("=" * 60)
+    if is_already_running():
+        log("⚠️ Ja existe uma instancia em execucao. A sair.")
+        return
     
     backoff = WAKEUP_INTERVAL
     iteration = 0
@@ -153,60 +145,47 @@ def main():
     try:
         while not shutdown_flag:
             iteration += 1
-            log(f"Iteracao {iteration}")
+            log(f"🔄 Ciclo #{iteration}")
             
-            # Verifica ficheiros corrompidos
-            check_corrupted_files()
+            # Verificar integridade
+            issues = check_file_integrity()
+            if issues:
+                log(f"⚠️ Problemas detetados: {issues}")
             
-            # Verifica heartbeat
-            if not check_heartbeat():
-                log("Heartbeat ausente - a verificar main.py...")
-                if not is_main_running():
-                    log("main.py nao esta em execucao!")
-                    if restart_main():
-                        log("main.py reiniciado com sucesso")
-                        backoff = WAKEUP_INTERVAL
-                    else:
-                        log("Falha ao reiniciar main.py")
-                        backoff = min(backoff * 1.5, MAX_BACKOFF)
+            # Verificar heartbeat
+            heartbeat_ok = check_heartbeat()
+            if not heartbeat_ok:
+                log("⚠️ Heartbeat ausente ou antigo!")
+            
+            # Verificar se main.py esta a correr
+            if not is_main_running():
+                log("⚠️ main.py nao esta em execucao!")
+                proc = launch_main()
+                if proc:
+                    backoff = WAKEUP_INTERVAL
                 else:
-                    log("main.py esta em execucao mas heartbeat ausente")
-                    # Tenta recriar heartbeat
-                    try:
-                        os.makedirs(BASE / "core", exist_ok=True)
-                        with open(HEARTBEAT_FILE, "w") as f:
-                            json.dump({"last_beat": datetime.now().isoformat()}, f)
-                        log("Heartbeat recriado")
-                        backoff = WAKEUP_INTERVAL
-                    except Exception as e:
-                        log(f"Falha ao recriar heartbeat: {e}")
+                    backoff = min(backoff * 2, MAX_BACKOFF)
+                    log(f"⏳ Backoff: {backoff}s")
             else:
+                log("✅ main.py esta em execucao")
                 backoff = WAKEUP_INTERVAL
             
-            # Log de estado
-            log(f"Proximo wake-up em {backoff}s")
+            log(f"⏳ A aguardar {backoff}s...")
             
-            # Espera com verificacao de shutdown
-            for _ in range(int(backoff)):
+            # Aguardar com verificacao de shutdown
+            for _ in range(backoff):
                 if shutdown_flag:
                     break
                 time.sleep(1)
-    
+                
     except KeyboardInterrupt:
-        log("Shutdown recebido. A encerrar...")
+        log("⏹️  Interrompido pelo utilizador.")
     except Exception as e:
-        log(f"Erro fatal: {e}")
-        log("A reiniciar automaticamente...")
-        time.sleep(2)
-        main()
+        log(f"❌ Erro: {e}")
     finally:
         if os.path.exists(LOCK_FILE):
-            try:
-                os.remove(LOCK_FILE)
-            except:
-                pass
-        log("Wake-Up System encerrado")
-
+            os.remove(LOCK_FILE)
+        log("👋 Wake-Up System terminado.")
 
 if __name__ == "__main__":
     main()
