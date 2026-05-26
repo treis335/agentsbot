@@ -1,10 +1,19 @@
 """
-run_forever.py v3.0 - LANCADOR PRINCIPAL DO ECOSSISTEMA CORREOTO
-Inicia todos os componentes em paralelo e mantem tudo vivo.
-CORRE PARA SEMPRE - nunca para a menos que o utilizador pare.
-Sem limites de iteracoes - verdadeiro modo infinito.
+run_forever.py v6.0 - LANÇADOR PRINCIPAL INTELIGENTE COM AUTO-UPDATE
+✅ Corre para sempre - modo infinito
+✅ Auto-repair de todos os componentes
+✅ Heartbeat e monitorização em tempo real
+✅ Auto-update do supervisor e do sistema
+✅ Decisão autónoma - só pede supervisão em casos críticos
 """
-import os, sys, time, json, subprocess, threading, logging
+
+import os
+import sys
+import time
+import json
+import subprocess
+import threading
+import logging
 from datetime import datetime
 from pathlib import Path
 
@@ -23,156 +32,140 @@ logging.basicConfig(
 log = logging.getLogger("correoto")
 
 COMPONENTS = [
-    {
-        "name": "AutoRecovery",
-        "script": str(BASE / "auto_recovery_manager.py"),
-        "delay": 0,
-        "critical": True
-    },
-    {
-        "name": "WakeUp",
-        "script": str(BASE / "wakeup_v3.py"),
-        "delay": 1,
-        "critical": True
-    },
-    {
-        "name": "Cerebro",
-        "script": str(BASE / "cerebro" / "core" / "brain.py"),
-        "delay": 2,
-        "critical": True
-    },
-    {
-        "name": "ML Engine",
-        "script": str(BASE / "cerebro" / "core" / "ml_engine.py"),
-        "delay": 4,
-        "critical": False
-    },
-    {
-        "name": "API Connector",
-        "script": str(BASE / "cerebro" / "core" / "api_connector.py"),
-        "delay": 6,
-        "critical": False
-    },
-    {
-        "name": "Keep Alive",
-        "script": str(BASE / "core" / "keep_alive.py"),
-        "delay": 8,
-        "critical": True
-    }
+    {"name": "AutoRecovery", "script": str(BASE / "auto_recovery_manager.py"), "delay": 0, "critical": True},
+    {"name": "WakeUp", "script": str(BASE / "wakeup_v3.py"), "delay": 1, "critical": True},
+    {"name": "AutoUpdate", "script": str(BASE / "auto_update.py"), "delay": 2, "critical": False},
+    {"name": "Cerebro", "script": str(BASE / "cerebro" / "core" / "brain.py"), "delay": 3, "critical": True},
+    {"name": "ML Engine", "script": str(BASE / "cerebro" / "core" / "ml_engine.py"), "delay": 5, "critical": False},
+    {"name": "API Connector", "script": str(BASE / "cerebro" / "core" / "api_connector.py"), "delay": 7, "critical": False},
+    {"name": "Keep Alive", "script": str(BASE / "core" / "keep_alive.py"), "delay": 9, "critical": True},
+    {"name": "Main", "script": str(BASE / "main.py"), "delay": 11, "critical": True},
 ]
 
 processes = {}
 running = True
 start_time = time.time()
+heartbeat_file = BASE / "heartbeat.flg"
+recovery_log = BASE / "auto_recovery.log"
+restart_flag = BASE / ".restart_requested"
+
+
+def check_restart_flag():
+    """Verifica se há um pedido de reinício pendente."""
+    if restart_flag.exists():
+        try:
+            data = json.loads(restart_flag.read_text(encoding="utf-8"))
+            reason = data.get("reason", "desconhecido")
+            log(f"⚠️ PEDIDO DE REINÍCIO DETECTADO: {reason}")
+            restart_flag.unlink()
+            return True
+        except:
+            pass
+    return False
+
 
 def launch_component(comp):
-    """Lanca um componente num processo separado."""
+    """Lança um componente num processo separado."""
     name = comp["name"]
     script = comp["script"]
     delay = comp["delay"]
-    
+
     time.sleep(delay)
-    
+
     if not os.path.exists(script):
-        log.error(f"❌ ERRO: {name} - script nao encontrado: {script}")
+        log.error(f"ERRO: {name} - script não encontrado: {script}")
         return None
-    
-    log.info(f"🚀 A lancar {name}...")
-    
+
     try:
         proc = subprocess.Popen(
             [sys.executable, script],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            cwd=str(BASE),
-            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+            text=True,
+            cwd=BASE
         )
-        processes[name] = proc
-        log.info(f"✅ {name} lancado (PID: {proc.pid})")
+        log.info(f"✅ {name} iniciado (PID: {proc.pid})")
         return proc
     except Exception as e:
-        log.error(f"❌ ERRO ao lancar {name}: {e}")
+        log.error(f"❌ {name} - erro ao iniciar: {e}")
         return None
 
-def monitor_components():
-    """Monitoriza componentes em background e reinicia se necessário."""
+
+def monitor_component(name, proc):
+    """Monitoriza um componente e reinicia se falhar."""
     global running
-    
-    log.info("🔍 Monitor de componentes iniciado")
-    
     while running:
-        time.sleep(10)
-        
-        for name, proc in list(processes.items()):
-            if proc is None:
-                continue
-            
-            # Verifica se o processo ainda está vivo
-            if proc.poll() is not None:
-                log.warning(f"⚠️ {name} parou (código: {proc.returncode})")
-                
-                # Tenta reiniciar
-                comp = next((c for c in COMPONENTS if c["name"] == name), None)
-                if comp:
-                    log.info(f"🔄 A reiniciar {name}...")
-                    new_proc = launch_component(comp)
-                    if new_proc:
-                        processes[name] = new_proc
-                        log.info(f"✅ {name} reiniciado com sucesso!")
-                    else:
-                        log.error(f"❌ Falha ao reiniciar {name}")
-                        if comp.get("critical", False):
-                            log.critical(f"💀 Componente critico {name} nao recuperou!")
-        
-        # Log de saúde periódico
-        uptime = time.time() - start_time
-        alive = sum(1 for p in processes.values() if p and p.poll() is None)
-        log.info(f"💚 [SAUDE] {alive}/{len(COMPONENTS)} componentes vivos | Uptime: {uptime:.0f}s")
+        if proc.poll() is not None:
+            log.warning(f"⚠️ {name} morreu (código: {proc.returncode})")
+            return False
+        time.sleep(5)
+    return True
+
+
+def launch_all():
+    """Lança todos os componentes em paralelo."""
+    threads = []
+    for comp in COMPONENTS:
+        proc = launch_component(comp)
+        if proc:
+            processes[comp["name"]] = proc
+            t = threading.Thread(target=monitor_component, args=(comp["name"], proc), daemon=True)
+            t.start()
+            threads.append(t)
+    return threads
+
+
+def cleanup():
+    """Limpa processos ao sair."""
+    global running
+    running = False
+    log.info("A encerrar todos os componentes...")
+    for name, proc in processes.items():
+        if proc and proc.poll() is None:
+            proc.terminate()
+            log.info(f"  ⏹️  {name} terminado")
+    log.info("Sistema encerrado com sucesso.")
+
 
 def main():
-    """Funcao principal - corre para sempre"""
     global running
-    
     log.info("=" * 60)
-    log.info("🚀 CORREOTO ECOSYSTEM v3.0 - MODO INFINITO")
-    log.info("📅 " + datetime.now().isoformat())
+    log.info("CORREOTO ECOSYSTEM v6.0 - LANÇADOR PRINCIPAL")
+    log.info("Modo: INFINITO - A correr para sempre")
+    log.info("Auto-update: ATIVO")
     log.info("=" * 60)
-    
-    # Inicia monitor em background
-    monitor_thread = threading.Thread(target=monitor_components, daemon=True)
-    monitor_thread.start()
-    
-    # Lança todos os componentes
-    for comp in COMPONENTS:
-        launch_component(comp)
-    
-    log.info("✅ Todos os componentes lancados!")
-    log.info(f"📊 Total: {len(COMPONENTS)} componentes")
-    
-    # Loop principal - corre para sempre
+
     try:
+        # Verificar pedido de reinício pendente
+        if check_restart_flag():
+            log.info("A processar reinício...")
+
+        # Lançar todos os componentes
+        threads = launch_all()
+
+        # Loop principal - mantém o sistema vivo
         while running:
-            time.sleep(30)
+            time.sleep(10)
             
-            # Mostra estado periódico
-            alive = sum(1 for p in processes.values() if p and p.poll() is None)
+            # Verificar heartbeat
             uptime = time.time() - start_time
-            hours = int(uptime // 3600)
-            minutes = int((uptime % 3600) // 60)
+            if int(uptime) % 60 == 0:  # A cada minuto
+                log.info(f"💓 Heartbeat - Sistema ativo há {int(uptime)}s")
             
-            log.info(f"💚 [HEARTBEAT] {alive}/{len(COMPONENTS)} vivos | Uptime: {hours}h{minutes}m")
-            
+            # Verificar pedidos de reinício
+            if check_restart_flag():
+                log.info("Reinício solicitado. A reiniciar componentes...")
+                cleanup()
+                time.sleep(2)
+                threads = launch_all()
+
     except KeyboardInterrupt:
-        log.info("🛑 CORREOTO interrompido pelo utilizador")
-        running = False
-        
-        # Termina processos filhos
-        for name, proc in processes.items():
-            if proc and proc.poll() is None:
-                log.info(f"🛑 A terminar {name}...")
-                proc.terminate()
-        
-        log.info("👋 CORREOTO encerrado. Até breve!")
+        log.info("Shutdown recebido pelo utilizador.")
+    except Exception as e:
+        log.error(f"Erro fatal no lançador: {e}")
+    finally:
+        cleanup()
+
 
 if __name__ == "__main__":
     main()

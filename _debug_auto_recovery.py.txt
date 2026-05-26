@@ -1,0 +1,25 @@
+Ficheiro: auto_recovery.py
+Total chars: 7311
+Ultimos 300 chars:
+ TaskRunner parado")
+
+
+if __name__ == "__main__":
+    # Teste rápido
+    recovery = AutoRecoverySystem(max_iterations=None, cooldown_seconds=10)
+    runner = TaskRunner(recovery)
+    
+    try:
+        runner.run_forever()
+    except KeyboardInterrupt:
+        logger.info("👋 AutoRecovery encerrado")
+
+
+Tem 'if __name__': True
+Tem 'main()': False
+Ocorrencias de 'def ': 10
+Ocorrencias de 'class ': 2
+Ocorrencias de 'if __name__': 1
+Ocorrencias de 'main()': 0
+Ocorrencias de 'start()': 1
+Ocorrencias de 'run_forever': 3

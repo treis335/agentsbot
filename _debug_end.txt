@@ -1,0 +1,18 @@
+Total chars: 6281
+Ultimos 300 chars:
+")
+        running = False
+        for name, proc in processes.items():
+            if proc and proc.poll() is None:
+                proc.terminate()
+                log.info(f"⏹️ {name} terminado")
+        log.info("👋 Sistema encerrado.")
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
+
+
+Tem 'if __name__': True
+Tem 'main()': True
