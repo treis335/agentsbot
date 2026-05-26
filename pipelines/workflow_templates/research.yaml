@@ -1,0 +1,69 @@
+# pipelines/workflow_templates/research.yaml
+# Fluxo de investigação: pesquisar → sintetizar → documentar
+
+name: research
+description: "Fluxo de investigação e documentação — pesquisa, síntese, documentação"
+version: "1.0"
+initial_step: search
+
+steps:
+  - id: search
+    name: "Pesquisar"
+    agent_role: researcher
+    task_template: |
+      Pesquisa o seguinte tema no codebase e nos logs:
+
+      TEMA: {task}
+
+      Analisa:
+      1. Código existente relacionado (grep -r no src)
+      2. Logs recentes relevantes (memory/autonomous_log.md)
+      3. Falhas conhecidas relacionadas (memory/failure_memory.json)
+      4. Documentação existente (README, docs/)
+
+      Output: resumo do estado actual com referências a ficheiros específicos.
+    on_success: next
+    on_failure: fail
+    max_retries: 1
+
+  - id: synthesize
+    name: "Sintetizar"
+    agent_role: arquiteto
+    task_template: |
+      Com base na pesquisa, sintetiza os findings:
+
+      TEMA: {task}
+
+      PESQUISA:
+      {search_result}
+
+      Produz:
+      1. Estado actual (o que existe, o que falta)
+      2. Problemas identificados
+      3. Recomendações concretas (ordenadas por impacto)
+      4. Estimativa de esforço para implementar recomendações
+
+      Sê directo — sem padding, só o essencial.
+    on_success: next
+    on_failure: fail
+    max_retries: 1
+
+  - id: document
+    name: "Documentar"
+    agent_role: developer
+    task_template: |
+      Documenta os resultados da investigação:
+
+      TEMA: {task}
+      SÍNTESE: {synthesize_result}
+
+      Cria ou actualiza o ficheiro docs/research/{task_slug}.md com:
+      - Data e contexto
+      - Findings principais
+      - Recomendações
+      - Próximos passos sugeridos
+
+      Commita: git add docs/ && git commit -m "docs: research on {task_short}"
+    on_success: end
+    on_failure: fail
+    max_retries: 1

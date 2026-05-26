@@ -1,0 +1,83 @@
+# pipelines/workflow_templates/bug_fix.yaml
+# Fluxo de correcção de bugs: diagnosticar → patch → verificar → commit
+
+name: bug_fix
+description: "Fluxo de correcção de bugs — diagnóstico, patch, verificação, commit"
+version: "1.0"
+initial_step: diagnose
+
+steps:
+  - id: diagnose
+    name: "Diagnosticar"
+    agent_role: auto_fixer
+    task_template: |
+      Diagnostica o seguinte bug:
+
+      BUG: {task}
+
+      Analisa:
+      1. Qual é o erro exacto? (mensagem, traceback se disponível)
+      2. Em que ficheiro/função ocorre?
+      3. Qual é a causa-raiz (não o sintoma)?
+      4. Que contexto é necessário para reproduzir?
+
+      Output: diagnóstico estruturado com causa-raiz identificada.
+    on_success: next
+    on_failure: fail
+    max_retries: 1
+
+  - id: patch
+    name: "Aplicar Patch"
+    agent_role: developer
+    task_template: |
+      Corrige o bug identificado no diagnóstico:
+
+      BUG: {task}
+
+      DIAGNÓSTICO:
+      {diagnose_result}
+
+      Regras:
+      - Corrige apenas o que está errado — não refactorizar agora
+      - Mantém compatibilidade com o resto do código
+      - Adiciona comentário explicativo se a causa for não-óbvia
+      - Faz git diff antes de commitar para confirmar as alterações
+    on_success: next
+    on_failure: diagnose    # Se patch falha, rediagnostica
+    max_retries: 2
+
+  - id: verify
+    name: "Verificar Fix"
+    agent_role: qa_tester
+    task_template: |
+      Verifica que o bug foi corrigido:
+
+      BUG ORIGINAL: {task}
+      PATCH APLICADO: {patch_result}
+
+      Verifica:
+      1. O erro original já não ocorre
+      2. Sintaxe Python válida nos ficheiros modificados
+      3. Nenhuma regressão óbvia introduzida
+      4. Se havia teste a falhar, passa agora?
+
+      Output: VERIFICADO ou lista de problemas restantes.
+    on_success: next
+    on_failure: patch       # Se verificação falha, volta a patchar
+    max_retries: 1
+
+  - id: commit
+    name: "Commit Fix"
+    agent_role: developer
+    task_template: |
+      Commita a correcção:
+
+      BUG: {task}
+      VERIFICAÇÃO: {verify_result}
+
+      1. git add -A
+      2. git commit -m "fix: {task_short}"
+      3. git push origin main
+    on_success: end
+    on_failure: fail
+    max_retries: 2
