@@ -17,9 +17,13 @@ load_dotenv(BASE_DIR / ".env")
 class Config:
     """Configuracao centralizada e validada."""
 
-    # --- DeepSeek ---
+    # --- DeepSeek (LLM principal) ---
     DEEPSEEK_API_KEY: str = os.getenv("DEEPSEEK_API_KEY", "")
     DEEPSEEK_BASE_URL: str = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+
+    # --- LLM Agent settings ---
+    LLM_MAX_TOOL_ITERATIONS: int = int(os.getenv("LLM_MAX_TOOL_ITERATIONS", "5"))
+    LLM_MAX_HISTORY: int = int(os.getenv("LLM_MAX_HISTORY", "30"))
 
     # --- Telegram ---
     TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
