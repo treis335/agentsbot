@@ -41,12 +41,54 @@
       "decision": "Telegram: Continua",
       "context": "Telegram",
       "timestamp": "2026-05-26T15:44:15.339583"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continua,  pretendo que te tornes um verdadeiro LLM",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T15:53:40.302280"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continua",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T15:55:31.635488"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continua",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T16:01:11.361056"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continua",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T16:01:14.482011"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: Continua",
+      "context": "Limite de iterações atingido.",
+      "timestamp": "2026-05-26T16:11:04.345747"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continua",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T16:11:04.364009"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continua",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T16:17:10.066327"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-26T15:51:58.848914",
+    "last_start": "2026-05-26T16:23:29.290608",
     "agents_count": 20,
     "tasks_count": 0
   },
