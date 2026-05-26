@@ -1,0 +1,409 @@
+{
+  "gitsync": {
+    "skills": [
+      "aprendizagem continua",
+      "resolucao de problemas"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=aprendizagem+continua",
+      "https://www.google.com/search?q=resolucao+de+problemas"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.659129"
+  },
+  "codereviewer": {
+    "skills": [
+      "adaptacao",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=adaptacao",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.659176"
+  },
+  "explorador": {
+    "skills": [
+      "pesquisa online",
+      "analise de tendencias"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=pesquisa+online",
+      "https://www.google.com/search?q=analise+de+tendencias"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.659195"
+  },
+  "brainstormer": {
+    "skills": [
+      "inovacao",
+      "ideacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=inovacao",
+      "https://www.google.com/search?q=ideacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.659211"
+  },
+  "developer": {
+    "skills": [
+      "Git",
+      "testes"
+    ],
+    "fontes": [
+      "https://docs.github.com/",
+      "https://docs.pytest.org/"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679153"
+  },
+  "arquiteto": {
+    "skills": [
+      "microsservicos",
+      "clean architecture"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=microsservicos",
+      "https://www.google.com/search?q=clean+architecture"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679187"
+  },
+  "qa_tester": {
+    "skills": [
+      "integracao",
+      "TDD"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=integracao",
+      "https://www.google.com/search?q=TDD"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679205"
+  },
+  "documentador": {
+    "skills": [
+      "Markdown",
+      "documentacao tecnica"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=Markdown",
+      "https://www.google.com/search?q=documentacao+tecnica"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679223"
+  },
+  "supervisor": {
+    "skills": [
+      "gestao de equipas",
+      "coordenacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=gestao+de+equipas",
+      "https://www.google.com/search?q=coordenacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679238"
+  },
+  "auto_coder": {
+    "skills": [
+      "adaptacao",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=adaptacao",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679259"
+  },
+  "auto_fixer": {
+    "skills": [
+      "debugging",
+      "rollback"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=debugging",
+      "https://www.google.com/search?q=rollback"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679275"
+  },
+  "auto_optimizer": {
+    "skills": [
+      "otimizacao",
+      "profiling"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=otimizacao",
+      "https://www.google.com/search?q=profiling"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679292"
+  },
+  "auto_learner": {
+    "skills": [
+      "LLMs",
+      "Machine Learning"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=LLMs",
+      "https://www.google.com/search?q=Machine+Learning"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679309"
+  },
+  "system_rewriter": {
+    "skills": [
+      "adaptacao",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=adaptacao",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679328"
+  },
+  "auto_deployer": {
+    "skills": [
+      "resolucao de problemas",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679346"
+  },
+  "memory_architect": {
+    "skills": [
+      "JSON",
+      "memoria persistente"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=JSON",
+      "https://www.google.com/search?q=memoria+persistente"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679363"
+  },
+  "mestre_autonomo": {
+    "skills": [
+      "adaptacao",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=adaptacao",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679382"
+  },
+  "executor_total": {
+    "skills": [
+      "aprendizagem continua",
+      "resolucao de problemas"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=aprendizagem+continua",
+      "https://www.google.com/search?q=resolucao+de+problemas"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679401"
+  },
+  "auto_improver": {
+    "skills": [
+      "aprendizagem continua",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=aprendizagem+continua",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679419"
+  },
+  "jarvis_master": {
+    "skills": [
+      "resolucao de problemas",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679437"
+  },
+  "ui_architect": {
+    "skills": [
+      "resolucao de problemas",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679456"
+  },
+  "proactive_agent": {
+    "skills": [
+      "resolucao de problemas",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679475"
+  },
+  "operative_agent": {
+    "skills": [
+      "aprendizagem continua",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=aprendizagem+continua",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679493"
+  },
+  "system_reborn": {
+    "skills": [
+      "resolucao de problemas",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679511"
+  },
+  "nexus_engine": {
+    "skills": [
+      "aprendizagem continua",
+      "resolucao de problemas"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=aprendizagem+continua",
+      "https://www.google.com/search?q=resolucao+de+problemas"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679530"
+  },
+  "fullstack_dev": {
+    "skills": [
+      "FastAPI",
+      "CSS"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=FastAPI",
+      "https://www.google.com/search?q=CSS"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679547"
+  },
+  "data_scientist": {
+    "skills": [
+      "visualizacao",
+      "estatistica"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=visualizacao",
+      "https://www.google.com/search?q=estatistica"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.679564"
+  },
+  "devops_engineer": {
+    "skills": [
+      "Docker",
+      "deploy"
+    ],
+    "fontes": [
+      "https://docker-curriculum.com/",
+      "https://www.google.com/search?q=deploy"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695300"
+  },
+  "security_agent": {
+    "skills": [
+      "criptografia",
+      "OWASP"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=criptografia",
+      "https://www.google.com/search?q=OWASP"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695333"
+  },
+  "creative_director": {
+    "skills": [
+      "design",
+      "UX/UI"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=design",
+      "https://www.google.com/search?q=UX/UI"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695352"
+  },
+  "automation_bot": {
+    "skills": [
+      "scripts",
+      "workflows"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=scripts",
+      "https://www.google.com/search?q=workflows"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695370"
+  },
+  "frontend_expert": {
+    "skills": [
+      "resolucao de problemas",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695390"
+  },
+  "backend_expert": {
+    "skills": [
+      "aprendizagem continua",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=aprendizagem+continua",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695409"
+  },
+  "project_manager": {
+    "skills": [
+      "metodologias ageis",
+      "gestao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=metodologias+ageis",
+      "https://www.google.com/search?q=gestao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695426"
+  },
+  "fullstack_generator": {
+    "skills": [
+      "resolucao de problemas",
+      "aprendizagem continua"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=aprendizagem+continua"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695446"
+  },
+  "auto_stabilizer": {
+    "skills": [
+      "resolucao de problemas",
+      "adaptacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=resolucao+de+problemas",
+      "https://www.google.com/search?q=adaptacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695464"
+  },
+  "personalizador": {
+    "skills": [
+      "preferencias do utilizador",
+      "personalizacao"
+    ],
+    "fontes": [
+      "https://www.google.com/search?q=preferencias+do+utilizador",
+      "https://www.google.com/search?q=personalizacao"
+    ],
+    "ultima_atualizacao": "2026-05-26T00:54:02.695483"
+  }
+}

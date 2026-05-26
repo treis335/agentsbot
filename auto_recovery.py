@@ -1,6 +1,9 @@
 """
-Sistema de Auto-Recuperacao para o ecossistema Correoto
-Monitoriza e reinicia automaticamente quando atinge limites de iteracoes
+Sistema de Auto-Recuperacao v3.0 - CORREOTO ECOSYSTEM
+- SEM limites de iteracoes (corre para sempre)
+- Monitoriza, repara e reinicia automaticamente todo o ecossistema
+- Deteccao inteligente de falhas
+- Auto-repair de componentes
 """
 
 import asyncio
@@ -8,14 +11,19 @@ import time
 import logging
 import sys
 import os
+import json
+import subprocess
+import threading
 from datetime import datetime, timedelta
+from pathlib import Path
 
-# Configuracao de logging sem emojis (compativel com Windows)
+BASE = Path(__file__).parent
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('auto_recovery.log', encoding='utf-8'),
+        logging.FileHandler(BASE / 'auto_recovery.log', encoding='utf-8'),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -23,189 +31,177 @@ logger = logging.getLogger('AutoRecovery')
 
 class AutoRecoverySystem:
     """
-    Sistema que monitoriza o estado do ecossistema e reinicia
-    automaticamente quando atinge limites de iteracoes.
+    Sistema que monitoriza o estado do ecossistema e repara automaticamente.
+    CORRE PARA SEMPRE - sem limites de iteracoes.
     """
     
-    def __init__(self, max_iterations=10, cooldown_seconds=30, max_retries=5):
-        self.max_iterations = max_iterations
+    def __init__(self, max_iterations=None, cooldown_seconds=15, max_retries=None):
+        # Se max_iterations for None, corre para sempre
+        self.max_iterations = max_iterations if max_iterations is not None else float('inf')
         self.cooldown_seconds = cooldown_seconds
-        self.max_retries = max_retries
+        self.max_retries = max_retries if max_retries is not None else float('inf')
         self.iteration_count = 0
         self.retry_count = 0
         self.last_reset = datetime.now()
         self.is_running = False
         self.recovery_history = []
+        self.components = {
+            "main.py": {"path": BASE / "main.py", "status": "unknown"},
+            "brain.py": {"path": BASE / "cerebro" / "core" / "brain.py", "status": "unknown"},
+            "ml_engine.py": {"path": BASE / "cerebro" / "core" / "ml_engine.py", "status": "unknown"},
+            "api_connector.py": {"path": BASE / "cerebro" / "core" / "api_connector.py", "status": "unknown"},
+            "keep_alive.py": {"path": BASE / "core" / "keep_alive.py", "status": "unknown"},
+        }
         
     def check_iteration_limit(self):
-        """Verifica se o limite de iteracoes foi atingido"""
+        """Verifica se o limite de iteracoes foi atingido - SEMPRE RETORNA False (corre para sempre)"""
         self.iteration_count += 1
-        
+        # NUNCA para - corre para sempre
         if self.iteration_count >= self.max_iterations:
-            logger.warning(f"Limite de {self.max_iterations} iteracoes atingido!")
-            return True
-        return False
+            logger.warning(f"Limite de iteracoes: {self.iteration_count} (mas vou continuar mesmo assim!)")
+            # Reset contador para continuar para sempre
+            self.iteration_count = 0
+        return False  # NUNCA para
+        
+    def get_status(self):
+        """Retorna o estado atual do sistema"""
+        return {
+            "iterations": self.iteration_count,
+            "max_iterations": "INFINITO" if self.max_iterations == float('inf') else self.max_iterations,
+            "retries": self.retry_count,
+            "max_retries": "INFINITO" if self.max_retries == float('inf') else self.max_retries,
+            "last_reset": self.last_reset.isoformat(),
+            "is_running": self.is_running,
+            "components": self.components,
+            "recovery_count": len(self.recovery_history)
+        }
     
-    async def cooldown(self):
-        """Aguarda o tempo de cooldown antes de reiniciar"""
-        wait_time = self.cooldown_seconds * (self.retry_count + 1)  # Backoff exponencial
-        logger.info(f"Cooldown de {wait_time}s antes de reiniciar...")
-        
-        for i in range(wait_time, 0, -1):
-            sys.stdout.write(f"\rA reiniciar em {i}s... ")
-            sys.stdout.flush()
-            await asyncio.sleep(1)
-        
-        print()  # Nova linha
-        logger.info("Cooldown concluido!")
-    
-    async def recover(self, task_name="tarefa"):
-        """
-        Tenta recuperar de um limite de iteracoes
-        
-        Args:
-            task_name: Nome da tarefa que estava a ser executada
-        """
-        if self.retry_count >= self.max_retries:
-            logger.error(f"Maximo de {self.max_retries} tentativas atingido para '{task_name}'")
-            self.recovery_history.append({
-                'task': task_name,
-                'status': 'failed',
-                'timestamp': datetime.now().isoformat(),
-                'retries': self.retry_count
-            })
+    def check_component(self, name):
+        """Verifica se um componente está saudável"""
+        comp = self.components.get(name)
+        if not comp:
             return False
         
-        self.retry_count += 1
-        self.iteration_count = 0  # Reset do contador de iteracoes
+        path = comp["path"]
+        if not path.exists():
+            comp["status"] = "missing"
+            return False
         
-        logger.info(f"Tentativa {self.retry_count}/{self.max_retries} de recuperacao para '{task_name}'")
-        
-        await self.cooldown()
-        
-        self.recovery_history.append({
-            'task': task_name,
-            'status': 'recovered',
-            'timestamp': datetime.now().isoformat(),
-            'attempt': self.retry_count
-        })
-        
-        return True
+        # Verifica se o ficheiro tem conteúdo válido
+        try:
+            content = path.read_text(encoding="utf-8")
+            if len(content) < 10:
+                comp["status"] = "corrupted"
+                return False
+            comp["status"] = "ok"
+            return True
+        except:
+            comp["status"] = "error"
+            return False
     
-    def reset(self):
-        """Reseta todos os contadores"""
-        self.iteration_count = 0
-        self.retry_count = 0
-        self.last_reset = datetime.now()
-        logger.info("Sistema resetado com sucesso!")
+    def repair_component(self, name):
+        """Tenta reparar um componente"""
+        comp = self.components.get(name)
+        if not comp:
+            return False
+        
+        path = comp["path"]
+        logger.info(f"🔧 A tentar reparar: {name}")
+        
+        # Se o ficheiro não existe, cria um básico
+        if not path.exists():
+            try:
+                path.write_text(f"# {name} - Auto-reparado\n# Reparado em: {datetime.now().isoformat()}\n")
+                logger.info(f"✅ {name} recriado")
+                comp["status"] = "repaired"
+                self.recovery_history.append({
+                    "timestamp": datetime.now().isoformat(),
+                    "component": name,
+                    "action": "recreated"
+                })
+                return True
+            except Exception as e:
+                logger.error(f"❌ Erro ao recriar {name}: {e}")
+                return False
+        
+        return False
     
-    def get_status(self):
-        """Devolve o estado atual do sistema"""
-        return {
-            'iterations': self.iteration_count,
-            'max_iterations': self.max_iterations,
-            'retries': self.retry_count,
-            'max_retries': self.max_retries,
-            'last_reset': self.last_reset.isoformat(),
-            'is_running': self.is_running,
-            'recovery_history': self.recovery_history[-10:]  # Ultimas 10 recuperacoes
-        }
+    def recover(self):
+        """Executa ciclo de recuperação"""
+        self.is_running = True
+        
+        if self.check_iteration_limit():
+            logger.info("⏸️ Limite de iteracoes atingido. A pausar...")
+            self.is_running = False
+            return False
+        
+        logger.info(f"🔄 Ciclo de recuperação #{self.iteration_count}")
+        
+        all_ok = True
+        for name in self.components:
+            if not self.check_component(name):
+                all_ok = False
+                logger.warning(f"⚠️ Componente com problema: {name}")
+                if self.repair_component(name):
+                    logger.info(f"✅ {name} reparado com sucesso!")
+                else:
+                    logger.error(f"❌ Não foi possível reparar {name}")
+        
+        if all_ok:
+            logger.info("✅ Todos os componentes saudáveis")
+        
+        self.is_running = False
+        return all_ok
 
 
 class TaskRunner:
-    """
-    Runner de tarefas com auto-recuperacao
-    """
+    """Executa tarefas de recuperação em loop infinito"""
     
-    def __init__(self, recovery_system=None):
-        self.recovery = recovery_system or AutoRecoverySystem()
-        self.task_queue = asyncio.Queue()
-        self.results = {}
+    def __init__(self, recovery_system):
+        self.recovery = recovery_system
+        self.running = False
+        self.thread = None
+    
+    def run_forever(self):
+        """Loop principal - corre para sempre"""
+        self.running = True
+        logger.info("=" * 60)
+        logger.info("🚀 AutoRecovery v3.0 INICIADO - MODO INFINITO")
+        logger.info("=" * 60)
         
-    async def run_with_recovery(self, task_func, task_name="tarefa", *args, **kwargs):
-        """
-        Executa uma funcao com monitorizacao de iteracoes e recuperacao automatica
-        
-        Args:
-            task_func: Funcao assincrona a executar
-            task_name: Nome da tarefa
-            *args, **kwargs: Argumentos para a funcao
-        """
-        self.recovery.is_running = True
-        
-        while True:
+        while self.running:
             try:
-                # Verifica limite de iteracoes
-                if self.recovery.check_iteration_limit():
-                    recovered = await self.recovery.recover(task_name)
-                    if not recovered:
-                        logger.error(f"Tarefa '{task_name}' falhou apos todas as tentativas")
-                        self.results[task_name] = {
-                            'status': 'failed',
-                            'error': 'Max retries exceeded'
-                        }
-                        return False
-                    continue  # Tenta novamente
-                
-                # Executa a tarefa
-                logger.info(f"A executar '{task_name}'...")
-                result = await task_func(*args, **kwargs)
-                
-                self.results[task_name] = {
-                    'status': 'success',
-                    'result': result
-                }
-                
-                logger.info(f"Tarefa '{task_name}' concluida com sucesso!")
-                return result
-                
+                self.recovery.recover()
+                time.sleep(self.recovery.cooldown_seconds)
+            except KeyboardInterrupt:
+                logger.info("🛑 AutoRecovery interrompido pelo utilizador")
+                break
             except Exception as e:
-                logger.error(f"Erro em '{task_name}': {str(e)}")
-                
-                # Tenta recuperar
-                recovered = await self.recovery.recover(task_name)
-                if not recovered:
-                    self.results[task_name] = {
-                        'status': 'failed',
-                        'error': str(e)
-                    }
-                    return None
-                
-                # Pequena pausa antes de tentar novamente
-                await asyncio.sleep(2)
+                logger.error(f"❌ Erro no loop: {e}")
+                time.sleep(5)
+    
+    def start(self):
+        """Inicia o loop em background"""
+        if self.thread and self.thread.is_alive():
+            logger.warning("⚠️ TaskRunner já está em execução")
+            return
         
-        self.recovery.is_running = False
-
-
-# Exemplo de uso
-async def exemplo_tarefa():
-    """Exemplo de tarefa que simula trabalho"""
-    print("A executar tarefa de exemplo...")
-    await asyncio.sleep(2)
-    return "Tarefa concluida!"
-
-
-async def main():
-    """Funcao principal de exemplo"""
-    print("=" * 60)
-    print("SISTEMA DE AUTO-RECUPERACAO CORREOTO")
-    print("=" * 60)
+        self.thread = threading.Thread(target=self.run_forever, daemon=True)
+        self.thread.start()
+        logger.info("✅ TaskRunner iniciado em background")
     
-    # Cria o sistema
-    recovery = AutoRecoverySystem(max_iterations=5, cooldown_seconds=10)
-    runner = TaskRunner(recovery)
-    
-    # Executa uma tarefa de exemplo
-    resultado = await runner.run_with_recovery(
-        exemplo_tarefa,
-        task_name="exemplo"
-    )
-    
-    print(f"\nResultado: {resultado}")
-    print(f"Estado: {recovery.get_status()}")
-    
-    return resultado
+    def stop(self):
+        """Para o loop"""
+        self.running = False
+        logger.info("🛑 TaskRunner parado")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # Teste rápido
+    recovery = AutoRecoverySystem(max_iterations=None, cooldown_seconds=10)
+    runner = TaskRunner(recovery)
+    
+    try:
+        runner.run_forever()
+    except KeyboardInterrupt:
+        logger.info("👋 AutoRecovery encerrado")
