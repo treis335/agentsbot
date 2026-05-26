@@ -1,0 +1,113 @@
+{
+  "version": "1.0",
+  "description": "Declarative capability registry — maps agents to skills, keywords and task types",
+  "agents": {
+    "developer": {
+      "description": "Implementa código, cria módulos, APIs e scripts",
+      "skills": ["coding", "debugging", "api", "scripting", "algorithm"],
+      "keywords": ["implementar", "codigo", "programar", "funcao", "classe", "modulo",
+                   "api", "endpoint", "script", "algoritmo", "criar", "desenvolver",
+                   "escrever", "construir", "build", "feature", "implement", "code"],
+      "task_types": ["feature", "implementation", "script", "module"],
+      "base_score": 0,
+      "success_history_key": "developer"
+    },
+    "auto_fixer": {
+      "description": "Corrige bugs, erros e falhas no código",
+      "skills": ["bug_fixing", "error_analysis", "hotfix", "patch"],
+      "keywords": ["corrigir", "bug", "erro", "falha", "problema", "consertar",
+                   "reparar", "hotfix", "fix", "broken", "crash", "exception",
+                   "traceback", "error", "fail", "quebrado"],
+      "task_types": ["bug_fix", "hotfix", "error_correction"],
+      "base_score": 0,
+      "success_history_key": "auto_fixer"
+    },
+    "auto_optimizer": {
+      "description": "Otimiza performance, refatora e melhora código existente",
+      "skills": ["optimization", "refactoring", "performance", "profiling"],
+      "keywords": ["otimizar", "performance", "velocidade", "eficiencia", "refatorar",
+                   "melhorar", "acelerar", "optimize", "refactor", "slow", "lento",
+                   "pesado", "memory", "memoria", "throughput"],
+      "task_types": ["optimization", "refactoring", "performance"],
+      "base_score": 0,
+      "success_history_key": "auto_optimizer"
+    },
+    "arquiteto": {
+      "description": "Desenha arquitetura, estrutura e padrões de sistema",
+      "skills": ["architecture", "design_patterns", "system_design", "planning"],
+      "keywords": ["arquitetura", "estrutura", "desenhar", "padrao", "design",
+                   "escalabilidade", "solid", "refatorar_estrutura", "arquitetar",
+                   "planear", "modular", "separar", "organizar_codigo"],
+      "task_types": ["architecture", "design", "planning"],
+      "base_score": 0,
+      "success_history_key": "arquiteto"
+    },
+    "qa_tester": {
+      "description": "Cria e executa testes, valida qualidade",
+      "skills": ["testing", "qa", "validation", "test_writing"],
+      "keywords": ["testar", "teste", "qualidade", "validar", "cobertura", "unitario",
+                   "integracao", "regressao", "test", "coverage", "assert", "unittest",
+                   "pytest", "qa", "verificar", "check"],
+      "task_types": ["testing", "qa", "validation"],
+      "base_score": 0,
+      "success_history_key": "qa_tester"
+    },
+    "explorador": {
+      "description": "Pesquisa tecnologias, bibliotecas e soluções novas",
+      "skills": ["research", "exploration", "technology_scouting"],
+      "keywords": ["pesquisar", "explorar", "investigar", "nova_tecnologia", "biblioteca",
+                   "tendencia", "github", "descobrir", "research", "find", "buscar",
+                   "comparar", "avaliar", "estudar_opcoes"],
+      "task_types": ["research", "exploration", "evaluation"],
+      "base_score": 0,
+      "success_history_key": "explorador"
+    },
+    "documentador": {
+      "description": "Cria e atualiza documentação, READMEs e guias",
+      "skills": ["documentation", "writing", "readme", "guides"],
+      "keywords": ["documentar", "readme", "docs", "changelog", "guia", "tutorial",
+                   "markdown", "wiki", "docstring", "comment", "comentar", "explicar",
+                   "documentation", "escrever_docs"],
+      "task_types": ["documentation", "writing"],
+      "base_score": 0,
+      "success_history_key": "documentador"
+    },
+    "code_reviewer": {
+      "description": "Revisa código, faz auditorias e garante padrões",
+      "skills": ["code_review", "audit", "standards", "quality_check"],
+      "keywords": ["revisar", "review", "auditar", "inspecionar", "qualidade_codigo",
+                   "padroes", "code_review", "lint", "style", "standards", "verificar_codigo"],
+      "task_types": ["review", "audit"],
+      "base_score": 0,
+      "success_history_key": "code_reviewer"
+    },
+    "devops": {
+      "description": "Gere deploy, CI/CD, dependências e infraestrutura",
+      "skills": ["devops", "deployment", "ci_cd", "infrastructure", "dependencies"],
+      "keywords": ["devops", "deploy", "ci_cd", "dependencia", "ambiente", "infraestrutura",
+                   "docker", "configuracao", "requirements", "pip", "npm", "install",
+                   "pipeline", "github_actions", "servidor"],
+      "task_types": ["deployment", "infrastructure", "dependencies"],
+      "base_score": 0,
+      "success_history_key": "devops"
+    },
+    "supervisor": {
+      "description": "Coordena, delega e gere equipas de agentes",
+      "skills": ["coordination", "delegation", "management", "planning"],
+      "keywords": ["coordenar", "delegar", "gerir", "organizar", "planejar", "supervisar",
+                   "manage", "coordinate", "plan", "equipa", "team"],
+      "task_types": ["coordination", "management"],
+      "base_score": -5,
+      "success_history_key": "supervisor"
+    },
+    "aprendiz": {
+      "description": "Analisa padrões e aprende com o histórico do sistema",
+      "skills": ["learning", "analysis", "pattern_recognition"],
+      "keywords": ["aprender", "estudar", "analisar", "padrao", "tendencia", "evoluir",
+                   "melhoria_continua", "learn", "analyze", "pattern"],
+      "task_types": ["learning", "analysis"],
+      "base_score": -3,
+      "success_history_key": "aprendiz"
+    }
+  }
+}
