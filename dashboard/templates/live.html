@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentsBot — Live Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-serif;padding:0}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+header h1{color:#58a6ff;font-size:20px;font-weight:700;letter-spacing:-0.5px}
+header h1 span{color:#3fb950;font-size:13px;margin-left:8px;font-weight:400}
+.nav{display:flex;gap:4px}
+.nav a{padding:6px 14px;border-radius:6px;font-size:13px;text-decoration:none;color:#8b949e;transition:all .2s}
+.nav a:hover,.nav a.active{background:#21262d;color:#c9d1d9}
+.main{padding:24px;max-width:1400px;margin:0 auto}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:18px}
+.card-title{font-size:12px;color:#8b949e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;font-weight:600}
+.stat-value{font-size:32px;font-weight:700;color:#fff;line-height:1}
+.stat-sub{font-size:12px;color:#8b949e;margin-top:5px}
+.stat-green{color:#3fb950}
+.stat-yellow{color:#d29922}
+.stat-red{color:#f85149}
+.stat-blue{color:#58a6ff}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:8px 12px;font-size:11px;color:#8b949e;font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #21262d}
+td{padding:9px 12px;font-size:13px;border-bottom:1px solid #161b22}
+tr:hover td{background:#1c2128}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.badge-green{background:#3fb95018;color:#3fb950;border:1px solid #3fb95030}
+.badge-yellow{background:#d2992218;color:#d29922;border:1px solid #d2992230}
+.badge-red{background:#f8514918;color:#f85149;border:1px solid #f8514930}
+.badge-blue{background:#58a6ff18;color:#58a6ff;border:1px solid #58a6ff30}
+.badge-gray{background:#8b949e18;color:#8b949e;border:1px solid #8b949e30}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.dot-green{background:#3fb950;animation:pulse 2s infinite}
+.dot-gray{background:#8b949e}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Event Feed */
+#feed{height:340px;overflow-y:auto;font-family:'SF Mono',monospace;font-size:12px;padding:4px 0}
+#feed::-webkit-scrollbar{width:4px}
+#feed::-webkit-scrollbar-track{background:transparent}
+#feed::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+.event-line{padding:4px 12px;border-radius:4px;display:flex;gap:8px;align-items:baseline;line-height:1.5}
+.event-line:hover{background:#1c2128}
+.ev-time{color:#484f58;flex-shrink:0;font-size:11px}
+.ev-type{flex-shrink:0;font-weight:600}
+.ev-data{color:#8b949e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev-agent{color:#58a6ff}
+.ev-task{color:#3fb950}
+.ev-error{color:#f85149}
+.ev-tool{color:#d29922}
+.ev-bus{color:#a371f7}
+.ev-system{color:#8b949e}
+.feed-status{padding:8px 12px;font-size:11px;color:#484f58;text-align:center}
+
+/* Routing bar */
+.bar-wrap{background:#21262d;border-radius:4px;height:8px;overflow:hidden;margin-top:8px}
+.bar-fill{height:100%;background:#3fb950;border-radius:4px;transition:width .5s}
+.bar-label{display:flex;justify-content:space-between;font-size:11px;color:#8b949e;margin-top:4px}
+
+.section-title{font-size:13px;color:#8b949e;font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #21262d}
+.refresh-info{font-size:11px;color:#484f58;text-align:right;margin-bottom:8px}
+.empty{color:#484f58;font-size:13px;padding:20px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <h1>AgentsBot <span id="connStatus">● connecting…</span></h1>
+  <nav class="nav">
+    <a href="/" class="active">Live</a>
+    <a href="/costs">Custos</a>
+  </nav>
+</header>
+
+<div class="main">
+  <div class="refresh-info">Actualizado: <span id="lastUpdate">—</span></div>
+
+  <!-- KPIs -->
+  <div class="grid4">
+    <div class="card">
+      <div class="card-title">Agentes</div>
+      <div class="stat-value stat-blue" id="kAgents">—</div>
+      <div class="stat-sub" id="kAgentsActive">— activos</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Tarefas</div>
+      <div class="stat-value" id="kTasks">—</div>
+      <div class="stat-sub" id="kTasksPending">— pendentes</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Sucesso</div>
+      <div class="stat-value stat-green" id="kSuccess">—</div>
+      <div class="stat-sub">Taxa de sucesso</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Custo Hoje</div>
+      <div class="stat-value stat-yellow" id="kCost">—</div>
+      <div class="stat-sub" id="kTokens">— tokens</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- Event Feed -->
+    <div class="card">
+      <div class="section-title">
+        <span class="dot dot-green" id="feedDot"></span>
+        Feed de Eventos
+      </div>
+      <div id="feed"><div class="feed-status">A ligar ao feed…</div></div>
+    </div>
+
+    <!-- Routing stats -->
+    <div class="card">
+      <div class="section-title">Inference Router</div>
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:13px">Local (Ollama)</span>
+          <span class="badge badge-green" id="rLocal">—</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-fill" id="rBar" style="width:0%"></div></div>
+        <div class="bar-label"><span id="rLocalCalls">— chamadas</span><span id="rCloudCalls">— cloud</span></div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px">Poupança estimada</span>
+          <span class="stat-value stat-green" style="font-size:22px" id="rSavings">—</span>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:16px">Agentes</div>
+      <table id="agentsTable">
+        <thead><tr><th>Nome</th><th>Role</th><th>Estado</th></tr></thead>
+        <tbody><tr><td colspan="3" class="empty">A carregar…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tarefas -->
+  <div class="card">
+    <div class="section-title">Tarefas Recentes</div>
+    <table id="tasksTable">
+      <thead><tr><th>Título</th><th>Estado</th><th>Atribuído a</th><th>Prioridade</th></tr></thead>
+      <tbody><tr><td colspan="4" class="empty">A carregar…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080';
+let feedEvents = [];
+const MAX_FEED = 80;
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function fmt(v) { return v ?? '—'; }
+function fmtCost(c) { return c ? `$${Number(c).toFixed(4)}` : '$0.0000'; }
+function fmtNum(n) { return n != null ? Number(n).toLocaleString('pt') : '—'; }
+function timeStr(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('pt', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function statusBadge(s) {
+  const map = {
+    running:'green', healthy:'green', completed:'green', success:'green',
+    pending:'yellow', waiting:'yellow', idle:'gray',
+    failed:'red', error:'red', crashed:'red',
+  };
+  const cls = map[s?.toLowerCase()] || 'gray';
+  return `<span class="badge badge-${cls}">${s||'—'}</span>`;
+}
+
+// ── Event Feed ───────────────────────────────────────────────────────────────
+function evClass(type) {
+  if (!type) return 'ev-system';
+  if (type.includes('agent')) return 'ev-agent';
+  if (type.includes('task')) return 'ev-task';
+  if (type.includes('error') || type.includes('fail')) return 'ev-error';
+  if (type.includes('tool')) return 'ev-tool';
+  if (type.includes('pipeline') || type.includes('workflow')) return 'ev-bus';
+  return 'ev-system';
+}
+
+function renderEvent(ev) {
+  const t = timeStr(ev.timestamp);
+  const type = ev.type || 'unknown';
+  const data = ev.data ? JSON.stringify(ev.data).slice(0,80) : '';
+  return `<div class="event-line">
+    <span class="ev-time">${t}</span>
+    <span class="ev-type ${evClass(type)}">${type}</span>
+    <span class="ev-data">${data}</span>
+  </div>`;
+}
+
+function addToFeed(ev) {
+  feedEvents.unshift(ev);
+  if (feedEvents.length > MAX_FEED) feedEvents.pop();
+  const feed = document.getElementById('feed');
+  feed.innerHTML = feedEvents.map(renderEvent).join('');
+}
+
+function connectSSE() {
+  const feed = document.getElementById('feed');
+  const dot = document.getElementById('feedDot');
+  const status = document.getElementById('connStatus');
+
+  const es = new EventSource(`${API}/events`);
+
+  es.onopen = () => {
+    dot.className = 'dot dot-green';
+    status.textContent = '● online';
+    status.style.color = '#3fb950';
+    feed.innerHTML = '';
+  };
+
+  es.onmessage = (e) => {
+    try { addToFeed(JSON.parse(e.data)); } catch {}
+  };
+
+  es.onerror = () => {
+    dot.className = 'dot dot-gray';
+    status.textContent = '● offline';
+    status.style.color = '#f85149';
+    feed.innerHTML = '<div class="feed-status">Feed desligado. A reconectar…</div>';
+    es.close();
+    setTimeout(connectSSE, 5000);
+  };
+}
+
+// ── Data Polling ─────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const [agents, tasks, metrics, costs, routing] = await Promise.all([
+      fetch(`${API}/agents`).then(r=>r.json()).catch(()=>({})),
+      fetch(`${API}/tasks`).then(r=>r.json()).catch(()=>({})),
+      fetch(`${API}/metrics`).then(r=>r.json()).catch(()=>({})),
+      fetch(`${API}/costs`).then(r=>r.json()).catch(()=>({})),
+      fetch(`${API}/routing`).then(r=>r.json()).catch(()=>({})),
+    ]);
+
+    // KPIs
+    document.getElementById('kAgents').textContent = fmt(agents.total);
+    const active = (agents.agents||[]).filter(a=>a.status==='running').length;
+    document.getElementById('kAgentsActive').textContent = `${active} activos`;
+    document.getElementById('kTasks').textContent = fmt(tasks.total);
+    const pending = (tasks.tasks||[]).filter(t=>['pending','running'].includes(t.status)).length;
+    document.getElementById('kTasksPending').textContent = `${pending} pendentes`;
+    document.getElementById('kSuccess').textContent = (metrics.success_rate ?? 100) + '%';
+    const cost = costs.realtime_cost_usd ?? costs.total_cost_usd ?? 0;
+    document.getElementById('kCost').textContent = fmtCost(cost);
+    const tokens = metrics.token_usage?.total ?? 0;
+    document.getElementById('kTokens').textContent = `${fmtNum(tokens)} tokens`;
+
+    // Routing bar
+    const pctLocal = routing.pct_local ?? 0;
+    document.getElementById('rLocal').textContent = pctLocal + '%';
+    document.getElementById('rBar').style.width = pctLocal + '%';
+    document.getElementById('rLocalCalls').textContent = `${fmtNum(routing.local_calls)} local`;
+    document.getElementById('rCloudCalls').textContent = `${fmtNum(routing.cloud_calls)} cloud`;
+    document.getElementById('rSavings').textContent = (routing.estimated_savings_pct ?? 0) + '%';
+
+    // Agents table
+    const agTbody = document.querySelector('#agentsTable tbody');
+    const agList = agents.agents || [];
+    agTbody.innerHTML = agList.length
+      ? agList.map(a => `<tr>
+          <td style="font-weight:500">${a.name||a.id}</td>
+          <td><span style="color:#8b949e">${a.role||'—'}</span></td>
+          <td>${statusBadge(a.status)}</td>
+        </tr>`).join('')
+      : `<tr><td colspan="3" class="empty">Sem agentes</td></tr>`;
+
+    // Tasks table
+    const tkTbody = document.querySelector('#tasksTable tbody');
+    const tkList = (tasks.tasks || []).slice(0, 15);
+    tkTbody.innerHTML = tkList.length
+      ? tkList.map(t => `<tr>
+          <td style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.title||t.id}</td>
+          <td>${statusBadge(t.status)}</td>
+          <td style="color:#8b949e">${t.assigned_to||'—'}</td>
+          <td><span style="color:#8b949e">${t.priority??'—'}</span></td>
+        </tr>`).join('')
+      : `<tr><td colspan="4" class="empty">Sem tarefas</td></tr>`;
+
+    document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('pt');
+  } catch(e) { console.error('[Dashboard]', e); }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+connectSSE();
+loadData();
+setInterval(loadData, 5000);
+</script>
+</body>
+</html>
