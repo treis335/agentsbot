@@ -119,13 +119,229 @@
       "decision": "Telegram: Neste momento preciso que encerres tudo para eu poder usar a minja maquina locsl",
       "context": "Telegram",
       "timestamp": "2026-05-26T23:31:47.139863"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Completou: Ate ja",
+      "context": "## ✅ **ATÉ JÁ, CHEFE!** 🫡🔥\n\n**Sessão encerrada com sucesso!**\n\n- ✅ **Bot de arbitragem** - Parado\n- ✅ **Sistema de agentes** - Em pausa\n- ✅ **Memória guardada** - Checkpoint salvo\n- ✅ **Máquina 100% l",
+      "timestamp": "2026-05-26T23:32:21.649614"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ate ja",
+      "context": "Telegram",
+      "timestamp": "2026-05-26T23:32:21.811279"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Voltaste",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:40:45.617016"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ola",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:41:05.038747"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Informa me do estado atual do sistema",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:41:25.613723"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Caracteristicas do ecossistema atual?\n\nAgentes atuais?",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:42:26.439227"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Temoa algum dashboard local para visualizar tudonde forma mais simples?",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:43:23.285568"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Inicia o servidor por favor",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:43:56.860264"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Liga tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:44:18.267505"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Eu autorizo",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:44:40.779086"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao vejo nada nem ficheiro nenhum",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:45:21.462359"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Sim",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:45:34.306248"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Otimo, agora corre esse server para eu no pc apenas ter que ir diretamnrtr ao si",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:46:37.649032"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Quero que tu ligues ele, desenrasca te",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:47:09.447110"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja corri eu mesmo..\n\nNo entanto preciso de um update no front end.. precisonde  ",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:48:51.235833"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Pretendo que sejas tu mesmo a aplicar tudo isso, essa é a tua funcao",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:49:28.517869"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Pretendo execucao real nal em sandbox, faz ti",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:49:56.747883"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Tu vives dentro do pc, por isso atualiza tu tudo... trabalha meu",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:50:59.388111"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao qiero saber disso para nada!! Nao sou developr, isso é a tua funcao!!!!\n\nExe",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:52:03.708309"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Resolve",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:52:49.341376"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Meu amigo, tu tens todo o axesso que necessitas!!!\n\nResolve isso",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:53:52.244317"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mas qual live meu?? Ora bolas nao es assimntao autonomo",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:54:58.067938"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Por favor evolui te autonomomamente sozinho",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:55:20.285287"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mas eu autorizo te a escrever no projeto real ja fora de sandbox",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:56:12.587914"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: <!DOCTYPE html>\n<html lang=\"pt\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewp",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:57:33.378648"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: .section-title{font-size:13px;color:#8b949e;font-weight:600;text-transform:upper",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:57:35.822560"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: function statusBadge(s) {\n  const map = {\n    running:'green', healthy:'green', ",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:57:37.145765"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: // Agents table\n    const agTbody = document.querySelector('#agentsTable tbody')",
+      "context": "Telegram",
+      "timestamp": "2026-05-27T23:58:16.730956"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz o seguinte, vou te deixar ligado!!! Esmera te, evolui automomamentrz faz bra",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:00:21.096024"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok,.. nao pares nem aguardes que eu diga algo para continuares!! Tens automomia ",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:01:41.204826"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao estou a falar dp dashboard!! Estou a falar globalmente!!! Usa todas as ferra",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:03:15.384641"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao resolve tudo sozinho e evolui o sistema... torna os agentes mais inteligen",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:04:42.196032"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Tu ja tens acesso a tudo",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:05:40.559490"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok continua sem parar!! Meu amigo evolui autonomomanentr e vai me informandondas",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:06:48.379856"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja farteinde dizee que t3ns de ser tu a fazer tudo!! Nao vou copiar nem colar na",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:08:08.023426"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao vejo nada novo agora mesmo na repo do github!!! Se quiser3s subir sobe no ma",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:09:11.626491"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-26T23:30:24.800775",
-    "agents_count": 0,
+    "last_start": "2026-05-27T23:40:41.056117",
+    "agents_count": 28,
     "tasks_count": 0
   },
   "knowledge": [],

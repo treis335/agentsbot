@@ -49,16 +49,16 @@ def load_real_data():
                             "model": info.get("model", "deepseek-chat"),
                             "last_active": info.get("last_active", "never")
                         })
-    except Exception as e:
-        data["agents"] = [
-            {"name": "Supervisor", "status": "running", "type": "core", "tasks_completed": 47},
-            {"name": "Developer", "status": "idle", "type": "code", "tasks_completed": 23},
-            {"name": "Arquiteto", "status": "running", "type": "design", "tasks_completed": 12},
-            {"name": "Auto-Fixer", "status": "idle", "type": "fix", "tasks_completed": 89},
-            {"name": "Auto-Evolver", "status": "idle", "type": "evolve", "tasks_completed": 5},
-            {"name": "QA Tester", "status": "running", "type": "test", "tasks_completed": 34},
-            {"name": "Gestor Memória", "status": "idle", "type": "memory", "tasks_completed": 18}
-        ]
+        except Exception as e:
+            data["agents"] = [
+                {"name": "Supervisor", "status": "running", "type": "core", "tasks_completed": 47},
+                {"name": "Developer", "status": "idle", "type": "code", "tasks_completed": 23},
+                {"name": "Arquiteto", "status": "running", "type": "design", "tasks_completed": 12},
+                {"name": "Auto-Fixer", "status": "idle", "type": "fix", "tasks_completed": 89},
+                {"name": "Auto-Evolver", "status": "idle", "type": "evolve", "tasks_completed": 5},
+                {"name": "QA Tester", "status": "running", "type": "test", "tasks_completed": 34},
+                {"name": "Gestor Memória", "status": "idle", "type": "memory", "tasks_completed": 18}
+            ]
     
     # 2. Tenta ler logs recentes para atividade
     logs_path = os.path.join(base_path, "logs")

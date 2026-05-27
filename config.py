@@ -24,4 +24,4 @@ MASTER_MEMORY_FILE = os.path.join(MEMORY_DIR, "master_context.json")
 LOG_LEVEL          = os.getenv("LOG_LEVEL", "INFO")
 AGENT_INTERVAL     = int(os.getenv("AGENT_INTERVAL", "300"))
 
-print(f"✅ Config carregada - REPO_LOCAL_PATH = {REPO_LOCAL_PATH}")/Desktop/Agente Local")
+print(f"✅ Config carregada - REPO_LOCAL_PATH = {REPO_LOCAL_PATH}")

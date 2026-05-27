@@ -430,23 +430,19 @@ async def cmd_auto_backlog(update, context):
     if not pending:
         msg = "📭 Backlog vazio — agentes em brainstorm!"
     else:
-        lines = [f"📋 Backlog ({len(pending)} pendentes):
-"]
+        lines = [f"📋 Backlog ({len(pending)} pendentes):\n"]
         for i, t in enumerate(pending[:10], 1):
             lines.append(f"{i}. [{t['priority']}⭐] {t['title']}")
         if done:
-            lines.append(f"
-✅ Concluídas: {len(done)}")
-        msg = "
-".join(lines)
+            lines.append(f"\n✅ Concluídas: {len(done)}")
+        msg = "\n".join(lines)
     await _send(update, msg)
 
 
 async def cmd_auto_task(update, context):
     """Adicionar tarefa urgente: /tarefa Título | Descrição"""
     if not context.args:
-        await _send(update, "Uso: /tarefa Título | Descrição
-Ex: /tarefa Melhorar logs | Adicionar rotação automática de logs")
+        await _send(update, "Uso: /tarefa Título | Descrição\nEx: /tarefa Melhorar logs | Adicionar rotação automática de logs")
         return
     text = " ".join(context.args)
     parts = text.split("|", 1)
@@ -454,8 +450,6 @@ Ex: /tarefa Melhorar logs | Adicionar rotação automática de logs")
     description = parts[1].strip() if len(parts) > 1 else title
     if _auto_loop:
         task = _auto_loop.add_priority_task(title, description)
-        await _send(update, f"✅ Tarefa urgente adicionada!
-📌 {title}
-Será executada no próximo ciclo.")
+        await _send(update, f"✅ Tarefa urgente adicionada!\n📌 {title}\nSerá executada no próximo ciclo.")
     else:
         await _send(update, "⚠️ Loop autónomo não iniciado.")
