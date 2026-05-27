@@ -65,6 +65,14 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._handle_memory()
             elif path in ("/audit", "/api/audit"):
                 self._handle_audit()
+            elif path in ("/costs", "/api/costs"):
+                self._handle_costs(params)
+            elif path in ("/traces", "/api/traces"):
+                self._handle_traces(params)
+            elif path in ("/events", "/api/events"):
+                self._handle_events_sse()
+            elif path in ("/routing", "/api/routing"):
+                self._handle_routing_stats()
             else:
                 self._send_error("Endpoint nao encontrado", 404)
         except Exception as e:
@@ -194,6 +202,72 @@ class APIHandler(BaseHTTPRequestHandler):
         # Sinalizar shutdown em background
         import threading
         threading.Thread(target=self.server.shutdown, daemon=True).start()
+
+    def _handle_costs(self, params: dict) -> None:
+        """GET /api/costs — custos acumulados por agente/modelo."""
+        from monitoring.agent_trace import cost_summary
+        days = int(params.get("days", ["1"])[0])
+        days = min(max(days, 1), 30)  # clamp 1-30
+        data = cost_summary(days=days)
+        # Enriquecer com dados in-memory do MetricsCollector
+        try:
+            report = self.server._metrics.get_report()
+            data["realtime_cost_usd"] = report["token_usage"].get("total_cost_usd", 0.0)
+            data["realtime_tokens"] = report["token_usage"]["total"]
+            data["by_model_realtime"] = report["token_usage"].get("by_model", {})
+        except Exception:
+            pass
+        self._send_json(data)
+
+    def _handle_traces(self, params: dict) -> None:
+        """GET /api/traces — traces de execução dos agentes."""
+        from monitoring.agent_trace import load_traces
+        days = int(params.get("days", ["1"])[0])
+        limit = int(params.get("limit", ["50"])[0])
+        agent = params.get("agent", [None])[0]
+        traces = load_traces(days=days, agent_name=agent, limit=limit)
+        self._send_json({"traces": traces, "total": len(traces)})
+
+    def _handle_events_sse(self) -> None:
+        """
+        GET /api/events — Server-Sent Events live feed do event bus.
+        Envia os últimos eventos e fica à escuta de novos via bus history.
+        Para clientes SSE (dashboard live).
+        """
+        from core.bus import bus
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("X-Accel-Buffering", "no")
+        self.end_headers()
+
+        try:
+            # Enviar histórico recente (últimos 20 eventos)
+            history = bus.get_history(limit=20)
+            for event in history:
+                data = json.dumps(event, ensure_ascii=False, default=str)
+                self.wfile.write(f"data: {data}\n\n".encode("utf-8"))
+                self.wfile.flush()
+
+            # Heartbeat para manter a ligação aberta
+            import time
+            for _ in range(30):  # max 30s de stream
+                time.sleep(1)
+                self.wfile.write(b": heartbeat\n\n")
+                self.wfile.flush()
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # cliente desligou
+        except Exception as e:
+            logger.debug(f"[API/SSE] Ligação terminada: {e}")
+
+    def _handle_routing_stats(self) -> None:
+        """GET /api/routing — estatísticas do inference router (local vs cloud)."""
+        try:
+            from inference.router import router
+            self._send_json(router.stats())
+        except Exception as e:
+            self._send_json({"error": str(e), "local_calls": 0, "cloud_calls": 0})
 
     def log_message(self, format, *args):
         logger.debug(f"[API] {args[0]} {args[1]} {args[2]}")

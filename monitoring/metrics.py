@@ -101,24 +101,51 @@ class MetricsCollector:
 
         self._save()
 
+    # Preços por 1000 tokens (USD) — Batch 8
+    _MODEL_PRICES: dict = {
+        "deepseek-chat":     0.00027,
+        "deepseek-reasoner": 0.00055,
+        "qwen2.5-coder:7b":  0.0,
+        "qwen2.5-coder:14b": 0.0,
+        "llama3.2:3b":       0.0,
+        "mistral:7b":        0.0,
+    }
+
     def track_token_usage(self, agent: str, model: str,
                           prompt_tokens: int, completion_tokens: int) -> None:
-        """Regista uso de tokens."""
+        """Regista uso de tokens e actualiza custo estimado."""
         d = self._data
         d["token_usage"]["total_prompt_tokens"] += prompt_tokens
         d["token_usage"]["total_completion_tokens"] += completion_tokens
 
         # Por modelo
         if model not in d["token_usage"]["by_model"]:
-            d["token_usage"]["by_model"][model] = {"prompt": 0, "completion": 0}
+            d["token_usage"]["by_model"][model] = {"prompt": 0, "completion": 0, "cost_usd": 0.0}
         d["token_usage"]["by_model"][model]["prompt"] += prompt_tokens
         d["token_usage"]["by_model"][model]["completion"] += completion_tokens
 
+        # Custo estimado por modelo
+        price = self._MODEL_PRICES.get(model, 0.00027)
+        call_cost = round(price * (prompt_tokens + completion_tokens) / 1000, 6)
+        d["token_usage"]["by_model"][model]["cost_usd"] = round(
+            d["token_usage"]["by_model"][model]["cost_usd"] + call_cost, 6
+        )
+
         # Por agente
         if agent not in d["token_usage"]["by_agent"]:
-            d["token_usage"]["by_agent"][agent] = {"prompt": 0, "completion": 0}
+            d["token_usage"]["by_agent"][agent] = {"prompt": 0, "completion": 0, "cost_usd": 0.0}
         d["token_usage"]["by_agent"][agent]["prompt"] += prompt_tokens
         d["token_usage"]["by_agent"][agent]["completion"] += completion_tokens
+        d["token_usage"]["by_agent"][agent]["cost_usd"] = round(
+            d["token_usage"]["by_agent"][agent]["cost_usd"] + call_cost, 6
+        )
+
+        # Custo total acumulado
+        if "total_cost_usd" not in d["token_usage"]:
+            d["token_usage"]["total_cost_usd"] = 0.0
+        d["token_usage"]["total_cost_usd"] = round(
+            d["token_usage"]["total_cost_usd"] + call_cost, 6
+        )
 
         self._save()
 
@@ -147,7 +174,7 @@ class MetricsCollector:
         }
 
     def get_report(self) -> dict:
-        """Gera relatorio completo de metricas."""
+        """Gera relatório completo de métricas incluindo custos estimados."""
         return {
             "tool_calls": {
                 "total": self._data["tool_calls"]["total"],
@@ -159,7 +186,9 @@ class MetricsCollector:
                 "total_completion": self._data["token_usage"]["total_completion_tokens"],
                 "total": (self._data["token_usage"]["total_prompt_tokens"] +
                           self._data["token_usage"]["total_completion_tokens"]),
+                "total_cost_usd": self._data["token_usage"].get("total_cost_usd", 0.0),
                 "by_model": self._data["token_usage"]["by_model"],
+                "by_agent": self._data["token_usage"].get("by_agent", {}),
             },
             "errors": self._data["errors"],
             "success_rate": self._calculate_success_rate(),
