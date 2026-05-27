@@ -365,6 +365,78 @@
       "decision": "Telegram: Ok entao o que faço no terminal?",
       "context": "Telegram",
       "timestamp": "2026-05-28T00:14:15.724277"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local>  git add -A && git commit -m \"Auto",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:30:38.484917"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Rewrite b9bcf01718e6850c6171ab5f66a48ff629b0801a (4/54) (1 seconds passed, remai",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:30:40.390671"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Rewrite 92b6e140b4631e6993187db6cfd8fb73882177ba (31/54) (14 seconds passed, rem",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:30:42.143266"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ref 'refs/heads/feat/auto-evolucao-v2-completa' was rewritten\nRef 'refs/heads/fe",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:30:45.331805"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local>  git add -A && git commit -m \"Auto",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:31:40.149977"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Rewrite b9bcf01718e6850c6171ab5f66a48ff629b0801a (4/54) (1 seconds passed, remai",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:31:42.963950"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Rewrite 92b6e140b4631e6993187db6cfd8fb73882177ba (31/54) (14 seconds passed, rem",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:31:45.275499"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ref 'refs/heads/feat/auto-evolucao-v2-completa' was rewritten\nRef 'refs/heads/fe",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:31:49.113457"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local>  python auto_evolve_loop.py\n[2026-",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:33:14.173796"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: meu caro faz apenas a linha para copiar e colar nmo meu terminal",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:33:37.088100"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: PS C:\\Users\\Crypto Bull\\Desktop\\Agente Local>  python -c \"import json; agents=[{",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:34:16.395972"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: vai me mantendo apenas informado aqui da evolução",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T00:35:08.974101"
     }
   ],
   "discoveries": [],
