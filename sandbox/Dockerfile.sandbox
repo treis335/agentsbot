@@ -1,0 +1,35 @@
+# sandbox/Dockerfile.sandbox
+# Imagem base mínima para execução segura de código dos agentes.
+#
+# Build: docker build -t sandbox-agentsbot:latest -f sandbox/Dockerfile.sandbox sandbox/
+# Run:   docker run --rm --network none --read-only --memory=256m sandbox-agentsbot:latest python3 /sandbox/script.py
+
+FROM python:3.11-slim
+
+# Não instalar pip extras desnecessários
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+# Utilizador sem privilégios
+RUN groupadd -r sandbox && useradd -r -g sandbox -s /bin/false sandbox
+
+# Dependências mínimas para execução de scripts
+RUN pip install --no-cache-dir \
+    requests==2.31.0 \
+    pyyaml==6.0.1 \
+    python-dotenv==1.0.0
+
+# Remover ferramentas desnecessárias que poderiam ser exploradas
+RUN apt-get purge -y --auto-remove \
+        wget curl gcc g++ make \
+    2>/dev/null || true
+
+# Directório de trabalho isolado
+RUN mkdir -p /sandbox && chown sandbox:sandbox /sandbox
+WORKDIR /sandbox
+
+# Correr como utilizador sem privilégios
+USER sandbox
+
+# Sem CMD — o comando é passado no docker run

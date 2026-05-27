@@ -286,6 +286,20 @@ def _list_files(subdir: str = "") -> str:
 
 
 async def _run_python(code: str, timeout: int = 30) -> str:
+    """Executa Python — usa sandbox se SANDBOX_ENABLED=true (Batch 7)."""
+    try:
+        from core.config import Config
+        if Config.SANDBOX_ENABLED:
+            from sandbox.docker_runner import run_python_sandboxed
+            from sandbox.result_parser import parse_result
+            actual_timeout = timeout or Config.SANDBOX_TIMEOUT
+            result = await run_python_sandboxed(code, timeout=actual_timeout)
+            return parse_result(result)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"[fs_tools] Sandbox falhou, usando fallback: {e}")
+
+    # Execução directa (sandbox desactivado ou falhou)
     with tempfile.NamedTemporaryFile(suffix=".py", mode="w", delete=False, encoding="utf-8") as f:
         f.write(code)
         fname = f.name
@@ -313,9 +327,24 @@ async def _run_python(code: str, timeout: int = 30) -> str:
 
 
 async def _run_shell(command: str, timeout: int = 60) -> str:
+    """Executa shell — usa sandbox se SANDBOX_ENABLED=true (Batch 7)."""
     if not is_safe_command(command):
         return "❌ Comando bloqueado por razões de segurança."
     _ensure_repo()
+
+    try:
+        from core.config import Config
+        if Config.SANDBOX_ENABLED:
+            from sandbox.docker_runner import run_shell_sandboxed
+            from sandbox.result_parser import parse_result
+            actual_timeout = timeout or Config.SANDBOX_TIMEOUT
+            result = await run_shell_sandboxed(command, timeout=actual_timeout)
+            return parse_result(result)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"[fs_tools] Sandbox shell falhou, usando fallback: {e}")
+
+    # Execução directa (sandbox desactivado ou falhou)
     try:
         proc = await asyncio.create_subprocess_shell(
             command,

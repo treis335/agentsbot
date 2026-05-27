@@ -66,6 +66,13 @@ class Config:
     OLLAMA_TIMEOUT: int = int(os.getenv("OLLAMA_TIMEOUT", "120"))
     DEEPSEEK_MODEL: str = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
 
+    # --- Batch 7: Sandbox Execution ---
+    SANDBOX_ENABLED: bool = os.getenv("SANDBOX_ENABLED", "false").lower() == "true"
+    SANDBOX_TIMEOUT: int = int(os.getenv("SANDBOX_TIMEOUT", "30"))
+    SANDBOX_MEMORY_MB: int = int(os.getenv("SANDBOX_MEMORY_MB", "256"))
+    # SANDBOX_ENABLED=true  → usa Docker/firejail quando disponível
+    # SANDBOX_ENABLED=false → usa subprocess restrito (fallback seguro)
+
     # --- Validacao ---
     @classmethod
     def validate(cls) -> list[str]:
