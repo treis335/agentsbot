@@ -18,6 +18,7 @@ from pathlib import Path
 CYCLE_INTERVAL_MINUTES = 15        # Ciclo principal (acordar + trabalhar)
 BRAINSTORM_INTERVAL_CYCLES = 4     # Brainstorm a cada N ciclos sem tarefas
 MAX_TASKS_PER_CYCLE = 2            # Máximo de tarefas por ciclo
+SELF_IMPROVE_INTERVAL_CYCLES = 10  # Batch 9: auto-análise a cada N ciclos
 MEMORY_DIR = Path("memory")
 BACKLOG_FILE = MEMORY_DIR / "backlog.json"
 LOG_FILE = MEMORY_DIR / "autonomous_log.md"
@@ -365,6 +366,129 @@ class AutonomousLoop:
                 f"\n\nTotal concluídas: {self.tasks_completed}"
             )
             self._notify_joel(report)
+
+        # Batch 9: Self-Improvement Loop — a cada N ciclos
+        if self.cycle_count % SELF_IMPROVE_INTERVAL_CYCLES == 0:
+            self._run_self_improvement()
+
+    def _run_self_improvement(self):
+        """
+        Batch 9 — Self-Improvement Loop.
+
+        A cada SELF_IMPROVE_INTERVAL_CYCLES ciclos:
+        1. Analisa logs de falhas (local, sem API)
+        2. Propõe melhorias (1 chamada DeepSeek para casos complexos)
+        3. Gera patches para melhorias simples
+        4. Valida patches (sintaxe, search_str)
+        5. Regista no changelog_auto.md
+        """
+        log(f"[Self-Improve] A iniciar ciclo de auto-análise (ciclo #{self.cycle_count})", "INFO")
+        try:
+            from evolution.log_analyzer import LogAnalyzer
+            from evolution.improvement_proposer import ImprovementProposer
+            from evolution.patch_generator import PatchGenerator
+            from evolution.patch_validator import PatchValidator
+
+            # 1. Analisar logs
+            analyzer = LogAnalyzer()
+            report = analyzer.analyze(days_back=7)
+            total_eps = report["totals"]["total_episodes"]
+            failure_rate = report["totals"]["failure_rate"]
+            n_suggestions = len(report["suggestions"])
+
+            log(
+                f"[Self-Improve] Análise: {total_eps} episódios, "
+                f"taxa falha {failure_rate*100:.0f}%, "
+                f"{n_suggestions} sugestões",
+                "INFO"
+            )
+
+            if n_suggestions == 0:
+                log("[Self-Improve] Sistema saudável — sem sugestões de melhoria", "INFO")
+                return
+
+            # 2. Propor melhorias
+            proposer = ImprovementProposer()
+            proposals = proposer.propose(report, use_llm=True)
+
+            # 3. Gerar e validar patches para propostas simples
+            generator = PatchGenerator()
+            validator = PatchValidator()
+            applied_patches = []
+
+            for proposal in proposals:
+                if proposal.get("complexity") != "low":
+                    continue  # Patches complexos requerem revisão humana
+
+                patch = generator.generate(proposal, use_llm=False)
+                if not patch:
+                    continue
+
+                validation = validator.validate(patch)
+                if not validation["valid"]:
+                    log(
+                        f"[Self-Improve] Patch rejeitado para '{proposal['title']}': "
+                        f"{validation['errors']}",
+                        "WARNING"
+                    )
+                    continue
+
+                # Aplicar patch
+                result = validator.apply(patch, dry_run=False)
+                if result["success"]:
+                    applied_patches.append({
+                        "title": proposal["title"],
+                        "file": patch["target_file"],
+                        "backup": result.get("backup_path", ""),
+                    })
+                    log(f"[Self-Improve] Patch aplicado: {proposal['title']}", "SUCCESS")
+
+            # 4. Registar no changelog
+            self._update_changelog(report, proposals, applied_patches)
+
+            # 5. Notificar se houver algo relevante
+            if proposals or applied_patches:
+                msg = (
+                    f"🧬 Self-Improvement Ciclo #{self.cycle_count}\n"
+                    f"Análise: {total_eps} episódios, falha {failure_rate*100:.0f}%\n"
+                    f"Propostas: {len(proposals)} | Patches aplicados: {len(applied_patches)}"
+                )
+                if applied_patches:
+                    msg += "\n" + "\n".join(f"  ✅ {p['title']}" for p in applied_patches)
+                self._notify_joel(msg)
+
+        except Exception as e:
+            log(f"[Self-Improve] Erro no ciclo de auto-melhoria: {e}", "ERROR")
+
+    def _update_changelog(self, report: dict, proposals: list, applied: list):
+        """Actualiza o changelog automático de melhorias."""
+        from datetime import datetime
+        changelog_path = Config.REPO_LOCAL_PATH / "evolution" / "changelog_auto.md"
+        if not changelog_path.exists():
+            return
+
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        entries = []
+
+        for p in proposals[:5]:
+            entry = (
+                f"\n### [{now}] {p['title']}\n"
+                f"- **Tipo**: {p['source']}\n"
+                f"- **Prioridade**: {p['priority']}\n"
+                f"- **Ficheiros**: {', '.join(p.get('target_files', ['?']))}\n"
+                f"- **Descrição**: {p['description']}\n"
+            )
+            # Marcar se foi aplicado
+            was_applied = any(a["title"] == p["title"] for a in applied)
+            entry += f"- **Status**: {'✅ Aplicado' if was_applied else '📋 Proposto (revisão manual)'}\n"
+            entries.append(entry)
+
+        if entries:
+            content = changelog_path.read_text(encoding="utf-8")
+            marker = "<!-- As entradas são inseridas automaticamente abaixo desta linha -->"
+            new_section = marker + "\n" + "\n".join(entries)
+            updated = content.replace(marker, new_section, 1)
+            changelog_path.write_text(updated, encoding="utf-8")
 
     def _execute_task(self, task: dict) -> tuple[bool, str]:
         """
