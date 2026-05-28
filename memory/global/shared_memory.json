@@ -1115,6 +1115,12 @@
       "decision": "Telegram: Executa isso",
       "context": "Telegram",
       "timestamp": "2026-05-28T14:12:06.164381"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Tens tudo para te auto reparar executa",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T14:18:04.937967"
     }
   ],
   "discoveries": [],
