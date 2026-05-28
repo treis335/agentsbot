@@ -23,5 +23,15 @@
     "tipo": "novo_agente",
     "detalhe": "DocsAgent",
     "data": "2026-05-28 07:03:14.345454"
+  },
+  {
+    "tipo": "novo_agente",
+    "detalhe": "SecurityAgent",
+    "data": "2026-05-28 07:04:14.349066"
+  },
+  {
+    "tipo": "novo_agente",
+    "detalhe": "MonitorAgent",
+    "data": "2026-05-28 07:05:14.360914"
   }
 ]

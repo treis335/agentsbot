@@ -57,5 +57,17 @@
     "role": "Documentador automático do sistema",
     "status": "active",
     "created": "2026-05-28 07:03:14.344696"
+  },
+  {
+    "name": "SecurityAgent",
+    "role": "Segurança e permissões do sistema",
+    "status": "active",
+    "created": "2026-05-28 07:04:14.348290"
+  },
+  {
+    "name": "MonitorAgent",
+    "role": "Monitorização 24/7 de saúde do sistema",
+    "status": "active",
+    "created": "2026-05-28 07:05:14.352219"
   }
 ]
