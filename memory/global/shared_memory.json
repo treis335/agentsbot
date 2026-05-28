@@ -827,6 +827,12 @@
       "decision": "Telegram: Bora meu!!! So falas!!! Executa",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:05:28.794711"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: A executar o que? Conversarrrr !!???",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:06:23.250587"
     }
   ],
   "discoveries": [],
