@@ -533,6 +533,12 @@
       "decision": "Telegram: Sim por favor",
       "context": "Telegram",
       "timestamp": "2026-05-28T06:50:34.725604"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja esta",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:00:19.847406"
     }
   ],
   "discoveries": [],

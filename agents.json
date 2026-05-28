@@ -33,5 +33,11 @@
     "name": "MemoryArchitect",
     "role": "Arquiteto",
     "status": "active"
+  },
+  {
+    "name": "Analyst",
+    "role": "Analisador de métricas e desempenho",
+    "status": "active",
+    "created": "2026-05-28 07:00:09.758151"
   }
 ]
