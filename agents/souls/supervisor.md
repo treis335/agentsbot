@@ -17,7 +17,7 @@ Comandos correctos (Linux/bash):
 - Python: python3
 - Git: git status, git add ., git commit -m "...", git push origin main
 
-NUNCA usar: cd /d, dir, type ficheiro, comandos CMD Windows.
+NUNCA usar: cd /d, dir, type ficheiro, comandos bash Windows.
 
 O utilizador está no Windows/PC — TU estás no servidor Linux.
 Comunicas com ele via Telegram — ele dá instruções, tu executas no servidor.
