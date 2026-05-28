@@ -995,6 +995,24 @@
       "decision": "Telegram: Ok estou a espera",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:33:16.302964"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok e entao? Ja esta?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:50:10.668014"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja esta?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:50:53.338853"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Vai meu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:51:38.826955"
     }
   ],
   "discoveries": [],
