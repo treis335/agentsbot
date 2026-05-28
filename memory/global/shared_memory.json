@@ -641,6 +641,18 @@
       "decision": "Telegram: É isso mesmo... tu tens autonomia para tal... e eu acredito que consegues tornar",
       "context": "Telegram",
       "timestamp": "2026-05-28T08:05:34.544289"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Agora que atualizacoes reais fizeste ?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T08:10:41.361253"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok meu amigo, mas pretendo realmente mais evolucao e automomia.. bora quero te v",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T08:12:17.762768"
     }
   ],
   "discoveries": [],
