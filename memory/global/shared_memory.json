@@ -1013,6 +1013,18 @@
       "decision": "Telegram: Vai meu",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:51:38.826955"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao faz",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:40:05.067309"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Sim..\n\nAbre um RepoTester",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:40:31.871272"
     }
   ],
   "discoveries": [],
