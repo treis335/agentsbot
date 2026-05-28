@@ -863,6 +863,18 @@
       "decision": "Telegram: Vai meu!!! Mexe te e cria as coisas que peço de verdade",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:13:17.566127"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja esta?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:18:27.805221"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja esta?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:18:34.600327"
     }
   ],
   "discoveries": [],
