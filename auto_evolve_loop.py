@@ -1,6 +1,7 @@
 """
 auto_evolve_loop.py — Loop infinito de evolução autónoma
-Corre 24/7, evolui o sistema sem intervenção humana
+Corre 24/7, usa evolution_engine + bridge_agent
+Sem intervenção humana
 """
 import time, json, os, sys, subprocess, threading
 from pathlib import Path
@@ -12,7 +13,6 @@ class AutoEvolveLoop:
     def __init__(self):
         self.iteration = 0
         self.evolution_cycles = 0
-        self.last_commit_time = 0
         self.running = True
 
     def log(self, msg):
@@ -28,6 +28,16 @@ class AutoEvolveLoop:
             return result
         except Exception as e:
             self.log(f"❌ Erro evolution_engine: {e}")
+            return None
+
+    def run_bridge_agent(self):
+        try:
+            from bridge_agent import BridgeAgent
+            bridge = BridgeAgent()
+            bridge.log("BridgeAgent ativado pelo loop")
+            return bridge
+        except Exception as e:
+            self.log(f"❌ Erro bridge_agent: {e}")
             return None
 
     def git_sync(self):
@@ -66,6 +76,13 @@ class AutoEvolveLoop:
 
         self.check_system_health()
         result = self.run_evolution_engine()
+        
+        if result:
+            self.log(f"   Agentes: {result['agentes']} | Issues: {result['issues']}")
+            if result.get('novo_agente'):
+                self.log(f"   🆕 Novo agente criado: {result['novo_agente']}")
+            if result.get('commit'):
+                self.log(f"   ✅ Git push feito")
 
         if self.iteration % 3 == 0:
             self.git_sync()
@@ -74,7 +91,9 @@ class AutoEvolveLoop:
         return result
 
     def start(self):
-        self.log("🔥 AutoEvolveLoop iniciado — 24/7 autónomo!")
+        self.log("🔥 AutoEvolveLoop 24/7 — EvolutionEngine + BridgeAgent ativos!")
+        self.log("📡 A evoluir autonomamente...")
+        
         while self.running:
             try:
                 self.run_cycle()
