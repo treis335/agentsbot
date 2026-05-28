@@ -2,12 +2,13 @@
   "run_id": "84496d16",
   "workflow_name": "dev_cycle",
   "state": "running",
-  "current_step_id": "test",
+  "current_step_id": "commit",
   "context": {
     "task": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
     "task_title": "Auto-evolucao cognitiva",
     "analyze_result": "## Plano de Implementação — Evolução Cognitiva do Sistema (v7)\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão determinístico, síncrono, sem dependências |\n| `core/supervisor.py` | Modificar | Adicionar `evoluir()` chamado no ciclo do loop autónomo |\n| `agents/souls/supervisor.md` | Modificar | Documentar capacidade de evolução cognitiva |\n| `memory/backlog.json` | Modificar | Adicionar tarefas evolutivas geradas |\n| `_evolutions/` | **Criar dir** | Histórico de evoluções aplicadas |\n\n### 2. Abordagem técnica\n\nCriar `cognitive_evolution.py` como módulo **puramente determinístico, síncrono, sem threads, sem asyncio, sem qualquer dependência externa**. O motor contém uma classe `CognitiveEvolver` com dois métodos principais:\n\n- **`analisar(backlog: dict) -> list[dict]`**: lê o backlog, extrai métricas objectivas (taxa de falhas por tarefa/agente, tarefas órfãs, tarefas paradas >7 dias) e gera sugestões baseadas em 4 regras fixas: (1) tarefa com ≥2 falhas consecutivas → sugere dividir; (2) agente com >40% falhas → sugere revisão de prompt; (3) tarefa sem agente atribuído → sugere atribuição; (4) tarefa pendente >7 dias → sugere reatribuição ou arquivo.\n\n- **`aplicar(sugestoes: list[dict], dry_run: bool = True) -> list[dict]`**: se `dry_run=False`, cria tarefas no backlog, regista a evolução em `_evolutions/{timestamp}.json` e retorna as acções executadas. Se `dry_run=True`, apenas retorna as acções simuladas.\n\nNo `supervisor.py`, adicionar no final do `run_cycle()`:\n\n```python\nif self.ciclo_actual % 5 == 0:\n    try:\n        evolver = CognitiveEvolver()\n        sugestoes = evolver.analisar(self.backlog)\n        if sugestoes:\n            self.log(f\"🧠 {len(sugestoes)} sugestões de evolução\")\n            if not self.dry_run:\n                evolver.aplicar(sugestoes, dry_run=False)\n    except Exception as e:\n        self.log(f\"⚠️ Erro na evolução cognitiva: {e}\")\n```\n\n### 3. Riscos identificados\n\n- **Sugestões triviais/ruidosas**: heurísticas fixas podem gerar sugestões pouco úteis. Mitigação: regras conservadoras que só actuam em problemas claros (≥2 falhas, >40% erro, >7 dias).\n- **Repetição de sugestões**: mesma sugestão a cada ciclo. Mitigação: registo de hash por tarefa/agente + lock de 24h.\n- **Corrupção do backlog**: escrita incorrecta no JSON. Mitigação: validação do JSON com `json.loads(json.dumps(...))` antes de escrever + backup automático.\n\n### 4. Estimativa de complexidade\n\n**Baixa** — ~45min-1h. Módulo pequeno (~120 linhas), 4 regras simples, integração mínima (5 linhas no supervisor). Sem dependências externas, sem threads, sem risco de quebra.",
-    "implement_result": "Erro: "
+    "implement_result": "Erro: ",
+    "test_result": "Erro: "
   },
   "steps": {
     "analyze": {
@@ -30,24 +31,24 @@
     },
     "test": {
       "step_id": "test",
+      "state": "completed",
+      "attempts": 1,
+      "result": "Erro: ",
+      "task_id": "",
+      "started_at": "2026-05-28T22:22:13.473653",
+      "finished_at": "2026-05-28T22:24:49.569576"
+    },
+    "commit": {
+      "step_id": "commit",
       "state": "running",
       "attempts": 1,
       "result": "",
       "task_id": "",
-      "started_at": "2026-05-28T22:22:13.473653",
-      "finished_at": ""
-    },
-    "commit": {
-      "step_id": "commit",
-      "state": "pending",
-      "attempts": 0,
-      "result": "",
-      "task_id": "",
-      "started_at": "",
+      "started_at": "2026-05-28T22:24:49.579654",
       "finished_at": ""
     }
   },
   "created_at": "2026-05-28T22:19:45.129716",
-  "updated_at": "2026-05-28T22:22:13.463185",
+  "updated_at": "2026-05-28T22:24:49.569755",
   "error": ""
 }
