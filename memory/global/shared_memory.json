@@ -833,6 +833,18 @@
       "decision": "Telegram: A executar o que? Conversarrrr !!???",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:06:23.250587"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Agora cria a porra do site que pedi de verdade",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:06:41.947104"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: E entao?? Nada??",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:07:40.708026"
     }
   ],
   "discoveries": [],
