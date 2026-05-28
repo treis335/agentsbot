@@ -947,6 +947,12 @@
       "decision": "Telegram: Ok",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:21:20.333585"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:21:34.872199"
     }
   ],
   "discoveries": [],
