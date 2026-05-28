@@ -761,6 +761,12 @@
       "decision": "Telegram: Ok, eu espero. Quando estiver pronto comunica",
       "context": "Telegram",
       "timestamp": "2026-05-28T10:03:55.650295"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao ja esta?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T10:58:40.744886"
     }
   ],
   "discoveries": [],
