@@ -803,6 +803,12 @@
       "decision": "Telegram: A espera",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:03:00.262094"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Vai bora estou a espera... tens de ser maos autonomo",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:03:19.849060"
     }
   ],
   "discoveries": [],
