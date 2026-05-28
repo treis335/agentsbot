@@ -39,5 +39,17 @@
     "role": "Analisador de métricas e desempenho",
     "status": "active",
     "created": "2026-05-28 07:00:09.758151"
+  },
+  {
+    "name": "Optimizer",
+    "role": "Otimizador de código e recursos",
+    "status": "active",
+    "created": "2026-05-28 07:01:09.761939"
+  },
+  {
+    "name": "Tester",
+    "role": "Testador automático de funcionalidades",
+    "status": "active",
+    "created": "2026-05-28 07:02:09.765095"
   }
 ]

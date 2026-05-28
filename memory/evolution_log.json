@@ -3,5 +3,15 @@
     "tipo": "novo_agente",
     "detalhe": "Analyst",
     "data": "2026-05-28 07:00:09.758822"
+  },
+  {
+    "tipo": "novo_agente",
+    "detalhe": "Optimizer",
+    "data": "2026-05-28 07:01:09.762706"
+  },
+  {
+    "tipo": "novo_agente",
+    "detalhe": "Tester",
+    "data": "2026-05-28 07:02:09.765833"
   }
 ]
