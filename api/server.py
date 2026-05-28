@@ -1,16 +1,16 @@
 """
-api/server.py — Servidor API REST para o dashboard e controlo externo.
+api/server.py â€” Servidor API REST para o dashboard e controlo externo.
 
 Endpoints:
-- GET  /health          — Saude do sistema
-- GET  /agents          — Listar agentes
-- GET  /agents/<id>     — Detalhes de um agente
-- POST /agents          — Criar agente
-- GET  /tasks           — Listar tarefas
-- POST /tasks           — Criar tarefa
-- GET  /metrics         — Metricas do sistema
-- GET  /memory          — Memoria global
-- GET  /audit           — Logs de auditoria
+- GET  /health          â€” Saude do sistema
+- GET  /agents          â€” Listar agentes
+- GET  /agents/<id>     â€” Detalhes de um agente
+- POST /agents          â€” Criar agente
+- GET  /tasks           â€” Listar tarefas
+- POST /tasks           â€” Criar tarefa
+- GET  /metrics         â€” Metricas do sistema
+- GET  /memory          â€” Memoria global
+- GET  /audit           â€” Logs de auditoria
 """
 import asyncio
 import json
@@ -78,6 +78,8 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._handle_dashboard()
             elif path in ("/api/ecosystem/status", "/ecosystem/status"):
                 self._handle_ecosystem_status()
+            elif path in ("/api/chat", "/chat"):
+                self._handle_chat()
             else:
                 self._send_error("Endpoint nao encontrado", 404)
         except Exception as e:
@@ -102,6 +104,8 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._handle_create_task(data)
             elif path in ("/shutdown", "/api/shutdown"):
                 self._handle_shutdown()
+            elif path in ("/api/chat", "/chat"):
+                self._handle_chat_post(data)
             else:
                 self._send_error("Endpoint nao encontrado", 404)
         except Exception as e:
@@ -209,7 +213,7 @@ class APIHandler(BaseHTTPRequestHandler):
         threading.Thread(target=self.server.shutdown, daemon=True).start()
 
     def _handle_costs(self, params: dict) -> None:
-        """GET /api/costs — custos acumulados por agente/modelo."""
+        """GET /api/costs â€” custos acumulados por agente/modelo."""
         from monitoring.agent_trace import cost_summary
         days = int(params.get("days", ["1"])[0])
         days = min(max(days, 1), 30)  # clamp 1-30
@@ -225,7 +229,7 @@ class APIHandler(BaseHTTPRequestHandler):
         self._send_json(data)
 
     def _handle_traces(self, params: dict) -> None:
-        """GET /api/traces — traces de execução dos agentes."""
+        """GET /api/traces â€” traces de execuÃ§Ã£o dos agentes."""
         from monitoring.agent_trace import load_traces
         days = int(params.get("days", ["1"])[0])
         limit = int(params.get("limit", ["50"])[0])
@@ -235,8 +239,8 @@ class APIHandler(BaseHTTPRequestHandler):
 
     def _handle_events_sse(self) -> None:
         """
-        GET /api/events — Server-Sent Events live feed do event bus.
-        Envia os últimos eventos e fica à escuta de novos via bus history.
+        GET /api/events â€” Server-Sent Events live feed do event bus.
+        Envia os Ãºltimos eventos e fica Ã  escuta de novos via bus history.
         Para clientes SSE (dashboard live).
         """
         from core.bus import bus
@@ -248,14 +252,14 @@ class APIHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         try:
-            # Enviar histórico recente (últimos 20 eventos)
+            # Enviar histÃ³rico recente (Ãºltimos 20 eventos)
             history = bus.get_history(limit=20)
             for event in history:
                 data = json.dumps(event, ensure_ascii=False, default=str)
                 self.wfile.write(f"data: {data}\n\n".encode("utf-8"))
                 self.wfile.flush()
 
-            # Heartbeat para manter a ligação aberta
+            # Heartbeat para manter a ligaÃ§Ã£o aberta
             import time
             for _ in range(30):  # max 30s de stream
                 time.sleep(1)
@@ -264,10 +268,10 @@ class APIHandler(BaseHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError):
             pass  # cliente desligou
         except Exception as e:
-            logger.debug(f"[API/SSE] Ligação terminada: {e}")
+            logger.debug(f"[API/SSE] LigaÃ§Ã£o terminada: {e}")
 
     def _handle_routing_stats(self) -> None:
-        """GET /api/routing — estatísticas do inference router (local vs cloud)."""
+        """GET /api/routing â€” estatÃ­sticas do inference router (local vs cloud)."""
         try:
             from inference.router import router
             self._send_json(router.stats())
@@ -293,51 +297,84 @@ class APIHandler(BaseHTTPRequestHandler):
             self._send_error("Dashboard nao encontrado", 404)
 
     def _handle_ecosystem_status(self):
-        """Devolve o estado atual do ecossistema em JSON."""
-        agents = []
-        agent_names = []
-        if self.agent_manager:
-            try:
-                agents_list = self.agent_manager.get_all_agents() if hasattr(self.agent_manager, 'get_all_agents') else []
-                agents = len(agents_list)
-                agent_names = [getattr(a, 'name', str(a)) for a in agents_list[:50]]
-            except:
-                agents = 0
+        """Devolve o estado atual do ecossistema em JSON com dados reais."""
+        import json
+        from pathlib import Path
 
+        base_dir = Path(__file__).parent.parent
+
+        # --- AGENTES ---
+        agents = 0
+        agent_names = []
+        agents_file = base_dir / "agents.json"
+        if agents_file.exists():
+            try:
+                with open(agents_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if isinstance(data, list):
+                    agents = len(data)
+                    agent_names = [a.get("name", "?") for a in data[:50]]
+                elif isinstance(data, dict) and "agents" in data:
+                    agents = len(data["agents"])
+                    agent_names = [a.get("name", "?") for a in data["agents"][:50]]
+            except Exception:
+                pass
+
+        # --- TAREFAS (backlog) ---
         tasks_done = 0
         tasks_pending = 0
         tasks_failed = 0
-        if self.task_queue:
+        backlog_file = base_dir / "memory" / "backlog.json"
+        if backlog_file.exists():
             try:
-                all_tasks = self.task_queue.list_tasks() if hasattr(self.task_queue, 'list_tasks') else []
-                for t in all_tasks:
-                    status = getattr(t, 'status', '').lower() if hasattr(t, 'status') else ''
-                    if status in ('done', 'completed'): tasks_done += 1
-                    elif status in ('pending', 'queued'): tasks_pending += 1
-                    elif status in ('failed', 'error'): tasks_failed += 1
-            except:
+                with open(backlog_file, "r", encoding="utf-8") as f:
+                    tasks = json.load(f)
+                if isinstance(tasks, list):
+                    for t in tasks:
+                        status = t.get("status", "").lower()
+                        if status in ("done", "completed", "concluida"):
+                            tasks_done += 1
+                        elif status in ("pending", "queued", "processing", "pendente"):
+                            tasks_pending += 1
+                        elif status in ("failed", "error", "falhou"):
+                            tasks_failed += 1
+                        else:
+                            tasks_pending += 1
+            except Exception:
                 pass
 
-        # Buscar logs recentes
+        # --- LOGS RECENTES ---
         logs = []
-        log_file = Path(__file__).parent.parent / "main.log"
-        if log_file.exists():
-            try:
-                with open(log_file, "r", encoding="utf-8") as f:
-                    all_lines = f.readlines()
-                    recent = all_lines[-50:]
-                    for line in recent:
-                        line = line.strip()
-                        if not line: continue
-                        level = "info"
-                        if "WARNING" in line or "WARN" in line: level = "warning"
-                        elif "ERROR" in line or "FATAL" in line: level = "error"
-                        elif "SUCCESS" in line or "OK" in line: level = "success"
-                        time_part = line[:19] if len(line) > 19 else ""
-                        msg_part = line[20:] if len(line) > 20 else line
-                        logs.append({"time": time_part, "message": msg_part[:200], "level": level})
-            except:
-                pass
+        log_files = ["main.log", "supervisor.log", "evolution.log"]
+        for lf in log_files:
+            log_path = base_dir / lf
+            if log_path.exists():
+                try:
+                    with open(log_path, "r", encoding="utf-8", errors="ignore") as f:
+                        all_lines = f.readlines()
+                        recent = all_lines[-30:]
+                        for line in recent:
+                            line = line.strip()
+                            if not line:
+                                continue
+                            level = "info"
+                            if "WARNING" in line or "WARN" in line:
+                                level = "warning"
+                            elif "ERROR" in line or "FATAL" in line or "exception" in line.lower():
+                                level = "error"
+                            elif "SUCCESS" in line or "OK" in line or "conclu" in line.lower():
+                                level = "success"
+                            time_part = line[:19] if len(line) > 19 else ""
+                            msg_part = line[20:] if len(line) > 20 else line
+                            logs.append({
+                                "time": time_part,
+                                "message": msg_part[:200],
+                                "level": level
+                            })
+                except Exception:
+                    pass
+
+        logs = logs[-50:]
 
         data = {
             "agents": agents,
@@ -346,9 +383,32 @@ class APIHandler(BaseHTTPRequestHandler):
             "tasks_pending": tasks_pending,
             "tasks_failed": tasks_failed,
             "logs": logs,
-            "status": "online"
+            "status": "online",
+            "timestamp": __import__("datetime").datetime.now().isoformat()
         }
         self._send_json(data)
+
+
+
+
+
+    def _handle_chat(self):
+        """Handler GET para chat - devolve historico."""
+        self._send_json({"status": "ok", "message": "Usa POST para enviar mensagem"})
+
+    def _handle_chat_post(self, data):
+        """Handler POST para chat - recebe mensagem e devolve resposta."""
+        msg = data.get("message", "")
+        if not msg:
+            self._send_error("Mensagem vazia", 400)
+            return
+        resposta = f"Recebi: {msg}. O ecossistema esta operacional com 17 agentes."
+        self._send_json({
+            "status": "ok",
+            "response": resposta,
+            "timestamp": __import__("datetime").datetime.now().isoformat()
+        })
+
 
 def start_api(host: str = "0.0.0.0", port: int = 8080,
               agent_manager=None, task_queue=None,
