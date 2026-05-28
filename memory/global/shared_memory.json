@@ -563,6 +563,12 @@
       "decision": "Telegram: Naaaaoooooo!!!!! Faz tu tudo!!!! Nao tens já a bridge feita e ligada!!! Fazzx tu",
       "context": "Telegram",
       "timestamp": "2026-05-28T07:09:22.109060"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Naooo estou no computadorrrr!!! Faz tu tudo",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:09:45.645556"
     }
   ],
   "discoveries": [],
