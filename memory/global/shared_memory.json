@@ -677,6 +677,12 @@
       "decision": "Telegram: Entao mas quais foram realmente as mudanças?",
       "context": "Telegram",
       "timestamp": "2026-05-28T09:28:14.739334"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao vejo grande alteraçoes.. so mesmo logs",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T09:33:17.733696"
     }
   ],
   "discoveries": [],
