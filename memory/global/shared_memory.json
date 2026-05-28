@@ -1154,5 +1154,14 @@
     "total_errors": 0,
     "total_tasks_completed": 0
   },
-  "conversations": []
+  "conversations": [],
+  "ambiente_execucao": {
+    "sistema": "Linux",
+    "shell": "bash",
+    "nota": "Agente corre no servidor Linux. Utilizador esta no Windows. Comunicam via Telegram.",
+    "sandbox_docker": "DESACTIVADO por defeito. SANDBOX_ENABLED=false no .env",
+    "comandos": "ls, cat, python3, git — nunca cd /d nem comandos Windows"
+  },
+  "estado_sistema": "operacional",
+  "ultimo_fix": "2026-05-28 — ambiente Linux confirmado, memoria contaminada limpa"
 }

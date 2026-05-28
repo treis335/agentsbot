@@ -123,9 +123,8 @@ async def _run_docker(
             f"--cpu-quota={profile.cpu_quota}",
             f"--memory={profile.memory_mb}m",
             f"--memory-swap={profile.memory_mb}m",  # Sem swap
-            # Segurança
-            "--no-new-privileges",
-            "--security-opt", "no-new-privileges:true",
+            # Segurança (flags compatíveis com Windows e Linux)
+            "--security-opt", "no-new-privileges=true",  # formato correcto
         ]
 
         # Rede
