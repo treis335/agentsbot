@@ -662,7 +662,7 @@ class AutonomousLoop:
         if self.telegram_bot:
             try:
                 JOEL_TELEGRAM_ID = os.getenv("OWNER_TELEGRAM_ID", "1094139387")
-                await await self.telegram_bot.send_message(JOEL_TELEGRAM_ID, message)
+                await self.telegram_bot.send_message(JOEL_TELEGRAM_ID, message)
                 log(f"Telegram enviado ao Joel", "INFO")
             except Exception as e:
                 log(f"Erro ao enviar Telegram: {e}", "ERROR")
