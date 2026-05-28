@@ -27,10 +27,9 @@ logger = logging.getLogger(__name__)
 
 # ─── Prompt do sistema ────────────────────────────────────────────────────────
 
-import os as _os
-from core.config import Config as _Config
-
 def _build_system_prompt() -> str:
+    import os as _os
+    from core.config import Config as _Config
     repo_path = str(_Config.REPO_LOCAL_PATH)
     github_repo = _os.getenv("GITHUB_REPO", "treis335/agentsbot")
     return f"""És o Supervisor — agente IA principal do ecossistema agentsbot.
