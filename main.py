@@ -186,6 +186,19 @@ async def main():
         api_thread.start()
         logger.info("[API] REST API em http://localhost:8080")
 
+    # ── Iniciar o AutonomousLoop (sempre, independente do Telegram) ──────────
+    _seed_initial_backlog()
+    from bot.handlers import set_auto_loop
+    auto_loop = AutonomousLoop(orchestrator=None, telegram_bot=None)
+    loop_thread = threading.Thread(
+        target=auto_loop.start,
+        daemon=True,
+        name="autonomous-loop",
+    )
+    loop_thread.start()
+    logger.info("[AutonomousLoop] Loop autónomo iniciado em background.")
+    # ─────────────────────────────────────────────────────────────────────────
+
     # Bot Telegram
     if not no_telegram:
         app = init_telegram()
@@ -195,18 +208,21 @@ async def main():
             await app.start()
             await app.updater.start_polling()
             logger.info("[Telegram] Bot online. A aguardar mensagens...")
+            # Dar o bot ao loop para enviar relatórios Telegram
+            auto_loop.telegram_bot = app.bot
+            set_auto_loop(auto_loop)
             while True:
                 await asyncio.sleep(1)
         else:
             logger.info("[Main] Sem Telegram. A manter API activa...")
+            set_auto_loop(auto_loop)
             while True:
                 await asyncio.sleep(60)
     else:
         logger.info("[Main] Modo sem Telegram. A manter serviços...")
+        set_auto_loop(auto_loop)
         while True:
             await asyncio.sleep(60)
-
-
 if __name__ == "__main__":
     try:
         asyncio.run(main())

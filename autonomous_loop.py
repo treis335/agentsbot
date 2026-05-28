@@ -205,53 +205,72 @@ BRAINSTORM_PROMPTS = [
 
 def autonomous_brainstorm(orchestrator=None) -> list:
     """
-    Sessão de brainstorm autónomo entre agentes.
-    Se orchestrator for fornecido, usa a LLM real.
-    Caso contrário, usa ideias pré-definidas como fallback.
+    Sessão de brainstorm autónomo com LLM real (DeepSeek).
+    Chama _call_llm() directamente — não depende do orchestrator.
+    Fallback para lista local se API indisponível.
     """
     log("Sessão de brainstorm autónomo iniciada", "BRAINSTORM")
     ideas = []
 
-    if orchestrator:
-        # Integração real com LLM
-        prompt = f"""
-        És o Supervisor do ecossistema Correoto.
-        A tua equipa está disponível: {', '.join(AGENTS.keys())}.
-        
-        Faz uma sessão de brainstorm rápida (máx 3 ideias concretas e implementáveis).
-        Para cada ideia, indica:
-        - Título (curto)
-        - Descrição (o que fazer exatamente)
-        - Prioridade (1-10, sendo 1 mais urgente)
-        - Qual agente deve executar
-        
-        Responde apenas em JSON:
-        [{{"title": "...", "description": "...", "priority": 5, "agent": "..."}}]
-        """
-        try:
-            response = orchestrator.think(prompt)
-            ideas = json.loads(response)
-            log(f"Brainstorm gerou {len(ideas)} ideias via LLM", "BRAINSTORM")
-        except Exception as e:
-            log(f"Brainstorm LLM falhou ({e}), usando fallback", "ERROR")
-            ideas = _brainstorm_fallback()
-    else:
-        ideas = _brainstorm_fallback()
+    # Contexto actual do sistema para brainstorm relevante
+    backlog_all     = load_backlog()
+    backlog_pending = [t for t in backlog_all if t.get("status") == "pending"]
+    backlog_failed  = [t for t in backlog_all if t.get("status") == "failed"]
 
-    # Adicionar ideias ao backlog
-    for idea in ideas:
-        task = add_to_backlog(
-            title=idea.get("title", "Ideia sem título"),
-            description=idea.get("description", ""),
-            priority=idea.get("priority", 5),
-            source="brainstorm_autonomo",
+    context_lines = []
+    if backlog_pending:
+        context_lines.append("Tarefas pendentes ({}): {}".format(
+            len(backlog_pending),
+            ", ".join(t["title"] for t in backlog_pending[:3])
+        ))
+    if backlog_failed:
+        context_lines.append("Tarefas falhadas ({}): {}".format(
+            len(backlog_failed),
+            ", ".join(t["title"] for t in backlog_failed[:3])
+        ))
+    try:
+        log_path = MEMORY_DIR / "autonomous_log.md"
+        if log_path.exists():
+            recent_log = log_path.read_text(encoding="utf-8", errors="ignore")[-600:]
+            last_lines = [l for l in recent_log.split("\n") if l.strip()][-4:]
+            context_lines.append("Log recente:\n" + "\n".join(last_lines))
+    except Exception:
+        pass
+
+    context = "\n".join(context_lines) if context_lines else "Sistema em estado inicial."
+
+    prompt = """És o Supervisor do ecossistema agentsbot — agentes IA que trabalham em conjunto para construir e melhorar o próprio sistema.
+
+Estado actual:
+{}
+
+Agentes disponíveis: developer, arquiteto, qa_tester, explorador, documentador, auto_fixer, auto_optimizer, devops, auto_evolver.
+
+Gera 3 tarefas concretas e implementáveis para o sistema evoluir agora.
+Cada tarefa deve ser específica, achievable num ciclo, e aumentar a autonomia ou qualidade do sistema.
+
+Responde APENAS com JSON válido, sem markdown, sem explicações:
+[{{"title": "título curto", "description": "o que fazer exactamente em detalhe", "priority": 5, "agent": "nome_do_agente"}}]""".format(context)
+
+    try:
+        from agents.llm_agent import _call_llm
+        response = _call_llm(
+            messages=[{"role": "user", "content": prompt}],
+            use_tools=False,
+            max_tokens=600,
         )
-        log(f"Ideia adicionada ao backlog: '{task['title']}' (prioridade {task['priority']})",
-            "BRAINSTORM")
-
-    return ideas
-
-
+        raw = response["choices"][0]["message"].get("content", "[]").strip()
+        if "```" in raw:
+            parts = raw.split("```")
+            raw = parts[1] if len(parts) > 1 else raw
+            if raw.startswith("json"):
+                raw = raw[4:]
+        raw = raw.strip()
+        ideas = json.loads(raw)
+        log("Brainstorm gerou {} ideias via LLM real".format(len(ideas)), "BRAINSTORM")
+    except Exception as e:
+        log("Brainstorm LLM falhou ({}), usando fallback".format(e), "ERROR")
+        ideas = _brainstorm_fallback()
 def _brainstorm_fallback() -> list:
     """Fallback com ideias pré-definidas quando LLM não está disponível."""
     selected = random.sample(BRAINSTORM_PROMPTS, min(3, len(BRAINSTORM_PROMPTS)))
