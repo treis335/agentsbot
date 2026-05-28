@@ -1043,6 +1043,18 @@
       "decision": "Telegram: Mete isso na minha git official pa!!! Vai meu",
       "context": "Telegram",
       "timestamp": "2026-05-28T12:55:00.251431"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Quero isso de verdade na minha git real",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:55:55.428982"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mas que merda pa!! Nao tenjo repo cryptobull",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:56:36.678832"
     }
   ],
   "discoveries": [],
