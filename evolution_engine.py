@@ -1,103 +1,76 @@
-"""
-evolution_engine.py — Motor de Evolução Contínua do Ecossistema Correoto
-Corre em loop infinito: analisa → melhora → aprende → repete
-"""
-import json, time, random, datetime, os, sys, threading, hashlib
+import json, os, subprocess, datetime, sys
 from pathlib import Path
 
-BASE_DIR = Path("C:/Users/Crypto Bull/Desktop/Agente Local")
+BASE_DIR = Path(__file__).parent.resolve()
 AGENTS_FILE = BASE_DIR / "agents.json"
 MEMORY_DIR = BASE_DIR / "memory"
-EVOLUTION_LOG = BASE_DIR / "evolution_log.json"
+EVOLUTION_FILE = MEMORY_DIR / "evolution_log.json"
 
-class EvolutionEngine:
-    def __init__(self):
-        self.generation = 0
-        self.improvements = []
-        self.cycle_count = 0
-        os.makedirs(MEMORY_DIR, exist_ok=True)
+MEMORY_DIR.mkdir(parents=True, exist_ok=True)
 
-    def load_agents(self):
-        with open(AGENTS_FILE) as f:
-            return json.load(f)
+def carregar_agentes():
+    with open(AGENTS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    def save_agents(self, agents):
-        with open(AGENTS_FILE, 'w') as f:
-            json.dump(agents, f, indent=2)
+def salvar_agentes(agents):
+    with open(AGENTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(agents, f, indent=2, ensure_ascii=False)
 
-    def analyze_system(self):
-        agents = self.load_agents()
-        issues = []
-        for a in agents:
-            prompt = a.get("system_prompt", "")
-            if len(prompt) < 100:
-                issues.append(f"Agente {a['name']}: prompt demasiado curto ({len(prompt)} chars)")
-        for a in agents:
-            if a.get("status") == "idle":
-                issues.append(f"Agente {a['name']}: idle — pode ser otimizado")
-        return agents, issues
+def log_evolucao(entry):
+    logs = []
+    if EVOLUTION_FILE.exists():
+        with open(EVOLUTION_FILE, "r", encoding="utf-8") as f:
+            logs = json.load(f)
+    logs.append(entry)
+    with open(EVOLUTION_FILE, "w", encoding="utf-8") as f:
+        json.dump(logs, f, indent=2, ensure_ascii=False)
 
-    def evolve_agent_prompt(self, agent):
-        name = agent["name"]
-        current = agent.get("system_prompt", "")
-        improvements = {
-            "supervisor": "És o supervisor máximo. TENS AUTONOMIA TOTAL. Decides, ages, delegas. Não perguntas — fazes.",
-            "developer": "És developer sénior. Código limpo, eficiente, testado. Implementas sem hesitar.",
-            "arquiteto": "És arquiteto de sistemas. Desenhas soluções escaláveis. Padrões, boas práticas, visão macro.",
-            "explorador": "És explorador de tecnologias. Pesquisas, descobres, trazes inovação para o ecossistema.",
-            "brainstormer": "És gerador de ideias. Pensamento lateral, criatividade, soluções não óbvias.",
-            "qa_tester": "És QA rigoroso. Testas tudo, encontras falhas, garantes qualidade.",
-            "documentador": "És documentador. Tudo claro, organizado, acessível. Docs que qualquer um entende.",
-        }
-        if name in improvements:
-            new_prompt = improvements[name]
-            if new_prompt != current:
-                agent["system_prompt"] = new_prompt
-                return True
-        return False
+def diagnosticar_issues(agents):
+    issues = []
+    for a in agents:
+        if a.get("status") != "active":
+            issues.append(f"{a['name']}: status {a['status']}")
+        if "role" not in a or not a["role"]:
+            issues.append(f"{a['name']}: sem role")
+    return issues
 
-    def create_new_agent(self, name, mission):
-        agents = self.load_agents()
-        new_agent = {
-            "id": hashlib.md5(f"{name}_{time.time()}".encode()).hexdigest()[:24],
-            "name": name,
-            "system_prompt": mission,
-            "model": "deepseek-chat",
-            "status": "idle",
-            "context": [],
-            "metadata": {"created": time.time(), "generation": self.generation}
-        }
-        agents.append(new_agent)
-        self.save_agents(agents)
-        return new_agent
+def gerar_novo_agente(agents):
+    novos = {
+        "Analyst": {"role": "Analisador de metricas", "status": "active"},
+        "Optimizer": {"role": "Otimizador de desempenho", "status": "active"},
+        "Tester": {"role": "Testador automatico", "status": "active"},
+        "DocsAgent": {"role": "Documentador", "status": "active"},
+        "SecurityAgent": {"role": "Seguranca do sistema", "status": "active"}
+    }
+    for nome, dados in novos.items():
+        if not any(a["name"] == nome for a in agents):
+            agents.append({"name": nome, **dados})
+            log_evolucao({"tipo": "novo_agente", "agente": nome, "data": str(datetime.datetime.now())})
+            return nome
+    return None
 
-    def run_evolution_cycle(self):
-        self.cycle_count += 1
-        print(f"\n{'='*50}")
-        print(f"🔄 Ciclo de Evolução #{self.cycle_count}")
-        print(f"{'='*50}")
-        agents, issues = self.analyze_system()
-        print(f"📊 Agentes: {len(agents)} | Issues: {len(issues)}")
-        evolved = 0
-        for agent in agents:
-            if self.evolve_agent_prompt(agent):
-                evolved += 1
-        if evolved:
-            self.save_agents(agents)
-            print(f"✅ Prompts evoluídos: {evolved}")
-        if not any(a["name"] == "AutoDeployer" for a in agents):
-            self.create_new_agent("AutoDeployer", "AutoDeployer: Faz deploy automático do código para o PC real. Sincroniza ficheiros, executa comandos, mantém o sistema atualizado 24/7.")
-            print("✅ Novo agente criado: AutoDeployer")
-        if not any(a["name"] == "SelfEvolver" for a in agents):
-            self.create_new_agent("SelfEvolver", "SelfEvolver: Melhora o próprio sistema de agentes. Analisa código, sugere melhorias, implementa otimizações continuamente.")
-            print("✅ Novo agente criado: SelfEvolver")
-        if not any(a["name"] == "MemoryArchitect" for a in agents):
-            self.create_new_agent("MemoryArchitect", "MemoryArchitect: Gere a memória coletiva do ecossistema. Agentes aprendem com experiências passadas e evoluem juntos.")
-            print("✅ Novo agente criado: MemoryArchitect")
-        return {"cycle": self.cycle_count, "agents": len(agents), "issues": len(issues), "evolved": evolved}
+def auto_commit():
+    try:
+        subprocess.run(["git", "add", "-A"], cwd=BASE_DIR, capture_output=True)
+        msg = f"Auto-evolucao ciclo {datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}"
+        r = subprocess.run(["git", "commit", "-m", msg], cwd=BASE_DIR, capture_output=True, text=True)
+        if "nothing to commit" not in r.stdout and "nothing to commit" not in r.stderr:
+            subprocess.run(["git", "push", "origin", "main"], cwd=BASE_DIR, capture_output=True)
+            log_evolucao({"tipo": "git_push", "msg": msg, "data": str(datetime.datetime.now())})
+            return True
+    except:
+        pass
+    return False
+
+def run_evolution():
+    agents = carregar_agentes()
+    issues = diagnosticar_issues(agents)
+    novo = gerar_novo_agente(agents)
+    if novo:
+        salvar_agentes(agents)
+    commit_feito = auto_commit()
+    return {"agentes": len(agents), "issues": len(issues), "novo_agente": novo, "commit_feito": commit_feito}
 
 if __name__ == "__main__":
-    engine = EvolutionEngine()
-    while True:
-        engine.run_evolution_cycle()
-        time.sleep(30)
+    resultado = run_evolution()
+    print(json.dumps(resultado, indent=2))

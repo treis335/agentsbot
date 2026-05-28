@@ -437,6 +437,30 @@
       "decision": "Telegram: vai me mantendo apenas informado aqui da evolução",
       "context": "Telegram",
       "timestamp": "2026-05-28T00:35:08.974101"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: E entao? Passado estas horas o que fizeste/fizeram ate agora?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:37:03.928987"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Olha claro, nem precisas de perguntar!! Pensava que jab tinham isso tudo feito",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:38:31.795110"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:39:01.450614"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:39:08.617269"
     }
   ],
   "discoveries": [],
