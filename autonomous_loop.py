@@ -115,7 +115,7 @@ def add_to_backlog(title: str, description: str = "", priority: int = 5, source:
         "status": "pending",
     }
     backlog.append(task)
-    backlog.sort(key=lambda x: x["priority"])
+    backlog.sort(key=lambda x: int(x.get("priority", 5)))
     save_backlog(backlog)
     return task
 
