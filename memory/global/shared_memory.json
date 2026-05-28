@@ -1061,6 +1061,18 @@
       "decision": "Telegram: Mas eu ja falei milhares de vezes para saires do docker e executarrs tudo real",
       "context": "Telegram",
       "timestamp": "2026-05-28T12:59:24.193034"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Deixa sim",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T13:01:16.231866"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continja",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T13:01:40.896235"
     }
   ],
   "discoveries": [],
