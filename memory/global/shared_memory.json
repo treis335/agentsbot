@@ -953,6 +953,24 @@
       "decision": "Telegram: Ok",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:21:34.872199"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Foda se mas tenho de estar sempre a repetir me??? Foda se",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:22:08.464638"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Fornece ne o link direto para essa nova repo do projeto de website teste",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:22:53.423808"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Esquece foda se... afinal nao tens skills ainda nem memoria como deve ser....\n\nV",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:23:59.888077"
     }
   ],
   "discoveries": [],
