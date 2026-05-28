@@ -743,6 +743,18 @@
       "decision": "Telegram: 404 nao aparece nada",
       "context": "Telegram",
       "timestamp": "2026-05-28T10:01:47.315368"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: https://cryptobullpt.github.io/Correoto-Website/",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T10:02:27.559247"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Fico a aguardar. \n\nQuero o link da repo, o linl do site ja online para eu visual",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T10:03:08.372628"
     }
   ],
   "discoveries": [],
