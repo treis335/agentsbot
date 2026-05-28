@@ -18,6 +18,7 @@ import logging
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from typing import Optional
+from pathlib import Path
 
 from core.config import Config
 
@@ -73,6 +74,10 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._handle_events_sse()
             elif path in ("/routing", "/api/routing"):
                 self._handle_routing_stats()
+            elif path in ("/dashboard",):
+                self._handle_dashboard()
+            elif path in ("/api/ecosystem/status", "/ecosystem/status"):
+                self._handle_ecosystem_status()
             else:
                 self._send_error("Endpoint nao encontrado", 404)
         except Exception as e:
@@ -272,6 +277,78 @@ class APIHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         logger.debug(f"[API] {args[0]} {args[1]} {args[2]}")
 
+
+    def _handle_dashboard(self):
+        """Serve o dashboard HTML."""
+        dashboard_path = Path(__file__).parent.parent / "dashboard" / "templates" / "live.html"
+        if dashboard_path.exists():
+            content = dashboard_path.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(content)))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(content)
+        else:
+            self._send_error("Dashboard nao encontrado", 404)
+
+    def _handle_ecosystem_status(self):
+        """Devolve o estado atual do ecossistema em JSON."""
+        agents = []
+        agent_names = []
+        if self.agent_manager:
+            try:
+                agents_list = self.agent_manager.get_all_agents() if hasattr(self.agent_manager, 'get_all_agents') else []
+                agents = len(agents_list)
+                agent_names = [getattr(a, 'name', str(a)) for a in agents_list[:50]]
+            except:
+                agents = 0
+
+        tasks_done = 0
+        tasks_pending = 0
+        tasks_failed = 0
+        if self.task_queue:
+            try:
+                all_tasks = self.task_queue.list_tasks() if hasattr(self.task_queue, 'list_tasks') else []
+                for t in all_tasks:
+                    status = getattr(t, 'status', '').lower() if hasattr(t, 'status') else ''
+                    if status in ('done', 'completed'): tasks_done += 1
+                    elif status in ('pending', 'queued'): tasks_pending += 1
+                    elif status in ('failed', 'error'): tasks_failed += 1
+            except:
+                pass
+
+        # Buscar logs recentes
+        logs = []
+        log_file = Path(__file__).parent.parent / "main.log"
+        if log_file.exists():
+            try:
+                with open(log_file, "r", encoding="utf-8") as f:
+                    all_lines = f.readlines()
+                    recent = all_lines[-50:]
+                    for line in recent:
+                        line = line.strip()
+                        if not line: continue
+                        level = "info"
+                        if "WARNING" in line or "WARN" in line: level = "warning"
+                        elif "ERROR" in line or "FATAL" in line: level = "error"
+                        elif "SUCCESS" in line or "OK" in line: level = "success"
+                        time_part = line[:19] if len(line) > 19 else ""
+                        msg_part = line[20:] if len(line) > 20 else line
+                        logs.append({"time": time_part, "message": msg_part[:200], "level": level})
+            except:
+                pass
+
+        data = {
+            "agents": agents,
+            "agent_names": agent_names,
+            "tasks_done": tasks_done,
+            "tasks_pending": tasks_pending,
+            "tasks_failed": tasks_failed,
+            "logs": logs,
+            "status": "online"
+        }
+        self._send_json(data)
 
 def start_api(host: str = "0.0.0.0", port: int = 8080,
               agent_manager=None, task_queue=None,

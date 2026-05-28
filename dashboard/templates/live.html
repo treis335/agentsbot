@@ -1,1 +1,93 @@
-Teste
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORREOTO - Dashboard Vivo</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Tahoma,sans-serif; background:#0a0a1a; color:#e0e0e0; padding:20px; }
+h1 { color:#00ff88; font-size:24px; margin-bottom:5px; }
+.subtitle { color:#888; font-size:14px; margin-bottom:20px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:15px; margin-bottom:20px; }
+.card { background:#12122a; border:1px solid #2a2a4a; border-radius:12px; padding:18px; }
+.card h3 { color:#00ff88; font-size:14px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+.card .value { font-size:32px; font-weight:bold; color:#fff; }
+.card .label { font-size:12px; color:#888; margin-top:3px; }
+.status-online { color:#00ff88; }
+.status-offline { color:#ff4444; }
+.log-container { background:#0d0d1a; border:1px solid #2a2a4a; border-radius:12px; padding:15px; max-height:400px; overflow-y:auto; font-family:'Courier New',monospace; font-size:12px; }
+.log-entry { padding:4px 0; border-bottom:1px solid #1a1a2a; }
+.log-time { color:#666; }
+.log-info { color:#88ccff; }
+.log-warning { color:#ffaa00; }
+.log-error { color:#ff4444; }
+.log-success { color:#00ff88; }
+.agent-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.agent-tag { background:#1a1a3a; border:1px solid #2a2a5a; border-radius:6px; padding:4px 10px; font-size:11px; }
+.agent-tag.active { border-color:#00ff88; }
+.refresh-info { color:#666; font-size:11px; margin-top:10px; text-align:center; }
+</style>
+</head>
+<body>
+<h1>CORREOTO ECOSYSTEM</h1>
+<div class="subtitle">Dashboard em tempo real -- <span id="status-text">A carregar...</span></div>
+<div class="grid">
+<div class="card"><h3>Agentes</h3><div class="value" id="agent-count">0</div><div class="label">agentes carregados</div></div>
+<div class="card"><h3>Concluidas</h3><div class="value" id="tasks-done">0</div><div class="label">tarefas</div></div>
+<div class="card"><h3>Pendentes</h3><div class="value" id="tasks-pending">0</div><div class="label">tarefas</div></div>
+<div class="card"><h3>Falhadas</h3><div class="value" id="tasks-failed">0</div><div class="label">tarefas</div></div>
+</div>
+<div class="card">
+<h3>Agentes Ativos</h3>
+<div class="agent-list" id="agent-list">A carregar...</div>
+</div>
+<div class="card" style="margin-top:15px;">
+<h3>Logs do Sistema</h3>
+<div class="log-container" id="log-container">
+<div class="log-entry"><span class="log-time">A carregar logs...</span></div>
+</div>
+</div>
+<div class="refresh-info">A atualizar a cada 5 segundos</div>
+<script>
+let lastLogCount = 0;
+async function fetchStatus() {
+    try {
+        const resp = await fetch('/api/ecosystem/status');
+        const data = await resp.json();
+        document.getElementById('status-text').innerHTML = '<span class="status-online">ONLINE</span>';
+        document.getElementById('agent-count').textContent = data.agents || 0;
+        document.getElementById('tasks-done').textContent = data.tasks_done || 0;
+        document.getElementById('tasks-pending').textContent = data.tasks_pending || 0;
+        document.getElementById('tasks-failed').textContent = data.tasks_failed || 0;
+        const agentList = document.getElementById('agent-list');
+        if (data.agent_names && data.agent_names.length > 0) {
+            agentList.innerHTML = data.agent_names.map(function(name) {
+                return '<span class="agent-tag active">' + name + '</span>';
+            }).join('');
+        }
+        if (data.logs && data.logs.length > 0) {
+            const container = document.getElementById('log-container');
+            if (data.logs.length > lastLogCount) {
+                var newLogs = data.logs.slice(lastLogCount);
+                for (var i = 0; i < newLogs.length; i++) {
+                    var log = newLogs[i];
+                    var div = document.createElement('div');
+                    div.className = 'log-entry';
+                    var level = (log.level || 'info').toLowerCase();
+                    div.innerHTML = '<span class="log-time">[' + log.time + ']</span> <span class="log-' + level + '">' + log.message + '</span>';
+                    container.appendChild(div);
+                }
+                container.scrollTop = container.scrollHeight;
+                lastLogCount = data.logs.length;
+            }
+        }
+    } catch(e) {
+        document.getElementById('status-text').innerHTML = '<span class="status-offline">OFFLINE</span>';
+    }
+}
+fetchStatus();
+setInterval(fetchStatus, 5000);
+</script>
+</body>
+</html>
