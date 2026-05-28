@@ -767,6 +767,42 @@
       "decision": "Telegram: Entao ja esta?",
       "context": "Telegram",
       "timestamp": "2026-05-28T10:58:40.744886"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Estou a espera",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:01:05.747307"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao repara se faz favor",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:01:22.156151"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok, estou a espera do link do site, sobe para a repo e fornece link",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:01:48.336867"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: A aguardar",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:02:20.443905"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Fornece link repo e site",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:02:31.280325"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: A espera",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:03:00.262094"
     }
   ],
   "discoveries": [],
