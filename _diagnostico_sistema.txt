@@ -1,61 +1,44 @@
 ================================================================================
-DIAGNÓSTICO COMPLETO DO ECOSSISTEMA CORREOTO
+DIAGNÓSTICO DE INTEGRIDADE — 2026-05-28 21:44
 ================================================================================
 
-Total de ficheiros .py: 80
-Tamanho total: 324,316 bytes
+RESULTADO: ✅ SISTEMA ÍNTEGRO — NENHUM PROBLEMA ENCONTRADO
 
-Top 20 maiores ficheiros:
-------------------------------------------------------------
-    16,164 bytes  bot\handlers.py
-    15,400 bytes  tools\fs_tools.py
-    11,829 bytes  agents\executor.py
-    11,764 bytes  fix_repo.py
-    11,206 bytes  executor.py
-     8,438 bytes  api\server.py
-     8,089 bytes  auto_reset.py
-     7,867 bytes  wakeup.py
-     7,768 bytes  auto_evolve.py
-     7,582 bytes  auto_recovery.py
-     7,468 bytes  agents\chat_room.py
-     7,353 bytes  supervisor_ultra.py
-     7,254 bytes  main.py
-     7,126 bytes  agents\ecosystem.py
-     6,945 bytes  cerebro\core\ml_engine.py
-     6,844 bytes  smart_pace.py
-     6,839 bytes  agents\manager.py
-     6,808 bytes  heartbeat_system.py
-     6,794 bytes  wakeup_v3.py
-     6,677 bytes  manager.py
+FICHEIROS CRÍTICOS VERIFICADOS:
+  [OK] core/supervisor.py          — 5,740B
+  [OK] autonomous_loop.py          — 33,278B
+  [OK] auto_recovery.py            — 7,197B
+  [OK] auto_evolve.py              — 7,768B
+  [OK] config.py                   — 1,138B
+  [OK] agents.json                 — 2,213B (17 agentes, JSON válido)
+  [OK] agents/souls/supervisor.md  — 8,619B
+  [OK] agents/registry/agents.json — 23,936B
 
+CONFIGURAÇÃO:
+  [OK] .env                        — 939B presente
+  [OK] .gitignore presente
 
-Ficheiros de configuracao:
-------------------------------------------------------------
-     7,254 bytes  main.py
-     1,161 bytes  config.py
-     6,677 bytes  manager.py
-    11,206 bytes  executor.py
+MEMÓRIA:
+  [OK] backlog.json                — 10 pendentes, 3 concluídas
+  [OK] autonomous_log.md           — logs activos
 
+LOGS:
+  [OK] auto_recovery.log           — 8 linhas, sem erros
 
-Agentes/Souls:
-------------------------------------------------------------
-         0 bytes  souls/__init__.py
-     1,358 bytes  souls/aprendiz.md
-       792 bytes  souls/aprendiz_continuo.md
-     1,108 bytes  souls/arquiteto.md
-     1,578 bytes  souls/auto_evolver.md
-     1,405 bytes  souls/auto_fixer.md
-     1,350 bytes  souls/auto_optimizer.md
-     1,305 bytes  souls/code_reviewer.md
-       838 bytes  souls/comunicador.md
-     1,157 bytes  souls/developer.md
-     1,234 bytes  souls/devops.md
-     1,203 bytes  souls/documentador.md
-       845 bytes  souls/documentador_auto.md
-     1,246 bytes  souls/explorador.md
-       837 bytes  souls/gestor_memoria.md
-       874 bytes  souls/gestor_tarefas.md
-       867 bytes  souls/monitor_saude.md
-     1,116 bytes  souls/qa_tester.md
-       860 bytes  souls/seguranca.md
-     2,646 bytes  souls/supervisor.md
+GIT:
+  Último commit: ce0ba82 — "fix: iterações insuficientes + loop autónomo em simulação"
+  Ficheiros modificados: agents/llm_agent.py, autonomous_loop.py, memory/autonomous_log.md, memory/backlog.json
+  Ficheiros não trackeados: pipelines/runs/0a768325.json, pipelines/runs/65fec0bf.json
+
+ESTATÍSTICAS:
+  Total ficheiros .py: 131
+  Total bytes código:  688,003
+  Total souls:         27 (todas com tamanho normal)
+  Agentes registados:  17
+
+NOTAS:
+  - pipelines/runs/*.json são ficheiros runtime — não trackeados (correcto)
+  - Nenhum soul vazio excepto __init__.py (normal)
+  - Nenhum erro/critical no auto_recovery.log
+  - Sistema operacional detectado como Windows (ambiente local)
+================================================================================

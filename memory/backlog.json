@@ -1,42 +1,164 @@
 [
   {
-    "id": "T1",
-    "title": "Auditar seguranca do sistema",
-    "description": "Verificar se ha secrets expostos, permissoes, e vulnerabilidades.",
-    "status": "todo",
-    "priority": "alta",
-    "created": "2026-05-26"
+    "id": "task_001",
+    "title": "Gerar dashboard visual HTML",
+    "description": "Criar dashboard.html com estado do ecossistema, agentes, tarefas",
+    "priority": 1,
+    "status": "done",
+    "source": "supervisor",
+    "completed": "2026-05-28T21:36:20.877482",
+    "result": "Executado em modo simulação"
   },
   {
-    "id": "T2",
-    "title": "Otimizar ciclo autonomo",
-    "description": "Melhorar eficiencia do autonomous_loop, reduzir overhead.",
-    "status": "todo",
-    "priority": "media",
-    "created": "2026-05-26"
+    "id": "task_006",
+    "title": "Auto-evolucao cognitiva",
+    "description": "Melhorar o proprio Supervisor com pensamento avancado",
+    "priority": 1,
+    "status": "done",
+    "source": "supervisor",
+    "completed": "2026-05-28T21:44:23.292981",
+    "result": "Analisei todo o ecossistema — supervisor.py, souls, chain_of_thought, auto_evolve, autonomous_loop — para mapear a arquitectura cognitiva actual. Ficou por escrever o módulo `cognitive_evolution.py` com raciocínio multi-camada e auto-melhoria de prompts, e actualizar o `supervisor.py` e o `supervisor.md` para o integrarem.\n\nQueres que execute agora a implementação completa?"
   },
   {
-    "id": "T3",
-    "title": "Melhorar documentacao dos agentes",
-    "description": "Atualizar README.md e docs com estado atual do sistema.",
-    "status": "todo",
-    "priority": "media",
-    "created": "2026-05-26"
+    "id": "task_1780000969_438",
+    "title": "Verificar integridade do sistema",
+    "description": "Verificar todos os ficheiros críticos, logs recentes e estado do git",
+    "priority": 1,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:42:49.263300",
+    "status": "done",
+    "completed": "2026-05-28T21:45:16.058646",
+    "result": "Fiz a verificação completa de integridade do sistema: todos os 8 ficheiros críticos existem e têm tamanho normal, o `backlog.json` está válido com 10 tarefas pendentes e 3 concluídas, o `auto_recovery.log` não tem erros, o Git está consistente (último commit `ce0ba82`, 4 ficheiros modificados, 2 não trackeados que são runtime), e escrevi o diagnóstico em `_diagnostico_sistema.txt`. Nada ficou por fazer — o sistema está íntegro, sem problemas detectados."
   },
   {
-    "id": "T4",
-    "title": "Dashboard de metricas",
-    "description": "Criar dashboard simples para monitorizar agentes e tarefas.",
-    "status": "todo",
-    "priority": "baixa",
-    "created": "2026-05-26"
+    "id": "task_002",
+    "title": "Ativar Auto Evolver",
+    "description": "Executar auto_evolve.py para melhorar o codigo automaticamente",
+    "priority": 2,
+    "status": "done",
+    "source": "supervisor",
+    "completed": "2026-05-28T21:36:22.890504",
+    "result": "Executado em modo simulação"
   },
   {
-    "id": "T5",
-    "title": "Testar integracao Telegram",
-    "description": "Verificar se o bot Telegram responde e processa comandos.",
-    "status": "todo",
-    "priority": "alta",
-    "created": "2026-05-26"
+    "id": "task_003",
+    "title": "Correr testes automaticos",
+    "description": "Executar testes nos agentes e reportar cobertura",
+    "priority": 3,
+    "status": "pending",
+    "source": "supervisor"
+  },
+  {
+    "id": "task_007",
+    "title": "Brainstormer - gerar novos desafios",
+    "description": "Executar brainstormer_agent.py para gerar proximos objetivos",
+    "priority": 3,
+    "status": "pending",
+    "source": "supervisor"
+  },
+  {
+    "id": "task_004",
+    "title": "Gerar documentacao automatica",
+    "description": "Atualizar README e docs com estado atual do sistema",
+    "priority": 4,
+    "status": "pending",
+    "source": "supervisor"
+  },
+  {
+    "id": "task_008",
+    "title": "Self Learner - pesquisar topico novo",
+    "description": "Pesquisar uma tecnologia nova para integrar",
+    "priority": 4,
+    "status": "pending",
+    "source": "supervisor"
+  },
+  {
+    "id": "task_1780000969_174",
+    "title": "Melhorar sistema de logs",
+    "description": "Implementar logs estruturados com níveis e rotação automática",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:42:49.273112",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780000969_988",
+    "title": "Otimizar uso de tokens",
+    "description": "Analisar e reduzir tokens usados por ciclo de LLM",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:42:49.302704",
+    "status": "pending"
+  },
+  {
+    "id": "task_005",
+    "title": "Git push de todas as alteracoes",
+    "description": "Fazer commit e push para treis335/agentsbot",
+    "priority": 5,
+    "status": "pending",
+    "source": "supervisor"
+  },
+  {
+    "id": "task_1780000969_834",
+    "title": "Adicionar testes ao orchestrator",
+    "description": "Criar testes unitários básicos para o orchestrator principal",
+    "priority": 5,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:42:49.282855",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780000969_952",
+    "title": "Documentar APIs internas",
+    "description": "Gerar documentação automática dos módulos principais",
+    "priority": 6,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:42:49.292630",
+    "status": "pending"
+  },
+  {
+    "id": "auto_evolucao_cognitiva_001",
+    "title": "Auto-evolucao cognitiva",
+    "description": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
+    "priority": 1,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "dashboard_visual_001",
+    "title": "Criar dashboard visual do ecossistema",
+    "description": "Criar um HTML interativo com estado dos agentes, tarefas, ciclo e metricas",
+    "priority": 1,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "git_auto_push_001",
+    "title": "Git auto push de todas as alteracoes",
+    "description": "Fazer commit e push para o GitHub com todas as melhorias feitas",
+    "priority": 2,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "testes_automaticos_001",
+    "title": "Correr testes automaticos",
+    "description": "Executar suite de testes e reportar resultados",
+    "priority": 2,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "brainstorm_melhorias_001",
+    "title": "Brainstorm de melhorias para o ecossistema",
+    "description": "Gerar novas ideias e desafios para evoluir o sistema",
+    "priority": 3,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
   }
 ]

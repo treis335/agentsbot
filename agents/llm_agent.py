@@ -316,7 +316,7 @@ class LLMAgent:
     - Callback de progresso para o Telegram
     """
 
-    MAX_TOOL_ITERATIONS = 12  # Suficiente para tarefas complexas sem ser infinito
+    MAX_TOOL_ITERATIONS = 50  # Suficiente para tarefas complexas sem ser infinito
 
     def __init__(self):
         self._system = self._build_system_prompt()

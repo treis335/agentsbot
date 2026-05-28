@@ -1,0 +1,45 @@
+{
+  "run_id": "65fec0bf",
+  "workflow_name": "research",
+  "state": "completed",
+  "current_step_id": "",
+  "context": {
+    "task": "Analisar e reduzir tokens usados por ciclo de LLM",
+    "task_title": "Otimizar uso de tokens",
+    "search_result": "[sim] Pesquisar concluído",
+    "synthesize_result": "[sim] Sintetizar concluído",
+    "document_result": "[sim] Documentar concluído"
+  },
+  "steps": {
+    "search": {
+      "step_id": "search",
+      "state": "completed",
+      "attempts": 1,
+      "result": "[sim] Pesquisar concluído",
+      "task_id": "",
+      "started_at": "2026-05-28T21:21:18.821397",
+      "finished_at": "2026-05-28T21:21:18.822628"
+    },
+    "synthesize": {
+      "step_id": "synthesize",
+      "state": "completed",
+      "attempts": 1,
+      "result": "[sim] Sintetizar concluído",
+      "task_id": "",
+      "started_at": "2026-05-28T21:21:18.832330",
+      "finished_at": "2026-05-28T21:21:18.834086"
+    },
+    "document": {
+      "step_id": "document",
+      "state": "completed",
+      "attempts": 1,
+      "result": "[sim] Documentar concluído",
+      "task_id": "",
+      "started_at": "2026-05-28T21:21:18.842775",
+      "finished_at": "2026-05-28T21:21:18.844122"
+    }
+  },
+  "created_at": "2026-05-28T21:21:18.812636",
+  "updated_at": "2026-05-28T21:21:18.844304",
+  "error": ""
+}

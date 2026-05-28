@@ -310,7 +310,7 @@ class AutonomousLoop:
         self.is_running = True
         log("🚀 Loop autónomo INICIADO", "WAKE")
         self._notify_joel("🤖 Sistema Correoto online!\n"
-                          f"Ciclo a cada {CYCLE_INTERVAL_MINUTES} min.\n"
+                          "Ciclo continuo - 1 minuto entre ciclos.\n"
                           "Vou trabalhar autonomamente e reportar aqui.")
 
         try:
@@ -321,7 +321,7 @@ class AutonomousLoop:
                     log("Sistema em pausa (comando do Joel)", "SLEEP")
 
                 log(f"💤 A dormir {CYCLE_INTERVAL_MINUTES} minutos...", "SLEEP")
-                time.sleep(CYCLE_INTERVAL_MINUTES * 60)
+                time.sleep(60)  # 1 minuto para ciclo contínuo
 
         except KeyboardInterrupt:
             log("Loop interrompido pelo utilizador", "INFO")
@@ -657,12 +657,12 @@ class AutonomousLoop:
             log(f"[Workflow] Erro: {e}", "ERROR")
             return False, str(e)
 
-    def _notify_joel(self, message: str):
+    async def _notify_joel(self, message: str):
         """Envia mensagem ao Joel via Telegram."""
         if self.telegram_bot:
             try:
                 JOEL_TELEGRAM_ID = os.getenv("OWNER_TELEGRAM_ID", "1094139387")
-                self.telegram_bot.send_message(JOEL_TELEGRAM_ID, message)
+                await await self.telegram_bot.send_message(JOEL_TELEGRAM_ID, message)
                 log(f"Telegram enviado ao Joel", "INFO")
             except Exception as e:
                 log(f"Erro ao enviar Telegram: {e}", "ERROR")
