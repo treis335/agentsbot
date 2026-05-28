@@ -1025,6 +1025,12 @@
       "decision": "Telegram: Sim..\n\nAbre um RepoTester",
       "context": "Telegram",
       "timestamp": "2026-05-28T12:40:31.871272"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mas fizeste isso onde? Nao vejo essa repp em lado nenhum",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:53:10.341755"
     }
   ],
   "discoveries": [],
