@@ -587,6 +587,18 @@
       "decision": "Telegram: Ah sim, mas se quiseres tambem podes atualizar o computador local, agora que ten",
       "context": "Telegram",
       "timestamp": "2026-05-28T07:15:37.783983"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao mas as \"evoluçoes\" que estao a ser carregadas na git...\n\nQue diferenças te",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:47:25.590847"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Assim ja faz sentido",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:48:03.788579"
     }
   ],
   "discoveries": [],
