@@ -1,19 +1,18 @@
 """
 autonomous_loop.py
-Motor de autonomia do ecossistema Correoto.
-Ciclo rapido (10s), watchdog de reboot, integrado com memoria e grounding.
+Motor de autonomia do ecossistema — ciclo autónomo, watchdog, cognição.
 """
 
 import json
 import os
 import sys
 import time
+import threading
 import random
 from datetime import datetime
 from pathlib import Path
 
-# ─── CONFIGURACAO ──────────────────────────────────────────────────────────────
-
+# ─── CONFIGURAÇÃO ──────────────────────────────────────────────────────────────
 CYCLE_INTERVAL_SECONDS = 10
 MAX_TASKS_PER_CYCLE = 1
 MEMORY_DIR = Path("memory")
@@ -21,22 +20,39 @@ BACKLOG_FILE = MEMORY_DIR / "backlog.json"
 LOG_FILE = MEMORY_DIR / "autonomous_log.md"
 REBOOT_FLAG = "auto_reboot.flag"
 
-# ─── BACKLOG ───────────────────────────────────────────────────────────────────
 
+# ─── BACKLOG ───────────────────────────────────────────────────────────────────
 def load_backlog() -> list:
     MEMORY_DIR.mkdir(exist_ok=True)
     if not BACKLOG_FILE.exists():
         return []
-    with open(BACKLOG_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(BACKLOG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return []
+
 
 def save_backlog(backlog: list):
     MEMORY_DIR.mkdir(exist_ok=True)
     with open(BACKLOG_FILE, "w", encoding="utf-8") as f:
         json.dump(backlog, f, ensure_ascii=False, indent=2)
 
-# ─── LOG ───────────────────────────────────────────────────────────────────────
 
+def _seed_initial_backlog():
+    """Cria backlog inicial se não existir"""
+    MEMORY_DIR.mkdir(exist_ok=True)
+    if not BACKLOG_FILE.exists():
+        initial = [
+            {"id": "onboarding", "desc": "Configurar ambiente inicial do agente", "status": "pending"},
+            {"id": "self_check", "desc": "Verificar saude do sistema e dependencias", "status": "pending"},
+            {"id": "first_task", "desc": "Executar primeira tarefa de teste", "status": "pending"}
+        ]
+        save_backlog(initial)
+        print("[Seed] Backlog inicial criado")
+
+
+# ─── LOG ───────────────────────────────────────────────────────────────────────
 def log_cycle(msg: str):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{timestamp}] {msg}"
@@ -45,85 +61,92 @@ def log_cycle(msg: str):
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
-# ─── CHECKPOINT ────────────────────────────────────────────────────────────────
 
-def save_checkpoint(cycle: int, task_id: str, status: str):
-    cp_file = MEMORY_DIR / "checkpoint.json"
-    data = {
-        "last_cycle": cycle,
-        "last_task": task_id,
-        "last_status": status,
-        "timestamp": datetime.now().isoformat()
-    }
-    with open(cp_file, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+# ─── CLASSE PRINCIPAL ─────────────────────────────────────────────────────────
+class AutonomousLoop:
+    def __init__(self, orchestrator=None, telegram_bot=None):
+        self.orchestrator = orchestrator
+        self.telegram_bot = telegram_bot
+        self.running = False
+        self.thread = None
+        self.cycle_count = 0
 
-# ─── CICLO PRINCIPAL ───────────────────────────────────────────────────────────
+    def start(self):
+        """Inicia o loop autonomo em background"""
+        if self.running:
+            return
+        self.running = True
+        self.thread = threading.Thread(
+            target=self._run_loop,
+            daemon=True,
+            name="AutonomousLoop"
+        )
+        self.thread.start()
+        log_cycle("AutonomousLoop iniciado em background")
 
-def run_cycle(cycle_number: int):
-    """Executa um ciclo de trabalho autonomo."""
-    
-    # 1. Verificar reboot flag
-    if os.path.exists(REBOOT_FLAG):
-        log_cycle(f"REBOOT FLAG DETETADO no ciclo #{cycle_number}")
-        os.remove(REBOOT_FLAG)
-        log_cycle("A REINICIAR SISTEMA...")
-        time.sleep(0.5)
-        os.execv(sys.executable, [sys.executable, "main.py"])
-        return
-    
-    # 2. Carregar backlog
-    backlog = load_backlog()
-    pending = [t for t in backlog if t.get("status") == "pending"]
-    
-    if not pending:
-        log_cycle(f"Ciclo #{cycle_number}: 0 tarefas pendentes. A dormir {CYCLE_INTERVAL_SECONDS}s...")
-        return
-    
-    # 3. Pegar proxima tarefa
-    task = pending[0]
-    task_id = task.get("id", "unknown")
-    task_desc = task.get("desc", "sem descricao")
-    
-    log_cycle(f"Ciclo #{cycle_number}: A trabalhar em '{task_id}' - {task_desc[:60]}")
-    save_checkpoint(cycle_number, task_id, "processing")
-    
-    # 4. Marcar como processing
-    for t in backlog:
-        if t.get("id") == task_id:
-            t["status"] = "processing"
-    save_backlog(backlog)
-    
-    # 5. Executar a tarefa (simulacao - o Supervisor real faz isto)
-    # Neste ciclo, apenas registamos que estamos a trabalhar
-    log_cycle(f"  -> A executar: {task_desc}")
-    
-    # 6. Marcar como done
-    for t in backlog:
-        if t.get("id") == task_id:
-            t["status"] = "done"
-    save_backlog(backlog)
-    
-    log_cycle(f"  -> Concluida: {task_id}")
-    save_checkpoint(cycle_number, task_id, "done")
+    def stop(self):
+        """Para o loop"""
+        self.running = False
+        log_cycle("AutonomousLoop parado")
 
-# ─── MAIN LOOP ─────────────────────────────────────────────────────────────────
+    def _run_loop(self):
+        """Loop principal — corre para sempre"""
+        log_cycle("=" * 50)
+        log_cycle("LOOP AUTONOMO INICIADO")
+        log_cycle(f"Ciclo a cada {CYCLE_INTERVAL_SECONDS}s")
+        log_cycle("=" * 50)
 
-def main_loop():
-    log_cycle("=" * 50)
-    log_cycle("LOOP AUTONOMO INICIADO")
-    log_cycle(f"Ciclo a cada {CYCLE_INTERVAL_SECONDS}s")
-    log_cycle("=" * 50)
-    
-    cycle = 0
-    while True:
-        cycle += 1
-        try:
-            run_cycle(cycle)
-        except Exception as e:
-            log_cycle(f"ERRO no ciclo #{cycle}: {e}")
-        
-        time.sleep(CYCLE_INTERVAL_SECONDS)
+        while self.running:
+            try:
+                self._run_cycle()
+            except Exception as e:
+                log_cycle(f"[ERRO] No ciclo: {e}")
+            time.sleep(CYCLE_INTERVAL_SECONDS)
 
-if __name__ == "__main__":
-    main_loop()
+    def _run_cycle(self):
+        """Um ciclo completo do loop autonomo"""
+        self.cycle_count += 1
+        cycle_id = self.cycle_count
+        log_cycle(f"[Ciclo #{cycle_id}] Inicio")
+
+        # 1. Verificar reboot
+        if os.path.exists(REBOOT_FLAG):
+            log_cycle("[REBOOT] Sinal detetado! A reiniciar...")
+            try:
+                os.remove(REBOOT_FLAG)
+            except:
+                pass
+            time.sleep(0.5)
+            os.execv(sys.executable, [sys.executable, "main.py"])
+            return
+
+        # 2. Carregar backlog
+        backlog = load_backlog()
+        if not backlog:
+            log_cycle("[Ciclo] Backlog vazio — nada a fazer")
+            return
+
+        # 3. Filtrar tarefas pendentes
+        pending = [t for t in backlog if t.get("status") == "pending"]
+        if not pending:
+            log_cycle("[Ciclo] Nenhuma tarefa pendente")
+            return
+
+        # 4. Escolher tarefa (prioridade ou primeira)
+        task = pending[0]
+        task_id = task.get("id", "unknown")
+        task_desc = task.get("desc", task.get("task", task.get("title", "Tarefa sem nome")))
+        log_cycle(f"[Ciclo] Tarefa: {task_id} — {task_desc}")
+
+        # 5. Executar (placeholder — futuramente chamar orquestrador)
+        log_cycle(f"[Ciclo] A executar tarefa...")
+
+        # 6. Marcar como concluida
+        for t in backlog:
+            if t.get("id") == task_id:
+                t["status"] = "completed"
+                t["completed_at"] = datetime.now().isoformat()
+                break
+
+        save_backlog(backlog)
+        log_cycle(f"[Ciclo #{cycle_id}] Tarefa concluida: {task_desc}")
