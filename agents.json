@@ -69,5 +69,11 @@
     "role": "Monitorização 24/7 de saúde do sistema",
     "status": "active",
     "created": "2026-05-28 07:05:14.352219"
+  },
+  {
+    "name": "LoggerAgent",
+    "role": "Gestor centralizado de logs",
+    "status": "active",
+    "created": "2026-05-28 07:06:18.549666"
   }
 ]
