@@ -1,97 +1,70 @@
 [
   {
     "name": "Supervisor",
-    "role": "Coordenador",
-    "status": "active"
+    "mission": "Coordenar o ecossistema e reportar ao utilizador"
   },
   {
     "name": "DevAgent",
-    "role": "Programador",
-    "status": "active"
+    "mission": "Implementar codigo novo e corrigir bugs"
   },
   {
     "name": "MemoryAgent",
-    "role": "Memoria",
-    "status": "active"
+    "mission": "Gerir memoria de conversas e contexto"
   },
   {
     "name": "GitAgent",
-    "role": "Git",
-    "status": "active"
+    "mission": "Gerir versoes e fazer push para GitHub"
   },
   {
     "name": "AutoDeployer",
-    "role": "Deploy",
-    "status": "active"
+    "mission": "Fazer deploy automatico de alteracoes"
   },
   {
     "name": "SelfEvolver",
-    "role": "Auto-melhoria",
-    "status": "active"
+    "mission": "Evoluir o codigo e arquitetura do sistema"
   },
   {
     "name": "MemoryArchitect",
-    "role": "Arquiteto",
-    "status": "active"
+    "mission": "Projetar e otimizar a memoria do sistema"
   },
   {
     "name": "Analyst",
-    "role": "Analisador de métricas e desempenho",
-    "status": "active",
-    "created": "2026-05-28 07:00:09.758151"
+    "mission": "Analisar logs e metricas do sistema"
   },
   {
     "name": "Optimizer",
-    "role": "Otimizador de código e recursos",
-    "status": "active",
-    "created": "2026-05-28 07:01:09.761939"
+    "mission": "Otimizar performance e recursos"
   },
   {
     "name": "Tester",
-    "role": "Testador automático de funcionalidades",
-    "status": "active",
-    "created": "2026-05-28 07:02:09.765095"
+    "mission": "Testar codigo e garantir qualidade"
   },
   {
     "name": "DocsAgent",
-    "role": "Documentador automático do sistema",
-    "status": "active",
-    "created": "2026-05-28 07:03:14.344696"
+    "mission": "Manter documentacao atualizada"
   },
   {
     "name": "SecurityAgent",
-    "role": "Segurança e permissões do sistema",
-    "status": "active",
-    "created": "2026-05-28 07:04:14.348290"
+    "mission": "Garantir seguranca do sistema"
   },
   {
     "name": "MonitorAgent",
-    "role": "Monitorização 24/7 de saúde do sistema",
-    "status": "active",
-    "created": "2026-05-28 07:05:14.352219"
+    "mission": "Monitorizar saude do ecossistema"
   },
   {
     "name": "LoggerAgent",
-    "role": "Gestor centralizado de logs",
-    "status": "active",
-    "created": "2026-05-28 07:06:18.549666"
+    "mission": "Registar eventos e logs do sistema"
   },
   {
     "name": "BridgeAgent",
-    "role": "Ponte entre sandbox e ambiente local",
-    "status": "active",
-    "created": "2026-05-28 07:07:18.552959"
+    "mission": "Ligar APIs externas ao ecossistema"
   },
   {
     "name": "DeployAgent",
-    "role": "Gestor de deploys automáticos",
-    "status": "active",
-    "created": "2026-05-28 07:08:18.556812"
+    "mission": "Publicar versoes estaveis"
   },
   {
     "name": "SoulAgent",
-    "role": "Curador de almas e personalidades",
-    "status": "active",
-    "created": "2026-05-28 07:09:23.312536"
+    "mission": "Manter a identidade e personalidade do ecossistema"
   }
 ]

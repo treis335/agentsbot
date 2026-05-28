@@ -1,0 +1,53 @@
+{
+  "run_id": "5b0c4f8e",
+  "workflow_name": "dev_cycle",
+  "state": "running",
+  "current_step_id": "test",
+  "context": {
+    "task": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
+    "task_title": "Auto-evolucao cognitiva",
+    "analyze_result": "## Plano de Implementação — Evolução Cognitiva do Sistema (v4)\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão determinístico, sem dependências externas |\n| `core/supervisor.py` | Modificar | Integrar `evoluir()` no ciclo do loop autónomo |\n| `agents/souls/supervisor.md` | Modificar | Documentar capacidade de evolução cognitiva |\n| `memory/backlog.json` | Modificar | Adicionar tarefas evolutivas geradas |\n| `_evolutions/` | Criar | Diretório para histórico de evoluções |\n\n### 2. Abordagem técnica\n\nCriar `cognitive_evolution.py` como módulo **puramente determinístico** — sem chamadas a APIs, sem LLM, sem threading problemático. O motor analisa o `backlog.json` com regras fixas: detecta tarefas com falhas repetidas (>30% taxa de erro), identifica tarefas órfãs (nunca atribuídas a nenhum agente), mede tempo médio de conclusão, e gera sugestões de melhoria concretas (ex: \"dividir tarefa X em sub-tarefas menores\", \"revisitar prompt do agente Y\", \"criar tarefa Z para preencher lacuna detectada\").\n\nA integração no `supervisor.py` é mínima: um método `evoluir()` que corre **apenas a cada N ciclos** (default=5), em modo síncrono simples, sem threads. O motor corre sempre em `dry_run=True` por segurança — analisa e propõe, mas não aplica automaticamente. As evoluções aplicadas ficam registadas em `_evolutions/{timestamp}.json` com diff e estado anterior.\n\n### 3. Riscos identificados\n\n- **Sugestões limitadas**: sem LLM, as melhorias são baseadas em heurísticas fixas. Mitigação: as regras são incrementais e focam métricas objectivas (falhas, lentidão, cobertura).\n- **Loop de sugestões repetidas**: sistema sugere sempre o mesmo. Mitigação: hash das sugestões já propostas + lock de 24h.\n- **Overhead**: análise do backlog pode ser pesada. Mitigação: apenas a cada 5 ciclos e apenas se houver tarefas concluídas desde a última análise.\n\n### 4. Estimativa de complexidade\n\n**Média** — ~1.5-2h. Sem dependências externas, o módulo é auto-contido e testável. O foco está na qualidade das heurísticas de melhoria.",
+    "implement_result": "⚠️ cannot schedule new futures after shutdown\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+  },
+  "steps": {
+    "analyze": {
+      "step_id": "analyze",
+      "state": "completed",
+      "attempts": 1,
+      "result": "## Plano de Implementação — Evolução Cognitiva do Sistema (v4)\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão determinístico, sem dependências externas |\n| `core/supervisor.py` | Modificar | Integrar `evoluir()` no ciclo do loop autónomo |\n| `agents/souls/supervisor.md` | Modificar | Documentar capacidade de evolução cognitiva |\n| `memory/backlog.json` | Modificar | Adicionar tarefas evolutivas geradas |\n| `_evolutions/` | Criar | Diretório para histórico de evoluções |\n\n### 2. Abordagem técnica\n\nCriar `cognitive_evolution.py` como módulo **puramente determinístico** — sem chamadas a APIs, sem LLM, sem threading problemático. O motor analisa o `backlog.json` com regras fixas: detecta tarefas com falhas repetidas (>30% taxa de erro), identifica tarefas órfãs (nunca atribuídas a nenhum agente), mede tempo médio de conclusão, e gera sugestões de melhoria concretas (ex: \"dividir tarefa X em sub-tarefas menores\", \"revisitar prompt do agente Y\", \"criar tarefa Z para preencher lacuna detectada\").\n\nA integração no `supervisor.py` é mínima: um método `evoluir()` que corre **apenas a cada N ciclos** (default=5), em modo síncrono simples, sem threads. O motor corre sempre em `dry_run=True` por segurança — analisa e propõe, mas não aplica automaticamente. As evoluções aplicadas ficam registadas em `_evolutions/{timestamp}.json` com diff e estado anterior.\n\n### 3. Riscos identificados\n\n- **Sugestões limitadas**: sem LLM, as melhorias são baseadas em heurísticas fixas. Mitigação: as regras são incrementais e focam métricas objectivas (falhas, lentidão, cobertura).\n- **Loop de sugestões repetidas**: sistema sugere sempre o mesmo. Mitigação: hash das sugestões já propostas + lock de 24h.\n- **Overhead**: análise do backlog pode ser pesada. Mitigação: apenas a cada 5 ciclos e apenas se houver tarefas concluídas desde a última análise.\n\n### 4. Estimativa de complexidade\n\n**Média** — ~1.5-2h. Sem dependências externas, o módulo é auto-contido e testável. O foco está na qualidade das heurísticas de melhoria.",
+      "task_id": "",
+      "started_at": "2026-05-28T22:15:30.678417",
+      "finished_at": "2026-05-28T22:15:38.675902"
+    },
+    "implement": {
+      "step_id": "implement",
+      "state": "completed",
+      "attempts": 1,
+      "result": "⚠️ cannot schedule new futures after shutdown\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM.",
+      "task_id": "",
+      "started_at": "2026-05-28T22:15:38.685184",
+      "finished_at": "2026-05-28T22:16:19.059810"
+    },
+    "test": {
+      "step_id": "test",
+      "state": "pending",
+      "attempts": 0,
+      "result": "",
+      "task_id": "",
+      "started_at": "",
+      "finished_at": ""
+    },
+    "commit": {
+      "step_id": "commit",
+      "state": "pending",
+      "attempts": 0,
+      "result": "",
+      "task_id": "",
+      "started_at": "",
+      "finished_at": ""
+    }
+  },
+  "created_at": "2026-05-28T22:15:30.665763",
+  "updated_at": "2026-05-28T22:16:19.060056",
+  "error": ""
+}

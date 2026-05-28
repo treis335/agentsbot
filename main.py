@@ -52,6 +52,7 @@ from monitoring.health import HealthChecker
 from pipelines.engine import PipelineEngine
 # Autonomia
 from autonomous_loop import AutonomousLoop, _seed_initial_backlog, load_backlog
+from core.auto_reboot import start_watchdog, check_and_reboot
 
 
 # API
@@ -169,6 +170,8 @@ async def main():
         logger.warning(f"[Bus] Replay falhou (não crítico): {e}")
 
     await orchestrator.start()
+    # Iniciar watchdog de auto-reboot
+    start_watchdog()
 
     # API REST
     if not no_api:

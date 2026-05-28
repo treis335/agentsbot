@@ -1,0 +1,53 @@
+{
+  "run_id": "36beee8c",
+  "workflow_name": "dev_cycle",
+  "state": "running",
+  "current_step_id": "test",
+  "context": {
+    "task": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
+    "task_title": "Auto-evolucao cognitiva",
+    "analyze_result": "## Plano de Implementação — Evolução Cognitiva do Sistema (v6 — FINAL)\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão determinístico, síncrono, sem dependências |\n| `core/supervisor.py` | Modificar | Adicionar `evoluir()` como método simples, chamado no ciclo |\n| `agents/souls/supervisor.md` | Modificar | Documentar capacidade de evolução cognitiva |\n| `memory/backlog.json` | Modificar | Adicionar tarefas evolutivas geradas |\n| `_evolutions/` | **Criar dir** | Histórico de evoluções aplicadas |\n\n### 2. Abordagem técnica\n\nCriar `cognitive_evolution.py` como um módulo **100% determinístico, síncrono, sem threads, sem asyncio, sem APIs**. O motor contém uma classe `CognitiveEvolver` com:\n\n- **`analisar(backlog: dict) -> list[dict]`**: lê o backlog, extrai métricas (taxa de falhas por tarefa, por agente, tarefas órfãs, tarefas paradas há >7 dias) e gera sugestões com base em regras fixas.\n- **`aplicar(sugestoes: list[dict], dry_run: bool = True) -> list[dict]`**: aplica as sugestões (cria tarefas no backlog, regista em `_evolutions/`) ou apenas simula se `dry_run=True`.\n- **`_regra_tarefa_falhou()`**, **`_regra_agente_com_falhas()`**, **`_regra_tarefas_orfas()`**, **`_regra_tarefas_paradas()`**: cada regra é um método isolado, testável individualmente.\n\nNo `supervisor.py`, adicionar no `run_cycle()`:\n\n```python\nif self.ciclo_actual % 5 == 0:\n    evolver = CognitiveEvolver()\n    sugestoes = evolver.analisar(self.backlog)\n    if sugestoes and not dry_run:\n        evolver.aplicar(sugestoes, dry_run=False)\n```\n\nO motor corre apenas a cada 5 ciclos. O `dry_run=True` é o default — para activar, passar `dry_run=False` no construtor do Supervisor ou via configuração.\n\n### 3. Riscos identificados\n\n- **Sugestões triviais**: heurísticas fixas podem ser pouco criativas. Mitigação: regras conservadoras que só agem em problemas claros (>2 falhas seguidas, >40% taxa de erro, >7 dias parado).\n- **Repetição infinita**: mesma sugestão a cada 5 ciclos. Mitigação: hash das sugestões já propostas + lock de 24h por tipo de sugestão.\n- **Backlog corrompido**: escrita incorrecta no JSON. Mitigação: validação do JSON antes de escrever + backup automático em `_evolutions/backup_*.json`.\n\n### 4. Estimativa de complexidade\n\n**Baixa-Média** — ~1h. Módulo pequeno (~150 linhas), sem dependências, integração mínima no supervisor. O foco está nas 4 regras de análise, cada uma com ~20 linhas.",
+    "implement_result": "⚠️ cannot schedule new futures after shutdown\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+  },
+  "steps": {
+    "analyze": {
+      "step_id": "analyze",
+      "state": "completed",
+      "attempts": 1,
+      "result": "## Plano de Implementação — Evolução Cognitiva do Sistema (v6 — FINAL)\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão determinístico, síncrono, sem dependências |\n| `core/supervisor.py` | Modificar | Adicionar `evoluir()` como método simples, chamado no ciclo |\n| `agents/souls/supervisor.md` | Modificar | Documentar capacidade de evolução cognitiva |\n| `memory/backlog.json` | Modificar | Adicionar tarefas evolutivas geradas |\n| `_evolutions/` | **Criar dir** | Histórico de evoluções aplicadas |\n\n### 2. Abordagem técnica\n\nCriar `cognitive_evolution.py` como um módulo **100% determinístico, síncrono, sem threads, sem asyncio, sem APIs**. O motor contém uma classe `CognitiveEvolver` com:\n\n- **`analisar(backlog: dict) -> list[dict]`**: lê o backlog, extrai métricas (taxa de falhas por tarefa, por agente, tarefas órfãs, tarefas paradas há >7 dias) e gera sugestões com base em regras fixas.\n- **`aplicar(sugestoes: list[dict], dry_run: bool = True) -> list[dict]`**: aplica as sugestões (cria tarefas no backlog, regista em `_evolutions/`) ou apenas simula se `dry_run=True`.\n- **`_regra_tarefa_falhou()`**, **`_regra_agente_com_falhas()`**, **`_regra_tarefas_orfas()`**, **`_regra_tarefas_paradas()`**: cada regra é um método isolado, testável individualmente.\n\nNo `supervisor.py`, adicionar no `run_cycle()`:\n\n```python\nif self.ciclo_actual % 5 == 0:\n    evolver = CognitiveEvolver()\n    sugestoes = evolver.analisar(self.backlog)\n    if sugestoes and not dry_run:\n        evolver.aplicar(sugestoes, dry_run=False)\n```\n\nO motor corre apenas a cada 5 ciclos. O `dry_run=True` é o default — para activar, passar `dry_run=False` no construtor do Supervisor ou via configuração.\n\n### 3. Riscos identificados\n\n- **Sugestões triviais**: heurísticas fixas podem ser pouco criativas. Mitigação: regras conservadoras que só agem em problemas claros (>2 falhas seguidas, >40% taxa de erro, >7 dias parado).\n- **Repetição infinita**: mesma sugestão a cada 5 ciclos. Mitigação: hash das sugestões já propostas + lock de 24h por tipo de sugestão.\n- **Backlog corrompido**: escrita incorrecta no JSON. Mitigação: validação do JSON antes de escrever + backup automático em `_evolutions/backup_*.json`.\n\n### 4. Estimativa de complexidade\n\n**Baixa-Média** — ~1h. Módulo pequeno (~150 linhas), sem dependências, integração mínima no supervisor. O foco está nas 4 regras de análise, cada uma com ~20 linhas.",
+      "task_id": "",
+      "started_at": "2026-05-28T22:17:54.742304",
+      "finished_at": "2026-05-28T22:18:03.756757"
+    },
+    "implement": {
+      "step_id": "implement",
+      "state": "completed",
+      "attempts": 1,
+      "result": "⚠️ cannot schedule new futures after shutdown\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM.",
+      "task_id": "",
+      "started_at": "2026-05-28T22:18:03.767606",
+      "finished_at": "2026-05-28T22:19:41.862763"
+    },
+    "test": {
+      "step_id": "test",
+      "state": "pending",
+      "attempts": 0,
+      "result": "",
+      "task_id": "",
+      "started_at": "",
+      "finished_at": ""
+    },
+    "commit": {
+      "step_id": "commit",
+      "state": "pending",
+      "attempts": 0,
+      "result": "",
+      "task_id": "",
+      "started_at": "",
+      "finished_at": ""
+    }
+  },
+  "created_at": "2026-05-28T22:17:54.732721",
+  "updated_at": "2026-05-28T22:19:41.862926",
+  "error": ""
+}
