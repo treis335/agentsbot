@@ -1055,6 +1055,12 @@
       "decision": "Telegram: Mas que merda pa!! Nao tenjo repo cryptobull",
       "context": "Telegram",
       "timestamp": "2026-05-28T12:56:36.678832"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mas eu ja falei milhares de vezes para saires do docker e executarrs tudo real",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:59:24.193034"
     }
   ],
   "discoveries": [],
