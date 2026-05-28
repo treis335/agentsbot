@@ -316,7 +316,7 @@ class LLMAgent:
     - Callback de progresso para o Telegram
     """
 
-    MAX_TOOL_ITERATIONS = 5  # Muito menos que os 30 anteriores!
+    MAX_TOOL_ITERATIONS = 12  # Suficiente para tarefas complexas sem ser infinito
 
     def __init__(self):
         self._system = self._build_system_prompt()
@@ -415,22 +415,27 @@ class LLMAgent:
                     "content": result,
                 })
 
-        # Atingiu o limite de iterações
+        # Atingiu o limite de iterações — pedir resumo SEM ferramentas
         logger.warning(f"[LLMAgent] Limite de iterações atingido para user {user_id}")
-        # Pedir ao LLM uma resposta final com o que foi feito
         messages.append({
             "role": "user",
-            "content": "Resume o que fizeste até agora em 2-3 frases."
+            "content": (
+                "Atingiste o limite de operações para esta mensagem. "
+                "Em 2 frases: o que fizeste e o que ficou por fazer (se algo ficou)."
+            )
         })
         try:
             final_resp = await asyncio.get_event_loop().run_in_executor(
                 None,
-                lambda: _call_llm(messages, use_tools=False, max_tokens=500)
+                lambda: _call_llm(messages, use_tools=False, max_tokens=300)
             )
-            reply = final_resp["choices"][0]["message"].get("content", "Operações concluídas.")
+            reply = final_resp["choices"][0]["message"].get("content", "")
+            if not reply:
+                reply = f"Concluí: {', '.join(set(tools_used))}."
         except Exception:
-            reply = f"Operações concluídas: {', '.join(tools_used)}"
+            reply = f"Operações realizadas: {', '.join(set(tools_used))}."
 
+        # Guardar histórico com a resposta final (não o estado incompleto)
         self._update_history(history, user_message, reply, user_id)
         return reply
 

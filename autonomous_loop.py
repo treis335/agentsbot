@@ -527,7 +527,7 @@ class AutonomousLoop:
         if workflow_name:
             return self._execute_via_workflow(task, workflow_name)
 
-        # ── Execução directa (comportamento original) ───────────────────────────
+        # ── Execução via LLMAgent (real, não simulação) ─────────────────────────
         if self.orchestrator:
             try:
                 result = self.orchestrator.execute(task["description"])
@@ -535,9 +535,45 @@ class AutonomousLoop:
             except Exception as e:
                 return False, str(e)
         else:
-            log(f"[SIMULAÇÃO] Executaria: {task['description']}", "INFO")
-            time.sleep(2)
-            return True, "Executado em modo simulação"
+            # Usar o LLMAgent directamente — execução real sem orchestrator
+            try:
+                from agents.llm_agent import get_agent
+                import asyncio as _asyncio
+
+                agent = get_agent()
+                # Construir prompt focado na tarefa
+                task_prompt = (
+                    f"Executa esta tarefa de forma autónoma e concisa:\n\n"
+                    f"**{task['title']}**\n{task['description']}\n\n"
+                    f"Age directamente — lê os ficheiros necessários, implementa, faz commit."
+                )
+
+                # Correr no event loop existente ou criar um novo
+                try:
+                    loop = _asyncio.get_event_loop()
+                    if loop.is_running():
+                        # Estamos numa thread separada — criar novo event loop
+                        import concurrent.futures
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
+                            future = ex.submit(
+                                lambda: _asyncio.run(
+                                    agent.chat(user_id=0, user_message=task_prompt)
+                                )
+                            )
+                            result = future.result(timeout=300)
+                    else:
+                        result = loop.run_until_complete(
+                            agent.chat(user_id=0, user_message=task_prompt)
+                        )
+                except Exception:
+                    result = _asyncio.run(agent.chat(user_id=0, user_message=task_prompt))
+
+                log(f"Tarefa executada via LLMAgent: {task['title'][:50]}", "INFO")
+                return True, str(result)[:500]
+
+            except Exception as e:
+                log(f"Erro ao executar tarefa via LLMAgent: {e}", "ERROR")
+                return False, str(e)
 
     def _execute_via_workflow(self, task: dict, workflow_name: str) -> tuple[bool, str]:
         """
@@ -567,8 +603,22 @@ class AutonomousLoop:
                 if self.orchestrator:
                     return str(self.orchestrator.execute(template))
                 else:
-                    log(f"[Workflow/SIM] {step_def.name}: {template[:80]}", "INFO")
-                    return f"[sim] {step_def.name} concluído"
+                    # Usar LLMAgent real
+                    try:
+                        from agents.llm_agent import get_agent
+                        import asyncio as _asyncio
+                        import concurrent.futures
+                        agent = get_agent()
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
+                            future = ex.submit(
+                                lambda t=template: _asyncio.run(
+                                    agent.chat(user_id=0, user_message=t)
+                                )
+                            )
+                            return future.result(timeout=120)
+                    except Exception as e:
+                        log(f"[Workflow] Erro LLMAgent: {e}", "ERROR")
+                        return f"Erro: {e}"
 
             sm.set_executor(step_executor)
 
