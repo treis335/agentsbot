@@ -1031,6 +1031,18 @@
       "decision": "Telegram: Mas fizeste isso onde? Nao vejo essa repp em lado nenhum",
       "context": "Telegram",
       "timestamp": "2026-05-28T12:53:10.341755"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Fax como achares melhor quero isso resolvido",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:54:01.113455"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mete isso na minha git official pa!!! Vai meu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T12:55:00.251431"
     }
   ],
   "discoveries": [],
