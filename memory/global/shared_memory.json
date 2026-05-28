@@ -497,6 +497,24 @@
       "decision": "Telegram: Faz o seguinte, primeiro que nada sincroniza com a github, pretendo tudo igualad",
       "context": "Telegram",
       "timestamp": "2026-05-28T06:42:12.815750"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Tu isso consegues fazer tudo, pois ja te vi fazer anteriormente",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:43:00.184314"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Tu tens acesso kernel por isso tambem acedes na minha maquina",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:43:21.993245"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao vamos fazer o seguinte, em vez de eu fazer isso, eu permito que acecmdas á",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:44:29.674010"
     }
   ],
   "discoveries": [],
