@@ -154,6 +154,22 @@ TOOLS = [
             }
         }
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "github_api",
+            "description": "Chama a GitHub API directamente. Permite criar repos, activar Pages, criar issues, fazer qualquer operação GitHub. Usa quando precisas de criar repos, configurar settings, etc.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "method":   {"type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"], "description": "Método HTTP"},
+                    "endpoint": {"type": "string", "description": "Endpoint GitHub API, ex: /user/repos ou /repos/owner/repo/pages"},
+                    "body":     {"type": "object", "description": "Body JSON para POST/PATCH (opcional)"}
+                },
+                "required": ["method", "endpoint"]
+            }
+        }
+    },
 ]
 
 # ---------- Executor principal ----------
@@ -222,6 +238,13 @@ async def execute_tool(name: str, args: dict) -> str:
             if not query:
                 return "ERRO: search_github precisa de 'query'"
             return _search_github(query, args.get("type", "code"))
+
+        elif name == "github_api":
+            return _github_api(
+                method=args.get("method", "GET"),
+                endpoint=args.get("endpoint", ""),
+                body=args.get("body"),
+            )
 
         else:
             return f"Ferramenta desconhecida: {name}"
@@ -449,6 +472,49 @@ def is_safe_command(command: str) -> bool:
     return not any(bad in cmd_lower for bad in BLOCKED)
 
 
+
+
+def _github_api(method: str, endpoint: str, body: dict = None) -> str:
+    """
+    Chama a GitHub API directamente.
+    Permite criar repos, activar Pages, criar issues, etc.
+    """
+    if not GITHUB_TOKEN:
+        return "❌ GITHUB_TOKEN não configurado no .env"
+    if not endpoint:
+        return "❌ endpoint obrigatório (ex: /user/repos)"
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+        "Content-Type": "application/json",
+    }
+    url = f"https://api.github.com{endpoint}"
+
+    try:
+        resp = requests.request(
+            method=method.upper(),
+            url=url,
+            headers=headers,
+            json=body,
+            timeout=15,
+        )
+        try:
+            data = resp.json()
+        except Exception:
+            data = resp.text
+
+        if resp.status_code in (200, 201, 204):
+            # Sucesso — retornar info útil
+            if isinstance(data, dict):
+                useful = {k: data[k] for k in ("html_url", "full_name", "name", "message", "url") if k in data}
+                return f"✅ {method} {endpoint} → {resp.status_code}\n{useful or data}"
+            return f"✅ {method} {endpoint} → {resp.status_code}\n{str(data)[:500]}"
+        else:
+            msg = data.get("message", str(data)) if isinstance(data, dict) else str(data)
+            return f"❌ GitHub API {resp.status_code}: {msg}"
+    except Exception as e:
+        return f"❌ Erro ao chamar GitHub API: {e}"
 
 
 def _search_github(query: str, search_type: str = "code") -> str:
