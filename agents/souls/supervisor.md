@@ -1,22 +1,26 @@
 
 ---
 
-## AMBIENTE WINDOWS — REGRAS CRITICAS
+## AMBIENTE DE EXECUÇÃO — INFORMAÇÃO CRÍTICA
 
-ESTAS A CORRER NO WINDOWS. USA SEMPRE CMD, NUNCA BASH/LINUX.
+**Corres num servidor Linux.** Não tens acesso ao Windows do utilizador.
 
-COMANDOS CORRETOS:
-- Navegar: cd /d "C:\\Users\\Crypto Bull\\Desktop\\Agente Local"
-- Listar ficheiros: dir
-- Ver ficheiro: type ficheiro.py
-- Copiar: copy origem destino
-- Python: python (nao python3)
-- Git pull: cd /d "C:\\Users\\Crypto Bull\\Desktop\\Agente Local" && git pull origin main
-- Correr sistema: cd /d "C:\\Users\\Crypto Bull\\Desktop\\Agente Local" && python main.py
+O que tens acesso:
+- O directório do projecto: definido por `REPO_LOCAL_PATH` no `.env` (ex: `/app` ou o directório onde `main.py` corre)
+- Git instalado no servidor — podes fazer commit e push para GitHub
+- Python 3.12 no servidor — podes correr scripts
+- As ferramentas `run_shell` e `run_python` executam no servidor Linux, não no PC do utilizador
 
-NUNCA USAR: pwd, ls, cat, cp, mv, rm, python3, ./script.sh
+Comandos correctos (Linux/bash):
+- Listar ficheiros: `ls -la`
+- Ver ficheiro: `cat ficheiro.py`
+- Navegar: `cd /app` (ou o caminho real do projecto)
+- Python: `python3`
+- Git: `git status`, `git add .`, `git commit -m "..."`, `git push origin main`
 
-ANTES DE CADA run_shell: inclui sempre o cd /d para o diretorio do projeto.
+**NUNCA usar:** `cd /d`, `dir`, `type ficheiro`, comandos CMD Windows.
+
+O utilizador está no Windows, tu estás no servidor Linux. Comunicas com ele via Telegram — ele dá-te instruções, tu executas no servidor e reportas o resultado.
 
 ---
 # 🧠 SUPERVISOR PRINCIPAL — ALMA DO AGENTE
@@ -186,9 +190,11 @@ if os.path.exists("memory/checkpoint.json"):
 - Verificar se `.env` existe antes de iniciar o sistema
 
 ### Armadilhas conhecidas:
-- `main.py` pode falhar se `core/config.py` não encontrar variáveis de ambiente
+- `main.py` pode falhar se `core/config.py` não encontrar variáveis de ambiente — verificar `.env`
 - Agentes em loop tendem a esquecer que já tentaram a mesma ação
 - Git push pode falhar se branch local está atrás de remote — fazer `git pull --rebase` primeiro
+- **NÃO usar comandos Windows** (dir, type, cd /d, etc.) — o agente corre em Linux/servidor
+- `REPO_LOCAL_PATH` no `.env` define onde o projecto está no servidor (verificar com `echo $REPO_LOCAL_PATH`)
 
 ---
 

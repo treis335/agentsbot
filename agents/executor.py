@@ -163,8 +163,22 @@ class AgentExecutor:
         return "\n".join(lines)
 
     def build_system_prompt(self, task: str) -> str:
-        """Constrói o system prompt completo: soul + memória + tools + tarefa."""
+        """Constrói o system prompt completo: soul + runtime context + memória + tools + tarefa."""
+        import platform
         memory_ctx = self._build_memory_context()
+
+        # Contexto de runtime real — injectado em cada prompt para evitar confusão
+        repo_path = str(self.config.REPO_LOCAL_PATH)
+        runtime_ctx = (
+            f"## CONTEXTO DE EXECUÇÃO (gerado automaticamente)\n"
+            f"- Sistema operativo: {platform.system()} {platform.release()}\n"
+            f"- Directório do projecto: {repo_path}\n"
+            f"- Python: {platform.python_version()}\n"
+            f"- Sandbox Docker: {'ACTIVO' if getattr(self.config, 'SANDBOX_ENABLED', False) else 'DESACTIVADO — execução directa no servidor'}\n"
+            f"- Comandos de shell: usa bash/Linux (ls, cat, python3, etc.)\n"
+            f"- O utilizador está no Windows/PC — TU estás no servidor Linux\n"
+            f"- Comunicação com utilizador: via Telegram (já tratado automaticamente)\n"
+        )
 
         # Procedimentos HOW-TO relevantes (Batch 4)
         proc_ctx = ""
@@ -190,6 +204,7 @@ class AgentExecutor:
 
         return (
             f"{self.soul}\n\n"
+            f"{runtime_ctx}\n\n"
             f"{TOOL_SCHEMA}\n\n"
             f"{memory_ctx}{proc_ctx}{failure_ctx}\n\n"
             f"## TAREFA ATUAL\n{task}"
