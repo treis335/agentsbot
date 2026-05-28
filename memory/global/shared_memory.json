@@ -719,6 +719,12 @@
       "decision": "Telegram: Ok mas quero isso realmente a acontecer... primwieo desafio real grande.. cria u",
       "context": "Telegram",
       "timestamp": "2026-05-28T09:56:19.363945"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Estou a espera, quando estiver online diz",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T09:58:37.471053"
     }
   ],
   "discoveries": [],
