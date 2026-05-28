@@ -1073,6 +1073,12 @@
       "decision": "Telegram: Continja",
       "context": "Telegram",
       "timestamp": "2026-05-28T13:01:40.896235"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Continia",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T13:04:07.502139"
     }
   ],
   "discoveries": [],
