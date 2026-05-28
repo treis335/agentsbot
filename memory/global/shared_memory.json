@@ -701,6 +701,12 @@
       "decision": "Telegram: Pretendo saber se realmentr estas a atualizar esses ficheiros",
       "context": "Telegram",
       "timestamp": "2026-05-28T09:38:26.213666"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Mas.... nao estou realmente a ver grandes alteraçoes funcionais!! Pretendo que t",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T09:41:27.814739"
     }
   ],
   "discoveries": [],
