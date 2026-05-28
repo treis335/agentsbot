@@ -102,6 +102,7 @@ def _detect_workflow(task: dict) -> str | None:
 
 
 
+def add_to_backlog(title: str, description: str = "", priority: int = 5, source: str = "manual") -> dict:
     """Adiciona tarefa ao backlog. Prioridade: 1 (alta) a 10 (baixa)."""
     backlog = load_backlog()
     task = {
