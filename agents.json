@@ -51,5 +51,11 @@
     "role": "Testador automático de funcionalidades",
     "status": "active",
     "created": "2026-05-28 07:02:09.765095"
+  },
+  {
+    "name": "DocsAgent",
+    "role": "Documentador automático do sistema",
+    "status": "active",
+    "created": "2026-05-28 07:03:14.344696"
   }
 ]
