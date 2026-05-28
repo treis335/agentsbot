@@ -731,6 +731,18 @@
       "decision": "Telegram: Mas num projeto diferente. Ou seja imagina que te peco para fazwr um serviço, e ",
       "context": "Telegram",
       "timestamp": "2026-05-28T10:00:09.370465"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao consigo ver.. mas qual é a repo desse site?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T10:01:14.775456"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: 404 nao aparece nada",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T10:01:47.315368"
     }
   ],
   "discoveries": [],
