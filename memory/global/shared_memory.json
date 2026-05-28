@@ -461,6 +461,42 @@
       "decision": "Telegram: Faz tu",
       "context": "Telegram",
       "timestamp": "2026-05-28T06:39:08.617269"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:39:18.645320"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Eu ja te vi escrever no sistema",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:39:41.092733"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz ti",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:40:11.303023"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Entao mas porque raio entao temos sandbox se eu pretendo atividade real?",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:40:45.315265"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Claro",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:41:18.708169"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz o seguinte, primeiro que nada sincroniza com a github, pretendo tudo igualad",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:42:12.815750"
     }
   ],
   "discoveries": [],
