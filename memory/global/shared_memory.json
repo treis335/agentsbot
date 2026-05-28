@@ -515,6 +515,12 @@
       "decision": "Telegram: Entao vamos fazer o seguinte, em vez de eu fazer isso, eu permito que acecmdas á",
       "context": "Telegram",
       "timestamp": "2026-05-28T06:44:29.674010"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nada disso, sim tu podes ter acesso real que eu sei disso e interagor como se fo",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T06:46:18.765527"
     }
   ],
   "discoveries": [],
