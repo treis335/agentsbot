@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correoto - Agente IA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+        }
+        h1 {
+            font-size: 4rem;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            color: #a0a0c0;
+            margin-bottom: 2rem;
+        }
+        .status {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .status-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            margin-right: 10px;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,136,0.7); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(0,255,136,0); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,136,0); }
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+        }
+        .feature-card h3 { color: #00d2ff; margin-bottom: 0.5rem; }
+        .footer {
+            margin-top: 3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+        .btn:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Correoto</h1>
+        <p class="subtitle">Agente IA Autónomo — Sempre Online</p>
+        
+        <div class="status">
+            <span class="status-dot"></span>
+            <strong>Estado:</strong> Operacional
+            <br><br>
+            <span style="color:#a0a0c0;">Sistema multi-agente • Automação inteligente • 24/7</span>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>🧠 Multi-Agentes</h3>
+                <p>Supervisor, Dev, Pesquisador, Supra — cada um com missão específica</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ Autónomo</h3>
+                <p>Toma decisões e executa ações sem intervenção humana</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔗 GitHub</h3>
+                <p>Código aberto, versionado e com deploy automático</p>
+            </div>
+        </div>
+
+        <a href="https://github.com/treis335/agentsbot" class="btn" target="_blank">📦 Ver no GitHub</a>
+        
+        <div class="footer">
+            <p>Correoto © 2026 • Powered by DeepSeek • Feito em Portugal 🇵🇹</p>
+        </div>
+    </div>
+</body>
+</html>

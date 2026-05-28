@@ -875,6 +875,78 @@
       "decision": "Telegram: Ja esta?",
       "context": "Telegram",
       "timestamp": "2026-05-28T11:18:34.600327"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ja est",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:19:24.146093"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Pretendo que evokuas no sentido de executar tudo o que peco de forma mais autono",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:19:58.068533"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:14.519849"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:20.425162"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:28.238775"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:35.404001"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:40.062262"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:47.654033"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:20:53.266750"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:21:00.619632"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:21:08.499190"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Ok",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T11:21:20.333585"
     }
   ],
   "discoveries": [],
