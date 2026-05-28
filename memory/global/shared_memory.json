@@ -551,6 +551,18 @@
       "decision": "Telegram: preciso é que verifiques tudo e sejas autonomoa entao apartir daqui",
       "context": "Telegram",
       "timestamp": "2026-05-28T07:01:54.000273"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Sim faz isso, quero ver na git se subiste alguma coisa",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:08:42.444737"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Naaaaoooooo!!!!! Faz tu tudo!!!! Nao tens já a bridge feita e ligada!!! Fazzx tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:09:22.109060"
     }
   ],
   "discoveries": [],

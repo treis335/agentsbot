@@ -87,5 +87,11 @@
     "role": "Gestor de deploys automáticos",
     "status": "active",
     "created": "2026-05-28 07:08:18.556812"
+  },
+  {
+    "name": "SoulAgent",
+    "role": "Curador de almas e personalidades",
+    "status": "active",
+    "created": "2026-05-28 07:09:23.312536"
   }
 ]
