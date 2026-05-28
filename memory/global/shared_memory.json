@@ -1109,6 +1109,12 @@
       "decision": "Telegram: O agente já está a fazer auto-evolução! Vamos analisar os ficheiros em questão:\n",
       "context": "Telegram",
       "timestamp": "2026-05-28T14:11:33.750090"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Executa isso",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T14:12:06.164381"
     }
   ],
   "discoveries": [],
