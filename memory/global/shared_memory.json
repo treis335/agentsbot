@@ -569,6 +569,12 @@
       "decision": "Telegram: Naooo estou no computadorrrr!!! Faz tu tudo",
       "context": "Telegram",
       "timestamp": "2026-05-28T07:09:45.645556"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Nao estou com acesso na maquina! Tu ja tens tudo, ppr isso faz tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T07:11:24.031450"
     }
   ],
   "discoveries": [],
