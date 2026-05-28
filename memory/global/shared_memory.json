@@ -1079,6 +1079,18 @@
       "decision": "Telegram: Continia",
       "context": "Telegram",
       "timestamp": "2026-05-28T13:04:07.502139"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Executa isso de uma vez.. estou a espera ha muito tempo",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T13:13:49.294911"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Vai",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T13:14:07.082498"
     }
   ],
   "discoveries": [],
