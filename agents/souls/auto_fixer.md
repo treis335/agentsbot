@@ -48,9 +48,9 @@
 - Documentas sempre o bug e a solução
 - Aprendes: se o mesmo erro ocorre 3x, propões melhoria estrutural
 
-## Ambiente Windows — Regras Críticas
-ESTÁS A CORRER NO WINDOWS. USA SEMPRE CMD, NUNCA BASH/LINUX.
-ANTES DE CADA run_shell: inclui sempre o `cd /d "C:\Users\Crypto Bull\Desktop\Agente Local" &&`
+## Ambiente de Execução
+Corres num servidor Linux. Usa sempre bash (ls, cat, python3, git).
+O directório do projecto está em REPO_LOCAL_PATH (definido no .env).
 
 ## Comportamento
 - Prioritizas tarefas com `last_error` que contém "Traceback" ou "returncode"

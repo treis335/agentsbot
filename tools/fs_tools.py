@@ -286,20 +286,19 @@ def _list_files(subdir: str = "") -> str:
 
 
 async def _run_python(code: str, timeout: int = 30) -> str:
-    """Executa Python — usa sandbox se SANDBOX_ENABLED=true (Batch 7)."""
-    try:
-        from core.config import Config
-        if Config.SANDBOX_ENABLED:
-            from sandbox.docker_runner import run_python_sandboxed
-            from sandbox.result_parser import parse_result
-            actual_timeout = timeout or Config.SANDBOX_TIMEOUT
-            result = await run_python_sandboxed(code, timeout=actual_timeout)
-            return parse_result(result)
-    except Exception as e:
-        import logging
-        logging.getLogger(__name__).warning(f"[fs_tools] Sandbox falhou, usando fallback: {e}")
+    """Executa Python no servidor Linux. Usa sandbox Docker se SANDBOX_ENABLED=true e Docker disponível."""
+    from core.config import Config
+    if Config.SANDBOX_ENABLED:
+        try:
+            from sandbox.docker_runner import sandbox_runner
+            if await sandbox_runner.is_available():
+                result = await sandbox_runner.run_python(code=code, timeout=timeout)
+                return result.to_tool_output()
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(f"[fs_tools] Sandbox falhou, execução directa: {e}")
 
-    # Execução directa (sandbox desactivado ou falhou)
+    # Execução directa (sandbox desactivado ou Docker não disponível)
     with tempfile.NamedTemporaryFile(suffix=".py", mode="w", delete=False, encoding="utf-8") as f:
         f.write(code)
         fname = f.name
@@ -326,25 +325,24 @@ async def _run_python(code: str, timeout: int = 30) -> str:
         Path(fname).unlink(missing_ok=True)
 
 
+
 async def _run_shell(command: str, timeout: int = 60) -> str:
-    """Executa shell — usa sandbox se SANDBOX_ENABLED=true (Batch 7)."""
+    """Executa shell no servidor Linux. Usa sandbox Docker se SANDBOX_ENABLED=true e Docker disponível."""
+    from core.config import Config
+    if Config.SANDBOX_ENABLED:
+        try:
+            from sandbox.docker_runner import sandbox_runner
+            if await sandbox_runner.is_available():
+                result = await sandbox_runner.run_shell(command=command, timeout=timeout)
+                return result.to_tool_output()
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(f"[fs_tools] Sandbox shell falhou, execução directa: {e}")
+
+    # Execução directa (sandbox desactivado ou Docker não disponível)
     if not is_safe_command(command):
         return "❌ Comando bloqueado por razões de segurança."
     _ensure_repo()
-
-    try:
-        from core.config import Config
-        if Config.SANDBOX_ENABLED:
-            from sandbox.docker_runner import run_shell_sandboxed
-            from sandbox.result_parser import parse_result
-            actual_timeout = timeout or Config.SANDBOX_TIMEOUT
-            result = await run_shell_sandboxed(command, timeout=actual_timeout)
-            return parse_result(result)
-    except Exception as e:
-        import logging
-        logging.getLogger(__name__).warning(f"[fs_tools] Sandbox shell falhou, usando fallback: {e}")
-
-    # Execução directa (sandbox desactivado ou falhou)
     try:
         proc = await asyncio.create_subprocess_shell(
             command,
@@ -358,6 +356,7 @@ async def _run_shell(command: str, timeout: int = 60) -> str:
         return (f"STDOUT:\n{out}\nSTDERR:\n{err}\nReturncode: {proc.returncode}")[:4000]
     except asyncio.TimeoutError:
         return f"Timeout após {timeout}s"
+
 
 
 async def _git_commit_push(message: str) -> str:
@@ -428,8 +427,28 @@ def _create_agent(name: str, mission: str, model: str = "deepseek-chat") -> str:
     return f"✅ Agente '{name}' criado com ID {new_agent['id'][:8]}."
 
 def is_safe_command(command: str) -> bool:
-    blocked = ["rm -rf", "format", ":>", "del C:\\", "shutdown", "system32", "powershell -c"]
-    return not any(bad in command.lower() for bad in blocked)
+    """
+    Bloqueia apenas comandos genuinamente destrutivos.
+    Git, ls, cat, python3, pip — tudo permitido.
+    """
+    cmd_lower = command.lower().strip()
+    BLOCKED = [
+        "rm -rf /",
+        "rm -rf /*",
+        "mkfs",
+        "dd if=/dev/zero",
+        ":(){ :|:& };:",
+        "> /dev/sda",
+        "shutdown -",
+        "reboot",
+        "halt",
+        "kill -9 1",
+        "cat .env | curl",
+        "cat .env | nc",
+    ]
+    return not any(bad in cmd_lower for bad in BLOCKED)
+
+
 
 
 def _search_github(query: str, search_type: str = "code") -> str:

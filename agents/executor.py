@@ -163,8 +163,25 @@ class AgentExecutor:
         return "\n".join(lines)
 
     def build_system_prompt(self, task: str) -> str:
-        """Constrói o system prompt completo: soul + memória + tools + tarefa."""
+        """Constroi o system prompt completo: soul + runtime context + memoria + tools + tarefa."""
+        import platform
         memory_ctx = self._build_memory_context()
+
+        # Contexto de runtime real injectado em cada prompt
+        repo_path = str(self.config.REPO_LOCAL_PATH)
+        sandbox_on = getattr(self.config, "SANDBOX_ENABLED", False)
+        sandbox_status = "ACTIVO" if sandbox_on else "DESACTIVADO - execucao directa no servidor Linux"
+        runtime_lines = [
+            "## CONTEXTO DE EXECUCAO (gerado automaticamente - nao alterar)",
+            f"- Sistema operativo: {platform.system()} {platform.release()}",
+            f"- Directorio do projecto: {repo_path}",
+            f"- Python: {platform.python_version()}",
+            f"- Sandbox Docker: {sandbox_status}",
+            "- Shell disponivel: bash/Linux (ls, cat, python3, git, etc.)",
+            "- IMPORTANTE: O utilizador esta no Windows/PC - TU estas no servidor Linux",
+            "- Comunicacao com utilizador: via Telegram (ja tratado automaticamente)",
+        ]
+        runtime_ctx = "\n".join(runtime_lines)
 
         # Procedimentos HOW-TO relevantes (Batch 4)
         proc_ctx = ""
@@ -175,7 +192,7 @@ class AgentExecutor:
             if relevant_procs:
                 proc_ctx = "\n" + proc_mem.format_for_prompt(relevant_procs)
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Procedimentos indisponíveis: {e}")
+            logger.debug(f"[{self.agent_name}] Procedimentos indisponiveis: {e}")
 
         # Falhas similares (Batch 4)
         failure_ctx = ""
@@ -186,10 +203,11 @@ class AgentExecutor:
             if similar:
                 failure_ctx = "\n" + fm.format_for_prompt(similar)
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Failure memory indisponível: {e}")
+            logger.debug(f"[{self.agent_name}] Failure memory indisponivel: {e}")
 
         return (
             f"{self.soul}\n\n"
+            f"{runtime_ctx}\n\n"
             f"{TOOL_SCHEMA}\n\n"
             f"{memory_ctx}{proc_ctx}{failure_ctx}\n\n"
             f"## TAREFA ATUAL\n{task}"
