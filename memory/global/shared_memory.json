@@ -653,6 +653,18 @@
       "decision": "Telegram: Ok meu amigo, mas pretendo realmente mais evolucao e automomia.. bora quero te v",
       "context": "Telegram",
       "timestamp": "2026-05-28T08:12:17.762768"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Por exemplo este foi a uktima coisa que vi que subiste\n\n[ \n  { \n    \"tipo\": \"nov",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T09:22:32.446471"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: \"detalhe\": \"Push automático feito\", \n    \"data\": \"2026-05-28 08:09:51.608855\" \n ",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T09:22:37.930754"
     }
   ],
   "discoveries": [],
