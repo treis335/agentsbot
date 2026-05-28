@@ -19,17 +19,42 @@ __pycache__/
 dist/
 build/
 
-# --- Memoria local (contextos de agentes) ---
+# --- Memoria dinamica (muda em cada sessao, nao versionar) ---
 memory/agents/*
 memory/master_context.json
 memory/episodica/*
 memory/semantica/*
+memory/conversations/*
+memory/event_log/*
+memory/global/shared_memory.json
+memory/global/skills_database.json
+memory/current_task.md
+memory/checkpoint.json
+memory/ciclo_count.txt
+memory/autonomous_log.md
+memory/evolution_log.json
+memory/desafios_equipa.md
+!memory/global/missao_principal.json
 !memory/global/*.md
+
+# --- Pastas de testes/verificacoes locais ---
+*_check/
+*-check/
+*_test/
+*-test/
+*_tester/
+*-tester/
+sandbox_runs/
+test_runs/
+
+# --- Registos de agentes (gerados em runtime) ---
+agents/registry/agents.json
 
 # --- Logs ---
 *.log
 monitoring/logs/*
 monitoring/metrics/*
+security/audit/*
 
 # --- IDE ---
 .vscode/
