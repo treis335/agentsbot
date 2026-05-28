@@ -1121,6 +1121,24 @@
       "decision": "Telegram: Tens tudo para te auto reparar executa",
       "context": "Telegram",
       "timestamp": "2026-05-28T14:18:04.937967"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Cria um script para te auto reiniciar na maquina",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T14:33:28.284334"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Executa a o",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T14:34:01.015237"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: Faz tu",
+      "context": "Telegram",
+      "timestamp": "2026-05-28T14:34:19.537639"
     }
   ],
   "discoveries": [],
