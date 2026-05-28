@@ -43,5 +43,15 @@
     "tipo": "novo_agente",
     "detalhe": "LoggerAgent",
     "data": "2026-05-28 07:06:18.550507"
+  },
+  {
+    "tipo": "novo_agente",
+    "detalhe": "BridgeAgent",
+    "data": "2026-05-28 07:07:18.553765"
+  },
+  {
+    "tipo": "novo_agente",
+    "detalhe": "DeployAgent",
+    "data": "2026-05-28 07:08:18.565206"
   }
 ]

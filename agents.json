@@ -75,5 +75,17 @@
     "role": "Gestor centralizado de logs",
     "status": "active",
     "created": "2026-05-28 07:06:18.549666"
+  },
+  {
+    "name": "BridgeAgent",
+    "role": "Ponte entre sandbox e ambiente local",
+    "status": "active",
+    "created": "2026-05-28 07:07:18.552959"
+  },
+  {
+    "name": "DeployAgent",
+    "role": "Gestor de deploys automáticos",
+    "status": "active",
+    "created": "2026-05-28 07:08:18.556812"
   }
 ]
