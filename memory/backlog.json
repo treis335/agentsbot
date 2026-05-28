@@ -31,6 +31,51 @@
     "result": "Fiz a verificação completa de integridade do sistema: todos os 8 ficheiros críticos existem e têm tamanho normal, o `backlog.json` está válido com 10 tarefas pendentes e 3 concluídas, o `auto_recovery.log` não tem erros, o Git está consistente (último commit `ce0ba82`, 4 ficheiros modificados, 2 não trackeados que são runtime), e escrevi o diagnóstico em `_diagnostico_sistema.txt`. Nada ficou por fazer — o sistema está íntegro, sem problemas detectados."
   },
   {
+    "id": "auto_evolucao_cognitiva_001",
+    "title": "Auto-evolucao cognitiva",
+    "description": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
+    "priority": 1,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "dashboard_visual_001",
+    "title": "Criar dashboard visual do ecossistema",
+    "description": "Criar um HTML interativo com estado dos agentes, tarefas, ciclo e metricas",
+    "priority": 1,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "task_1780001483_295",
+    "title": "Verificar integridade do sistema",
+    "description": "Verificar todos os ficheiros críticos, logs recentes e estado do git",
+    "priority": 1,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:51:23.801954",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780001866_142",
+    "title": "Verificar integridade do sistema",
+    "description": "Verificar todos os ficheiros críticos, logs recentes e estado do git",
+    "priority": 1,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:57:46.736117",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780002613_143",
+    "title": "Verificar integridade do sistema",
+    "description": "Verificar todos os ficheiros críticos, logs recentes e estado do git",
+    "priority": 1,
+    "source": "seed_inicial",
+    "created": "2026-05-28T22:10:13.892142",
+    "status": "pending"
+  },
+  {
     "id": "task_002",
     "title": "Ativar Auto Evolver",
     "description": "Executar auto_evolve.py para melhorar o codigo automaticamente",
@@ -39,6 +84,24 @@
     "source": "supervisor",
     "completed": "2026-05-28T21:36:22.890504",
     "result": "Executado em modo simulação"
+  },
+  {
+    "id": "git_auto_push_001",
+    "title": "Git auto push de todas as alteracoes",
+    "description": "Fazer commit e push para o GitHub com todas as melhorias feitas",
+    "priority": 2,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
+  },
+  {
+    "id": "testes_automaticos_001",
+    "title": "Correr testes automaticos",
+    "description": "Executar suite de testes e reportar resultados",
+    "priority": 2,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
   },
   {
     "id": "task_003",
@@ -55,6 +118,15 @@
     "priority": 3,
     "status": "pending",
     "source": "supervisor"
+  },
+  {
+    "id": "brainstorm_melhorias_001",
+    "title": "Brainstorm de melhorias para o ecossistema",
+    "description": "Gerar novas ideias e desafios para evoluir o sistema",
+    "priority": 3,
+    "status": "pending",
+    "source": "supervisor",
+    "created": "2026-05-28T21:30:00"
   },
   {
     "id": "task_004",
@@ -91,6 +163,60 @@
     "status": "pending"
   },
   {
+    "id": "task_1780001483_766",
+    "title": "Melhorar sistema de logs",
+    "description": "Implementar logs estruturados com níveis e rotação automática",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:51:23.812948",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780001483_917",
+    "title": "Otimizar uso de tokens",
+    "description": "Analisar e reduzir tokens usados por ciclo de LLM",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:51:23.844493",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780001866_266",
+    "title": "Melhorar sistema de logs",
+    "description": "Implementar logs estruturados com níveis e rotação automática",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:57:46.746676",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780001866_775",
+    "title": "Otimizar uso de tokens",
+    "description": "Analisar e reduzir tokens usados por ciclo de LLM",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:57:46.783526",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780002613_198",
+    "title": "Melhorar sistema de logs",
+    "description": "Implementar logs estruturados com níveis e rotação automática",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T22:10:13.903631",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780002613_231",
+    "title": "Otimizar uso de tokens",
+    "description": "Analisar e reduzir tokens usados por ciclo de LLM",
+    "priority": 4,
+    "source": "seed_inicial",
+    "created": "2026-05-28T22:10:13.936290",
+    "status": "pending"
+  },
+  {
     "id": "task_005",
     "title": "Git push de todas as alteracoes",
     "description": "Fazer commit e push para treis335/agentsbot",
@@ -108,6 +234,33 @@
     "status": "pending"
   },
   {
+    "id": "task_1780001483_927",
+    "title": "Adicionar testes ao orchestrator",
+    "description": "Criar testes unitários básicos para o orchestrator principal",
+    "priority": 5,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:51:23.823237",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780001866_800",
+    "title": "Adicionar testes ao orchestrator",
+    "description": "Criar testes unitários básicos para o orchestrator principal",
+    "priority": 5,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:57:46.757095",
+    "status": "pending"
+  },
+  {
+    "id": "task_1780002613_631",
+    "title": "Adicionar testes ao orchestrator",
+    "description": "Criar testes unitários básicos para o orchestrator principal",
+    "priority": 5,
+    "source": "seed_inicial",
+    "created": "2026-05-28T22:10:13.914472",
+    "status": "pending"
+  },
+  {
     "id": "task_1780000969_952",
     "title": "Documentar APIs internas",
     "description": "Gerar documentação automática dos módulos principais",
@@ -117,48 +270,30 @@
     "status": "pending"
   },
   {
-    "id": "auto_evolucao_cognitiva_001",
-    "title": "Auto-evolucao cognitiva",
-    "description": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
-    "priority": 1,
-    "status": "pending",
-    "source": "supervisor",
-    "created": "2026-05-28T21:30:00"
+    "id": "task_1780001483_455",
+    "title": "Documentar APIs internas",
+    "description": "Gerar documentação automática dos módulos principais",
+    "priority": 6,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:51:23.834249",
+    "status": "pending"
   },
   {
-    "id": "dashboard_visual_001",
-    "title": "Criar dashboard visual do ecossistema",
-    "description": "Criar um HTML interativo com estado dos agentes, tarefas, ciclo e metricas",
-    "priority": 1,
-    "status": "pending",
-    "source": "supervisor",
-    "created": "2026-05-28T21:30:00"
+    "id": "task_1780001866_654",
+    "title": "Documentar APIs internas",
+    "description": "Gerar documentação automática dos módulos principais",
+    "priority": 6,
+    "source": "seed_inicial",
+    "created": "2026-05-28T21:57:46.767498",
+    "status": "pending"
   },
   {
-    "id": "git_auto_push_001",
-    "title": "Git auto push de todas as alteracoes",
-    "description": "Fazer commit e push para o GitHub com todas as melhorias feitas",
-    "priority": 2,
-    "status": "pending",
-    "source": "supervisor",
-    "created": "2026-05-28T21:30:00"
-  },
-  {
-    "id": "testes_automaticos_001",
-    "title": "Correr testes automaticos",
-    "description": "Executar suite de testes e reportar resultados",
-    "priority": 2,
-    "status": "pending",
-    "source": "supervisor",
-    "created": "2026-05-28T21:30:00"
-  },
-  {
-    "id": "brainstorm_melhorias_001",
-    "title": "Brainstorm de melhorias para o ecossistema",
-    "description": "Gerar novas ideias e desafios para evoluir o sistema",
-    "priority": 3,
-    "status": "pending",
-    "source": "supervisor",
-    "created": "2026-05-28T21:30:00"
+    "id": "task_1780002613_804",
+    "title": "Documentar APIs internas",
+    "description": "Gerar documentação automática dos módulos principais",
+    "priority": 6,
+    "source": "seed_inicial",
+    "created": "2026-05-28T22:10:13.925637",
+    "status": "pending"
   }
 ]

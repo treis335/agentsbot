@@ -1,0 +1,54 @@
+{
+  "run_id": "5a084836",
+  "workflow_name": "dev_cycle",
+  "state": "running",
+  "current_step_id": "commit",
+  "context": {
+    "task": "Evoluir o proprio sistema com pensamento avancado, melhorar agentes e adicionar capacidades novas",
+    "task_title": "Auto-evolucao cognitiva",
+    "analyze_result": "## Plano de Implementação — Evolução Cognitiva do Sistema\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `supervisor.py` | Modificar | Adicionar `cognitive_evolution.py` como módulo de pensamento interno |\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão: análise de padrões, auto-crítica, melhoria de prompts |\n| `supervisor.md` | Modificar | Documentar nova capacidade |\n| `backlog.json` | Modificar | Adicionar tarefas evolutivas geradas pelo próprio sistema |\n| `agents/` | Modificar | Evoluir prompts de agentes existentes com base em métricas de desempenho |\n\n### 2. Abordagem técnica\n\nImplementar um módulo `cognitive_evolution.py` que corre como camada de meta-cognição no Supervisor. O módulo analisa periodicamente o histórico de interacções do backlog, detecta padrões de falha/sucesso e gera automaticamente melhorias nos prompts dos agentes e no próprio Supervisor. Funciona em 3 camadas: (1) **reflexão** — analisa logs e resultados de tarefas concluídas; (2) **síntese** — extrai lições e padrões; (3) **acção** — reescreve prompts, adiciona tarefas ao backlog, ajusta parâmetros.\n\nA integração no `supervisor.py` é mínima: um método `evolve()` chamado no início de cada ciclo do loop autónomo, que corre em background sem bloquear tarefas críticas. As alterações são versionadas e reversíveis — cada evolução gera um ficheiro diff no diretório `_evolutions/`.\n\n### 3. Riscos identificados\n\n- **Risco de degradação**: auto-evolução pode piorar prompts em vez de melhorar. Mitigação: só aplicar alterações se validadas por heurísticas de ganho mínimo (ex: >15% de melhoria esperada).\n- **Loops infinitos**: sistema pode reescrever-se repetidamente sem convergir. Mitigação: limite de 1 evolução por ciclo e lock de 24h para o mesmo prompt.\n- **Quebra de compatibilidade**: alterações no Supervisor podem partir o loop autónomo. Mitigação: testes de sanidade pós-evolução antes de persistir.\n\n### 4. Estimativa de complexidade\n\n**Média-Alta** — ~3-4h de implementação. A lógica de meta-cognição é conceptualmente simples, mas requer validação cuidada para não destabilizar o ecossistema. A parte mais sensível é o parser de logs e a geração de novos prompts sem perder a coerência do sistema.",
+    "implement_result": "Erro: ",
+    "test_result": "Erro: "
+  },
+  "steps": {
+    "analyze": {
+      "step_id": "analyze",
+      "state": "completed",
+      "attempts": 1,
+      "result": "## Plano de Implementação — Evolução Cognitiva do Sistema\n\n### 1. Ficheiros a criar/modificar\n\n| Ficheiro | Acção | Descrição |\n|---|---|---|\n| `supervisor.py` | Modificar | Adicionar `cognitive_evolution.py` como módulo de pensamento interno |\n| `cognitive_evolution.py` | **Criar** | Motor de auto-reflexão: análise de padrões, auto-crítica, melhoria de prompts |\n| `supervisor.md` | Modificar | Documentar nova capacidade |\n| `backlog.json` | Modificar | Adicionar tarefas evolutivas geradas pelo próprio sistema |\n| `agents/` | Modificar | Evoluir prompts de agentes existentes com base em métricas de desempenho |\n\n### 2. Abordagem técnica\n\nImplementar um módulo `cognitive_evolution.py` que corre como camada de meta-cognição no Supervisor. O módulo analisa periodicamente o histórico de interacções do backlog, detecta padrões de falha/sucesso e gera automaticamente melhorias nos prompts dos agentes e no próprio Supervisor. Funciona em 3 camadas: (1) **reflexão** — analisa logs e resultados de tarefas concluídas; (2) **síntese** — extrai lições e padrões; (3) **acção** — reescreve prompts, adiciona tarefas ao backlog, ajusta parâmetros.\n\nA integração no `supervisor.py` é mínima: um método `evolve()` chamado no início de cada ciclo do loop autónomo, que corre em background sem bloquear tarefas críticas. As alterações são versionadas e reversíveis — cada evolução gera um ficheiro diff no diretório `_evolutions/`.\n\n### 3. Riscos identificados\n\n- **Risco de degradação**: auto-evolução pode piorar prompts em vez de melhorar. Mitigação: só aplicar alterações se validadas por heurísticas de ganho mínimo (ex: >15% de melhoria esperada).\n- **Loops infinitos**: sistema pode reescrever-se repetidamente sem convergir. Mitigação: limite de 1 evolução por ciclo e lock de 24h para o mesmo prompt.\n- **Quebra de compatibilidade**: alterações no Supervisor podem partir o loop autónomo. Mitigação: testes de sanidade pós-evolução antes de persistir.\n\n### 4. Estimativa de complexidade\n\n**Média-Alta** — ~3-4h de implementação. A lógica de meta-cognição é conceptualmente simples, mas requer validação cuidada para não destabilizar o ecossistema. A parte mais sensível é o parser de logs e a geração de novos prompts sem perder a coerência do sistema.",
+      "task_id": "",
+      "started_at": "2026-05-28T21:51:24.065850",
+      "finished_at": "2026-05-28T21:51:34.857386"
+    },
+    "implement": {
+      "step_id": "implement",
+      "state": "completed",
+      "attempts": 1,
+      "result": "Erro: ",
+      "task_id": "",
+      "started_at": "2026-05-28T21:51:34.866697",
+      "finished_at": "2026-05-28T21:54:36.842406"
+    },
+    "test": {
+      "step_id": "test",
+      "state": "completed",
+      "attempts": 1,
+      "result": "Erro: ",
+      "task_id": "",
+      "started_at": "2026-05-28T21:54:36.852224",
+      "finished_at": "2026-05-28T21:57:41.177794"
+    },
+    "commit": {
+      "step_id": "commit",
+      "state": "pending",
+      "attempts": 0,
+      "result": "",
+      "task_id": "",
+      "started_at": "",
+      "finished_at": ""
+    }
+  },
+  "created_at": "2026-05-28T21:51:24.051360",
+  "updated_at": "2026-05-28T21:57:41.177956",
+  "error": ""
+}

@@ -76,3 +76,25 @@ Vou trabalhar autonomamente e reportar aqui.
 [2026-05-28 21:45:16] ✅ Tarefa concluída: 'Verificar integridade do sistema'
 [2026-05-28 21:45:16] ℹ️ Telegram enviado ao Joel
 [2026-05-28 21:45:16] 😴 💤 A dormir 15 minutos...
+[2026-05-28 21:51:23] ℹ️ Backlog inicializado com 5 tarefas
+[2026-05-28 21:51:24] ℹ️ AutonomousLoop inicializado
+[2026-05-28 21:51:24] 🌅 🚀 Loop autónomo INICIADO
+[2026-05-28 21:51:24] 🌅 ═══ CICLO #1 ═══
+[2026-05-28 21:51:24] ℹ️ A trabalhar em: 'Auto-evolucao cognitiva'
+[2026-05-28 21:51:24] ℹ️ [Workflow] Tarefa 'Auto-evolucao cognitiva' → workflow 'dev_cycle'
+[2026-05-28 21:54:36] ❌ [Workflow] Erro LLMAgent: 
+[2026-05-28 21:57:41] ❌ [Workflow] Erro LLMAgent: 
+[2026-05-28 21:57:46] ℹ️ Backlog inicializado com 5 tarefas
+[2026-05-28 21:57:46] ℹ️ AutonomousLoop inicializado
+[2026-05-28 21:57:46] 🌅 🚀 Loop autónomo INICIADO
+[2026-05-28 21:57:46] 🌅 ═══ CICLO #1 ═══
+[2026-05-28 21:57:47] ℹ️ A trabalhar em: 'Auto-evolucao cognitiva'
+[2026-05-28 21:57:47] ℹ️ [Workflow] Tarefa 'Auto-evolucao cognitiva' → workflow 'dev_cycle'
+[2026-05-28 22:00:39] ❌ [Workflow] Erro LLMAgent: 
+[2026-05-28 22:10:13] ℹ️ Backlog inicializado com 5 tarefas
+[2026-05-28 22:10:14] ℹ️ AutonomousLoop inicializado
+[2026-05-28 22:10:14] 🌅 🚀 Loop autónomo INICIADO
+[2026-05-28 22:10:14] 🌅 ═══ CICLO #1 ═══
+[2026-05-28 22:10:14] ℹ️ A trabalhar em: 'Auto-evolucao cognitiva'
+[2026-05-28 22:10:14] ℹ️ [Workflow] Tarefa 'Auto-evolucao cognitiva' → workflow 'dev_cycle'
+[2026-05-28 22:13:06] ❌ [Workflow] Erro LLMAgent: 

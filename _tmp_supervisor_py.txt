@@ -1,15 +1,11 @@
 """
 Supervisor Agent - Núcleo do ecossistema Correoto
 Orquestra todos os agentes, decide prioridades, executa evolução
-Com memória de conversa persistente integrada.
 """
 import json
 import os
 import subprocess
 from datetime import datetime
-
-# Importar memória de conversa
-from core.memory import ConversationMemory, MEMORY_DIR
 
 class Supervisor:
     def __init__(self):
@@ -20,8 +16,6 @@ class Supervisor:
         self.agents = self._load_agents()
         self.logs = self._load_logs()
         self.priorities = self._load_priorities()
-        # Memória de conversa
-        self.memory = ConversationMemory()
 
     def _load_agents(self):
         if os.path.exists(self.agents_file):
@@ -63,27 +57,6 @@ class Supervisor:
         self._save_logs()
         print(f"[SUPERVISOR] {tipo}: {detalhe}")
 
-    def remember(self, speaker: str, message: str):
-        """Guarda uma interação na memória de conversa."""
-        context = {
-            "agents_count": len(self.agents),
-            "logs_count": len(self.logs),
-            "priorities_count": len(self.priorities)
-        }
-        self.memory.remember(speaker, message, context)
-
-    def get_context(self) -> str:
-        """Devolve o contexto da conversa para o Supervisor não se repetir."""
-        return self.memory.summary()
-
-    def get_last_human_message(self) -> str:
-        """Devolve a última mensagem do humano."""
-        return self.memory.last_human_message() or ""
-
-    def get_last_supervisor_message(self) -> str:
-        """Devolve a última mensagem do Supervisor."""
-        return self.memory.last_supervisor_message() or ""
-
     def add_agent(self, name, mission, file_path):
         # Verificar se já existe
         for a in self.agents:
@@ -99,7 +72,6 @@ class Supervisor:
         self.agents.append(agent)
         self._save_agents()
         self.log("novo_agente", name)
-        self.remember("supervisor", f"Criei o agente {name} com missão: {mission}")
         return True
 
     def update_priority(self, task, weight):
@@ -112,36 +84,76 @@ class Supervisor:
         self.priorities.append({"task": task, "weight": weight})
         self._save_priorities()
         self.log("nova_prioridade", f"{task}: {weight}")
-        self.remember("supervisor", f"Nova prioridade: {task} (peso {weight})")
         return True
 
     def get_next_task(self):
         """Devolve a tarefa com maior prioridade que ainda não foi executada"""
         if not self.priorities:
             return None
-        # Ordenar por peso (maior primeiro)
-        sorted_p = sorted(self.priorities, key=lambda x: x.get("weight", 0), reverse=True)
-        return sorted_p[0] if sorted_p else None
+        sorted_priorities = sorted(self.priorities, key=lambda x: x["weight"], reverse=True)
+        return sorted_priorities[0]
 
-    def get_status(self) -> dict:
-        """Devolve o estado atual do ecossistema."""
-        return {
-            "agents": len(self.agents),
-            "logs": len(self.logs),
-            "priorities": len(self.priorities),
-            "conversation_history": self.memory.count_human_messages(),
-            "last_human": self.get_last_human_message()[:100] if self.get_last_human_message() else None,
-            "last_supervisor": self.get_last_supervisor_message()[:100] if self.get_last_supervisor_message() else None,
-            "timestamp": datetime.now().isoformat()
+    def execute_command(self, command):
+        """Executa um comando shell e retorna o resultado"""
+        try:
+            result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=self.root)
+            self.log("comando_executado", command[:50])
+            return result.stdout, result.stderr
+        except Exception as e:
+            self.log("erro_comando", str(e))
+            return "", str(e)
+
+    def git_push(self, message):
+        """Faz git add, commit e push"""
+        stdout, stderr = self.execute_command("git add .")
+        stdout, stderr = self.execute_command(f'git commit -m "{message}"')
+        if "nothing to commit" in stdout or "nothing to commit" in stderr:
+            self.log("git_sem_mudancas", "Nada para commitar")
+            return False
+        stdout, stderr = self.execute_command("git push")
+        if "error" in stderr.lower():
+            self.log("erro_git_push", stderr[:100])
+            return False
+        self.log("git_push", message)
+        return True
+
+    def create_file(self, path, content):
+        """Cria ou substitui um ficheiro"""
+        full_path = os.path.join(self.root, path)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        with open(full_path, "w") as f:
+            f.write(content)
+        self.log("ficheiro_criado", path)
+        return True
+
+    def read_file(self, path):
+        """Lê um ficheiro"""
+        full_path = os.path.join(self.root, path)
+        if os.path.exists(full_path):
+            with open(full_path, "r") as f:
+                return f.read()
+        return None
+
+    def list_files(self, path=""):
+        """Lista ficheiros de um diretório"""
+        full_path = os.path.join(self.root, path)
+        if os.path.exists(full_path):
+            return os.listdir(full_path)
+        return []
+
+    def status_report(self):
+        """Gera relatório de estado do sistema"""
+        report = {
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "total_agents": len(self.agents),
+            "active_agents": len([a for a in self.agents if a.get("status") == "active"]),
+            "total_evolutions": len(self.logs),
+            "priorities": self.priorities,
+            "agents": self.agents[-5:]  # Últimos 5 agentes
         }
-
-    def run(self):
-        """Ciclo principal do Supervisor."""
-        self.log("ciclo", "Supervisor a executar ciclo principal")
-        context = self.get_context()
-        print(f"[SUPERVISOR] Contexto da conversa:\n{context[:500]}")
-        return context
+        return report
 
 
-# Instância global
-supervisor = Supervisor()
+if __name__ == "__main__":
+    sv = Supervisor()
+    print(json.dumps(sv.status_report(), indent=2))

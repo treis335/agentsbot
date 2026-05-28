@@ -11,6 +11,8 @@ import random
 import asyncio
 from datetime import datetime
 from pathlib import Path
+from core.memory import ConversationMemory
+from core.memory import ConversationMemory
 
 
 # ─── CONFIGURAÇÃO ──────────────────────────────────────────────────────────────
@@ -303,7 +305,9 @@ class AutonomousLoop:
         self.paused = False  # Joel pode pausar pelo Telegram
 
         MEMORY_DIR.mkdir(exist_ok=True)
-        log("AutonomousLoop inicializado", "INFO")
+        self.memory = ConversationMemory()
+        self.memory.remember("supervisor", "AutonomousLoop inicializado. Pronto para trabalhar.")
+        log("AutonomousLoop inicializado com memória de conversa", "INFO")
 
     def start(self):
         """Inicia o loop autónomo. Bloqueia até ser interrompido."""
@@ -330,6 +334,12 @@ class AutonomousLoop:
     def _run_cycle(self):
         """Executa um ciclo completo de autonomia."""
         self.cycle_count += 1
+        # Guardar ciclo na memoria
+        context_info = f"Ciclo #{self.cycle_count}: {self.tasks_completed} tarefas concluidas, {len(load_backlog())} pendentes"
+        self.memory.remember("supervisor", context_info)
+        # Guardar ciclo na memória
+        context_info = f"Ciclo #{self.cycle_count}: {self.tasks_completed} tarefas concluídas, {len(load_backlog())} pendentes"
+        self.memory.remember("supervisor", context_info)
         log(f"═══ CICLO #{self.cycle_count} ═══", "WAKE")
 
         tasks_done_this_cycle = []
@@ -684,6 +694,14 @@ class AutonomousLoop:
         task = add_to_backlog(title, description, priority=1, source="joel_telegram")
         log(f"Tarefa urgente adicionada pelo Joel: '{title}'", "INFO")
         return task
+
+    def get_conversation_context(self) -> str:
+        """Devolve o contexto da conversa para o Supervisor."""
+        return self.memory.summary()
+
+    def get_conversation_context(self) -> str:
+        """Devolve o contexto da conversa para o Supervisor."""
+        return self.memory.summary()
 
     def status(self) -> str:
         """Retorna status atual do sistema para o Joel."""
