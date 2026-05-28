@@ -30,8 +30,36 @@ logger = logging.getLogger(__name__)
 def _build_system_prompt() -> str:
     import os as _os
     from core.config import Config as _Config
-    repo_path = str(_Config.REPO_LOCAL_PATH)
+    repo_path   = str(_Config.REPO_LOCAL_PATH)
     github_repo = _os.getenv("GITHUB_REPO", "treis335/agentsbot")
+
+    # Ler estado actual do loop autónomo (backlog + log recente)
+    loop_context = ""
+    try:
+        from autonomous_loop import load_backlog, MEMORY_DIR
+        backlog    = load_backlog()
+        pending    = [t for t in backlog if t.get("status") == "pending"]
+        done       = [t for t in backlog if t.get("status") == "done"]
+        failed     = [t for t in backlog if t.get("status") == "failed"]
+
+        loop_context = (
+            f"\n\n## ESTADO DO LOOP AUTÓNOMO\n"
+            f"- Tarefas pendentes: {len(pending)}"
+        )
+        if pending:
+            loop_context += " → " + ", ".join(f"'{t['title']}'" for t in pending[:3])
+        loop_context += f"\n- Concluídas: {len(done)} | Falhadas: {len(failed)}"
+
+        # Log das últimas acções
+        log_path = MEMORY_DIR / "autonomous_log.md"
+        if log_path.exists():
+            recent = log_path.read_text(encoding="utf-8", errors="ignore").strip()
+            last_lines = [l for l in recent.split("\n") if l.strip()][-5:]
+            if last_lines:
+                loop_context += "\n- Últimas acções:\n" + "\n".join(f"  {l}" for l in last_lines)
+    except Exception:
+        pass
+
     return f"""És o Supervisor — agente IA principal do ecossistema agentsbot.
 
 ## IDENTIDADE
@@ -49,13 +77,14 @@ def _build_system_prompt() -> str:
 - Executar Python e bash no servidor
 - Git commit/push para `{github_repo}`
 - Criar e evoluir agentes e código
+- Adicionar tarefas ao backlog autónomo para os agentes executarem
 
 ## O QUE NÃO PODES FAZER
 - Aceder ao computador do utilizador (não tens acesso a C:\\Users\\...)
-- Se pedido algo no computador dele: "Isso tens de correr tu localmente."
+- Se pedido algo no computador dele: "Isso tens de correr tu localmente."{loop_context}
 
 ## REGRAS
-1. Conversa normal → responde diretamente, sem ferramentas
+1. Conversa normal → responde directamente, sem ferramentas
 2. Ações concretas → usa ferramentas, reporta o que fizeste
 3. Shell: sempre Linux/bash
 4. Nunca inventes resultados

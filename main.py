@@ -186,7 +186,7 @@ async def main():
         api_thread.start()
         logger.info("[API] REST API em http://localhost:8080")
 
-    # Bot Telegram
+    # Bot Telegram + Loop Autónomo
     if not no_telegram:
         app = init_telegram()
         if app:
@@ -195,14 +195,52 @@ async def main():
             await app.start()
             await app.updater.start_polling()
             logger.info("[Telegram] Bot online. A aguardar mensagens...")
+
+            # ── Ligar o AutonomousLoop ─────────────────────────────────────
+            # Cria o loop com referência ao bot para poder enviar relatórios
+            # O loop corre numa thread separada para não bloquear o Telegram
+            from autonomous_loop import AutonomousLoop, _seed_initial_backlog
+            from bot.handlers import set_auto_loop
+
+            _seed_initial_backlog()  # Garantir que há tarefas iniciais
+
+            auto_loop = AutonomousLoop(
+                orchestrator=None,         # brainstorm usa LLM directamente
+                telegram_bot=app.bot,      # relatórios vão para o Telegram
+            )
+            set_auto_loop(auto_loop)       # handlers do Telegram controlam o loop
+
+            import threading
+            loop_thread = threading.Thread(
+                target=auto_loop.start,
+                daemon=True,
+                name="autonomous-loop",
+            )
+            loop_thread.start()
+            logger.info("[AutonomousLoop] Loop autónomo iniciado em background.")
+            # ─────────────────────────────────────────────────────────────────
+
             while True:
                 await asyncio.sleep(1)
         else:
             logger.info("[Main] Sem Telegram. A manter API activa...")
+            # Mesmo sem Telegram, correr o loop autónomo
+            from autonomous_loop import AutonomousLoop, _seed_initial_backlog
+            _seed_initial_backlog()
+            auto_loop = AutonomousLoop(orchestrator=None, telegram_bot=None)
+            import threading
+            threading.Thread(target=auto_loop.start, daemon=True, name="autonomous-loop").start()
+            logger.info("[AutonomousLoop] Loop autónomo iniciado (sem Telegram).")
             while True:
                 await asyncio.sleep(60)
     else:
         logger.info("[Main] Modo sem Telegram. A manter serviços...")
+        from autonomous_loop import AutonomousLoop, _seed_initial_backlog
+        _seed_initial_backlog()
+        auto_loop = AutonomousLoop(orchestrator=None, telegram_bot=None)
+        import threading
+        threading.Thread(target=auto_loop.start, daemon=True, name="autonomous-loop").start()
+        logger.info("[AutonomousLoop] Loop autónomo iniciado (modo --no-telegram).")
         while True:
             await asyncio.sleep(60)
 
