@@ -73,6 +73,11 @@ class Config:
     # SANDBOX_ENABLED=true  → usa Docker/firejail quando disponível
     # SANDBOX_ENABLED=false → usa subprocess restrito (fallback seguro)
 
+    # --- Batch 9: Self-Improvement Loop ---
+    SELF_IMPROVE_ENABLED: bool = os.getenv("SELF_IMPROVE_ENABLED", "true").lower() == "true"
+    SELF_IMPROVE_EVERY_N_CYCLES: int = int(os.getenv("SELF_IMPROVE_EVERY_N_CYCLES", "10"))
+    SELF_IMPROVE_MAX_PATCHES: int = int(os.getenv("SELF_IMPROVE_MAX_PATCHES", "3"))
+
     # --- Validacao ---
     @classmethod
     def validate(cls) -> list[str]:

@@ -71,6 +71,15 @@ class AutonomousLoop:
         self.thread = None
         self.cycle_count = 0
 
+        # Batch 9 — Self-Improvement Loop
+        try:
+            from evolution.self_improvement_loop import SelfImprovementLoop
+            self._self_improve = SelfImprovementLoop(telegram_bot=telegram_bot)
+            log_cycle("[SelfImprove] Loop de auto-melhoria iniciado ✓")
+        except Exception as e:
+            self._self_improve = None
+            log_cycle(f"[SelfImprove] Indisponível: {e}")
+
     def start(self):
         """Inicia o loop autonomo em background"""
         if self.running:
@@ -150,3 +159,15 @@ class AutonomousLoop:
 
         save_backlog(backlog)
         log_cycle(f"[Ciclo #{cycle_id}] Tarefa concluida: {task_desc}")
+
+        # Batch 9 — Self-Improvement: corre a cada N ciclos
+        if self._self_improve and self._self_improve.should_run():
+            log_cycle(f"[SelfImprove] Ciclo #{cycle_id} — a iniciar análise...")
+            try:
+                import asyncio as _asyncio
+                loop = _asyncio.new_event_loop()
+                result = loop.run_until_complete(self._self_improve.run_cycle())
+                loop.close()
+                log_cycle(f"[SelfImprove] {result.summary}")
+            except Exception as e:
+                log_cycle(f"[SelfImprove] Erro: {e}")
