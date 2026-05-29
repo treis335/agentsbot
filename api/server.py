@@ -298,95 +298,105 @@ class APIHandler(BaseHTTPRequestHandler):
 
     def _handle_ecosystem_status(self):
         """Devolve o estado atual do ecossistema em JSON com dados reais."""
-        import json
+        import json, datetime
         from pathlib import Path
 
         base_dir = Path(__file__).parent.parent
 
-        # --- AGENTES ---
+        # --- AGENTES: tentar AgentManager primeiro, depois ficheiros ---
         agents = 0
         agent_names = []
-        agents_file = base_dir / "agents.json"
-        if agents_file.exists():
-            try:
-                with open(agents_file, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                if isinstance(data, list):
-                    agents = len(data)
-                    agent_names = [a.get("name", "?") for a in data[:50]]
-                elif isinstance(data, dict) and "agents" in data:
-                    agents = len(data["agents"])
-                    agent_names = [a.get("name", "?") for a in data["agents"][:50]]
-            except Exception:
-                pass
+        try:
+            if self.server.agent_manager:
+                agent_list = self.server.agent_manager.list_agents()
+                agents = len(agent_list)
+                agent_names = [{"name": a.name, "role": str(a.role).split(".")[-1]} for a in agent_list]
+        except Exception:
+            pass
 
-        # --- TAREFAS (backlog) ---
-        tasks_done = 0
-        tasks_pending = 0
-        tasks_failed = 0
-        backlog_file = base_dir / "memory" / "backlog.json"
-        if backlog_file.exists():
-            try:
-                with open(backlog_file, "r", encoding="utf-8") as f:
-                    tasks = json.load(f)
-                if isinstance(tasks, list):
+        if not agents:
+            # Fallback: ler ficheiros directamente
+            for candidate in [
+                base_dir / "agents" / "registry" / "agents.json",
+                base_dir / "agents.json",
+            ]:
+                if candidate.exists():
+                    try:
+                        data = json.loads(candidate.read_text(encoding="utf-8"))
+                        lst = data if isinstance(data, list) else data.get("agents", [])
+                        agents = len(lst)
+                        agent_names = [{"name": a.get("name", a.get("id", "?")), "role": a.get("role","agent")} for a in lst[:50]]
+                        break
+                    except Exception:
+                        pass
+
+        # --- TAREFAS ---
+        tasks_done = tasks_pending = tasks_failed = 0
+        all_tasks = []
+        for bf in [base_dir / "memory" / "backlog.json", base_dir / "tasks" / "backlog.json"]:
+            if bf.exists():
+                try:
+                    tasks = json.loads(bf.read_text(encoding="utf-8"))
+                    if not isinstance(tasks, list):
+                        tasks = tasks.get("tasks", [])
                     for t in tasks:
-                        status = t.get("status", "").lower()
-                        if status in ("done", "completed", "concluida"):
+                        s = t.get("status", "").lower()
+                        if s in ("done","completed","concluida","concluído","success"):
                             tasks_done += 1
-                        elif status in ("pending", "queued", "processing", "pendente"):
-                            tasks_pending += 1
-                        elif status in ("failed", "error", "falhou"):
+                        elif s in ("failed","error","falhou","failed"):
                             tasks_failed += 1
                         else:
                             tasks_pending += 1
-            except Exception:
-                pass
-
-        # --- LOGS RECENTES ---
-        logs = []
-        log_files = ["main.log", "supervisor.log", "evolution.log"]
-        for lf in log_files:
-            log_path = base_dir / lf
-            if log_path.exists():
-                try:
-                    with open(log_path, "r", encoding="utf-8", errors="ignore") as f:
-                        all_lines = f.readlines()
-                        recent = all_lines[-30:]
-                        for line in recent:
-                            line = line.strip()
-                            if not line:
-                                continue
-                            level = "info"
-                            if "WARNING" in line or "WARN" in line:
-                                level = "warning"
-                            elif "ERROR" in line or "FATAL" in line or "exception" in line.lower():
-                                level = "error"
-                            elif "SUCCESS" in line or "OK" in line or "conclu" in line.lower():
-                                level = "success"
-                            time_part = line[:19] if len(line) > 19 else ""
-                            msg_part = line[20:] if len(line) > 20 else line
-                            logs.append({
-                                "time": time_part,
-                                "message": msg_part[:200],
-                                "level": level
-                            })
+                    all_tasks = tasks
+                    break
                 except Exception:
                     pass
 
-        logs = logs[-50:]
+        # --- LOGS: ler autonomous_log.md + ficheiros .log ---
+        logs = []
+        log_sources = [
+            base_dir / "memory" / "autonomous_log.md",
+            base_dir / "memory" / "evolution_log.json",
+            base_dir / "main.log",
+            base_dir / "supervisor.log",
+        ]
+        for lp in log_sources:
+            if not lp.exists():
+                continue
+            try:
+                text = lp.read_text(encoding="utf-8", errors="ignore")
+                lines = text.strip().splitlines()[-40:]
+                for line in lines:
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    level = "info"
+                    ll = line.lower()
+                    if any(w in ll for w in ("error","erro","fatal","exception","traceback")):
+                        level = "error"
+                    elif any(w in ll for w in ("warn","aviso")):
+                        level = "warning"
+                    elif any(w in ll for w in ("success","ok","✅","conclu","done")):
+                        level = "success"
+                    elif any(w in ll for w in ("agent","agente","supervisor","developer")):
+                        level = "agent"
+                    t = line[:19] if len(line) > 19 else ""
+                    m = line[20:] if len(line) > 20 else line
+                    logs.append({"time": t, "message": m[:200], "level": level})
+            except Exception:
+                pass
 
-        data = {
+        self._send_json({
             "agents": agents,
             "agent_names": agent_names,
             "tasks_done": tasks_done,
             "tasks_pending": tasks_pending,
             "tasks_failed": tasks_failed,
-            "logs": logs,
+            "tasks": [{"id":t.get("id",""), "title":t.get("title",t.get("desc",t.get("id","?")))[:60], "status":t.get("status","?")} for t in all_tasks[-20:]],
+            "logs": logs[-60:],
             "status": "online",
-            "timestamp": __import__("datetime").datetime.now().isoformat()
-        }
-        self._send_json(data)
+            "timestamp": datetime.datetime.now().isoformat(),
+        })
 
 
 
@@ -397,16 +407,84 @@ class APIHandler(BaseHTTPRequestHandler):
         self._send_json({"status": "ok", "message": "Usa POST para enviar mensagem"})
 
     def _handle_chat_post(self, data):
-        """Handler POST para chat - recebe mensagem e devolve resposta."""
+        """Handler POST para chat — chama o LLM real com contexto do ecossistema."""
+        import datetime, json
+        from pathlib import Path
+
         msg = data.get("message", "")
         if not msg:
             self._send_error("Mensagem vazia", 400)
             return
-        resposta = f"Recebi: {msg}. O ecossistema esta operacional com 17 agentes."
+
+        # Construir contexto do ecossistema
+        base_dir = Path(__file__).parent.parent
+        eco_ctx = ""
+        try:
+            agents_file = next((p for p in [
+                base_dir / "agents" / "registry" / "agents.json",
+                base_dir / "agents.json",
+            ] if p.exists()), None)
+            if agents_file:
+                lst = json.loads(agents_file.read_text(encoding="utf-8"))
+                if isinstance(lst, dict): lst = lst.get("agents", [])
+                names = ', '.join(a.get('name','?') for a in lst[:8])
+                eco_ctx += f"Agentes: {len(lst)} ({names})\n"
+        except Exception:
+            pass
+
+        try:
+            bf = base_dir / "memory" / "backlog.json"
+            if bf.exists():
+                tasks = json.loads(bf.read_text(encoding="utf-8"))
+                if not isinstance(tasks, list): tasks = tasks.get("tasks", [])
+                done = sum(1 for t in tasks if "done" in t.get("status","").lower() or "complet" in t.get("status","").lower())
+                pend = sum(1 for t in tasks if t.get("status","").lower() in ("","pending","pendente","queued"))
+                eco_ctx += f"Tarefas: {done} concluídas, {pend} pendentes\n"
+        except Exception:
+            pass
+
+        system = """És o Supervisor do ecossistema CORREOTO — um sistema multi-agente autónomo em Python.
+O utilizador fala contigo através do dashboard web.
+
+AMBIENTE: Servidor Linux. Tens ferramentas run_shell, run_python, github_api, git_commit_push.
+PERSONALIDADE: Directo, proactivo, reportas resultados reais. Nunca inventas resultados.
+Se o utilizador pedir algo que requer execução real, diz que vais executar e descreve o plano.
+
+ESTADO ACTUAL DO ECOSSISTEMA:
+""" + (eco_ctx or "A carregar...") + """
+Responde em português, de forma concisa e útil. Máximo 3 parágrafos."""
+
+        try:
+            from core.config import Config
+            import urllib.request
+
+            messages = [
+                {"role": "system", "content": system},
+                {"role": "user", "content": msg}
+            ]
+            payload = json.dumps({
+                "model": "deepseek-chat",
+                "messages": messages,
+                "max_tokens": 600,
+            }).encode()
+            req = urllib.request.Request(
+                "https://api.deepseek.com/v1/chat/completions",
+                data=payload,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {Config.DEEPSEEK_API_KEY}",
+                },
+            )
+            with urllib.request.urlopen(req, timeout=30) as r:
+                result = json.loads(r.read().decode())
+                response = result["choices"][0]["message"]["content"]
+        except Exception as e:
+            response = f"Erro ao contactar o LLM: {e}. Verifica DEEPSEEK_API_KEY no .env e que o main.py está a correr."
+
         self._send_json({
             "status": "ok",
-            "response": resposta,
-            "timestamp": __import__("datetime").datetime.now().isoformat()
+            "response": response,
+            "timestamp": datetime.datetime.now().isoformat(),
         })
 
 

@@ -326,6 +326,22 @@ class LLMAgent:
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
         return f"{SYSTEM_PROMPT}\n\n## CONTEXTO\nData/hora actual: {now}"
 
+    def _check_and_reset_if_looping(self) -> bool:
+        """Detecta se o agente entrou em loop sobre 'preso no docker' e limpa o histórico."""
+        if len(self._history) < 4:
+            return False
+        recent = " ".join(
+            m.get("content", "") for m in self._history[-6:]
+            if m.get("role") == "assistant"
+        ).lower()
+        loop_signals = ["preso no docker", "preso dentro do", "não consigo sair", "estou dentro do container", "flag partida"]
+        if sum(1 for s in loop_signals if s in recent) >= 2:
+            import logging
+            logging.getLogger(__name__).warning("[LLMAgent] Loop detectado — a limpar histórico")
+            self._history = []
+            return True
+        return False
+
     async def chat(
         self,
         user_id: int,
@@ -344,6 +360,15 @@ class LLMAgent:
             Resposta final do agente como string
         """
         history = load_history(user_id)
+
+        # Detectar e limpar loop de "preso no docker"
+        self._history = history
+        if self._check_and_reset_if_looping():
+            history = []
+            save_history(user_id, [])
+
+        # Limitar histórico a 10 mensagens para evitar contaminação
+        history = history[-10:]
 
         # Construir mensagens para o LLM
         messages = [{"role": "system", "content": self._build_system_prompt()}]
