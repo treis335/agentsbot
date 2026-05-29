@@ -113,7 +113,7 @@ class AutonomousLoop:
             time.sleep(CYCLE_INTERVAL_SECONDS)
 
     def _run_cycle(self):
-        """Um ciclo completo do loop autonomo"""
+        """Um ciclo completo do loop autonomo — executa tarefas reais via LLMAgent."""
         self.cycle_count += 1
         cycle_id = self.cycle_count
         log_cycle(f"[Ciclo #{cycle_id}] Inicio")
@@ -131,43 +131,150 @@ class AutonomousLoop:
 
         # 2. Carregar backlog
         backlog = load_backlog()
-        if not backlog:
-            log_cycle("[Ciclo] Backlog vazio — nada a fazer")
-            return
 
         # 3. Filtrar tarefas pendentes
-        pending = [t for t in backlog if t.get("status") == "pending"]
+        pending = [t for t in backlog if t.get("status") in ("pending", "")]
         if not pending:
-            log_cycle("[Ciclo] Nenhuma tarefa pendente")
+            log_cycle("[Ciclo] Sem tarefas pendentes — a gerar novas...")
+            self._generate_new_tasks(backlog)
             return
 
-        # 4. Escolher tarefa (prioridade ou primeira)
-        task = pending[0]
-        task_id = task.get("id", "unknown")
-        task_desc = task.get("desc", task.get("task", task.get("title", "Tarefa sem nome")))
-        log_cycle(f"[Ciclo] Tarefa: {task_id} — {task_desc}")
+        # 4. Escolher tarefa por prioridade (campo priority ou primeira)
+        task = sorted(pending, key=lambda t: -int(t.get("priority", 5)))[0]
+        task_id  = task.get("id", "unknown")
+        task_desc = task.get("desc", task.get("task", task.get("title", "Tarefa sem descricao")))
+        log_cycle(f"[Ciclo #{cycle_id}] Tarefa: {task_desc[:80]}")
 
-        # 5. Executar (placeholder — futuramente chamar orquestrador)
-        log_cycle(f"[Ciclo] A executar tarefa...")
-
-        # 6. Marcar como concluida
+        # 5. Marcar como em execução
         for t in backlog:
             if t.get("id") == task_id:
-                t["status"] = "completed"
-                t["completed_at"] = datetime.now().isoformat()
+                t["status"] = "running"
+                t["started_at"] = datetime.now().isoformat()
                 break
-
         save_backlog(backlog)
-        log_cycle(f"[Ciclo #{cycle_id}] Tarefa concluida: {task_desc}")
 
-        # Batch 9 — Self-Improvement: corre a cada N ciclos
+        # 6. Executar via LLMAgent (execução real)
+        success, result_text = self._execute_task_real(task_desc, task_id)
+
+        # 7. Actualizar backlog com resultado
+        status = "completed" if success else "failed"
+        for t in backlog:
+            if t.get("id") == task_id:
+                t["status"] = status
+                t["completed_at"] = datetime.now().isoformat()
+                t["result"] = str(result_text)[:500]
+                break
+        save_backlog(backlog)
+        log_cycle(f"[Ciclo #{cycle_id}] {'✅' if success else '❌'} {task_desc[:60]} → {status}")
+
+        # 8. Batch 9 — Self-Improvement a cada N ciclos
         if self._self_improve and self._self_improve.should_run():
             log_cycle(f"[SelfImprove] Ciclo #{cycle_id} — a iniciar análise...")
             try:
                 import asyncio as _asyncio
-                loop = _asyncio.new_event_loop()
-                result = loop.run_until_complete(self._self_improve.run_cycle())
-                loop.close()
-                log_cycle(f"[SelfImprove] {result.summary}")
+                _loop = _asyncio.new_event_loop()
+                si_result = _loop.run_until_complete(self._self_improve.run_cycle())
+                _loop.close()
+                log_cycle(f"[SelfImprove] {si_result.summary}")
             except Exception as e:
                 log_cycle(f"[SelfImprove] Erro: {e}")
+
+    def _execute_task_real(self, task_desc: str, task_id: str) -> tuple:
+        """
+        Executa uma tarefa de verdade via LLMAgent.
+        Retorna (sucesso: bool, resultado: str).
+        """
+        try:
+            import asyncio as _asyncio
+            from agents.llm_agent import get_agent
+
+            agent = get_agent()
+            # ID interno do loop autónomo (não é um utilizador Telegram real)
+            AUTONOMOUS_USER_ID = 0
+
+            _loop = _asyncio.new_event_loop()
+            result = _loop.run_until_complete(
+                agent.chat(
+                    user_id=AUTONOMOUS_USER_ID,
+                    user_message=task_desc,
+                )
+            )
+            _loop.close()
+            return True, result
+        except Exception as e:
+            log_cycle(f"[Exec] Erro: {e}")
+            return False, str(e)
+
+    def _generate_new_tasks(self, backlog: list) -> None:
+        """
+        Quando o backlog fica vazio, gera novas tarefas autonomamente.
+        Combina brainstorming + análise do estado do sistema.
+        """
+        log_cycle("[AutoGen] A gerar novas tarefas...")
+        try:
+            import asyncio as _asyncio
+            from agents.llm_agent import get_agent
+
+            agent = get_agent()
+            AUTONOMOUS_USER_ID = 0
+
+            prompt = (
+                "Analisa o estado actual do ecossistema CORREOTO e gera 3 tarefas concretas "
+                "para melhorar o sistema. As tarefas devem ser técnicas e executáveis. "
+                "Responde APENAS com um JSON array no formato: "
+                '[{"id":"task_XXX","title":"...","desc":"instrucoes detalhadas...","priority":7}]. '
+                "Foca em: melhorias de código, novos módulos úteis, correcção de bugs conhecidos, "
+                "ou evolução das capacidades dos agentes."
+            )
+
+            _loop = _asyncio.new_event_loop()
+            response = _loop.run_until_complete(
+                agent.chat(user_id=AUTONOMOUS_USER_ID, user_message=prompt)
+            )
+            _loop.close()
+
+            # Extrair JSON da resposta
+            import re, json as _json
+            match = re.search(r'\[.*?\]', response, re.DOTALL)
+            if match:
+                new_tasks = _json.loads(match.group())
+                for t in new_tasks:
+                    t["status"] = "pending"
+                    t["created_at"] = datetime.now().isoformat()
+                    t["source"] = "auto_generated"
+                    backlog.append(t)
+                save_backlog(backlog)
+                log_cycle(f"[AutoGen] {len(new_tasks)} novas tarefas geradas")
+                for t in new_tasks:
+                    log_cycle(f"  + {t.get('title','?')}")
+            else:
+                # Fallback: adicionar tarefa genérica de auto-análise
+                self._add_fallback_task(backlog)
+        except Exception as e:
+            log_cycle(f"[AutoGen] Erro: {e}")
+            self._add_fallback_task(backlog)
+
+    def _add_fallback_task(self, backlog: list) -> None:
+        """Adiciona tarefa de auto-análise quando geração automática falha."""
+        import uuid
+        fallback_tasks = [
+            "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+            "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+            "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+            "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+            "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+        ]
+        import random
+        desc = random.choice(fallback_tasks)
+        task = {
+            "id": f"auto_{uuid.uuid4().hex[:8]}",
+            "title": desc[:60],
+            "desc": desc,
+            "status": "pending",
+            "priority": 5,
+            "created_at": datetime.now().isoformat(),
+            "source": "fallback",
+        }
+        backlog.append(task)
+        save_backlog(backlog)
+        log_cycle(f"[AutoGen] Fallback: {desc[:60]}")

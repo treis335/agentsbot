@@ -359,19 +359,34 @@ class LLMAgent:
         Returns:
             Resposta final do agente como string
         """
-        history = load_history(user_id)
+        # Modo autónomo (user_id=0) — sem histórico de conversa, foco total na tarefa
+        is_autonomous = (user_id == 0)
 
-        # Detectar e limpar loop de "preso no docker"
-        self._history = history
-        if self._check_and_reset_if_looping():
+        if is_autonomous:
             history = []
-            save_history(user_id, [])
+        else:
+            history = load_history(user_id)
+            # Detectar e limpar loop de "preso no docker"
+            self._history = history
+            if self._check_and_reset_if_looping():
+                history = []
+                save_history(user_id, [])
+            # Limitar histórico a 10 mensagens
+            history = history[-10:]
 
-        # Limitar histórico a 10 mensagens para evitar contaminação
-        history = history[-10:]
+        # System prompt ligeiramente diferente em modo autónomo
+        if is_autonomous:
+            system = self._build_system_prompt() + (
+                "\n\n## MODO AUTÓNOMO\n"
+                "Estás a executar uma tarefa do backlog autónomo, sem supervisão humana. "
+                "Executa a tarefa completamente usando as ferramentas disponíveis. "
+                "Reporta o que fizeste de forma concisa. Não peças confirmação."
+            )
+        else:
+            system = self._build_system_prompt()
 
         # Construir mensagens para o LLM
-        messages = [{"role": "system", "content": self._build_system_prompt()}]
+        messages = [{"role": "system", "content": system}]
         messages.extend(history)
         messages.append({"role": "user", "content": user_message})
 
