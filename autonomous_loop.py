@@ -181,46 +181,69 @@ class AutonomousLoop:
 
     def _execute_task_real(self, task_desc: str, task_id: str) -> tuple:
         """
-        Executa uma tarefa via Orchestrator — roteia ao agente certo por capability scoring.
+        Executa uma tarefa via capability routing + memória episódica.
+        Antes de executar: injeta contexto de tentativas anteriores.
+        Depois de executar: grava resultado na memória.
         Retorna (sucesso: bool, resultado: str).
         """
+        from agents.capability_registry import get_registry
+        from memory.loop_memory import get_loop_memory
+        import asyncio as _asyncio
+
+        mem = get_loop_memory()
+
+        # 1. Escolher agente pelo capability registry
+        registry = get_registry()
+        chosen_agent = registry.match(task_desc, fallback="developer")
+        log_cycle(f"[MultiAgent] '{chosen_agent}' → {task_desc[:60]}")
+
+        # 2. Obter contexto de memória episódica (tentativas anteriores)
+        memory_ctx = mem.get_context_for_task(task_desc, task_id)
+        if memory_ctx:
+            log_cycle(f"[Memory] Contexto injectado ({len(memory_ctx)} chars)")
+
+        # 3. Construir prompt enriquecido com memória
+        full_prompt = task_desc
+        if memory_ctx:
+            full_prompt = (
+                task_desc + "\n\n" +
+                memory_ctx + "\n" +
+                "Usa este contexto para não repetir erros anteriores. "
+                "Se já tentaste algo que falhou, experimenta uma abordagem diferente."
+            )
+
+        # 4. Executar
         try:
-            import asyncio as _asyncio
-            from agents.capability_registry import get_registry
-
-            # 1. Escolher agente pelo capability registry (local, zero API)
-            registry = get_registry()
-            chosen_agent = registry.match(task_desc, fallback="developer")
-            log_cycle(f"[MultiAgent] '{chosen_agent}' escolhido para: {task_desc[:60]}")
-
-            # 2. Executar via LLMAgent com soul do agente escolhido
             from agents.llm_agent import LLMAgent
-
             agent = LLMAgent(agent_name=chosen_agent)
             _loop = _asyncio.new_event_loop()
             result = _loop.run_until_complete(
-                agent.chat(
-                    user_id=0,  # user_id=0 = modo autónomo
-                    user_message=task_desc,
-                )
+                agent.chat(user_id=0, user_message=full_prompt)
             )
             _loop.close()
 
-            log_cycle(f"[MultiAgent] '{chosen_agent}' concluiu: {str(result)[:80]}")
+            # 5. Gravar na memória episódica
+            mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
+            log_cycle(f"[Memory] ✅ Gravado episódio de sucesso: {chosen_agent}")
             return True, result
 
         except Exception as e:
-            log_cycle(f"[MultiAgent] Erro: {e}")
-            # Fallback: tentar com supervisor
+            error_str = str(e)
+            # Gravar falha na memória
+            mem.record(task_id, task_desc, chosen_agent, success=False, result=error_str)
+            log_cycle(f"[Memory] ❌ Gravado episódio de falha: {e}")
+
+            # Fallback com supervisor
             try:
-                import asyncio as _asyncio
                 from agents.llm_agent import get_agent
                 agent = get_agent()
                 _loop = _asyncio.new_event_loop()
                 result = _loop.run_until_complete(agent.chat(user_id=0, user_message=task_desc))
                 _loop.close()
+                mem.record(task_id, task_desc, "supervisor", success=True, result=str(result))
                 return True, result
             except Exception as e2:
+                mem.record(task_id, task_desc, "supervisor", success=False, result=str(e2))
                 return False, str(e2)
 
     def _generate_new_tasks(self, backlog: list) -> None:
