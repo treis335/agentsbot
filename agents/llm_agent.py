@@ -312,19 +312,47 @@ class LLMAgent:
     Agente LLM autónomo com:
     - Memória de conversa persistente por utilizador
     - Uso inteligente de ferramentas (só quando necessário)
-    - Máximo 5 iterações de tools por mensagem
-    - Callback de progresso para o Telegram
+    - Suporte a agent_name para carregar soul específico
+    - Máximo 50 iterações de tools por mensagem
     """
 
-    MAX_TOOL_ITERATIONS = 50  # Suficiente para tarefas complexas sem ser infinito
+    MAX_TOOL_ITERATIONS = 50
 
-    def __init__(self):
+    def __init__(self, agent_name: str = "supervisor"):
+        self.agent_name = agent_name
+        self._history = []
         self._system = self._build_system_prompt()
 
+    def _load_soul(self) -> str:
+        """Carrega o soul do agente pelo nome. Fallback para SYSTEM_PROMPT global."""
+        from core.config import Config
+        soul_path = Config.AGENTS_DIR / "souls" / f"{self.agent_name}.md"
+        if soul_path.exists():
+            soul = soul_path.read_text(encoding="utf-8").strip()
+            logger.info(f"[LLMAgent] Soul carregado: {self.agent_name}")
+            return soul
+        # Fallback: supervisor soul ou prompt global
+        fallback = Config.AGENTS_DIR / "souls" / "supervisor.md"
+        if fallback.exists():
+            return fallback.read_text(encoding="utf-8").strip()
+        return SYSTEM_PROMPT
+
     def _build_system_prompt(self) -> str:
-        """Constrói o system prompt com contexto actual."""
+        """Constrói o system prompt com soul do agente + contexto actual."""
+        import platform
+        from core.config import Config
+        soul = self._load_soul()
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
-        return f"{SYSTEM_PROMPT}\n\n## CONTEXTO\nData/hora actual: {now}"
+        runtime = (
+            f"\n\n## CONTEXTO DE EXECUÇÃO\n"
+            f"- Agente: {self.agent_name}\n"
+            f"- Data/hora: {now}\n"
+            f"- Sistema: {platform.system()} Linux servidor\n"
+            f"- Projecto: {Config.REPO_LOCAL_PATH}\n"
+            f"- Shell: bash (ls, cat, python3, git — nunca CMD Windows)\n"
+            f"- O utilizador está no Windows/PC — TU estás no servidor Linux\n"
+        )
+        return soul + runtime
 
     def _check_and_reset_if_looping(self) -> bool:
         """Detecta se o agente entrou em loop sobre 'preso no docker' e limpa o histórico."""
