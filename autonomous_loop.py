@@ -181,29 +181,47 @@ class AutonomousLoop:
 
     def _execute_task_real(self, task_desc: str, task_id: str) -> tuple:
         """
-        Executa uma tarefa de verdade via LLMAgent.
+        Executa uma tarefa via Orchestrator — roteia ao agente certo por capability scoring.
         Retorna (sucesso: bool, resultado: str).
         """
         try:
             import asyncio as _asyncio
-            from agents.llm_agent import get_agent
+            from agents.capability_registry import get_registry
 
-            agent = get_agent()
-            # ID interno do loop autónomo (não é um utilizador Telegram real)
-            AUTONOMOUS_USER_ID = 0
+            # 1. Escolher agente pelo capability registry (local, zero API)
+            registry = get_registry()
+            chosen_agent = registry.match(task_desc, fallback="developer")
+            log_cycle(f"[MultiAgent] '{chosen_agent}' escolhido para: {task_desc[:60]}")
 
+            # 2. Executar via LLMAgent com soul do agente escolhido
+            from agents.llm_agent import LLMAgent
+
+            agent = LLMAgent(agent_name=chosen_agent)
             _loop = _asyncio.new_event_loop()
             result = _loop.run_until_complete(
                 agent.chat(
-                    user_id=AUTONOMOUS_USER_ID,
+                    user_id=0,  # user_id=0 = modo autónomo
                     user_message=task_desc,
                 )
             )
             _loop.close()
+
+            log_cycle(f"[MultiAgent] '{chosen_agent}' concluiu: {str(result)[:80]}")
             return True, result
+
         except Exception as e:
-            log_cycle(f"[Exec] Erro: {e}")
-            return False, str(e)
+            log_cycle(f"[MultiAgent] Erro: {e}")
+            # Fallback: tentar com supervisor
+            try:
+                import asyncio as _asyncio
+                from agents.llm_agent import get_agent
+                agent = get_agent()
+                _loop = _asyncio.new_event_loop()
+                result = _loop.run_until_complete(agent.chat(user_id=0, user_message=task_desc))
+                _loop.close()
+                return True, result
+            except Exception as e2:
+                return False, str(e2)
 
     def _generate_new_tasks(self, backlog: list) -> None:
         """
