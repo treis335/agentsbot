@@ -9,7 +9,7 @@
   {
     "id": "dashboard_visual_001",
     "desc": "Criar dashboard visual com metricas em tempo real",
-    "status": "processing"
+    "status": "pending"
   },
   {
     "id": "brainstorm_melhorias_001",
@@ -75,5 +75,32 @@
     "id": "context_tracker_001",
     "desc": "Rastrear contexto de conversa para nao confundir topicos",
     "status": "done"
+  },
+  {
+    "id": "auto_analise_sistema_001",
+    "title": "Análise completa do ecossistema",
+    "desc": "Analisa o estado actual do ecossistema: lê os ficheiros de configuração, verifica o git log dos últimos 5 commits, lista os agentes disponíveis, e reporta o que está funcional e o que precisa de atenção. Grava um relatório em memory/global/sistema_report.md",
+    "status": "pending",
+    "priority": 9,
+    "source": "seed",
+    "created_at": "2026-05-29T23:47:57.244603"
+  },
+  {
+    "id": "auto_melhorar_souls_001",
+    "title": "Melhorar souls dos agentes principais",
+    "desc": "Lê os souls de developer.md, auto_fixer.md e qa_tester.md. Avalia se estão suficientemente detalhados para guiar execução autónoma. Melhora qualquer um que esteja vago ou incompleto. Faz commit das melhorias.",
+    "status": "pending",
+    "priority": 7,
+    "source": "seed",
+    "created_at": "2026-05-29T23:47:57.244622"
+  },
+  {
+    "id": "auto_testes_ferramentas_001",
+    "title": "Verificar que todas as ferramentas funcionam",
+    "desc": "Testa cada ferramenta disponível: run_shell com 'echo test', run_python com 'print(1+1)', git_status, list_files. Regista quais funcionam e quais falham. Corrige qualquer problema encontrado.",
+    "status": "pending",
+    "priority": 8,
+    "source": "seed",
+    "created_at": "2026-05-29T23:47:57.244626"
   }
 ]

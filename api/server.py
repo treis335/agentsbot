@@ -74,6 +74,8 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._handle_events_sse()
             elif path in ("/routing", "/api/routing"):
                 self._handle_routing_stats()
+            elif path in ("/memory_stats", "/api/memory_stats"):
+                self._handle_memory_stats()
             elif path in ("/dashboard",):
                 self._handle_dashboard()
             elif path in ("/api/ecosystem/status", "/ecosystem/status"):
@@ -277,6 +279,18 @@ class APIHandler(BaseHTTPRequestHandler):
             self._send_json(router.stats())
         except Exception as e:
             self._send_json({"error": str(e), "local_calls": 0, "cloud_calls": 0})
+
+    def _handle_memory_stats(self) -> None:
+        """GET /api/memory_stats — estatísticas da memória episódica do loop."""
+        try:
+            from memory.loop_memory import get_loop_memory
+            mem = get_loop_memory()
+            data = mem.stats()
+            data["recent_failures"] = mem.recent_failures(limit=5)
+            data["total_episodes"] = len(mem._episodes)
+            self._send_json(data)
+        except Exception as e:
+            self._send_json({"error": str(e), "total_episodes": 0})
 
     def log_message(self, format, *args):
         logger.debug(f"[API] {args[0]} {args[1]} {args[2]}")
