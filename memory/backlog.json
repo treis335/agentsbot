@@ -14,66 +14,66 @@
   {
     "id": "brainstorm_melhorias_001",
     "desc": "Gerar ideias de melhoria continua",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "git_auto_push_001",
     "desc": "Automatizar push para GitHub a cada alteracao",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "testes_automaticos_001",
     "desc": "Implementar testes automaticos para todos os modulos",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "chat_integrado_001",
     "desc": "Integrar chat no dashboard para falar com o Supervisor",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "memoria_persistente_001",
     "desc": "Criar memoria persistente que nao se perde com reboots",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "auto_reboot_imediato_001",
     "desc": "Fazer auto-reboot funcionar instantaneamente",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "agente_brainstormer_001",
     "desc": "Criar agente brainstormer que gera ideias autonomamente",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "agente_notificador_001",
     "desc": "Criar agente que notifica o utilizador de novidades",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "dashboard_metricas_001",
     "desc": "Adicionar graficos e metricas ao dashboard",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "sincronizacao_git_001",
     "desc": "Sincronizar automaticamente com GitHub",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "ciclo_rapido_001",
     "desc": "Reduzir ciclo autonomo para 10 segundos",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "grounding_001",
     "desc": "Implementar verificacao de realidade (nao alucinar acoes)",
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "context_tracker_001",
     "desc": "Rastrear contexto de conversa para nao confundir topicos",
-    "status": "pending"
+    "status": "done"
   }
 ]
