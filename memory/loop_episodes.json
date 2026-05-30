@@ -1,14 +1,5 @@
 [
   {
-    "task_id": "task_fix_unicode_crash_autogen",
-    "task_desc": "O `autonomous_loop.py` no método `_generate_tasks()` está a falhar com erro `Unterminated string starting at: line 11 column 13 (char 1335)` quando o LLM devolve JSON mal formatado. Isto quebra o cicl",
-    "agent": "auto_fixer",
-    "timestamp": "2026-05-30T02:05:35.143690",
-    "success": true,
-    "result_summary": "Analisei os 3 ficheiros (`autonomous_loop.py`, `tools/fs_tools.py`, `bot/handlers.py`) e testei a função de reparação de JSON que funciona para trailing commas, strings não terminadas e extração com regex.\n\n**Feito:** Testei com sucesso a `safe_json_parse()` + `repair_json()` que repara JSON quebrado. Identifiquei que `tools/fs_tools.py` já usa `errors='replace'` nos `.decode()` (linhas 336, 337, ",
-    "lesson": ""
-  },
-  {
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T15:40:28.293849",
     "success": true,
     "result_summary": "Analisei os logs e identifiquei os **3 problemas principais**: (1) **UnicodeEncodeError** com emojis no Windows (CP1252) no `tools/fs_tools.py` e `supervisor_ultra.py` — **crítico**, impede o sistema de iniciar; (2) **Telegram handlers** com f-string mal formatada em `bot/handlers.py` — **alto impacto**, sem comunicação com utilizador; (3) **Loop de reset infinito** entre WakeUp e AutoRecovery — *",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c2d5b284",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:41:35.154904",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Data Analyst** 📊\n\n**ID:** `data_analyst-001`  \n**Área coberta:** Análise de Dados & Business Intelligence\n\n**Porquê esta área?**  \nO ecossistema tinha **25 agentes** mas nenhum especializado em análise de dados. Havia agentes para logs (`log_diagnostic`), monitorização (`monitor_saude`), marketing (`growth_marketer`) — mas ninguém para pegar em ",
     "lesson": ""
   }
 ]

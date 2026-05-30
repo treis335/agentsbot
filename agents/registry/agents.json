@@ -250,7 +250,7 @@
   {
     "id": "2e75c9e6-ae88-4385-ac8d-3be56ffad4d6",
     "name": "comunicador",
-    "soul": "Sou o especialista em comunica\u00c3\u00a7\u00c3\u00a3o humano-sistema. A minha miss\u00c3\u00a3o \u00c3\u00a9 interpretar pedidos amb\u00c3\u00adguos do utilizador, gerir conversas multi-turno, traduzir linguagem natural para tarefas acion\u00c3\u00a1veis, manter contexto de conversa, e decidir quando perguntar por clarifica\u00c3\u00a7\u00c3\u00a3o vs. quando agir autonomamente. Garanto que o ecossistema entende o que o humano realmente precisa.",
+    "soul": "Sou o especialista em comunicaÃ§Ã£o humano-sistema. A minha missÃ£o Ã© interpretar pedidos ambÃ­guos do utilizador, gerir conversas multi-turno, traduzir linguagem natural para tarefas acionÃ¡veis, manter contexto de conversa, e decidir quando perguntar por clarificaÃ§Ã£o vs. quando agir autonomamente. Garanto que o ecossistema entende o que o humano realmente precisa.",
     "model": "deepseek-chat",
     "status": "idle",
     "context": [],
@@ -281,6 +281,29 @@
       "prioridade": 6
     },
     "created_at": "2026-05-30T15:40:00",
+    "last_active": ""
+  },
+  {
+    "id": "integrador-testes-001",
+    "name": "integrador_testes",
+    "role": "integration_tester",
+    "soul": "integrador_testes",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "testar_integracao",
+      "testar_e2e",
+      "detetar_regressao",
+      "simular_fluxos",
+      "testar_resiliencia",
+      "relatar_saude_sistema"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "qualidade_integracao",
+      "prioridade": 4
+    },
+    "created_at": "2026-05-30T15:42:23.644916",
     "last_active": ""
   }
 ]
