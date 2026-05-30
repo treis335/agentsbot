@@ -587,6 +587,43 @@
         "root cause"
       ],
       "priority": 7
+    },
+    "prompt_engineer": {
+      "description": "Otimiza prompts, reduz custos de tokens, testa variacoes A/B, e garante consistencia comportamental dos agentes LLM",
+      "skills": [
+        "prompt_optimization",
+        "token_efficiency",
+        "ab_testing",
+        "structured_output",
+        "chain_of_thought",
+        "context_management",
+        "template_design",
+        "cost_reduction",
+        "persona_anchoring",
+        "few_shot_design"
+      ],
+      "keywords": [
+        "prompt",
+        "optimiza",
+        "token",
+        "contexto",
+        "llm",
+        "instrucao",
+        "template",
+        "custo",
+        "eficiencia",
+        "teste a/b",
+        "chain of thought",
+        "few-shot",
+        "persona",
+        "formato",
+        "json",
+        "consistencia",
+        "alucinacao",
+        "guardrail",
+        "compressao"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

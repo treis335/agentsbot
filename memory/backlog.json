@@ -731,10 +731,22 @@
     "id": "auto_0fcf44d8",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T15:31:16.752372",
     "source": "fallback",
-    "started_at": "2026-05-30T15:31:26.759733"
+    "started_at": "2026-05-30T15:31:26.759733",
+    "completed_at": "2026-05-30T15:32:47.364877",
+    "result": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Log Diagnostic** 🔍\n\n**Área coberta:** Análise Inteligente de Logs e Diagnóstico de Causa Raiz\n\n**Porquê esta área?** O ecossistema já tinha agentes para monitorização de sistema (`monitor_saude`), testes (`qa_tester`, `load_tester`), e correção de bugs (`auto_fixer`), mas **nenhum especializado em analisar logs, extrair causas raiz, detetar padrões de erro, e gerar relatórios de incidentes**. Esta é uma lacuna crítica — sem diagnóstico de qual"
+  },
+  {
+    "id": "auto_aa2b016e",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T15:32:57.377825",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:33:07.384436"
   }
 ]
