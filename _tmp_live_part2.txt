@@ -1,0 +1,77 @@
+kpi-val" id="kDone">...</div>
+        <div class="kpi-sub">tarefas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pendentes</div>
+        <div class="kpi-val" id="kPending">...</div>
+        <div class="kpi-sub">tarefas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Falhadas</div>
+        <div class="kpi-val" id="kFailed">...</div>
+        <div class="kpi-sub">tarefas</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title" id="tabTitle">Logs do Sistema</span>
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('logs',this)">Logs</button>
+          <button class="tab" onclick="switchTab('agents',this)">Agentes</button>
+          <button class="tab" onclick="switchTab('tasks',this)">Tarefas</button>
+        </div>
+      </div>
+      <div class="content" id="mainContent">
+        <div class="empty-state">A carregar...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Chat -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <h3>.... Fala com o Agente</h3>
+      <p>Supervisor do ecossistema ... responde em tempo real</p>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg msg-agent">
+        <strong>Supervisor</strong>
+        Ol..! Sou o Supervisor do ecossistema CORREOTO. Podes falar comigo aqui directamente ... d..-me tarefas, pede relat..rios, ou pergunta o que est.. a acontecer. ....
+        <div class="msg-time">agora</div>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <textarea id="chatInput" placeholder="Escreve uma mensagem..." onkeydown="handleKey(event)"></textarea>
+      <button id="sendBtn" onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';  // mesmo host ... usa proxy do dashboard
+let currentTab = 'logs';
+let cachedData = {};
+
+// ...... Tab switching .......................................................................................................................................................................................
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const titles = {logs:'Logs do Sistema', agents:'Agentes Ativos', tasks:'Tarefas'};
+  document.getElementById('tabTitle').textContent = titles[tab];
+  renderTab();
+}
+
+function renderTab() {
+  const el = document.getElementById('mainContent');
+  if (currentTab === 'logs') renderLogs(el);
+  else if (currentTab === 'agents') renderAgents(el);
+  else renderTasks(el);
+}
+
+function renderLogs(el) {
+  const logs = cachedData.logs || [];
+  if (!logs.length) { el.innerHTML = '<div class="empty-state">Sem logs. Inicia o main.py para ver actividade.</div>'; return; }
+  el.innerHTML = [...logs].reverse().map(l => {
+    const cls = l.level === 'error' ? 'log-error' : l.level === 'warning' ? 'log-warning

@@ -1,0 +1,74 @@
+r("Content-Length", str(len(content)))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(content)
+        else:
+            self._send_error("Dashboard nao encontrado", 404)
+
+    def _handle_ecosystem_status(self):
+        """Devolve o estado atual do ecossistema em JSON com dados reais."""
+        import json, datetime
+        from pathlib import Path
+
+        base_dir = Path(__file__).parent.parent
+
+        # --- AGENTES: tentar AgentManager primeiro, depois ficheiros ---
+        agents = 0
+        agent_names = []
+        try:
+            if self.server.agent_manager:
+                agent_list = self.server.agent_manager.list_agents()
+                agents = len(agent_list)
+                agent_names = [{"name": a.name, "role": str(a.role).split(".")[-1]} for a in agent_list]
+        except Exception:
+            pass
+
+        if not agents:
+            # Fallback: ler ficheiros directamente
+            for candidate in [
+                base_dir / "agents" / "registry" / "agents.json",
+                base_dir / "agents.json",
+            ]:
+                if candidate.exists():
+                    try:
+                        data = json.loads(candidate.read_text(encoding="utf-8"))
+                        lst = data if isinstance(data, list) else data.get("agents", [])
+                        agents = len(lst)
+                        agent_names = [{"name": a.get("name", a.get("id", "?")), "role": a.get("role","agent")} for a in lst[:50]]
+                        break
+                    except Exception:
+                        pass
+
+        # --- TAREFAS ---
+        tasks_done = tasks_pending = tasks_failed = 0
+        all_tasks = []
+        for bf in [base_dir / "memory" / "backlog.json", base_dir / "tasks" / "backlog.json"]:
+            if bf.exists():
+                try:
+                    tasks = json.loads(bf.read_text(encoding="utf-8"))
+                    if not isinstance(tasks, list):
+                        tasks = tasks.get("tasks", [])
+                    for t in tasks:
+                        s = t.get("status", "").lower()
+                        if s in ("done","completed","concluida","conclu..do","success"):
+                            tasks_done += 1
+                        elif s in ("failed","error","falhou","failed"):
+                            tasks_failed += 1
+                        else:
+                            tasks_pending += 1
+                    all_tasks = tasks
+                    break
+                except Exception:
+                    pass
+
+        # --- LOGS: ler autonomous_log.md + ficheiros .log ---
+        logs = []
+        log_sources = [
+            base_dir / "memory" / "autonomous_log.md",
+            base_dir / "memory" / "evolution_log.json",
+            base_dir / "main.log",
+            base_dir / "supervisor.log",
+        ]
+        for lp in log_sources:
+            if not lp.exists():
+                conti

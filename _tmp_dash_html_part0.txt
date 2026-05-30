@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correoto ... Ecossistema IA em Tempo Real</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>....</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>.... Correoto</h1>
+                <span class="subtitle">Ecossistema IA Aut..nomo</span>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span id="statusText">A carregar...</span>
+                </div>
+                <span class="version">v2.0</span>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon">....</div>
+                <div class="stat-info">
+                    <span class="stat-value" id="agentCount">0</span>
+                    <span class="stat-label">Agentes</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">....</div>
+                <div class="stat-info">
+                    <span class="stat-value" id="taskCount">0</span>
+                    <span class="stat-label">Tarefas</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">...</div>
+                <div class="stat-info">
+                    <span class="stat-value" id="toolCalls">0</span>
+                    <span class="stat-label">Tool Calls</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">....</div>
+                <div class="stat-info">
+                    <span class="stat-value" id="successRate">0%</span>
+                    <span class="stat-label">Sucesso</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- Left Column -->
+            <div class="left-col">
+                <!-- Agents Section -->
+                <section class="section">
+                    <div class="section-header">
+                        <h2>.... Agentes</h2>
+                        <span class="section-badge" id="agentCountBadge">0</span>
+                    </div>
+                    <div class="agents-list" id="agentsList">
+                        <div class="loading">A carregar agentes...</div>
+                    </div>
+                </section>
+
+                <!-- Tasks Se

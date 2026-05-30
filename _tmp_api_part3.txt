@@ -1,0 +1,71 @@
+])[0])
+        limit = int(params.get("limit", ["50"])[0])
+        agent = params.get("agent", [None])[0]
+        traces = load_traces(days=days, agent_name=agent, limit=limit)
+        self._send_json({"traces": traces, "total": len(traces)})
+
+    def _handle_events_sse(self) -> None:
+        """
+        GET /api/events ........ Server-Sent Events live feed do event bus.
+        Envia os ....ltimos eventos e fica .... escuta de novos via bus history.
+        Para clientes SSE (dashboard live).
+        """
+        from core.bus import bus
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("X-Accel-Buffering", "no")
+        self.end_headers()
+
+        try:
+            # Enviar hist....rico recente (....ltimos 20 eventos)
+            history = bus.get_history(limit=20)
+            for event in history:
+                data = json.dumps(event, ensure_ascii=False, default=str)
+                self.wfile.write(f"data: {data}\n\n".encode("utf-8"))
+                self.wfile.flush()
+
+            # Heartbeat para manter a liga........o aberta
+            import time
+            for _ in range(30):  # max 30s de stream
+                time.sleep(1)
+                self.wfile.write(b": heartbeat\n\n")
+                self.wfile.flush()
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # cliente desligou
+        except Exception as e:
+            logger.debug(f"[API/SSE] Liga........o terminada: {e}")
+
+    def _handle_routing_stats(self) -> None:
+        """GET /api/routing ........ estat....sticas do inference router (local vs cloud)."""
+        try:
+            from inference.router import router
+            self._send_json(router.stats())
+        except Exception as e:
+            self._send_json({"error": str(e), "local_calls": 0, "cloud_calls": 0})
+
+    def _handle_memory_stats(self) -> None:
+        """GET /api/memory_stats ... estat..sticas da mem..ria epis..dica do loop."""
+        try:
+            from memory.loop_memory import get_loop_memory
+            mem = get_loop_memory()
+            data = mem.stats()
+            data["recent_failures"] = mem.recent_failures(limit=5)
+            data["total_episodes"] = len(mem._episodes)
+            self._send_json(data)
+        except Exception as e:
+            self._send_json({"error": str(e), "total_episodes": 0})
+
+    def log_message(self, format, *args):
+        logger.debug(f"[API] {args[0]} {args[1]} {args[2]}")
+
+
+    def _handle_dashboard(self):
+        """Serve o dashboard HTML."""
+        dashboard_path = Path(__file__).parent.parent / "dashboard" / "templates" / "live.html"
+        if dashboard_path.exists():
+            content = dashboard_path.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_heade

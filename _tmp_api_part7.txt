@@ -1,0 +1,9 @@
+PIHandler.audit_logger = audit_logger
+
+    server = HTTPServer((host, port), APIHandler)
+    logger.info(f"[API] Servidor a correr em http://{host}:{port}")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        logger.info("[API] Servidor parado.")
+        server.server_close()

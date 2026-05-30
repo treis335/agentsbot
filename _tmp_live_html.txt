@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORREOTO ECOSYSTEM</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-serif;height:100vh;display:flex;flex-direction:column}
+header{background:#161b22;border-bottom:1px solid #30363d;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+header h1{color:#58a6ff;font-size:18px;font-weight:700}
+.status-pill{display:flex;align-items:center;gap:6px;font-size:12px;color:#3fb950;background:#3fb95015;border:1px solid #3fb95030;padding:4px 10px;border-radius:20px}
+.dot{width:7px;height:7px;border-radius:50%;background:#3fb950;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.layout{display:grid;grid-template-columns:1fr 380px;flex:1;overflow:hidden;gap:0}
+.left{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid #21262d}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#21262d;border-bottom:1px solid #21262d;flex-shrink:0}
+.kpi{background:#161b22;padding:14px 16px}
+.kpi-label{font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.kpi-val{font-size:26px;font-weight:700;color:#fff;line-height:1}
+.kpi-sub{font-size:11px;color:#8b949e;margin-top:3px}
+.kpi:nth-child(1) .kpi-val{color:#58a6ff}
+.kpi:nth-child(2) .kpi-val{color:#3fb950}
+.kpi:nth-child(3) .kpi-val{color:#d29922}
+.kpi:nth-child(4) .kpi-val{color:#f85149}
+.section{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.section-header{padding:10px 16px;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#8b949e}
+.tabs{display:flex;gap:2px}
+.tab{padding:4px 10px;border-radius:5px;font-size:12px;cursor:pointer;color:#8b949e;border:none;background:transparent}
+.tab.active,.tab:hover{background:#21262d;color:#c9d1d9}
+.content{flex:1;overflow-y:auto;padding:0}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+
+/* Logs */
+.log-line{padding:5px 16px;border-bottom:1px solid #0d111799;display:flex;gap:10px;font-size:12px;font-family:'SF Mono',monospace;line-height:1.4}
+.log-line:hover{background:#1c2128}
+.log-time{color:#484f58;flex-shrink:0;width:55px}
+.log-text{flex:1;word-break:break-all}
+.log-info .log-text{color:#8b949e}
+.log-success .log-text{color:#3fb950}
+.log-warning .log-text{color:#d29922}
+.log-error .log-text{color:#f85149}
+.log-agent .log-text{color:#58a6ff}
+
+/* Agents table */
+.agent-row{padding:8px 16px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:10px;font-size:13px}
+.agent-row:hover{background:#1c2128}
+.agent-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.agent-name{font-weight:500;flex:1}
+.agent-role{color:#8b949e;font-size:11px;background:#21262d;padding:2px 7px;border-radius:8px}
+
+/* Right panel ... chat */
+.chat-panel{display:flex;flex-direction:column;background:#161b22}
+.chat-header{padding:12px 16px;border-bottom:1px solid #21262d;flex-shrink:0}
+.chat-header h3{font-size:13px;font-weight:600;color:#c9d1d9}
+.chat-header p{font-size:11px;color:#8b949e;margin-top:2px}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.chat-messages::-webkit-scrollbar{width:4px}
+.chat-messages::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+.msg{max-width:92%;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.5;word-break:break-word}
+.msg-user{background:#1f6feb;color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.msg-agent{background:#21262d;color:#c9d1d9;align-self:flex-start;border-bottom-left-radius:3px}
+.msg-agent strong{color:#58a6ff;display:block;font-size:11px;margin-bottom:3px}
+.msg-time{font-size:10px;opacity:.5;margin-top:4px;text-align:right}
+.typing{background:#21262d;color:#8b949e;align-self:flex-start;border-bottom-left-radius:3px;padding:9px 12px;border-radius:10px;font-size:13px}
+.typing span{display:inline-block;width:6px;height:6px;background:#8b949e;border-radius:50%;animation:bounce .8s infinite;margin:0 2px}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.chat-input-wrap{padding:12px;border-top:1px solid #21262d;display:flex;gap:8px;flex-shrink:0}
+#chatInput{flex:1;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:8px 12px;color:#c9d1d9;font-size:13px;resize:none;height:38px;font-family:inherit;outline:none;transition:border-color .2s}
+#chatInput:focus{border-color:#58a6ff}
+#sendBtn{background:#238636;border:none;border-radius:8px;padding:0 16px;color:#fff;font-size:13px;cursor:pointer;font-weight:600;transition:background .2s;flex-shrink:0}
+#sendBtn:hover{background:#2ea043}
+#sendBtn:disabled{background:#21262d;color:#484f58;cursor:not-allowed}
+.empty-state{color:#484f58;font-size:13px;padding:20px;text-align:center}
+.refresh-hint{font-size:10px;color:#484f58}
+</style>
+</head>
+<body>
+<header>
+  <h1>CORREOTO ECOSYSTEM</h1>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="refresh-hint" id="lastUpdate">A carregar...</span>
+    <div class="status-pill"><span class="dot"></span> Dashboard em tempo real ... ONLINE</div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- LEFT: KPIs + logs/agents -->
+  <div class="left">
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Agentes</div>
+        <div class="kpi-val" id="kAgents">...</div>
+        <div class="kpi-sub" id="kAgentsSub">a carregar</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Concluidas</div>
+        <div class="kpi-val" id="kDone">...</div>
+        <div class="kpi-sub">tarefas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pendentes</div>
+        <div class="kpi-val" id="kPending">...</div>
+        <div class="kpi-sub">tarefas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Falhadas</div>
+        <div class="kpi-val" id="kFailed">...</div>
+        <div class="kpi-sub">tarefas</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title" id="tabTitle">Logs do Sistema</span>
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('logs',this)">Logs</button>
+          <button class="tab" onclick="switchTab('agents',this)">Agentes</button>
+          <button class="tab" onclick="switchTab('tasks',this)">Tarefas</button>
+        </div>
+      </div>
+      <div class="content" id="mainContent">
+        <div class="empty-state">A carregar...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Chat -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <h3>.... Fala com o Agente</h3>
+      <p>Supervisor do ecossistema ... responde em tempo real</p>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg msg-agent">
+        <strong>Supervisor</strong>
+        Ol..! Sou o Supervisor do ecossistema CORREOTO. Podes falar comigo aqui directamente ... d..-me tarefas, pede relat..rios, ou pergunta o que est.. a acontecer. ....
+        <div class="msg-time">agora</div>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <textarea id="chatInput" placeholder="Escreve uma mensagem..." onkeydown="handleKey(event)"></textarea>
+      <button id="sendBtn" onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';  // mesmo host ... usa proxy do dashboard
+let currentTab = 'logs';
+let cachedData = {};
+
+// ...... Tab switching .......................................................................................................................................................................................
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const titles = {logs:'Logs do Sistema', agents:'Agentes Ativos', tasks:'Tarefas'};
+  document.getElementById('tabTitle').textContent = titles[tab];
+  renderTab();
+}
+
+function renderTab() {
+  const el = document.getElementById('mainContent');
+  if (currentTab === 'logs') renderLogs(el);
+  else if (currentTab === 'agents') renderAgents(el);
+  else renderTasks(el);
+}
+
+function renderLogs(el) {
+  const logs = cachedData.logs || [];
+  if (!logs.length) { el.innerHTML = '<div class="empty-state">Sem logs. Inicia o main.py para ver actividade.</div>'; return; }
+  el.innerHTML = [...logs].reverse().map(l => {
+    const cls = l.level === 'error' ? 'log-error' : l.level === 'warning' ? 'log-warning' : l.level === 'success' ? 'log-success' : l.level === 'agent' ? 'log-agent' : 'log-info';
+    return `<div class="log-line ${cls}"><span class="log-time">${(l.time||'').slice(11,19)}</span><span class="log-text">${escHtml(l.message)}</span></div>`;
+  }).join('');
+}
+
+function renderAgents(el) {
+  const agents = cachedData.agent_names || [];
+  if (!agents.length) { el.innerHTML = '<div class="empty-state">Sem agentes carregados.</div>'; return; }
+  const colors = ['#3fb950','#58a6ff','#d29922','#a371f7','#f78166'];
+  el.innerHTML = agents.map((a,i) => {
+    const color = colors[i % colors.length];
+    return `<div class="agent-row"><div class="agent-dot" style="background:${color}"></div><span class="agent-name">${escHtml(String(a.name||a))}</span><span class="agent-role">${escHtml(String(a.role||'agent'))}</span></div>`;
+  }).join('');
+}
+
+function renderTasks(el) {
+  const tasks = cachedData.tasks || [];
+  if (!tasks.length) { el.innerHTML = '<div class="empty-state">Sem tarefas no backlog.</div>'; return; }
+  el.innerHTML = tasks.slice(0,30).map(t => {
+    const s = (t.status||'').toLowerCase();
+    const color = s.includes('done')||s.includes('complet') ? '#3fb950' : s.includes('fail')||s.includes('error') ? '#f85149' : '#d29922';
+    return `<div class="agent-row"><div class="agent-dot" style="background:${color}"></div><span class="agent-name" style="font-size:12px">${escHtml(t.title||t.desc||t.id||'...')}</span><span class="agent-role">${escHtml(t.status||'?')}</span></div>`;
+  }).join('');
+}
+
+// ...... Data loading ..........................................................................................................................................................................................
+async function loadData() {
+  try {
+    const resp = await fetch('/api/ecosystem', {signal: AbortSignal.timeout(8000)});
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const d = await resp.json();
+    cachedData = d;
+
+    // KPIs
+    document.getElementById('kAgents').textContent = d.agents ?? '...';
+    document.getElementById('kAgentsSub').textContent = `${d.agent_names?.length||0} carregados`;
+    document.getElementById('kDone').textContent = d.tasks_done ?? '...';
+    document.getElementById('kPending').textContent = d.tasks_pending ?? '...';
+    document.getElementById('kFailed').textContent = d.tasks_failed ?? '...';
+    document.getElementById('lastUpdate').textContent = 'Actualizado ' + new Date().toLocaleTimeString('pt');
+
+    renderTab();
+  } catch(e) {
+    document.getElementById('lastUpdate').textContent = 'Erro: ' + e.message;
+  }
+}
+
+// ...... Chat ...............................................................................................................................................................................................................
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function timeNow() {
+  return new Date().toLocaleTimeString('pt', {hour:'2-digit',minute:'2-digit'});
+}
+
+function appendMsg(role, text) {
+  const wrap = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `msg msg-${role}`;
+  if (role === 'agent') div.innerHTML = `<strong>Supervisor</strong>${escHtml(text)}<div class="msg-time">${timeNow()}</div>`;
+  else div.innerHTML = `${escHtml(text)}<div class="msg-time">${timeNow()}</div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const wrap = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function hideTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const btn = document.getElementById('sendBtn');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  input.style.height = '38px';
+  btn.disabled = true;
+  appendMsg('user', msg);
+  showTyping();
+
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({message: msg}),
+      signal: AbortSignal.timeout(60000),
+    });
+    const data = await resp.json();
+    hideTyping();
+    appendMsg('agent', data.response || data.error || 'Sem resposta');
+  } catch(e) {
+    hideTyping();
+    appendMsg('agent', `Erro ao contactar o agente: ${e.message}. Verifica se o main.py est.. a correr.`);
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+// ...... Init ...............................................................................................................................................................................................................
+loadData();
+setInterval(loadData, 5000);
+</script>
+</body>
+</html>

@@ -231,9 +231,9 @@
     "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T12:48:15.392133",
-    "completed_at": "2026-05-30T12:48:05.375895",
-    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que já estava feito (commit `4660a23`)\n\n| Item | Estado |\n|------|--------|\n| 1. `core/memory_hub.py` com `MemoryHub` (486 linhas, 40+ métodos) | ✅ Completo |\n| 2. Único ficheiro `memory/hub.jsonl` como backend | ✅ Usa JSONL |\n| 3. `core/supervisor.py` actualizado para usar MemoryHub | ✅ `self.memory = MemoryHub()` |\n| 4. `agents/executor.py` actualizado para usar MemoryHub | ✅ `self.memory "
+    "started_at": "2026-05-30T12:49:24.003599",
+    "completed_at": "2026-05-30T12:49:13.998370",
+    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ Checklist de verificação\n\n| # | Requisito | Estado |\n|---|-----------|--------|\n| 1 | `core/memory_hub.py` com MemoryHub (store_chat, store_episode, store_knowledge, get_context) | ✅ Completo (486 linhas, 11 métodos) |\n| 2 | Usa `memory/hub.jsonl` como backend único | ✅ Implementado |\n| 3 | `core/supervisor.py` actualizado para MemoryHub | ✅ Já importa e usa `MemoryHub` |\n| 4 | `agents/executo"
   },
   {
     "id": "task_agent_executor_import_fix",

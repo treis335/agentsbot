@@ -203,7 +203,7 @@ function renderTasks(el) {
 // ── Data loading ──────────────────────────────────────────────────────────────
 async function loadData() {
   try {
-    const resp = await fetch('/api/ecosystem', {signal: AbortSignal.timeout(8000)});
+    const resp = await fetch('/api/ecosystem/status', {signal: AbortSignal.timeout(8000)});
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const d = await resp.json();
     cachedData = d;

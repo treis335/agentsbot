@@ -1,0 +1,75 @@
+nue
+            try:
+                text = lp.read_text(encoding="utf-8", errors="ignore")
+                lines = text.strip().splitlines()[-40:]
+                for line in lines:
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    level = "info"
+                    ll = line.lower()
+                    if any(w in ll for w in ("error","erro","fatal","exception","traceback")):
+                        level = "error"
+                    elif any(w in ll for w in ("warn","aviso")):
+                        level = "warning"
+                    elif any(w in ll for w in ("success","ok","...","conclu","done")):
+                        level = "success"
+                    elif any(w in ll for w in ("agent","agente","supervisor","developer")):
+                        level = "agent"
+                    t = line[:19] if len(line) > 19 else ""
+                    m = line[20:] if len(line) > 20 else line
+                    logs.append({"time": t, "message": m[:200], "level": level})
+            except Exception:
+                pass
+
+        self._send_json({
+            "agents": agents,
+            "agent_names": agent_names,
+            "tasks_done": tasks_done,
+            "tasks_pending": tasks_pending,
+            "tasks_failed": tasks_failed,
+            "tasks": [{"id":t.get("id",""), "title":t.get("title",t.get("desc",t.get("id","?")))[:60], "status":t.get("status","?")} for t in all_tasks[-20:]],
+            "logs": logs[-60:],
+            "status": "online",
+            "timestamp": datetime.datetime.now().isoformat(),
+        })
+
+
+
+
+
+    def _handle_chat(self):
+        """Handler GET para chat - devolve historico."""
+        self._send_json({"status": "ok", "message": "Usa POST para enviar mensagem"})
+
+    def _handle_chat_post(self, data):
+        """Handler POST para chat ... chama o LLM real com contexto do ecossistema."""
+        import datetime, json
+        from pathlib import Path
+
+        msg = data.get("message", "")
+        if not msg:
+            self._send_error("Mensagem vazia", 400)
+            return
+
+        # Construir contexto do ecossistema
+        base_dir = Path(__file__).parent.parent
+        eco_ctx = ""
+        try:
+            agents_file = next((p for p in [
+                base_dir / "agents" / "registry" / "agents.json",
+                base_dir / "agents.json",
+            ] if p.exists()), None)
+            if agents_file:
+                lst = json.loads(agents_file.read_text(encoding="utf-8"))
+                if isinstance(lst, dict): lst = lst.get("agents", [])
+                names = ', '.join(a.get('name','?') for a in lst[:8])
+                eco_ctx += f"Agentes: {len(lst)} ({names})\n"
+        except Exception:
+            pass
+
+        try:
+            bf = base_dir / "memory" / "backlog.json"
+            if bf.exists():
+                tasks = json.loads(bf.read_text(encoding="utf-8"))
+                i
