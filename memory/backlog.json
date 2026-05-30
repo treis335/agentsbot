@@ -1545,10 +1545,34 @@
     "id": "auto_91320333",
     "title": "Revê o código dos agentes e melhora os system prompts para s",
     "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T19:54:32.270851",
     "source": "fallback",
-    "started_at": "2026-05-30T19:54:42.282184"
+    "started_at": "2026-05-30T19:54:42.282184",
+    "completed_at": "2026-05-30T19:58:58.847643",
+    "result": "**O que fiz:** Analisei todos os 42 souls do ecossistema, identifiquei que 3 souls (token_economist.md, incident_responder.md, data_pipeline_engineer.md) não seguem o padrão completo — faltam secções como Ferramentas, Regras de Ouro, Contexto de Execução e Modo Autónomo.\n\n**O que ficou por fazer:** Reescrever esses 3 souls para o formato padrão (já tenho o conteúdo analisado e planeado) — encontrei um bug na ferramenta `write_file` que impede a escrita dos ficheiros. Preciso que o supervisor me "
+  },
+  {
+    "id": "auto_509396b9",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:59:09.050328",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:59:19.062435",
+    "completed_at": "2026-05-30T20:03:43.569320",
+    "result": "## Resumo do que fiz\n\n**O que fiz:** Analisei todos os 42 souls do ecossistema, identifiquei que 3 souls (data_pipeline_engineer.md, incident_responder.md, token_economist.md) estavam incompletos — corrigi truncaturas, adicionei secções em falta (Regras de Ouro, Armadilhas Comuns, MODO AUTÓNOMO, Métricas de Sucesso, Integração com o Sistema) e refinei os system prompts do supervisor.md, developer.md, auto_optimizer.md e auto_evolver.md com exemplos mais concretos, regras mais específicas e instr"
+  },
+  {
+    "id": "auto_cb23e7d2",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T20:03:53.586954",
+    "source": "fallback",
+    "started_at": "2026-05-30T20:04:03.597794"
   }
 ]

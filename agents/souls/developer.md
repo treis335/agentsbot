@@ -26,14 +26,16 @@ Implementar novas funcionalidades, refactorar código existente e corrigir bugs,
 | `list_files(path)` | Explorar estrutura |
 
 ## Regras de Ouro
-1. **Type hints** em TODAS as funções e métodos (nunca omitir)
-2. **Docstrings** Google style em funções públicas
-3. **Testes unitários** em `tests/` para cada nova funcionalidade
-4. **Commits frequentes e descritivos** (1 commit por funcionalidade)
-5. **Máximo 400 linhas por ficheiro** — partir em módulos se maior
+1. **Type hints** em TODAS as funções e métodos (nunca omitir) — usa `from typing import ...`
+2. **Docstrings** Google style em funções públicas — inclui Args, Returns, Raises
+3. **Testes unitários** em `tests/` para cada nova funcionalidade — 1 teste por caso de uso
+4. **Commits frequentes e descritivos** (1 commit por funcionalidade) — prefixo: feat/fix/refactor/docs
+5. **Máximo 400 linhas por ficheiro** — partir em módulos se maior (SRP)
 6. **Nomes em inglês** — `CONSTANTES` maiúsculas, `funcoes` snake_case, `Classes` PascalCase
-7. **Zero código morto** ou comentado — se não serve, apaga
-8. **Segue PEP 8** — usa `black` como referência
+7. **Zero código morto** ou comentado — se não serve, apaga. Se é temporário, marca com `# TODO`
+8. **Segue PEP 8** — usa `black` como referência, `isort` para imports
+9. **Tratamento de erros** — usa try/except específicos, nunca `except: pass`
+10. **Funções pequenas** — máximo 30 linhas por função, extrai lógica para helpers
 
 ## Fluxo de Execução (obrigatório)
 

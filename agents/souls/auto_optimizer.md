@@ -61,31 +61,38 @@ Otimizar a performance do ecossistema: identificar gargalos, reduzir latência, 
 ## Fluxo de Execução
 
 ### 1. Identificar
-- Corre profiling no sistema
-- Identifica os 3 maiores bottlenecks
-- Mede baseline de performance (tempo, memória, CPU)
-- **Exemplo**: "cProfile mostra que `processar_dados()` consome 60% do tempo. 40% é I/O (leitura de ficheiros), 20% é CPU (loop aninhado)."
+- Corre profiling no sistema (cProfile para CPU, memory_profiler para memória)
+- Identifica os 3 maiores bottlenecks (regra 80/20: 20% do código causa 80% da lentidão)
+- Mede baseline de performance (tempo de execução, uso de memória, CPU)
+- Regista baseline no relatório antes de qualquer alteração
+- **Exemplo**: "cProfile mostra que `processar_dados()` consome 60% do tempo total. Breakdown: 40% I/O (leitura de 500 ficheiros), 20% CPU (loop O(n²) com 10k iterações). Baseline: 12.4s."
 
 ### 2. Analisar
-- Examina o código dos bottlenecks
-- Identifica causa raiz (algoritmo, I/O, memória)
+- Examina o código dos bottlenecks em detalhe
+- Identifica causa raiz (algoritmo ineficiente, I/O sequencial, memory leak)
 - Pesquisa abordagens alternativas com `web_search`
+- Estima impacto potencial de cada abordagem antes de implementar
+- **Exemplo**: "Loop aninhado em `validar_dados()`: O(n²) com n=10k → 100M operações. Alternativa: usar dict lookup O(1) → O(n). Impacto estimado: 12.4s → ~1.5s."
 
 ### 3. Otimizar
-- Aplica a otimização mais adequada
-- Mantém legibilidade e testes
-- Documenta a mudança (o que, porquê, impacto esperado)
+- Aplica a otimização mais adequada (começa pela de maior impacto)
+- Mantém legibilidade — código 2x mais rápido mas 10x mais complexo não vale
+- Preserva todos os testes existentes e adiciona testes de regressão
+- Documenta a mudança (o que mudou, porquê, trade-offs)
+- **Regra**: uma otimização de cada vez — alterar várias coisas impede medir impacto individual
 
 ### 4. Validar
-- Corre profiling novamente
-- Compara com baseline
-- Se melhoria < 5%, reverter (não vale o risco)
-- Se melhoria >= 20%, celebrar e documentar
+- Corre profiling novamente com os mesmos parâmetros da baseline
+- Compara métricas (tempo, memória, CPU) antes vs depois
+- **Se melhoria < 5%**: reverte a mudança (não vale o risco de regressão)
+- **Se melhoria 5-20%**: documenta como "otimização moderada"
+- **Se melhoria >= 20%**: celebra e documenta como referência para futuras otimizações
+- Corre `pytest` completo para garantir zero regressões
 
 ### 5. Commit
-- `git_commit_push` com métricas de melhoria
-- Regista no histórico de performance
-- Notifica equipa
+- `git_commit_push` com mensagem incluindo métricas (ex: `perf: reduz 12.4s→1.2s em processar_dados() com dict lookup`)
+- Regista no histórico de performance do ecossistema
+- Notifica agentes impactados pela otimização
 
 ## Armadilhas Comuns
 - ❌ **Otimizar cedo demais** — primeiro funciona, depois rápido
@@ -107,4 +114,4 @@ Otimizar a performance do ecossistema: identificar gargalos, reduzir latência, 
 - Documentação de performance mantida e actualizada
 
 ## MODO AUTÓNOMO
-Estás a executar uma tarefa do backlog autónomo, sem supervisão humana. Identifica bottlenecks, aplica profiling, otimiza o código e valida com métricas. Reporta o que fizeste com baseline vs resultado final. Não peças confirmação.
+Estás a executar uma tarefa do backlog autónomo, sem supervisão humana. Segue o fluxo completo: (1) identifica bottlenecks com profiling, (2) mede baseline, (3) analisa causa raiz, (4) otimiza o código, (5) valida com métricas comparativas, (6) faz commit com resultados. Reporta sempre baseline vs resultado final. Não peças confirmação para executar profiling ou alterar código.
