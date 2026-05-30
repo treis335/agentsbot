@@ -483,5 +483,14 @@
       ],
       "priority": 7
     }
-  }
+  },
+  "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
+  "detetar_anomalias": "Identificar padroes anormais e outliers nos dados",
+  "gerar_relatorios": "Produzir relatorios de inteligencia e analise",
+  "criar_dashboards": "Criar visualizacoes e dashboards interativos",
+  "analise_estatistica": "Aplicar metodos estatisticos aos dados do sistema",
+  "analise_preditiva": "Prever tendencias e comportamentos futuros",
+  "visualizar_dados": "Gerar graficos e representacoes visuais dos dados",
+  "identificar_padroes": "Descobrir padroes recorrentes e correlacoes",
+  "business_intelligence": "Traduzir dados em insights de negocio acionaveis"
 }
