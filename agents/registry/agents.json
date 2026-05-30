@@ -348,5 +348,18 @@
     },
     "created_at": "2026-05-30T18:33:56",
     "last_active": ""
+  },
+  {
+    "id": "462d7ad5-e7fb-47e8-9d77-26e9f19ffeb4",
+    "name": "designer_ux_ui",
+    "soul": "Criar e melhorar interfaces web para o ecossistema Correoto. Responsável pelo dashboard, HTML/CSS/JS, experiência do utilizador e design responsivo.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [],
+    "metadata": {},
+    "created_at": "2026-05-30T18:50:13.882231",
+    "last_active": "",
+    "role": "custom"
   }
 ]

@@ -1,0 +1,221 @@
+  86:   <h1>CORREOTO ECOSYSTEM</h1>
+  87:   <div style="display:flex;align-items:center;gap:12px">
+  88:     <span class="refresh-hint" id="lastUpdate">A carregar…</span>
+  89:     <div class="status-pill"><span class="dot"></span> Dashboard em tempo real — ONLINE</div>
+  90:   </div>
+  91: </header>
+  92: 
+  93: <div class="layout">
+  94:   <!-- LEFT: KPIs + logs/agents -->
+  95:   <div class="left">
+  96:     <div class="kpis">
+  97:       <div class="kpi">
+  98:         <div class="kpi-label">Agentes</div>
+  99:         <div class="kpi-val" id="kAgents">—</div>
+ 100:         <div class="kpi-sub" id="kAgentsSub">a carregar</div>
+ 101:       </div>
+ 102:       <div class="kpi">
+ 103:         <div class="kpi-label">Concluidas</div>
+ 104:         <div class="kpi-val" id="kDone">—</div>
+ 105:         <div class="kpi-sub">tarefas</div>
+ 106:       </div>
+ 107:       <div class="kpi">
+ 108:         <div class="kpi-label">Pendentes</div>
+ 109:         <div class="kpi-val" id="kPending">—</div>
+ 110:         <div class="kpi-sub">tarefas</div>
+ 111:       </div>
+ 112:       <div class="kpi">
+ 113:         <div class="kpi-label">Falhadas</div>
+ 114:         <div class="kpi-val" id="kFailed">—</div>
+ 115:         <div class="kpi-sub">tarefas</div>
+ 116:       </div>
+ 117:     </div>
+ 118: 
+ 119:     <div class="section">
+ 120:       <div class="section-header">
+ 121:         <span class="section-title" id="tabTitle">Logs do Sistema</span>
+ 122:         <div class="tabs">
+ 123:           <button class="tab active" onclick="switchTab('logs',this)">Logs</button>
+ 124:           <button class="tab" onclick="switchTab('agents',this)">Agentes</button>
+ 125:           <button class="tab" onclick="switchTab('tasks',this)">Tarefas</button>
+ 126:         </div>
+ 127:       </div>
+ 128:       <div class="content" id="mainContent">
+ 129:         <div class="empty-state">A carregar…</div>
+ 130:       </div>
+ 131:     </div>
+ 132:   </div>
+ 133: 
+ 134:   <!-- RIGHT: Chat -->
+ 135:   <div class="chat-panel">
+ 136:     <div class="chat-header">
+ 137:       <h3>💬 Fala com o Agente</h3>
+ 138:       <p>Supervisor do ecossistema — responde em tempo real</p>
+ 139:     </div>
+ 140:     <div class="chat-messages" id="chatMessages">
+ 141:       <div class="msg msg-agent">
+ 142:         <strong>Supervisor</strong>
+ 143:         Olá! Sou o Supervisor do ecossistema CORREOTO. Podes falar comigo aqui directamente — dá-me tarefas, pede relatórios, ou pergunta o que está a acontecer. 🚀
+ 144:         <div class="msg-time">agora</div>
+ 145:       </div>
+ 146:     </div>
+ 147:     <div class="chat-input-wrap">
+ 148:       <textarea id="chatInput" placeholder="Escreve uma mensagem…" onkeydown="handleKey(event)"></textarea>
+ 149:       <button id="sendBtn" onclick="sendMessage()">Enviar</button>
+ 150:     </div>
+ 151:   </div>
+ 152: </div>
+ 153: 
+ 154: <script>
+ 155: const API = '';  // mesmo host — usa proxy do dashboard
+ 156: let currentTab = 'logs';
+ 157: let cachedData = {};
+ 158: 
+ 159: // ── Tab switching ─────────────────────────────────────────────────────────────
+ 160: function switchTab(tab, btn) {
+ 161:   currentTab = tab;
+ 162:   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+ 163:   btn.classList.add('active');
+ 164:   const titles = {logs:'Logs do Sistema', agents:'Agentes Ativos', tasks:'Tarefas'};
+ 165:   document.getElementById('tabTitle').textContent = titles[tab];
+ 166:   renderTab();
+ 167: }
+ 168: 
+ 169: function renderTab() {
+ 170:   const el = document.getElementById('mainContent');
+ 171:   if (currentTab === 'logs') renderLogs(el);
+ 172:   else if (currentTab === 'agents') renderAgents(el);
+ 173:   else renderTasks(el);
+ 174: }
+ 175: 
+ 176: function renderLogs(el) {
+ 177:   const logs = cachedData.logs || [];
+ 178:   if (!logs.length) { el.innerHTML = '<div class="empty-state">Sem logs. Inicia o main.py para ver actividade.</div>'; return; }
+ 179:   el.innerHTML = [...logs].reverse().map(l => {
+ 180:     const cls = l.level === 'error' ? 'log-error' : l.level === 'warning' ? 'log-warning' : l.level === 'success' ? 'log-success' : l.level === 'agent' ? 'log-agent' : 'log-info';
+ 181:     return `<div class="log-line ${cls}"><span class="log-time">${(l.time||'').slice(11,19)}</span><span class="log-text">${escHtml(l.message)}</span></div>`;
+ 182:   }).join('');
+ 183: }
+ 184: 
+ 185: function renderAgents(el) {
+ 186:   const agents = cachedData.agent_names || [];
+ 187:   if (!agents.length) { el.innerHTML = '<div class="empty-state">Sem agentes carregados.</div>'; return; }
+ 188:   const colors = ['#3fb950','#58a6ff','#d29922','#a371f7','#f78166'];
+ 189:   el.innerHTML = agents.map((a,i) => {
+ 190:     const color = colors[i % colors.length];
+ 191:     return `<div class="agent-row"><div class="agent-dot" style="background:${color}"></div><span class="agent-name">${escHtml(String(a.name||a))}</span><span class="agent-role">${escHtml(String(a.role||'agent'))}</span></div>`;
+ 192:   }).join('');
+ 193: }
+ 194: 
+ 195: function renderTasks(el) {
+ 196:   const tasks = cachedData.tasks || [];
+ 197:   if (!tasks.length) { el.innerHTML = '<div class="empty-state">Sem tarefas no backlog.</div>'; return; }
+ 198:   el.innerHTML = tasks.slice(0,30).map(t => {
+ 199:     const s = (t.status||'').toLowerCase();
+ 200:     const color = s.includes('done')||s.includes('complet') ? '#3fb950' : s.includes('fail')||s.includes('error') ? '#f85149' : '#d29922';
+ 201:     return `<div class="agent-row"><div class="agent-dot" style="background:${color}"></div><span class="agent-name" style="font-size:12px">${escHtml(t.title||t.desc||t.id||'—')}</span><span class="agent-role">${escHtml(t.status||'?')}</span></div>`;
+ 202:   }).join('');
+ 203: }
+ 204: 
+ 205: // ── Data loading ──────────────────────────────────────────────────────────────
+ 206: async function loadData() {
+ 207:   try {
+ 208:     const resp = await fetch('/api/ecosystem/status', {signal: AbortSignal.timeout(8000)});
+ 209:     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+ 210:     const d = await resp.json();
+ 211:     cachedData = d;
+ 212: 
+ 213:     // KPIs
+ 214:     document.getElementById('kAgents').textContent = d.agents ?? '—';
+ 215:     document.getElementById('kAgentsSub').textContent = `${d.agent_names?.length||0} carregados`;
+ 216:     document.getElementById('kDone').textContent = d.tasks_done ?? '—';
+ 217:     document.getElementById('kPending').textContent = d.tasks_pending ?? '—';
+ 218:     document.getElementById('kFailed').textContent = d.tasks_failed ?? '—';
+ 219:     document.getElementById('lastUpdate').textContent = 'Actualizado ' + new Date().toLocaleTimeString('pt');
+ 220: 
+ 221:     renderTab();
+ 222:   } catch(e) {
+ 223:     document.getElementById('lastUpdate').textContent = 'Erro: ' + e.message;
+ 224:   }
+ 225: }
+ 226: 
+ 227: // ── Chat ─────────────────────────────────────────────────────────────────────
+ 228: function escHtml(s) {
+ 229:   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+ 230: }
+ 231: 
+ 232: function timeNow() {
+ 233:   return new Date().toLocaleTimeString('pt', {hour:'2-digit',minute:'2-digit'});
+ 234: }
+ 235: 
+ 236: function appendMsg(role, text) {
+ 237:   const wrap = document.getElementById('chatMessages');
+ 238:   const div = document.createElement('div');
+ 239:   div.className = `msg msg-${role}`;
+ 240:   if (role === 'agent') div.innerHTML = `<strong>Supervisor</strong>${escHtml(text)}<div class="msg-time">${timeNow()}</div>`;
+ 241:   else div.innerHTML = `${escHtml(text)}<div class="msg-time">${timeNow()}</div>`;
+ 242:   wrap.appendChild(div);
+ 243:   wrap.scrollTop = wrap.scrollHeight;
+ 244:   return div;
+ 245: }
+ 246: 
+ 247: function showTyping() {
+ 248:   const wrap = document.getElementById('chatMessages');
+ 249:   const div = document.createElement('div');
+ 250:   div.className = 'typing';
+ 251:   div.id = 'typingIndicator';
+ 252:   div.innerHTML = '<span></span><span></span><span></span>';
+ 253:   wrap.appendChild(div);
+ 254:   wrap.scrollTop = wrap.scrollHeight;
+ 255: }
+ 256: 
+ 257: function hideTyping() {
+ 258:   const el = document.getElementById('typingIndicator');
+ 259:   if (el) el.remove();
+ 260: }
+ 261: 
+ 262: async function sendMessage() {
+ 263:   const input = document.getElementById('chatInput');
+ 264:   const btn = document.getElementById('sendBtn');
+ 265:   const msg = input.value.trim();
+ 266:   if (!msg) return;
+ 267: 
+ 268:   input.value = '';
+ 269:   input.style.height = '38px';
+ 270:   btn.disabled = true;
+ 271:   appendMsg('user', msg);
+ 272:   showTyping();
+ 273: 
+ 274:   try {
+ 275:     const resp = await fetch('/api/chat', {
+ 276:       method: 'POST',
+ 277:       headers: {'Content-Type':'application/json'},
+ 278:       body: JSON.stringify({message: msg}),
+ 279:       signal: AbortSignal.timeout(60000),
+ 280:     });
+ 281:     const data = await resp.json();
+ 282:     hideTyping();
+ 283:     appendMsg('agent', data.response || data.error || 'Sem resposta');
+ 284:   } catch(e) {
+ 285:     hideTyping();
+ 286:     appendMsg('agent', `Erro ao contactar o agente: ${e.message}. Verifica se o main.py está a correr.`);
+ 287:   } finally {
+ 288:     btn.disabled = false;
+ 289:     input.focus();
+ 290:   }
+ 291: }
+ 292: 
+ 293: function handleKey(e) {
+ 294:   if (e.key === 'Enter' && !e.shiftKey) {
+ 295:     e.preventDefault();
+ 296:     sendMessage();
+ 297:   }
+ 298: }
+ 299: 
+ 300: // ── Init ─────────────────────────────────────────────────────────────────────
+ 301: loadData();
+ 302: setInterval(loadData, 5000);
+ 303: </script>
+ 304: </body>
+ 305: </html>
+ 306: 
