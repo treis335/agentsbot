@@ -1177,5 +1177,14 @@
     "success": true,
     "result_summary": "Fiz o commit `8666356` com a mensagem \"feat: unifica 3 sistemas de memória em MemoryHub\" — actualizei `core/memory.py` para delegar no MemoryHub como wrapper, confirmei que `core/memory_hub.py`, `core/supervisor.py`, `agents/executor.py` e `tests/test_memory_hub.py` já estavam correctamente implementados e todos os 11 testes passam.\n\nNada ficou por fazer — a tarefa está completa: os 3 sistemas de ",
     "lesson": ""
+  },
+  {
+    "task_id": "task_unify_memory_systems",
+    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T06:52:00.636323",
+    "success": true,
+    "result_summary": "## ✅ Relatório Final — QA Tester\n\n### Tarefa Concluída: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit:** `a42a2ec` — \"feat: unifica 3 sistemas de memória em MemoryHub\"\n\n### O que foi validado:\n\n| Ficheiro | Estado | Detalhes |\n|----------|--------|----------|\n| `core/memory_hub.py` | ✅ Completo (487 linhas) | Singleton, 3 tipos de memória (chat/episode/knowledge), get_context, wrappers de ",
+    "lesson": ""
   }
 ]
