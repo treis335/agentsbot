@@ -231,9 +231,9 @@
     "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T07:19:13.989336",
-    "completed_at": "2026-05-30T07:19:03.974216",
-    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `4b74e01` (já existente de execução anterior)\n\n### O que verifiquei:\n\n| Requisito | Estado |\n|-----------|--------|\n| 1. `core/memory_hub.py` com classe `MemoryHub` | ✅ Existe — `store_chat`, `store_episode`, `store_knowledge`, `get_context` |\n| 2. Usa `memory/hub.jsonl` como único backend | ✅ Singleton com ficheiro JSONL único |\n| 3. `core/supervisor.py` usa MemoryHub | ✅ Importa `from"
+    "started_at": "2026-05-30T07:22:38.424266",
+    "completed_at": "2026-05-30T07:22:28.419008",
+    "result": "Fiz a análise completa: confirmei que o `core/memory_hub.py` já está completo com todos os métodos necessários (store_chat, store_episode, store_knowledge, get_context, record, get_episodes, get_decisions, get_lessons, etc.), `core/supervisor.py` já usa MemoryHub, `core/memory.py` já é wrapper do MemoryHub, e os 11 testes em `tests/test_memory_hub.py` passam. O que ficou por fazer: substituir as importações directas de `memory.global_memory`, `memory.lesson_extractor`, `memory.procedural` e `mem"
   },
   {
     "id": "task_agent_executor_import_fix",
