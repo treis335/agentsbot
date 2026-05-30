@@ -231,9 +231,9 @@
     "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T12:43:19.327153",
-    "completed_at": "2026-05-30T12:43:09.312026",
-    "result": "✅ **Todos os 19 testes passam!** (11 do MemoryHub + 8 do executor)\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `4660a23` — `feat: unifica 3 sistemas de memória em MemoryHub`\n\n### O que foi verificado/feito:\n\n1. **`core/memory_hub.py`** ✅ — Já existia completo com:\n   - `store_chat(role, content, metadata)` — conversas\n   - `store_episode(agent_id, task, result, ...)` — memória episódica\n   - `store_knowledge(topic, content, ...)"
+    "started_at": "2026-05-30T12:45:50.163351",
+    "completed_at": "2026-05-30T12:45:40.147845",
+    "result": "## ✅ Relatório de Progresso\n\n**O que fiz:** Verifiquei que o `core/memory_hub.py` já está completo (486 linhas, 11 métodos públicos), o `core/memory.py` já delega no MemoryHub, o `core/supervisor.py` já importa `MemoryHub` corretamente, e **11 testes do `test_memory_hub.py` passam com sucesso**.\n\n**O que ficou por fazer:** O `agents/executor.py` ainda importa `GlobalMemory`, `LessonExtractor`, `ProceduralMemory`, `FailureMemory` diretamente em vez de usar apenas o MemoryHub — preciso substituir "
   },
   {
     "id": "task_agent_executor_import_fix",

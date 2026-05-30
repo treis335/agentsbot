@@ -1366,5 +1366,14 @@
     "success": true,
     "result_summary": "✅ **Todos os 19 testes passam!** (11 do MemoryHub + 8 do executor)\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `4660a23` — `feat: unifica 3 sistemas de memória em MemoryHub`\n\n### O que foi verificado/feito:\n\n1. **`core/memory_hub.py`** ✅ — Já existia completo com:\n   - `store_chat(role, content, metadata)` — conversas\n   - `store_",
     "lesson": ""
+  },
+  {
+    "task_id": "task_unify_memory_systems",
+    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T12:45:40.143977",
+    "success": true,
+    "result_summary": "## ✅ Relatório de Progresso\n\n**O que fiz:** Verifiquei que o `core/memory_hub.py` já está completo (486 linhas, 11 métodos públicos), o `core/memory.py` já delega no MemoryHub, o `core/supervisor.py` já importa `MemoryHub` corretamente, e **11 testes do `test_memory_hub.py` passam com sucesso**.\n\n**O que ficou por fazer:** O `agents/executor.py` ainda importa `GlobalMemory`, `LessonExtractor`, `Pr",
+    "lesson": ""
   }
 ]

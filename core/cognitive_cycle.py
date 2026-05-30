@@ -1,7 +1,7 @@
 """
-cognitive_cycle.py - Ciclo Cognitivo Integrado v2.0
+cognitive_cycle.py - Ciclo Cognitivo Integrado v2.1
 Pensar -> Agir -> Observar -> Aprender -> Evoluir
-Com travao anti-loop corrigido e auto-diagnostico.
+Com travao anti-loop corrigido, auto-diagnostico e evolucao.
 """
 import json
 import os
@@ -74,7 +74,6 @@ class CognitiveCycle:
     
     def evoluir(self, insight):
         print(f"[CICLO] Fase: Evoluir -> {insight['observation']}")
-        # Aplicar melhoria baseada no insight
         if insight["observation"] == "loop_detetado":
             self.state["identical_action_count"] = 0
             print("[CICLO] Travao reiniciado apos detecao de loop")
@@ -82,33 +81,41 @@ class CognitiveCycle:
     def run_cycle(self, context=""):
         # Verificar travao antes de comecar
         if self.state["identical_action_count"] >= MAX_IDENTICAL_ACTIONS:
-            print("[CICLO] TRAVAO ANTI-LOOP ATIVADO")
+            print("[CICLO] TRAVAO ANTI-LOOP ATIVADO - Vou mudar de abordagem")
             insight = self.aprender("loop_detetado")
             self.evoluir(insight)
-            return {"status": "travao_ativado", "insight": insight}
+            self.state["total_cycles"] += 1
+            self._save_state()
+            return {
+                "status": "loop_break",
+                "cycle": self.state["total_cycles"],
+                "decision": {"action": "break_loop", "reason": "loop_detetado"},
+                "result": {"action": "break_loop"},
+                "loop_detected": True
+            }
         
-        # Ciclo normal
         self.state["total_cycles"] += 1
         
-        # Pensar
+        # 1. Pensar
         decision = self.pensar(context)
         
-        # Agir
+        # 2. Agir
         result = self.agir(decision)
         
-        # Observar (devolve True se detetou loop)
+        # 3. Observar
         loop_detected = self.observar(result)
         
-        # Se detetou loop, aprender e evoluir
-        if loop_detected:
-            insight = self.aprender("loop_detetado")
+        # 4. Aprender (se loop detetado ou a cada N ciclos)
+        should_learn = loop_detected or (self.state["total_cycles"] % MAX_CYCLES_BEFORE_LEARN == 0)
+        insight = None
+        if should_learn:
+            observation = "loop_detetado" if loop_detected else f"ciclo_{self.state['total_cycles']}_completo"
+            insight = self.aprender(observation)
+        
+        # 5. Evoluir (se aprendemos algo)
+        if insight:
             self.evoluir(insight)
         
-        # Aprender periodicamente
-        if self.state["total_cycles"] % MAX_CYCLES_BEFORE_LEARN == 0:
-            self.aprender(f"ciclo_{self.state['total_cycles']}_completo")
-        
-        # Guardar estado
         self._save_state()
         
         return {

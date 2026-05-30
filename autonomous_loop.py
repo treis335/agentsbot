@@ -11,6 +11,7 @@ import threading
 import random
 from datetime import datetime
 from pathlib import Path
+from core.cognitive_cycle import CognitiveCycle
 
 # ─── CONFIGURAÇÃO ──────────────────────────────────────────────────────────────
 CYCLE_INTERVAL_SECONDS = 10
@@ -93,6 +94,14 @@ class AutonomousLoop:
             log_cycle("[SelfImprove] Loop de auto-melhoria iniciado ✓")
         except Exception as e:
             self._self_improve = None
+
+        # CognitiveCycle — Pensar -> Agir -> Observar -> Aprender -> Evoluir
+        try:
+            self._cognitive = CognitiveCycle()
+            log_cycle("[Cognitive] Ciclo cognitivo iniciado ✓")
+        except Exception as e:
+            self._cognitive = None
+            log_cycle(f"[Cognitive] Indisponivel: {e}")
             log_cycle(f"[SelfImprove] Indisponível: {e}")
 
     def start(self):
@@ -132,6 +141,18 @@ class AutonomousLoop:
         self.cycle_count += 1
         cycle_id = self.cycle_count
         log_cycle(f"[Ciclo #{cycle_id}] Inicio")
+
+        # 0. Ciclo Cognitivo — Pensar -> Agir -> Observar -> Aprender -> Evoluir
+        if self._cognitive:
+            try:
+                cog_result = self._cognitive.run_cycle(context=task_desc)
+                if cog_result.get("loop_detected"):
+                    log_cycle(f"[Cognitive] ⚠️ Loop detetado — a mudar de abordagem")
+                    # Forçar fallback para evitar repetição
+                    task_desc = f"{task_desc} (tenta uma abordagem completamente diferente)"
+                log_cycle(f"[Cognitive] Ciclo #{cog_result.get('cycle', '?')} concluido")
+            except Exception as e:
+                log_cycle(f"[Cognitive] Erro: {e}")
 
         # 1. Verificar reboot
         if os.path.exists(REBOOT_FLAG):
