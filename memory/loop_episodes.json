@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:00:22.815552",
-    "success": true,
-    "result_summary": "**O que fiz:** Confirmei que `core/memory_hub.py` já está completo (470 linhas, singleton, todos os métodos pedidos), `core/supervisor.py` e `agents/executor.py` já usam MemoryHub, e criei o ficheiro `tests/test_memory_hub.py` com 11 testes unitários.\n\n**O que ficou por fazer:** Os testes falham porque o `setUp` tenta aceder a `hub.filepath` que não existe na implementação real — preciso de reescr",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:03:05.369166",
     "success": true,
     "result_summary": "Fiz 3 alterações: (1) adicionei `filepath` property e alias `_load_all` ao `core/memory_hub.py` para compatibilidade com testes, (2) corrigi `tests/test_memory_hub.py` para usar a estrutura correcta `data[\"role\"]` em vez de `[\"role\"]`, e (3) actualizei `agents/executor.py` para usar `MemoryHub` em vez de `GlobalMemory`/`LessonExtractor` na secção `_build_memory_context` (linhas 6420-7692).\n\nFalta ",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T23:27:33.267828",
     "success": true,
     "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Commit mais recente**: `eff2860`\n\n### 📦 O que foi commitado\n\n| Commit | Ficheiros | Descrição |\n|--------|-----------|-----------|\n| `d9ee8d6` | 8 ficheiros | Logs, backlog, ciclo, episódios, índice semântico, auto-melhoria, métricas |\n| `eff2860` | 1 ficheiro | Backlog a",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_3949feb3",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T23:28:29.886737",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Commits feitos**: `f19ebc9` + `12da299`\n\n### 📦 O que foi commitado\n\n| Commit | Ficheiros | Descrição |\n|--------|-----------|-----------|\n| `f19ebc9` | 8 ficheiros | Eventos, logs, backlog, ciclo (+2 ciclos), episódios, índice semântico, auto-melhoria (+1), métricas de sk",
     "lesson": ""
   }
 ]
