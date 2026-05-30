@@ -1425,10 +1425,22 @@
     "id": "auto_6479bdca",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T19:19:28.496964",
     "source": "fallback",
-    "started_at": "2026-05-30T19:19:38.506933"
+    "started_at": "2026-05-30T19:19:38.506933",
+    "completed_at": "2026-05-30T19:23:24.155012",
+    "result": "---\n\n## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente **125.784 linhas** do `main.log`, **5.622 linhas** do `wakeup_v3.log`, o `backlog.json` (128 tarefas), o `hub.jsonl` e múltiplos ficheiros de debug.\n\n### 🔴 3 Problemas Críticos\n\n| # | Problema | Evidência | Lição |\n|---|----------|-----------|-------|\n| 1 | **Loop infinito de reinicializações** | 1.587 erros Conflict + 150 resets + 940 \"main.py não está a correr\" | Implementar lock de processo com PI"
+  },
+  {
+    "id": "auto_8a181165",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T19:23:34.407619",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:23:44.418171"
   }
 ]

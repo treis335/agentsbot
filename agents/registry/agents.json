@@ -1,128 +1,5 @@
 [
   {
-    "id": "supervisor-001",
-    "name": "supervisor",
-    "role": "supervisor",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "delegar",
-      "coordenar",
-      "decidir",
-      "planejar"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "lideranca",
-      "prioridade": 1
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "developer-001",
-    "name": "developer",
-    "role": "developer",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "implementar",
-      "refatorar",
-      "debug",
-      "escrever_codigo"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "execucao",
-      "prioridade": 2
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "arquiteto-001",
-    "name": "arquiteto",
-    "role": "architect",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "desenhar_arquitetura",
-      "definir_padroes",
-      "revisar_estrutura"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "estrategico",
-      "prioridade": 3
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "qa-001",
-    "name": "qa_tester",
-    "role": "tester",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "testar",
-      "validar",
-      "reportar_bugs",
-      "cobertura_testes"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "qualidade",
-      "prioridade": 4
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "explorador-001",
-    "name": "explorador",
-    "role": "researcher",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "pesquisar",
-      "explorar_github",
-      "analisar_tendencias"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "pesquisa",
-      "prioridade": 5
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "documentador-001",
-    "name": "documentador",
-    "role": "documenter",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "documentar",
-      "escrever_markdown",
-      "manter_changelog"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "documentacao",
-      "prioridade": 6
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
     "id": "reviewer-001",
     "name": "code_reviewer",
     "role": "reviewer",
@@ -138,46 +15,6 @@
     "metadata": {
       "nivel": "revisao",
       "prioridade": 3
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "fixer-001",
-    "name": "auto_fixer",
-    "role": "developer",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "corrigir_bugs",
-      "diagnosticar_erros",
-      "auto_reparar"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "manutencao",
-      "prioridade": 2
-    },
-    "created_at": "2025-01-01T00:00:00",
-    "last_active": ""
-  },
-  {
-    "id": "optimizer-001",
-    "name": "auto_optimizer",
-    "role": "optimizer",
-    "soul": "",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "otimizar",
-      "analisar_performance",
-      "refatorar"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "otimizacao",
-      "prioridade": 4
     },
     "created_at": "2025-01-01T00:00:00",
     "last_active": ""
@@ -361,5 +198,28 @@
     "created_at": "2026-05-30T18:50:13.882231",
     "last_active": "",
     "role": "custom"
+  },
+  {
+    "id": "fefd26af-db6a-4db1-8fea-874a56774a51",
+    "name": "incident_responder",
+    "soul": "incident_responder",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [
+      "incident_response",
+      "severity_classification",
+      "runbook_execution",
+      "post_mortem",
+      "escalation",
+      "coordination"
+    ],
+    "metadata": {
+      "nivel": "resposta_emergencia",
+      "prioridade": 1
+    },
+    "created_at": "2026-05-30T19:24:21.141378",
+    "last_active": "",
+    "role": "incident_responder"
   }
 ]

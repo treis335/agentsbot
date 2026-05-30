@@ -872,6 +872,39 @@
         "regulatorio"
       ],
       "priority": 7
+    },
+    "incident_responder": {
+      "description": "Responde a incidentes, classifica gravidade, executa runbooks, coordena resolução, faz post-mortem",
+      "skills": [
+        "incident_response",
+        "severity_classification",
+        "runbook_execution",
+        "post_mortem",
+        "escalation",
+        "mttr_reduction",
+        "coordination"
+      ],
+      "keywords": [
+        "incidente",
+        "p0",
+        "p1",
+        "crash",
+        "falha",
+        "emergência",
+        "alerta",
+        "on-call",
+        "plantão",
+        "runbook",
+        "post-mortem",
+        "mttr",
+        "sla",
+        "escalar",
+        "responder",
+        "recuperar",
+        "rollback",
+        "incident response"
+      ],
+      "priority": 10
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
