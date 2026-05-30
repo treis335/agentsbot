@@ -818,5 +818,29 @@
     },
     "created_at": "2026-05-30T14:03:00",
     "last_active": ""
+  },
+  {
+    "id": "load_tester-001",
+    "name": "load_tester",
+    "role": "tester",
+    "soul": "load_tester.md",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "load_testing",
+      "stress_testing",
+      "benchmarking",
+      "profiling",
+      "bottleneck_analysis",
+      "performance_reporting"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "qualidade",
+      "prioridade": 7,
+      "especialidade": "performance_carga"
+    },
+    "created_at": "2026-05-30T14:21:00",
+    "last_active": ""
   }
 ]

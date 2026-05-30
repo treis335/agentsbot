@@ -482,6 +482,44 @@
         "http"
       ],
       "priority": 7
+    },
+    "load_tester": {
+      "description": "Testes de carga, stress e performance - benchmarks, profiling, analise de bottlenecks",
+      "skills": [
+        "load_testing",
+        "stress_testing",
+        "benchmarking",
+        "profiling",
+        "bottleneck_analysis",
+        "performance_reporting",
+        "locust",
+        "k6",
+        "pytest_benchmark"
+      ],
+      "keywords": [
+        "carga",
+        "stress",
+        "performance",
+        "benchmark",
+        "bottleneck",
+        "gargalo",
+        "lento",
+        "latencia",
+        "throughput",
+        "concorrencia",
+        "utilizadores simultaneos",
+        "p50",
+        "p95",
+        "p99",
+        "profiling",
+        "cpu",
+        "memoria",
+        "locust",
+        "k6",
+        "ab",
+        "wrk"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
