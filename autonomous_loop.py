@@ -263,27 +263,38 @@ class AutonomousLoop:
         if memory_ctx:
             log_cycle(f"[Memory] Contexto injectado ({len(memory_ctx)} chars)")
 
-        # 3. Construir prompt enriquecido com memória semântica
+        # 3. Construir prompt enriquecido com memória + reflexões
         full_prompt = task_desc
-        
-        # Memória semântica: busca por significado, não por data
+
+        # 3a. Memória semântica
         semantic_ctx = ""
         try:
             from memory.semantic_search import search_for_prompt, get_index
             idx = get_index()
-            # Rebuild incremental se necessário (novo episódio a cada ciclo)
             if len(idx._docs) < 5:
                 idx.rebuild()
             semantic_ctx = search_for_prompt(task_desc, top_k=4)
         except Exception as _se:
-            log_cycle(f"[SemanticMemory] {_se}")
+            pass  # semântica opcional
 
-        if memory_ctx or semantic_ctx:
+        # 3b. Reflexões de tarefas similares (Sistema de Reflexão — Batch 10)
+        reflection_ctx = ""
+        try:
+            from agents.reflection_engine import get_reflection_engine
+            ref_engine = get_reflection_engine()
+            reflection_ctx = ref_engine.get_prompt_context(task_desc)
+            if reflection_ctx:
+                log_cycle(f"[Reflection] Contexto de reflexoes injectado")
+        except Exception as _re:
+            pass  # reflexão opcional
+
+        if memory_ctx or semantic_ctx or reflection_ctx:
             full_prompt = (
                 task_desc + "\n\n" +
+                (reflection_ctx if reflection_ctx else "") +
                 (semantic_ctx if semantic_ctx else "") +
                 (memory_ctx if memory_ctx else "") +
-                "\nUsa este contexto para não repetir erros. "
+                "\nUsa este contexto para nao repetir erros. "
                 "Se algo falhou antes, experimenta abordagem diferente."
             )
 
@@ -297,10 +308,21 @@ class AutonomousLoop:
             )
             _loop.close()
 
-            # 5. Gravar na memória episódica
+            # 5. Gravar memória episódica + reflexão pós-tarefa
             mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
-            log_cycle(f"[Memory] [OK] Gravado epis?dio de sucesso: {chosen_agent}")
-            # Guardar agent name para o notifier
+            try:
+                from agents.reflection_engine import get_reflection_engine
+                reflection = get_reflection_engine().reflect(
+                    task_id=task_id, task_desc=task_desc,
+                    agent=chosen_agent, success=True, result=str(result)
+                )
+                log_cycle(f"[Reflection] OK: {reflection.what_worked[:60]}")
+                if reflection.new_skill_triggered:
+                    log_cycle(f"[Reflection] Nova skill criada: {reflection.new_skill_name}")
+            except Exception as _re:
+                pass
+
+            log_cycle(f"[Memory] Episodio de sucesso: {chosen_agent}")
             for t in load_backlog():
                 if t.get("id") == task_id:
                     t["_last_agent"] = chosen_agent
@@ -309,9 +331,21 @@ class AutonomousLoop:
 
         except Exception as e:
             error_str = str(e)
-            # Gravar falha na memória
             mem.record(task_id, task_desc, chosen_agent, success=False, result=error_str)
-            log_cycle(f"[Memory] [X] Gravado epis?dio de falha: {e}")
+
+            # Reflexão pós-falha — aprende com o erro
+            try:
+                from agents.reflection_engine import get_reflection_engine
+                reflection = get_reflection_engine().reflect(
+                    task_id=task_id, task_desc=task_desc,
+                    agent=chosen_agent, success=False, result=error_str
+                )
+                log_cycle(f"[Reflection] Falha: {reflection.what_failed[:60]}")
+                log_cycle(f"[Reflection] Estrategia ajustada: {reflection.adjusted_strategy[:60]}")
+            except Exception as _re:
+                pass
+
+            log_cycle(f"[Memory] Episodio de falha: {e}")
 
             # Fallback com supervisor
             try:

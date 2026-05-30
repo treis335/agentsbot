@@ -76,6 +76,8 @@ class APIHandler(BaseHTTPRequestHandler):
                 self._handle_routing_stats()
             elif path in ("/memory_stats", "/api/memory_stats"):
                 self._handle_memory_stats()
+            elif path in ("/reflections", "/api/reflections"):
+                self._handle_reflections()
             elif path in ("/dashboard",):
                 self._handle_dashboard()
             elif path in ("/api/ecosystem/status", "/ecosystem/status"):
@@ -279,6 +281,17 @@ class APIHandler(BaseHTTPRequestHandler):
             self._send_json(router.stats())
         except Exception as e:
             self._send_json({"error": str(e), "local_calls": 0, "cloud_calls": 0})
+
+    def _handle_reflections(self) -> None:
+        """GET /api/reflections — estatísticas e reflexões recentes."""
+        try:
+            from agents.reflection_engine import get_reflection_engine
+            engine = get_reflection_engine()
+            stats = engine.stats()
+            recent = [r.to_dict() for r in engine.get_relevant_reflections("", limit=10)]
+            self._send_json({"stats": stats, "recent": recent})
+        except Exception as e:
+            self._send_json({"error": str(e), "stats": {}, "recent": []})
 
     def _handle_memory_stats(self) -> None:
         """GET /api/memory_stats — estatísticas da memória episódica do loop."""
