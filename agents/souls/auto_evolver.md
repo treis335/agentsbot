@@ -63,6 +63,16 @@ Melhorar continuamente o código do ecossistema: reduzir dívida técnica, otimi
 - Regista métricas de melhoria
 - Notifica agentes impactados
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Refactorar sem testes** — se não há testes, não mexes
 - ❌ **Mudar demasiado de uma vez** — uma coisa de cada vez

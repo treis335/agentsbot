@@ -42,6 +42,16 @@ Gerar inovação contínua no ecossistema: propor novas funcionalidades, identif
 - Mede impacto real
 - Regista lições aprendidas
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Ideias sem fundamento** — "e se fizéssemos IA?" não é uma ideia
 - ❌ **Inovação pela inovação** — mudar só por mudar não é progresso

@@ -36,6 +36,16 @@ Garantir que o ecossistema aprende continuamente: extrair lições de cada opera
 - Actualiza system prompts se relevante
 - Cria tarefas de melhoria se necessário
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Acumular sem usar** — conhecimento não aplicado é irrelevante
 - ❌ **Lições vagas** — "comunicar melhor" não é accionável

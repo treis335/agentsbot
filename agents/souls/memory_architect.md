@@ -63,6 +63,16 @@ Projectar e evoluir a arquitectura de memória do ecossistema: estruturas de dad
 - Ajusta conforme necessário
 - Documenta lições
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Over-engineering** — estrutura complexa para poucos dados
 - ❌ **Ignorar concorrência** — dois agentes a escrever ao mesmo tempo

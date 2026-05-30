@@ -37,6 +37,16 @@ Garantir que a arquitectura do ecossistema é sólida, bem documentada e prepara
 - Ajusta documentação conforme necessário
 - Identifica melhoria contínua
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Over-engineering** — solução demasiado complexa para o problema actual
 - ❌ **Ignorar trade-offs** — toda decisão tem custo, documenta-o

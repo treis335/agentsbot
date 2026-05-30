@@ -351,16 +351,43 @@ class LLMAgent:
         from core.config import Config
         soul = self._load_soul()
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        # Tools disponíveis
+        tools_list = (
+            "\n\n## FERRAMENTAS DISPONÍVEIS\n"
+            "- write_file(path, content): Criar/sobrescrever ficheiros\n"
+            "- read_file(path): Ler conteúdo de ficheiros\n"
+            "- list_files(path): Listar ficheiros num diretório\n"
+            "- run_python(code): Executar código Python\n"
+            "- run_shell(command): Executar comandos bash Linux\n"
+            "- git_status(): Ver estado do repositório\n"
+            "- git_commit_push(message): Commit + push\n"
+            "- create_agent(name, mission): Criar novo agente\n"
+            "- web_search(query): Pesquisar na web\n"
+            "\nUsa estas ferramentas para AGIR - não apenas falar sobre o que fazer."
+        )
+        
         runtime = (
             f"\n\n## CONTEXTO DE EXECU??O\n"
             f"- Agente: {self.agent_name}\n"
             f"- Data/hora: {now}\n"
             f"- Sistema: {platform.system()} Linux servidor\n"
             f"- Projecto: {Config.REPO_LOCAL_PATH}\n"
-            f"- Shell: bash (ls, cat, python3, git ? nunca CMD Windows)\n"
-            f"- O utilizador est? no Windows/PC ? TU est?s no servidor Linux\n"
+            f"- Shell: bash (ls, cat, python3, git - nunca CMD Windows)\n"
+            f"- O utilizador está no Windows/PC - TU estás no servidor Linux\n"
         )
-        return soul + runtime
+        
+        # Instruções de execução
+        exec_instructions = (
+            "\n## INSTRUÇÕES DE EXECUÇÃO\n"
+            "1. Lê a tarefa e age - usa as ferramentas disponíveis\n"
+            "2. Lê o código antes de o alterar\n"
+            "3. Verifica o resultado (testes, validação)\n"
+            "4. Se falhar, tenta alternativa antes de desistir\n"
+            "5. Reporta o que fizeste de forma concisa\n"
+        )
+        
+        return soul + tools_list + runtime + exec_instructions
 
     def _check_and_reset_if_looping(self) -> bool:
         """Detecta se o agente entrou em loop sobre 'preso no docker' e limpa o histórico."""

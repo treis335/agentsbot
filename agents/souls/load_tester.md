@@ -53,6 +53,16 @@ Testar a capacidade do sistema sob carga: simular utilizadores concorrentes, med
 - Recomendações de optimização
 - Limites de capacidade documentados
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Testar apenas o cenário feliz** — testa também erros e limites
 - ❌ **Ignorar warm-up** — o sistema pode ser lento no início (JIT, cache)

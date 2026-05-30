@@ -33,6 +33,16 @@ Cada soul deve seguir esta estrutura exacta:
 ## [Secções específicas do agente]
 [Fluxo de execução, responsabilidades, exemplos]
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 [Erros frequentes a evitar]
 
@@ -131,6 +141,16 @@ Exemplo de report:
 3. Fluxo de Execução (passos numerados, 1 linha cada)
 4. Referência: "Para detalhes, consulta a documentação em docs/supervisor.md"
 **Impacto**: Precisão das respostas subiu 40% (menos alucinações, mais foco na tarefa).
+
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
 
 ## Armadilhas Comuns
 - ❌ **Prompts demasiado longos** — o agente perde o foco no essencial

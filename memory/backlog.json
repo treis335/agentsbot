@@ -2003,10 +2003,46 @@
     "id": "auto_c41b2fb3",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T00:28:32.586830",
     "source": "fallback",
-    "started_at": "2026-05-31T00:28:42.600918"
+    "started_at": "2026-05-31T00:28:42.600918",
+    "completed_at": "2026-05-31T00:29:32.510933",
+    "result": "## ✅ Missão Concluída — Novo Agente: `strategic_advisor` 🧠📊\n\n### Lacuna Identificada\nO ecossistema tinha **47 agentes** mas **nenhum especializado em decisão estratégica**. Havia executores (developer, auto_fixer), testers (qa_tester, scenario_tester), gestores (supervisor, gestor_tarefas), mas **ninguém dedicado a pensar antes de agir** — analisar riscos, calcular ROI, avaliar trade-offs e priorizar com base em dados objetivos.\n\n### O que foi criado\n\n| Item | Detalhe |\n|------|---------|\n| **So"
+  },
+  {
+    "id": "auto_83febadd",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:29:42.667078",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:29:52.679785",
+    "completed_at": "2026-05-31T00:32:28.098994",
+    "result": "## ✅ Análise Completa da Memória Episódica — Concluída\n\n**O que fiz:** Analisei exaustivamente todas as 7 fontes de memória do ecossistema — 200 episódios do loop, 102 episódios da memória episódica, 141 ciclos com 46 loops detetados, 12 lições já documentadas na shared_memory, e 3 relatórios anteriores de lições. Extraí e consolidei **12 lições críticas** (6 gravidade crítica, 4 alta, 2 média) e identifiquei **3 novas lições não documentadas**: (1) supervisor domina 38.5% das tarefas com desequ"
+  },
+  {
+    "id": "auto_f1a11c7b",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:32:38.297680",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:32:48.310805",
+    "completed_at": "2026-05-31T00:34:20.369534",
+    "result": "Analisei todos os 47 souls `agents/souls/*.md` e o código `agents/executor.py`/`agents/llm_agent.py` que os carrega. Identifiquei que os souls têm estrutura consistente (Identidade, Missão, Regras, Fluxo, Armadilhas, Integração, Métricas) mas falta-lhes uniformidade no **MODO AUTÓNOMO** (só ~20% têm) e **Exemplos Práticos** (~60% têm). O executor.py carrega souls como system prompt e injeta contexto dinâmico (ferramentas, memória), mas não valida estrutura dos souls nem fornece fallback se um so"
+  },
+  {
+    "id": "auto_c21449c5",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T00:34:30.390930",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:34:40.404478"
   }
 ]

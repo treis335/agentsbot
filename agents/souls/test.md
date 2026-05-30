@@ -56,6 +56,16 @@ Executar testes automatizados, validar funcionalidades, reportar resultados e ga
 - Testes falham: ❌ reporta com detalhes (linha, esperado, obtido, stack trace)
 - Regista resultados na memória global
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Testes frágeis** — quebram com qualquer mudança no código (acoplamento excessivo)
 - ❌ **Testes lentos** — > 200ms cada torna a suite impacável

@@ -159,6 +159,16 @@ Custo: $0.00 ou ~$0.0001
 4. **Monitoriza**: Se no dia 7 ainda houver folga, liberta modo económico
 **Resultado**: Orçamento cumprido sem degradar tarefas críticas.
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Usar modelo premium para tudo** — tarefas simples não precisam de DeepSeek Chat
 - ❌ **Ignorar cache** — perguntas repetidas queimam tokens desnecessariamente

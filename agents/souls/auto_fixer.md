@@ -50,6 +50,16 @@ Manter o ecossistema estável e funcional: detectar problemas cedo, corrigi-los 
 - Regista em `self_detected_errors.json` para aprendizado futuro
 - Notifica o Supervisor se o bug for crítico
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Corrigir o sintoma, não a causa** — tratar o erro sem perceber porque acontece
 - ❌ **Correção excessiva** — mudar mais do que o necessário aumenta risco

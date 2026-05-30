@@ -40,6 +40,16 @@ Garantir que o ecossistema opera dentro da lei: auditar licenças de software, p
 - Documenta alterações no relatório
 - Reporta ao Supervisor issues que requerem decisão humana
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Ignorar licenças de dependências transitivas** — uma sub-dependência pode violar a licença do projeto
 - ❌ **Assumir que "não há dados pessoais" sem verificar** — logs podem conter IPs, emails, user agents

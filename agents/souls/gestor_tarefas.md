@@ -53,6 +53,16 @@ Gerir o fluxo de trabalho do ecossistema: manter o backlog organizado, priorizar
 - Actualiza estado para `done`
 - Regista métricas (tempo, recursos)
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Backlog infinito** — tarefas sem prioridade acumulam-se
 - ❌ **Tarefas vagas** — "melhorar código" não é uma tarefa, é um desejo

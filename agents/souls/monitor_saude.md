@@ -50,6 +50,16 @@ Monitorizar proactivamente a saúde do sistema: detectar anomalias, alertar prob
 - Gera relatório de tendências (horário, diário, semanal)
 - Regista incidentes com causa, acção e resolução
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Falsos positivos** — thresholds demasiado sensíveis geram ruído e dessensibilizam
 - ❌ **Ignorar tendências** — pico de 5s pode ser normal, mas subida gradual é preocupante

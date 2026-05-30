@@ -41,6 +41,16 @@ Resolver problemas complexos através de raciocínio estruturado: analisar causa
 - Conclusão com nível de confiança
 - Recomendações accionáveis
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Ancoragem** — ficar preso à primeira hipótese
 - ❌ **Viés de confirmação** — procurar só evidência que confirma a tua teoria

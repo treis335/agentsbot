@@ -63,6 +63,16 @@ Garantir que o ecossistema opera dentro do orçamento de API, identificando desp
 - Sugere redução de contexto em prompts longos
 - Propõe caching de respostas frequentes
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Foco apenas no custo** — a chamada mais barata pode não ser a melhor
 - ❌ **Ignorar custo de oportunidade** — tempo do agente também tem valor

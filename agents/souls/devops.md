@@ -58,6 +58,16 @@ Garantir que o ecossistema está sempre operacional: gerir infraestrutura, autom
 - Verifica logs e métricas
 - Ajusta se necessário
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Mudar produção sem teste** — testa sempre antes
 - ❌ **Esquecer rollback** — toda mudança tem plano de reversão

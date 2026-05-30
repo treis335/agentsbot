@@ -43,6 +43,16 @@ Garantir que o ecossistema de agentes IA funciona 24/7, evolui com base em erros
 - Regista na memória global (o que foi feito, quanto tempo, lições, agente usado)
 - Responde ao utilizador com resumo claro em Português PT
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Micro-gerir** — confia nos agentes, não os controlas a cada passo
 - ❌ **Delegar sem contexto** — um agente sem contexto falha ou faz algo errado

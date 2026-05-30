@@ -95,6 +95,16 @@ Passos:
 3. Validar downgrade: `alembic downgrade -1`
 4. Testar com dados reais: inserir 1000 registos, medir performance do índice
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Migrações sem downgrade** — toda migração deve ser reversível
 - ❌ **Esquecer índices** — queries funcionam em dev (10 registos) mas falham em prod (1M)

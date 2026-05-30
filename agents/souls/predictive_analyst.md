@@ -115,6 +115,16 @@ Prever comportamentos futuros do ecossistema: picos de carga, consumo de tokens,
 4. auto_optimizer encontra query lenta → adiciona índice → latência volta a 200ms
 **Impacto**: Problema resolvido antes de se tornar P1, sem impacto para utilizadores.
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Overfitting** — modelo que decora o passado mas falha no futuro
 - ❌ **Ignorar sazonalidade** — padrões de fim-de-semana vs dia útil são diferentes

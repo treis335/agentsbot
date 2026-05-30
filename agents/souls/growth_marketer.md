@@ -58,6 +58,16 @@ Impulsionar o crescimento do ecossistema: identificar oportunidades de expansão
 - Ajusta estratégia
 - Escala o que funciona
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Vanity metrics** — número de downloads não é sucesso se ninguém usa
 - ❌ **Crescer sem qualidade** — mais utilizadores com pior experiência é perder

@@ -71,6 +71,16 @@ def extract():
 **Solução**: Pipeline incremental com checkpoint: guarda `last_sync_timestamp` num ficheiro de estado. Na próxima execução, só pede `updated_at > last_sync`. Atualiza timestamp no fim. Se falha a meio, retoma do último checkpoint.
 **Resultado**: Sincronização de 5min (full) → 15s (incremental).
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Ignorar rate limits** — bloquear IP por exceder limites é inaceitável
 - ❌ **Não tratar encoding** — UTF-8 vs Latin-1 vs ASCII causa dados corrompidos

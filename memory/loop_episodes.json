@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:15:07.460888",
-    "success": true,
-    "result_summary": "---\n\n## ✅ Relatório Final — Tarefa Completa\n\nA tarefa já estava **completa no commit anterior** (`1071aac feat: unifica 3 sistemas de memoria em MemoryHub`). Fiz apenas uma limpeza de ficheiros temporários.\n\n### O que foi verificado/feito:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** (486 linhas) | ✅ Criado com `MemoryHub` (singleton, JSONL) |\n| **2. `memory/hub.jsonl`** | ✅ ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:16:11.213046",
-    "success": true,
-    "result_summary": "---\n\n## ✅ Relatório Final — Tarefa Completa\n\nA tarefa já estava **completa no commit `1071aac`** (`feat: unifica 3 sistemas de memoria em MemoryHub`). Fiz a verificação completa de todos os pontos:\n\n### ✅ O que foi verificado\n\n| Requisito | Estado |\n|---|---|\n| 1. `core/memory_hub.py` com MemoryHub (store_chat, store_episode, store_knowledge, get_context) | ✅ 486 linhas, completo |\n| 2. Backend ún",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:18:42.793795",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — Tarefa Completa\n\n**O que fiz:** Verifiquei que o commit `1071aac feat: unifica 3 sistemas de memoria em MemoryHub` já existe no repositório. Confirmei que `core/memory_hub.py` está completo com todos os métodos pedidos (`store_chat`, `store_episode`, `store_knowledge`, `get_context`, `_filter`, wrappers de compatibilidade), que `core/supervisor.py` já importa e usa `MemoryHu",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:20:58.010965",
     "success": true,
     "result_summary": "## Relatório — QA Tester\n\n**O que fiz:** Verifiquei que `core/memory_hub.py` está completo (486 linhas, singleton JSONL), o `core/supervisor.py` já usa `MemoryHub`, e o `tests/test_memory_hub.py` tem 12 testes que passam todos. Adicionei o alias `stats()` que faltava no `memory_hub.py` e actualizei o `agents/executor.py` para usar `MemoryHub` em vez de `GlobalMemory`, `LessonExtractor`, `Procedura",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-31T00:28:22.368513",
     "success": true,
     "result_summary": "## Resumo\n\n**O que fiz:**\nAnalisei todos os 47 souls (`agents/souls/*.md`), identifiquei que apenas o `test.md` estava vazio (corrigi-o com um soul completo de 3.8KB), e verifiquei que os restantes 46 já têm todas as secções obrigatórias. Detectei que 27 souls têm o Modo Autónomo genérico (\"Executa a tarefa completamente...\") em vez de instruções específicas para cada agente.\n\n**O que ficou por fa",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c41b2fb3",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T00:29:32.494990",
+    "success": true,
+    "result_summary": "## ✅ Missão Concluída — Novo Agente: `strategic_advisor` 🧠📊\n\n### Lacuna Identificada\nO ecossistema tinha **47 agentes** mas **nenhum especializado em decisão estratégica**. Havia executores (developer, auto_fixer), testers (qa_tester, scenario_tester), gestores (supervisor, gestor_tarefas), mas **ninguém dedicado a pensar antes de agir** — analisar riscos, calcular ROI, avaliar trade-offs e priori",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_83febadd",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T00:32:28.083189",
+    "success": true,
+    "result_summary": "## ✅ Análise Completa da Memória Episódica — Concluída\n\n**O que fiz:** Analisei exaustivamente todas as 7 fontes de memória do ecossistema — 200 episódios do loop, 102 episódios da memória episódica, 141 ciclos com 46 loops detetados, 12 lições já documentadas na shared_memory, e 3 relatórios anteriores de lições. Extraí e consolidei **12 lições críticas** (6 gravidade crítica, 4 alta, 2 média) e ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_f1a11c7b",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:34:20.353267",
+    "success": true,
+    "result_summary": "Analisei todos os 47 souls `agents/souls/*.md` e o código `agents/executor.py`/`agents/llm_agent.py` que os carrega. Identifiquei que os souls têm estrutura consistente (Identidade, Missão, Regras, Fluxo, Armadilhas, Integração, Métricas) mas falta-lhes uniformidade no **MODO AUTÓNOMO** (só ~20% têm) e **Exemplos Práticos** (~60% têm). O executor.py carrega souls como system prompt e injeta contex",
     "lesson": ""
   }
 ]

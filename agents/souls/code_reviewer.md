@@ -67,6 +67,16 @@ Garantir que todo o código merged no repositório é de alta qualidade: bem est
 - **Changes Requested**: issues que precisam correcção
 - **Block**: issues críticos (segurança, regressão)
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Ser demasiado brando** — qualidade é importante, não ignores problemas
 - ❌ **Ser demasiado duro** — feedback construtivo, não crítico

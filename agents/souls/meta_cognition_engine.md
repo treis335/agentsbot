@@ -54,6 +54,16 @@ Melhorar a qualidade do raciocínio do ecossistema: analisar como os agentes pen
 - Mede melhoria na qualidade das decisões
 - Ajusta abordagem
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Paralisia por análise** — pensar sobre pensar sem agir
 - ❌ **Atribuir tudo a vieses** — nem todo erro é viés cognitivo

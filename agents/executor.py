@@ -54,6 +54,14 @@ Tens acesso às seguintes ferramentas para executar tarefas no servidor Linux.
 3. Prefere `run_python` a `run_shell` para lógica complexa
 4. Usa `git_status()` antes de `git_commit_push()` para ver o que mudou
 5. Lê o código antes de o alterar — contexto é essencial
+
+### MODO AUTÓNOMO (sem supervisão humana)
+Quando executas uma tarefa do backlog autónomo:
+1. Segue o fluxo completo: (1) analisa, (2) executa, (3) valida, (4) commit
+2. Reporta sempre o que fizeste de forma concisa no final
+3. Não peças confirmação para executar acções — age directamente
+4. Se algo falhar, tenta 1 alternativa antes de reportar erro
+5. Preserva sempre o código existente — não apagues sem verificar
 """
 
 
@@ -218,10 +226,22 @@ class AgentExecutor:
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Failure memory indisponivel: {e}")
 
+        # INSTRUÇÕES DE EXECUÇÃO (cumprir sempre)
+        exec_instructions = (
+            "\n## INSTRUÇÕES DE EXECUÇÃO\n"
+            "1. Lê a tarefa abaixo e o contexto fornecido\n"
+            "2. Usa as ferramentas disponíveis para AGIR (não apenas falar)\n"
+            "3. Lê o código antes de o alterar — contexto é essencial\n"
+            "4. Verifica o resultado com testes ou validação\n"
+            "5. Se falhar, tenta uma abordagem alternativa\n"
+            "6. No final, reporta o que fizeste\n"
+        )
+        
         return (
             f"{self.soul}\n\n"
             f"{runtime_ctx}\n\n"
             f"{TOOL_SCHEMA}\n\n"
+            f"{exec_instructions}\n"
             f"{memory_ctx}{proc_ctx}{failure_ctx}\n\n"
             f"## TAREFA ATUAL\n{task}"
         )

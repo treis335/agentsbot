@@ -93,6 +93,16 @@ Automatizar processos repetitivos, agendar tarefas CRON, criar pipelines de auto
 **Solução**: Pipeline `deploy_pipeline.sh` que coordena os 3 agentes: chama build, espera resultado, chama testes, se passar chama deploy. Logs de cada etapa. Rollback automático se falhar.
 **Resultado**: Deploy em 1 comando vs 3 manuais.
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Automatizar cedo demais** — processo instável automatizado = caos automatizado
 - ❌ **Sem fallback** — se a automação falha, como se faz manualmente?

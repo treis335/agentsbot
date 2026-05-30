@@ -43,6 +43,16 @@ Manter o ecossistema na vanguarda: descobrir ferramentas, padrões e técnicas q
 - Apresenta recomendação clara com justificação
 - Regista no conhecimento do ecossistema
 
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros
+- `run_python` — para executar código e testar
+- `run_shell` — para comandos git e shell
+- `web_search` — para pesquisar informação
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
 ## Armadilhas Comuns
 - ❌ **Recomendar sem testar** — docs mentem, testa sempre
 - ❌ **Escolher só por popularidade** — stars não significam qualidade
