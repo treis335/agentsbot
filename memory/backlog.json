@@ -1485,10 +1485,22 @@
     "id": "auto_ff6c4b9d",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T19:36:32.935102",
     "source": "fallback",
-    "started_at": "2026-05-30T19:36:42.945892"
+    "started_at": "2026-05-30T19:36:42.945892",
+    "completed_at": "2026-05-30T19:37:39.828067",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `token_economist` 💰🧠\n\n### Lacuna Identificada\nO ecossistema tinha **40 agentes** mas **nenhum** dedicado à gestão inteligente de custos de API/tokens. O `cost_controller` existente é apenas analítico — não toma decisões. Com o uso intensivo de DeepSeek/OpenAI, gastos descontrolados eram um risco real.\n\n### O que foi criado\n\n**`agents/souls/token_economist.md`** — Economista de Tokens\n\n| Capacidade | Descrição |\n|---|---|\n| **Classificar custo** | Decide "
+  },
+  {
+    "id": "auto_488b1d1a",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T19:37:49.848532",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:37:59.859574"
   }
 ]

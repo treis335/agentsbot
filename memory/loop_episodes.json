@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:37:15.548000",
-    "success": true,
-    "result_summary": "Analisei todo o ecossistema e verifiquei que `core/memory_hub.py` já está completo (366 linhas) com MemoryHub, `core/supervisor.py` já usa MemoryHub, e `agents/executor.py` já usa MemoryHub. **Falta**: criar `tests/test_memory_hub.py` e fazer o commit com a mensagem 'feat: unifica 3 sistemas de memória em MemoryHub'.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T04:39:50.563001",
     "success": true,
     "result_summary": "Analisei todo o ecossistema e verifiquei que `core/memory_hub.py` já está completo (365+ linhas) com MemoryHub e todos os métodos pedidos, `core/supervisor.py` já importa e usa MemoryHub correctamente, e `agents/executor.py` já importa MemoryHub mas ainda usa `GlobalMemory` e `FailureMemory` directamente no `_build_memory_context()`. Falta actualizar o executor para usar apenas MemoryHub, criar o ",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T19:36:22.703705",
     "success": true,
     "result_summary": "Peço desculpa, entrei num loop de tentativas de `write_file` sem argumentos devido a um erro de parsing do comando. O que ficou por fazer: **criar efetivamente o ficheiro do novo agente** (`data_engineer.md`) com o conteúdo completo da sua identidade, missão e fluxo de trabalho — a lacuna identificada é a ausência de um agente especializado em **Data Engineering & ETL Pipelines**, que é a área mai",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_ff6c4b9d",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T19:37:39.810428",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `token_economist` 💰🧠\n\n### Lacuna Identificada\nO ecossistema tinha **40 agentes** mas **nenhum** dedicado à gestão inteligente de custos de API/tokens. O `cost_controller` existente é apenas analítico — não toma decisões. Com o uso intensivo de DeepSeek/OpenAI, gastos descontrolados eram um risco real.\n\n### O que foi criado\n\n**`agents/souls/token_economist.",
     "lesson": ""
   }
 ]

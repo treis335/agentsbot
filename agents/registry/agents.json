@@ -247,5 +247,27 @@
     },
     "created_at": "2026-05-30T19:37:25.546703",
     "last_active": ""
+  },
+  {
+    "id": "397ebc7f-14be-40a6-bf3d-0462ab068f00",
+    "name": "data_pipeline_engineer",
+    "role": "data_engineer",
+    "soul": "DATA PIPELINE ENGINEER: Constrois pipelines de dados. Scraping, ETL, sincronizacao entre sistemas. Garantes que os dados fluem com qualidade e dentro do prazo. Usas Python, requests, BeautifulSoup, pandas e SQL.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "scraping_web",
+      "etl_pipelines",
+      "sincronizacao_dados",
+      "qualidade_dados",
+      "orquestracao_pipelines"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "dados",
+      "prioridade": 5
+    },
+    "created_at": "2026-05-30T19:39:25.158194",
+    "last_active": ""
   }
 ]
