@@ -13,23 +13,13 @@ import subprocess
 import time
 from pathlib import Path
 
+# ============================================================
+# FIX #1: Importar fix_encoding PRIMEIRO para evitar crash com emojis
+# ============================================================
+import fix_encoding  # noqa: F401
+
 BASE = Path(__file__).parent.resolve()
 LOCK_FILE = BASE / ".instance.lock"
-
-def force_utf8():
-    """Força UTF-8 no stdout/stderr antes de qualquer coisa."""
-    if hasattr(sys.stdout, "reconfigure"):
-        try:
-            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-        except Exception:
-            pass
-    if hasattr(sys.stderr, "reconfigure"):
-        try:
-            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-        except Exception:
-            pass
-    # Fallback: variável de ambiente
-    os.environ["PYTHONIOENCODING"] = "utf-8:replace"
 
 def kill_all_python_instances(except_pid=None):
     """Mata todas as instâncias python excepto a atual."""
@@ -69,46 +59,57 @@ def create_lock():
 
 def main():
     print("=" * 60)
-    print("  CORREOTO — Inicializador Seguro v1.0")
+    print("  CORREOTO — Inicializador Seguro v2.0")
+    print("  🔧 Encoding UTF-8 ativo — emojis seguros! 🚀✅")
     print("=" * 60)
     
-    # 1. Forçar UTF-8
-    print("\n[1/5] A forçar UTF-8 no stdout/stderr...")
-    force_utf8()
-    
-    # 2. Matar todas as outras instâncias python
-    print("\n[2/5] A limpar processos python órfãos...")
+    # 1. Matar todas as outras instâncias python
+    print("\n[1/5] A limpar processos python órfãos...")
     kill_all_python_instances(except_pid=os.getpid())
     time.sleep(1)
     
-    # 3. Limpar lock file antigo
-    print("\n[3/5] A limpar lock files...")
+    # 2. Limpar lock file antigo
+    print("\n[2/5] A limpar lock files...")
     cleanup_lock()
     
-    # 4. Criar novo lock
-    print("\n[4/5] A criar novo lock...")
+    # 3. Criar novo lock
+    print("\n[3/5] A criar novo lock...")
     create_lock()
     
-    # 5. Iniciar main.py
-    print("\n[5/5] A iniciar main.py...")
+    # 4. Iniciar main.py
+    print("\n[4/5] A iniciar main.py...")
     print("-" * 60)
     
-    # Usar PYTHONIOENCODING para garantir UTF-8
+    # Iniciar main.py com PYTHONIOENCODING forçado
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8:replace"
+    env["PYTHONUTF8"] = "1"
     
     proc = subprocess.Popen(
         [sys.executable, str(BASE / "main.py")],
-        cwd=str(BASE),
+        cwd=BASE,
         env=env,
-        creationflags=subprocess.CREATE_NEW_CONSOLE
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding='utf-8',
+        errors='replace'
     )
+    
     print(f"  [OK] main.py iniciado (PID {proc.pid})")
-    print(f"  [OK] A correr em nova consola")
+    print(f"  [API] http://localhost:8080")
     print("=" * 60)
     
-    # Não bloquear — o main.py corre na sua própria consola
-    return 0
+    # Mostrar output do main.py em tempo real
+    try:
+        for line in proc.stdout:
+            print(line, end='', flush=True)
+    except KeyboardInterrupt:
+        print("\n[!] Interrompido pelo utilizador")
+        proc.terminate()
+    except Exception as e:
+        print(f"\n[!] Erro: {e}")
+        proc.terminate()
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

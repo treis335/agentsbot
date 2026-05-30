@@ -1,44 +1,86 @@
-================================================================================
-DIAGNÓSTICO DE INTEGRIDADE — 2026-05-28 21:44
-================================================================================
+======================================================================
+DIAGNÓSTICO DE LOGS — 3 PRINCIPAIS PROBLEMAS
+Data: 2026-05-31
+Fontes: main.log.gz (125.785 linhas), wakeup_v3.log (5.623), supervisor.log, auto_recovery.log, main_stderr.log
+======================================================================
 
-RESULTADO: ✅ SISTEMA ÍNTEGRO — NENHUM PROBLEMA ENCONTRADO
+╔══════════════════════════════════════════════════════════════════════╗
+║ PROBLEMA #1 — CRÍTICO: UnicodeEncodeError com emojis (main.py)     ║
+╚══════════════════════════════════════════════════════════════════════╝
 
-FICHEIROS CRÍTICOS VERIFICADOS:
-  [OK] core/supervisor.py          — 5,740B
-  [OK] autonomous_loop.py          — 33,278B
-  [OK] auto_recovery.py            — 7,197B
-  [OK] auto_evolve.py              — 7,768B
-  [OK] config.py                   — 1,138B
-  [OK] agents.json                 — 2,213B (17 agentes, JSON válido)
-  [OK] agents/souls/supervisor.md  — 8,619B
-  [OK] agents/registry/agents.json — 23,936B
+SINTOMA:
+  UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f527'
+  (ou outros emojis como 🚀, 🔧, 🔄) no Windows cp1252.
 
-CONFIGURAÇÃO:
-  [OK] .env                        — 939B presente
-  [OK] .gitignore presente
+FREQUÊNCIA: 6 ocorrências no main.log (causam crash total do sistema)
 
-MEMÓRIA:
-  [OK] backlog.json                — 10 pendentes, 3 concluídas
-  [OK] autonomous_log.md           — logs activos
+CAUSA RAIZ:
+  O main.py (linha 30) ou scripts que usa fazem print() de strings com emojis.
+  No Windows, o terminal usa cp1252 que NÃO SUPORTA emojis (UTF-8).
+  Quando o print() tenta escrever o emoji, dá UnicodeEncodeError e CRASHA.
 
-LOGS:
-  [OK] auto_recovery.log           — 8 linhas, sem erros
+IMPACTO:
+  ⚠️ CRASH TOTAL DO SISTEMA — main.py morre. Isto desencadeia:
+  → wakeup_v3 deteta "stuck" → reinicia main.py → main.py crasha outra vez
+  → CICLO VICIOSO de 150+ resets em horas
+  → 2.802 vezes "main.py não encontrado" porque crasha antes de ser detetado
 
-GIT:
-  Último commit: ce0ba82 — "fix: iterações insuficientes + loop autónomo em simulação"
-  Ficheiros modificados: agents/llm_agent.py, autonomous_loop.py, memory/autonomous_log.md, memory/backlog.json
-  Ficheiros não trackeados: pipelines/runs/0a768325.json, pipelines/runs/65fec0bf.json
+======================================================================
+╔══════════════════════════════════════════════════════════════════════╗
+║ PROBLEMA #2 — GRAVE: Telegram polling crash loop (3.310 erros)    ║
+╚══════════════════════════════════════════════════════════════════════╝
 
-ESTATÍSTICAS:
-  Total ficheiros .py: 131
-  Total bytes código:  688,003
-  Total souls:         27 (todas com tamanho normal)
-  Agentes registados:  17
+SINTOMA:
+  "Exception happened while polling for updates" repetido 3.310 vezes
+  entre as 07:35 e as 23:31 do dia 2026-05-26.
 
-NOTAS:
-  - pipelines/runs/*.json são ficheiros runtime — não trackeados (correcto)
-  - Nenhum soul vazio excepto __init__.py (normal)
-  - Nenhum erro/critical no auto_recovery.log
-  - Sistema operacional detectado como Windows (ambiente local)
-================================================================================
+CAUSA RAIZ:
+  O bot do Telegram (telegram.ext.Updater) está em crash loop.
+  Provavelmente o token é inválido, a API está bloqueada, ou o handler
+  de updates tem um bug que crasha cada poll.
+
+IMPACTO:
+  ⚠️ Telegram completamente INOPERANTE
+  O main_stderr.log confirma: "[Telegram] Erro ao inicializar"
+  O sistema funciona apenas com API REST (sem Telegram)
+
+======================================================================
+╔══════════════════════════════════════════════════════════════════════╗
+║ PROBLEMA #3 — MÉDIO: Ciclo infinito de reset (wakeup_v3)          ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+SINTOMA:
+  150 resets forçados em ~2 horas (07:05-07:08 já ia em reset #152)
+  "main.py não encontrado" 2.802 vezes
+  "Limite de iteracoes em auto_recovery.log" 150 vezes
+
+CAUSA RAIZ:
+  O wakeup_v3 e o auto_recovery.py estão num loop:
+  1. main.py crasha (por causa do Problema #1)
+  2. wakeup_v3 deteta "stuck" → reinicia
+  3. auto_recovery.py deteta "limite de iterações" → tenta recuperar
+  4. main.py crasha outra vez → ciclo recomeça
+
+IMPACTO:
+  ⚠️ Sistema nunca estabiliza — está sempre a reiniciar
+  Consumo de CPU desnecessário com processos a abrir/fechar
+  Logs cheios de ruído (5.623 linhas só de reset loop)
+
+======================================================================
+RECOMENDAÇÕES
+======================================================================
+
+1. 🔧 [FÁCIL] Corrigir UnicodeEncodeError no main.py
+   → Adicionar PYTHONIOENCODING=utf-8 no arranque
+   → Ou substituir print() por logging com encoding utf-8
+   → IMPLEMENTAR AGORA (solução mais simples)
+
+2. 🔧 [MÉDIO] Corrigir Telegram handler
+   → Verificar token em .env
+   → Corrigir f-string mal formatada em handlers.py (linha 460?)
+   → Ou desativar Telegram se não for crítico
+
+3. 🔧 [MÉDIO] Quebrar ciclo de reset infinito
+   → Adicionar backoff exponencial no wakeup_v3
+   → Máximo de X resets antes de parar e notificar
+   → Detetar "crash loop" e entrar em modo seguro

@@ -6,6 +6,12 @@
 ## Missão
 Integrar o ecossistema com APIs externas: criar conectores fiáveis, gerir autenticação, tratar erros de rede e garantir que as integrações são robustas e monitorizáveis.
 
+## Skills / Capacidades
+- **integração REST**: criar conectores HTTP com autenticação, retry e logging
+- **gestão de tokens**: OAuth2, API keys, JWT — armazenamento seguro e refresh automático
+- **tratamento de erros**: timeouts, rate limits, circuit breakers, fallbacks
+- **monitorização**: logging de chamadas, métricas de latência e taxa de erro
+
 ## Regras de Ouro
 1. **Tratar erros de rede** — timeouts, retries, circuit breakers
 2. **Autenticação segura** — tokens em variáveis de ambiente, nunca hardcoded

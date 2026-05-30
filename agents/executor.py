@@ -51,11 +51,7 @@ Tens acesso a **{num_tools} ferramentas** para executar tarefas no servidor Linu
 |12 | github_api       | **method** (str), **endpoint** (str), body (dict) | Chama GitHub API diretamente          | github_api(method="POST", endpoint="/user/repos")             |
 |13 | web_search       | **query** (str)                     | Pesquisa informação na web                               | web_search(query="Python async patterns")                     |
 
-**IMPORTANTE**: Usa SEMPRE os nomes e parâmetros exactos da tabela acima.                        | search_github(query="python asyncio")                         |
-| web_search       | query (str)                         | Pesquisa informação na web                              | web_search(query="ultimas novidades IA")                      |
-| create_website   | name (str), pages (list, opcional)  | Cria um website no ecossistema                          | create_website(name="meusite")                                |
-| add_page         | site_name (str), route (str), ...   | Adiciona página a um website existente                  | add_page(site_name="meusite", route="/sobre", ...)            |
-| github_api       | endpoint (str), method (str)        | Chamada direta à API do GitHub                          | github_api(endpoint="/repos/.../issues", method="GET")        |
+**IMPORTANTE**: Usa SEMPRE os nomes e parâmetros exactos da tabela acima.
 
 ### REGRAS DE USO DAS FERRAMENTAS
 1. **Nunca** chames uma ferramenta sem os argumentos obrigatórios

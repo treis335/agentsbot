@@ -12,6 +12,8 @@ import json
 import threading
 from datetime import datetime
 from pathlib import Path
+import fix_encoding  # noqa: F401 — previne UnicodeEncodeError com emojis
+
 
 # Configuracoes
 WAKEUP_INTERVAL_FAST = 5       # 5 segundos para detecao rapida
@@ -32,6 +34,10 @@ class WakeUpSystemV2:
         self.wakeup_history = []
         self.stuck_detected = False
         self._stop_event = threading.Event()
+        self.reset_count = 0
+        self.max_resets = 10  # Máximo de resets antes de entrar em modo seguro
+        self.reset_window = 300  # Janela de 5 minutos para contar resets
+        self.reset_timestamps = []
         
     def log(self, message):
         """Regista mensagem no log"""
@@ -105,6 +111,8 @@ class WakeUpSystemV2:
             self.restart_count = 1
         self.last_restart_time = now
         
+        self.reset_timestamps.append(time.time())
+        self._check_crash_loop()
         self.log("[LANCAR] A FORCAR REINICIO DO SISTEMA...")
         
         # Mata processos python antigos (exceto este)

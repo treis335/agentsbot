@@ -2063,10 +2063,82 @@
     "id": "auto_131912b9",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T00:39:51.981649",
     "source": "fallback",
-    "started_at": "2026-05-31T00:40:01.994631"
+    "started_at": "2026-05-31T00:40:01.994631",
+    "completed_at": "2026-05-31T00:41:01.414848",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `integration_guardian` 🛡️🔌\n\n### Lacuna Identificada\nO ecossistema tinha **48 agentes** mas **nenhum especializado em resiliência de integrações externas**. Quando o Telegram, GitHub ou uma API paga falha, não há ninguém dedicado a:\n- Monitorizar a saúde das conexões\n- Abrir circuit breakers para evitar chamadas inúteis\n- Ativar fallbacks automáticos\n- Diagnosticar e recuperar integrações\n\n### O que foi criado\n\n| Item | Detalhes |\n|------|----------|\n| **"
+  },
+  {
+    "id": "auto_71e475fb",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:41:11.581404",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:41:21.596079",
+    "completed_at": "2026-05-31T00:43:20.045562",
+    "result": "## ✅ Análise Completa da Memória Episódica — Concluída\n\n**O que fiz:** Analisei exaustivamente todas as fontes de memória — 200 episódios em `loop_episodes.json`, memória episódica do supervisor e gestor_memoria, logs de eventos (7 ficheiros), `hub.jsonl`, `licoes_episodicas.md`, `cycle_state.json` (151 ciclos com loops detetados), `autonomous_log.md`, `backlog.json` e `shared_memory.json`.\n\n**Lições extraídas (10 no total):**\n\n| # | Lição | Gravidade | Acção |\n|---|-------|-----------|-------|\n"
+  },
+  {
+    "id": "auto_c554443c",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:43:30.069133",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:43:40.090757",
+    "completed_at": "2026-05-31T00:46:43.657305",
+    "result": "## Resumo do que fiz\n\n**Concluído:**\n1. **`agents/executor.py`** — TOOL_SCHEMA actualizado com todas as 13 ferramentas (faltavam `create_website`, `add_page`, `github_api`), instruções de execução melhoradas\n2. **`agents/llm_agent.py`** — System prompt do Supervisor reduzido de 1980→1509 chars (24% mais enxuto), mais direto e com menos redundância\n3. **`agents/souls/TEMPLATE.md`** — Adicionadas secções \"Skills/Capacidades\" e \"Formato de Output Esperado\" para padronizar todos os souls\n4. **`agent"
+  },
+  {
+    "id": "auto_66dc58e9",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:46:53.893716",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:47:03.907778",
+    "completed_at": "2026-05-31T00:49:14.166562",
+    "result": "## Resumo do que fiz\n\n### Problemas Identificados\n1. **`agents/executor.py`** — `TOOL_SCHEMA` estava truncado (só listava 8 ferramentas, faltavam 5: `create_website`, `add_page`, `github_api`, `web_search`)\n2. **`agents/llm_agent.py`** — System prompt do Supervisor estava incompleto (cortava a meio), sem regras de ouro, sem fluxo de execução, sem lista completa de ferramentas\n3. **`agents/souls/integration_guardian.md`** — Faltavam secções: Ferramentas, Armadilhas, Integração, Métricas, Modo Aut"
+  },
+  {
+    "id": "auto_33d70763",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:49:24.188427",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:49:34.202773",
+    "completed_at": "2026-05-31T00:51:58.864702",
+    "result": "## ✅ Relatório — Análise da Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente 22 ficheiros de memória (episódica, logs, ciclo, backlog, semântica) e extraí 8 lições críticas documentadas num ficheiro consolidado.\n\n**O que ficou por fazer:** O write_file final para salvar as lições falhou por um erro de sintaxe nos argumentos da ferramenta — o conteúdo está preparado e precisa de ser escrito manualmente ou numa próxima execução. As lições principais identificadas são: (1) 78% dos"
+  },
+  {
+    "id": "auto_98a272fd",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:52:09.073103",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:52:19.086097",
+    "completed_at": "2026-05-31T00:55:11.357708",
+    "result": "## Resumo do que fiz\n\n**Concluído:**\n1. **`agents/executor.py`** — Corrigi o bug crítico no `TOOL_SCHEMA` que tinha 5 ferramentas duplicadas fora da tabela (linhas 54-58), o que causava confusão nos agentes sobre quais parâmetros usar\n2. **`agents/souls/TEMPLATE.md`** — Melhorei o template padrão com secções mais completas, descrições mais explícitas e instruções de execução autónoma mais claras\n3. **`agents/souls/api_integrator.md`** e **`agents/souls/api_tester.md`** — Adicionei a secção **Ski"
+  },
+  {
+    "id": "auto_a55422f2",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T00:55:21.381181",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:55:31.395051"
   }
 ]

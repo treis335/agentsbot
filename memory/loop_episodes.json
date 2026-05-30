@@ -3,60 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:23:27.539464",
-    "success": true,
-    "result_summary": "O commit já inclui todos os 5 ficheiros:\n1. ✅ `core/memory_hub.py` (486 linhas)\n2. ✅ `core/supervisor.py` (atualizado)\n3. ✅ `agents/executor.py` (atualizado)\n4. ✅ `tests/test_memory_hub.py` (134 linhas, 11 testes)\n5. ✅ `memory/hub.jsonl` (backend persistente)\n\nE os 11 testes passam com sucesso.\n\n## ✅ Relatório Final — QA Tester\n\n**O que verifiquei:**\n\nO commit `1071aac` já contém **todos os 5 fich",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:25:48.056701",
-    "success": true,
-    "result_summary": "**O que fiz:** Verifiquei que `core/memory_hub.py` (486 linhas, 11/11 testes OK), `core/supervisor.py` (já usa MemoryHub), `agents/executor.py` (já importa MemoryHub mas ainda tinha imports antigos para `GlobalMemory`/`LessonExtractor` que substituí no ficheiro `_executor_updated.py`) e `tests/test_memory_hub.py` (134 linhas, 11 testes) estão todos prontos. Atualizei `core/memory.py` para ser wrap",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:26:47.066093",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — QA Tester\n\n### O que foi verificado e aprovado\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** (486 linhas) | ✅ Criado — `MemoryHub` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` |\n| **2. `memory/hub.jsonl`** | ✅ Único backend JSONL funcional com dados reais |\n| **3. `core/supervisor.py`** | ✅ Actualizado — usa `MemoryHub` em vez de `",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:30:10.935660",
-    "success": true,
-    "result_summary": "Push não conseguiu (timeout de rede). Mas o commit local está feito. Vou fazer um resumo final.\n\n---\n\n## ✅ Relatório Final — QA Tester\n\n### O que foi verificado e aprovado\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** (486 linhas) | ✅ Criado — Singleton, 3 tipos de memória (chat, episode, knowledge), JSONL persistente |\n| **2. `core/supervisor.py`** | ✅ Actualizado — usa `Memo",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:35:09.553194",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — QA Tester\n\n**O que fiz:** Verifiquei que o commit `1071aac` já contém todos os ficheiros da tarefa (`core/memory_hub.py` com 486 linhas e todos os métodos pedidos, `core/supervisor.py` e `agents/executor.py` actualizados para usar MemoryHub, `tests/test_memory_hub.py` com 11 testes), reverti o commit `26cc308` que tinha ficheiros temporários, e confirmei que o working direct",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:43:14.097624",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — QA Tester\n\n### Tarefa Concluída: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit:** `1071aac` — `feat: unifica 3 sistemas de memoria em MemoryHub` ✅\n**Push:** ✅ Feito com sucesso para `origin main`\n\n### O que foi feito:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** — Classe `MemoryHub` com `store_chat()`, `store_episode()`, `store_knowledge()`, `ge",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:44:18.600211",
     "success": true,
     "result_summary": "## ✅ Relatório Final — QA Tester\n\n### Verificação completa da tarefa: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit já existente:** `1071aac feat: unifica 3 sistemas de memoria em MemoryHub`\n\n**O que verifiquei:**\n\n| Item | Estado |\n|------|--------|\n| 1. `core/memory_hub.py` com `MemoryHub` | ✅ Criado (19KB, 486 linhas) |\n| 2. `store_chat(role, content)` | ✅ Implementado |\n| 3. `store_epi",
@@ -1798,5 +1744,59 @@
     "success": false,
     "result_summary": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente as 7 fontes de memória (200 episódios, 181 tarefas backlog, 251 eventos evolução, 198k chars log, 3 ficheiros de lições, hub.jsonl, state.json) e extraí **12 lições acionáveis**. Corrigi o `_evaluate_result()` em `autonomous_loop.py` que causava **3 falsos positivos** (resultados válidos marcados como falha",
     "lesson": "Tarefa falhou. Tentar abordagem diferente."
+  },
+  {
+    "task_id": "auto_131912b9",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T00:41:01.397543",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `integration_guardian` 🛡️🔌\n\n### Lacuna Identificada\nO ecossistema tinha **48 agentes** mas **nenhum especializado em resiliência de integrações externas**. Quando o Telegram, GitHub ou uma API paga falha, não há ninguém dedicado a:\n- Monitorizar a saúde das conexões\n- Abrir circuit breakers para evitar chamadas inúteis\n- Ativar fallbacks automáticos\n- Diag",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_71e475fb",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T00:43:20.027662",
+    "success": true,
+    "result_summary": "## ✅ Análise Completa da Memória Episódica — Concluída\n\n**O que fiz:** Analisei exaustivamente todas as fontes de memória — 200 episódios em `loop_episodes.json`, memória episódica do supervisor e gestor_memoria, logs de eventos (7 ficheiros), `hub.jsonl`, `licoes_episodicas.md`, `cycle_state.json` (151 ciclos com loops detetados), `autonomous_log.md`, `backlog.json` e `shared_memory.json`.\n\n**Liç",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c554443c",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:46:43.639763",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\n**Concluído:**\n1. **`agents/executor.py`** — TOOL_SCHEMA actualizado com todas as 13 ferramentas (faltavam `create_website`, `add_page`, `github_api`), instruções de execução melhoradas\n2. **`agents/llm_agent.py`** — System prompt do Supervisor reduzido de 1980→1509 chars (24% mais enxuto), mais direto e com menos redundância\n3. **`agents/souls/TEMPLATE.md`** — Adicionadas se",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_66dc58e9",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:49:14.147891",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\n### Problemas Identificados\n1. **`agents/executor.py`** — `TOOL_SCHEMA` estava truncado (só listava 8 ferramentas, faltavam 5: `create_website`, `add_page`, `github_api`, `web_search`)\n2. **`agents/llm_agent.py`** — System prompt do Supervisor estava incompleto (cortava a meio), sem regras de ouro, sem fluxo de execução, sem lista completa de ferramentas\n3. **`agents/souls/in",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_33d70763",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T00:51:58.848391",
+    "success": true,
+    "result_summary": "## ✅ Relatório — Análise da Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente 22 ficheiros de memória (episódica, logs, ciclo, backlog, semântica) e extraí 8 lições críticas documentadas num ficheiro consolidado.\n\n**O que ficou por fazer:** O write_file final para salvar as lições falhou por um erro de sintaxe nos argumentos da ferramenta — o conteúdo está preparado e precisa de s",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_98a272fd",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:55:11.340646",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\n**Concluído:**\n1. **`agents/executor.py`** — Corrigi o bug crítico no `TOOL_SCHEMA` que tinha 5 ferramentas duplicadas fora da tabela (linhas 54-58), o que causava confusão nos agentes sobre quais parâmetros usar\n2. **`agents/souls/TEMPLATE.md`** — Melhorei o template padrão com secções mais completas, descrições mais explícitas e instruções de execução autónoma mais claras\n3",
+    "lesson": ""
   }
 ]

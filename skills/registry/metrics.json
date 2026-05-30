@@ -1,35 +1,35 @@
 [
   {
     "skill_id": "analyze_code",
-    "successes": 14,
+    "successes": 16,
     "failures": 0,
     "success_rate": 1.0,
     "avg_duration_s": 0.0,
     "avg_cost_tokens": 0.0,
     "quality_score": 0.5,
     "composite_score": 80.0,
-    "last_used": "2026-05-31T00:39:41.954353"
+    "last_used": "2026-05-31T00:51:58.859907"
   },
   {
     "skill_id": "code_implement",
-    "successes": 29,
+    "successes": 32,
     "failures": 0,
     "success_rate": 1.0,
     "avg_duration_s": 0.0,
     "avg_cost_tokens": 0.0,
     "quality_score": 0.5,
     "composite_score": 80.0,
-    "last_used": "2026-05-31T00:36:32.697895"
+    "last_used": "2026-05-31T00:55:11.352871"
   },
   {
     "skill_id": "system_evolve",
-    "successes": 27,
+    "successes": 28,
     "failures": 0,
     "success_rate": 1.0,
     "avg_duration_s": 0.0,
     "avg_cost_tokens": 0.0,
     "quality_score": 0.5,
     "composite_score": 80.0,
-    "last_used": "2026-05-31T00:29:32.506705"
+    "last_used": "2026-05-31T00:41:01.409135"
   }
 ]
