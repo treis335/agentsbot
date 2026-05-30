@@ -493,3 +493,22 @@
 [2026-05-30 13:56:30] [Ciclo #13] Tarefa: Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluç
 [2026-05-30 13:56:30] [MultiAgent] 'supervisor' → Analisa os logs de execução e identifica os 3 principais pro
 [2026-05-30 13:56:30] [Memory] Contexto injectado (110 chars)
+[2026-05-30 13:56] [Ciclo #22] [supervisor] Analisa logs e corrige bug critico de Unicode → completed
+[2026-05-30 13:56] [Fix] UnicodeEncodeError: 45 ficheiros .py corrigidos (emojis substituidos por ASCII)
+[2026-05-30 13:56] [Fix] Criado core/safe_print.py — print seguro para Windows cp1252
+[2026-05-30 13:56] [Fix] __pycache__ limpo para forçar recompilacao
+[2026-05-30 13:56] [Git] Commit 4c3011f — push para GitHub
+[2026-05-30 13:56] [Memory] Licao: Windows nao suporta emojis em prints. Usar sempre ASCII.
+[2026-05-30 13:58:31] [Memory] ✅ Gravado episódio de sucesso: supervisor
+[2026-05-30 13:58:31] [Ciclo #13] ✅ Analisa os logs de execução e identifica os 3 principais pro → completed
+[2026-05-30 13:58:41] [Ciclo #14] Inicio
+[2026-05-30 13:58:41] [Cognitive] Erro: cannot access local variable 'task_desc' where it is not associated with a value
+[2026-05-30 13:58:41] [Ciclo] Sem tarefas pendentes — a gerar novas...
+[2026-05-30 13:58:41] [OrganicMind] Backlog vazio — a iniciar debate colectivo...
+[2026-05-30 13:58:41] [OrganicMind] Erro no debate: 'title'
+[2026-05-30 13:58:41] [AutoGen] Fallback: Analisa a memória episódica e extrai lições para melhorar fu
+[2026-05-30 13:58:51] [Ciclo #15] Inicio
+[2026-05-30 13:58:51] [Cognitive] Erro: cannot access local variable 'task_desc' where it is not associated with a value
+[2026-05-30 13:58:51] [Ciclo #15] Tarefa: Analisa a memória episódica e extrai lições para melhorar futuras execuções.
+[2026-05-30 13:58:51] [MultiAgent] 'gestor_memoria' → Analisa a memória episódica e extrai lições para melhorar fu
+[2026-05-30 13:58:51] [Memory] Contexto injectado (482 chars)

@@ -347,10 +347,22 @@
     "id": "auto_8bb05a3f",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T13:56:20.173218",
     "source": "fallback",
-    "started_at": "2026-05-30T13:56:30.178890"
+    "started_at": "2026-05-30T13:56:30.178890",
+    "completed_at": "2026-05-30T13:58:31.017279",
+    "result": "---\n\n## 📊 Relatório Final — Supervisor\n\n### Diagnóstico: 3 Problemas Principais Identificados\n\n| # | Problema | Gravidade | Ficheiros Afetados |\n|---|---|---|---|\n| **1** | **UnicodeEncodeError com emojis no Windows** | 🔴 **CRÍTICO** | 45 ficheiros `.py` |\n| **2** | **Loop infinito de reboot** (wakeup canibaliza-se) | 🔴 **CRÍTICO** | `wakeup.py`, `wakeup_v3.py`, `supervisor_ultra.py` |\n| **3** | **Múltiplos heartbeats concorrentes** (v2, v3, v5) | 🟡 **ALTO** | 3 sistemas a monitorizar ao mesmo t"
+  },
+  {
+    "id": "auto_6573b0ff",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T13:58:41.200480",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:58:51.205797"
   }
 ]
