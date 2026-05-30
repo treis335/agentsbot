@@ -231,9 +231,9 @@
     "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T13:00:35.977727",
-    "completed_at": "2026-05-30T13:00:25.963488",
-    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que verifiquei\n\n| Requisito | Estado |\n|---|---|\n| 1. `core/memory_hub.py` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` | ✅ 487 linhas, todos os métodos implementados |\n| 2. Backend único `memory/hub.jsonl` | ✅ Formato JSONL com timestamp |\n| 3. `core/supervisor.py` usa MemoryHub | ✅ `from core.memory_hub import MemoryHub` |\n| 4. `agents/executor.py` usa MemoryHub | ✅ "
+    "started_at": "2026-05-30T13:02:11.167119",
+    "completed_at": "2026-05-30T13:02:01.147806",
+    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que foi feito\n\n1. **`core/memory_hub.py`** — Já existia com implementação completa:\n   - `store_chat(role, content)` — conversas\n   - `store_episode(agent_id, task, result)` — memória episódica\n   - `store_knowledge(topic, content)` — memória semântica\n   - `get_context(agent_id, n=10)` — contexto formatado para LLM\n   - Backend único: `memory/hub.jsonl` (JSONL)\n   - Singleton e wrappers de "
   },
   {
     "id": "task_agent_executor_import_fix",
