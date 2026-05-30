@@ -1,85 +1,62 @@
 """
 core/memory.py - Memoria persistente do ecossistema Correoto
 Guarda interacoes, contexto e estado para o sistema nao alucinar.
+
+NOTA: Esta implementacao agora delega no MemoryHub (core/memory_hub.py)
+para unificar os 3 sistemas de memoria. A API publica mantem-se igual.
 """
 
 import json
 import os
 from datetime import datetime
 
+from core.memory_hub import MemoryHub
+
 MEMORY_DIR = "memory"
 CONV_FILE = os.path.join(MEMORY_DIR, "conversation.jsonl")
 STATE_FILE = os.path.join(MEMORY_DIR, "state.json")
 
+
 class ConversationMemory:
-    """Memoria de conversa persistente em ficheiro JSONL."""
+    """Memoria de conversa persistente em ficheiro JSONL.
+    
+    Wrapper para MemoryHub — mantem a API original para compatibilidade.
+    Os dados sao armazenados no MemoryHub (hub.jsonl).
+    """
     
     def __init__(self):
+        self._hub = MemoryHub()
         os.makedirs(MEMORY_DIR, exist_ok=True)
-        if not os.path.exists(CONV_FILE):
-            with open(CONV_FILE, 'w', encoding='utf-8') as f:
-                f.write("")
     
     def add(self, role, content, metadata=None):
         """Adiciona uma interacao a memoria."""
-        entry = {
-            "role": role,
-            "content": content,
-            "timestamp": datetime.now().isoformat(),
-            "metadata": metadata or {}
-        }
-        with open(CONV_FILE, 'a', encoding='utf-8') as f:
-            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
-        return entry
+        return self._hub.store_chat(role, content, metadata)
     
     def get_recent(self, n=10):
         """Devolve as ultimas N interacoes."""
-        if not os.path.exists(CONV_FILE):
-            return []
-        with open(CONV_FILE, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-        entries = []
-        for line in lines[-n:]:
-            try:
-                entries.append(json.loads(line.strip()))
-            except:
-                pass
-        return entries
+        chats = self._hub.get_chats(limit=n)
+        return [c["data"] for c in chats]
     
     def get_all(self):
         """Devolve todas as interacoes."""
-        if not os.path.exists(CONV_FILE):
-            return []
-        with open(CONV_FILE, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-        entries = []
-        for line in lines:
-            try:
-                entries.append(json.loads(line.strip()))
-            except:
-                pass
-        return entries
+        entries = self._hub._read_all()
+        return [e["data"] for e in entries if e.get("type") == "chat"]
     
     def get_context(self, n=5):
         """Devolve contexto formatado para o LLM (ultimas N interacoes)."""
-        recent = self.get_recent(n)
-        if not recent:
-            return "Sem historico de conversa."
-        context = "Historico recente:\n"
-        for entry in recent:
-            role = entry.get('role', '?')
-            content = entry.get('content', '')[:200]
-            context += f"[{role}] {content}\n"
-        return context
+        return self._hub.get_context(n=n)
     
     def clear(self):
         """Limpa a memoria (uso em desenvolvimento)."""
-        with open(CONV_FILE, 'w', encoding='utf-8') as f:
-            f.write("")
+        self._hub.clear()
         return True
 
+
 class SystemState:
-    """Estado persistente do sistema (nao se perde com reboots)."""
+    """Estado persistente do sistema (nao se perde com reboots).
+    
+    NOTA: Este continua a usar state.json para nao quebrar compatibilidade.
+    """
     
     def __init__(self):
         os.makedirs(MEMORY_DIR, exist_ok=True)
@@ -90,17 +67,9 @@ class SystemState:
             try:
                 with open(STATE_FILE, 'r', encoding='utf-8') as f:
                     return json.load(f)
-            except:
-                pass
-        return {
-            "boot_count": 0,
-            "last_boot": None,
-            "tasks_completed": 0,
-            "tasks_failed": 0,
-            "current_task": None,
-            "last_evolution": None,
-            "last_git_push": None
-        }
+            except (json.JSONDecodeError, Exception):
+                return {}
+        return {}
     
     def _save(self):
         with open(STATE_FILE, 'w', encoding='utf-8') as f:
