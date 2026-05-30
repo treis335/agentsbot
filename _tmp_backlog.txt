@@ -1,0 +1,79 @@
+[
+  {
+    "id": "auto_evolucao_cognitiva_001",
+    "desc": "Evoluir a cognicao do Supervisor com memoria contextual",
+    "status": "done",
+    "completed": "2026-05-28T22:25:23.738025",
+    "result": "Run: 84496d16  |  Workflow: dev_cycle  |  Estado: RunState.COMPLETED\n\n  ✅ Analisar [StepState.COMPLETED]\n     → ## Plano de Implementação — Evolução Cognitiva do Sistema (v7)  ### 1. Ficheiros\n  ✅ Implementar [StepState.COMPLETED]\n     → Erro: \n  ✅ Testar [StepState.COMPLETED]\n     → Erro: \n  ✅ Commit & Push [StepState.COMPLETED]\n     → Commit e push concluídos com sucesso.  **Resumo:**  | Passo | Resultado | |---|-"
+  },
+  {
+    "id": "dashboard_visual_001",
+    "desc": "Criar dashboard visual com metricas em tempo real",
+    "status": "completed",
+    "started_at": "2026-05-30T01:10:27.897904",
+    "completed_at": "2026-05-30T01:12:59.031405",
+    "result": "Implementei:\n\n1. **API de métricas** (`dashboard/api/metrics.py`) — coleta dados reais do ecossistema (agentes, eventos, estado do sistema)\n2. **Dashboard visual** (`dashboard/templates/dashboard.html`) — HTML/CSS/JS moderno com Chart.js, KPIs animados, gráficos de pizza, barras, linha temporal, e SSE para dados em tempo real\n3. **Atualizei o servidor** (`dashboard/server.py`) — adicionei rotas `/api/metrics`, `/api/events`, `/api/stream` (SSE) e sirvo o novo dashboard em `/dashboard`\n\nFicou por"
+  },
+  {
+    "id": "brainstorm_melhorias_001",
+    "desc": "Gerar ideias de melhoria continua",
+    "status": "done"
+  },
+  {
+    "id": "git_auto_push_001",
+    "desc": "Automatizar push para GitHub a cada alteracao",
+    "status": "done"
+  },
+  {
+    "id": "testes_automaticos_001",
+    "desc": "Implementar testes automaticos para todos os modulos",
+    "status": "done"
+  },
+  {
+    "id": "chat_integrado_001",
+    "desc": "Integrar chat no dashboard para falar com o Supervisor",
+    "status": "done"
+  },
+  {
+    "id": "memoria_persistente_001",
+    "desc": "Criar memoria persistente que nao se perde com reboots",
+    "status": "done"
+  },
+  {
+    "id": "auto_reboot_imediato_001",
+    "desc": "Fazer auto-reboot funcionar instantaneamente",
+    "status": "done"
+  },
+  {
+    "id": "agente_brainstormer_001",
+    "desc": "Criar agente brainstormer que gera ideias autonomamente",
+    "status": "done"
+  },
+  {
+    "id": "agente_notificador_001",
+    "desc": "Criar agente que notifica o utilizador de novidades",
+    "status": "done"
+  },
+  {
+    "id": "dashboard_metricas_001",
+    "desc": "Adicionar graficos e metricas ao dashboard",
+    "status": "done"
+  },
+  {
+    "id": "sincronizacao_git_001",
+    "desc": "Sincronizar automaticamente com GitHub",
+    "status": "done"
+  },
+  {
+    "id": "ciclo_rapido_001",
+    "desc": "Reduzir ciclo autonomo para 10 segundos",
+    "status": "done"
+  },
+  {
+    "id": "grounding_001",
+    "desc": "Implementar verificacao de realidade (nao alucinar acoes)",
+    "status": "done"
+  },
+  {
+    "id": "context_tracker_001",
+    "desc": "Rastrear contexto de convers

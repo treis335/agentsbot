@@ -85,41 +85,36 @@ class CognitiveCycle:
             print("[CICLO] TRAVAO ANTI-LOOP ATIVADO")
             insight = self.aprender("loop_detetado")
             self.evoluir(insight)
-            self.state["identical_action_count"] = 0
-            self._save_state()
-            return "travado"
+            return {"status": "travao_ativado", "insight": insight}
         
+        # Ciclo normal
+        self.state["total_cycles"] += 1
+        
+        # Pensar
         decision = self.pensar(context)
+        
+        # Agir
         result = self.agir(decision)
+        
+        # Observar (devolve True se detetou loop)
         loop_detected = self.observar(result)
         
+        # Se detetou loop, aprender e evoluir
         if loop_detected:
             insight = self.aprender("loop_detetado")
             self.evoluir(insight)
         
-        self.state["total_cycles"] += 1
-        self.state["current_phase"] = "pensar"
+        # Aprender periodicamente
+        if self.state["total_cycles"] % MAX_CYCLES_BEFORE_LEARN == 0:
+            self.aprender(f"ciclo_{self.state['total_cycles']}_completo")
+        
+        # Guardar estado
         self._save_state()
         
-        return "ok"
-
-    def run_cycles(self, n=1, context=""):
-        results = []
-        for i in range(n):
-            result = self.run_cycle(context)
-            results.append(result)
-            if result == "travado":
-                break
-        return results
-
-if __name__ == "__main__":
-    cycle = CognitiveCycle()
-    print("=== Teste do Ciclo Cognitivo v2.0 ===")
-    print(f"Estado inicial: {cycle.state['total_cycles']} ciclos")
-    
-    # Testar 5 ciclos
-    results = cycle.run_cycles(5)
-    print(f"Resultados: {results}")
-    print(f"Total apos teste: {cycle.state['total_cycles']} ciclos")
-    print(f"Insights: {len(cycle.state['insights'])}")
-    print("OK")
+        return {
+            "status": "ok",
+            "cycle": self.state["total_cycles"],
+            "decision": decision,
+            "result": result,
+            "loop_detected": loop_detected
+        }

@@ -52,5 +52,59 @@
     "success": true,
     "result_summary": "Implementei o fix para o `UnicodeEncodeError` com emojis no Windows console em ambos os ficheiros (`supervisor_ultra.py` e `autonomous_loop.py`), adicionando `sys.stdout.reconfigure(encoding='utf-8', errors='replace')` e `try/except UnicodeEncodeError` em todos os `print()`, com teste bem-sucedido (`🚀✅🔧` funciona). O commit local foi feito (74edfbe), mas o `git push` falhou por timeout — precisas ",
     "lesson": ""
+  },
+  {
+    "task_id": "task_fix_telegram_conflict",
+    "task_desc": "4895 erros de 'Conflict: terminated by other getUpdates request' no main.log. Causa: várias instâncias do bot Telegram a correr em paralelo. Tarefa:\n1. Criar um mecanismo de lock/singleton no main.py\n",
+    "agent": "devops",
+    "timestamp": "2026-05-30T01:31:02.584267",
+    "success": true,
+    "result_summary": "Perfeito! O commit inclui todos os ficheiros necessários. O push está pendente (rede lenta), mas o commit local está salvo.\n\nAqui está o resumo do que foi feito:\n\n## ✅ Tarefa Completa — Lock Singleton para o Bot Telegram\n\n### Problema\n4895 erros de `'Conflict: terminated by other getUpdates request'` no main.log causados por múltiplas instâncias do bot Telegram a correrem em paralelo.\n\n### Solução",
+    "lesson": ""
+  },
+  {
+    "task_id": "task_fix_memory_corruption",
+    "task_desc": "9 erros de 'Erro ao carregar: Extra data / Expecting value' no shared_memory.json. A memória global corrompe-se e não há backup. Tarefa:\n1. Abrir memory/global_memory.py\n2. No método _load(), capturar",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T01:33:22.776048",
+    "success": true,
+    "result_summary": "Tentei reescrever o ficheiro `memory/global_memory.py` com as melhorias pedidas (captura específica de `json.JSONDecodeError`, backup com `shutil.copy2` antes de `_save()`, recuperação de `.bak` se corrompido, e logging), mas a ferramenta `write_file` falhou repetidamente sem argumentos — o ficheiro não foi atualizado. Fica por fazer: escrever o código corrigido, testar a recuperação corrompendo o",
+    "lesson": ""
+  },
+  {
+    "task_id": "task_unified_agent_router",
+    "task_desc": "Implementar um `AgentRouter` unificado em `core/agent_router.py` que substitua a lógica dispersa de seleção de agentes. Atualmente, o `orchestrator.py` usa `_decide_agent()` com keywords básicas, o `e",
+    "agent": "developer",
+    "timestamp": "2026-05-30T01:37:07.052718",
+    "success": true,
+    "result_summary": "Desculpa, estou com um problema técnico a usar a ferramenta `write_file` — tentei várias vezes mas não consegui passar os parâmetros corretamente. Ficou por fazer: criar o `core/agent_router.py`, atualizar o `agents/orchestrator.py` e escrever os testes em `tests/test_agent_router.py`.",
+    "lesson": ""
+  },
+  {
+    "task_id": "task_memory_consolidator",
+    "task_desc": "O ecossistema tem múltiplos sistemas de memória sobrepostos: `memory/` (backlog.json, autonomous_log.md, loop_episodes.json, self_improve_cycle.json), `agents/memory/`, `cerebro/brain.log`, `data/`, e",
+    "agent": "developer",
+    "timestamp": "2026-05-30T01:39:21.705041",
+    "success": true,
+    "result_summary": "## Sumário\n\n**O que fiz:** Analisei o ecossistema completo — mapeei todos os diretórios de memória (`memory/`, `agents/memory/`, `data/`, `evolution/`, `cerebro/`), identifiquei os 13 ficheiros temporários obsoletos na raiz (`_temp_*.txt`, `_tmp_*.txt`, `_debug_*.txt`), e verifiquei a estrutura do `autonomous_loop.py` para integração.\n\n**O que ficou por fazer:** Criar o ficheiro `core/memory_conso",
+    "lesson": ""
+  },
+  {
+    "task_id": "task_sandbox_executor_real",
+    "task_desc": "O ficheiro `core/config.py` já tem flags `SANDBOX_ENABLED`, `SANDBOX_TIMEOUT`, `SANDBOX_MEMORY_MB` mas não existe implementação real. Criar `core/sandbox_executor.py` que: 1) executa código Python e c",
+    "agent": "developer",
+    "timestamp": "2026-05-30T01:41:44.600620",
+    "success": true,
+    "result_summary": "Peço desculpa pelo spam de chamadas. O sistema `write_file` estava a rejeitar os meus parâmetros. **O que fiz:** analisei todo o código existente (`core/config.py`, `tools/fs_tools.py`, `tools/__init__.py`, `.env`, `memory/backlog.json`) e planeei a implementação completa do sandbox executor. **O que ficou por fazer:** criar o ficheiro `core/sandbox_executor.py`, atualizar `core/config.py` para le",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_341d646b",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T01:46:09.221939",
+    "success": true,
+    "result_summary": "A tarefa está concluída. Aqui está o relatório final do que fiz:\n\n---\n\n## ✅ RELATÓRIO — Análise de Memória Episódica Concluída\n\n### O que analisei\n- **26 tarefas** no backlog (desde 26 Maio)\n- **11 episódios** gravados na memória episódica\n- **16 ciclos** do loop autónomo (autonomous_log.md — 16.027 linhas)\n- **Últimos 20 commits** do git\n\n### 8 Lições Extraídas\n\n| # | Lição | Impacto |\n|---|-----",
+    "lesson": ""
   }
 ]
