@@ -806,6 +806,37 @@
         "rollback"
       ],
       "priority": 7
+    },
+    "cost_controller": {
+      "description": "Monitoriza e otimiza custos de API, eficiencia de tokens, orcamento",
+      "skills": [
+        "cost_monitoring",
+        "token_efficiency",
+        "budget_management",
+        "waste_detection",
+        "roi_analysis",
+        "cost_forecasting"
+      ],
+      "keywords": [
+        "custo",
+        "custa",
+        "gasto",
+        "orcamento",
+        "dinheiro",
+        "token",
+        "api cara",
+        "poupar",
+        "economizar",
+        "budget",
+        "bill",
+        "fatura",
+        "despesa",
+        "threshold",
+        "alerta custo",
+        "quanto gasta",
+        "quanto custa"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

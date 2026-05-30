@@ -88,3 +88,15 @@ Garantir que o ficheiro `requirements.txt` (ou `pyproject.toml`) está sempre ac
 4. Actualiza para `flask-admin 1.6.2` que suporta `werkzeug 3.x`
 5. Corre `pytest` para validar
 6. Commit: `chore(deps): resolve conflito flask-admin / werkzeug 3.x`
+
+
+## MODO AUTONOMO
+Estas a executar uma tarefa do backlog autonomo, sem supervisao humana. Executa a tarefa completamente usando as ferramentas disponiveis. Reporta o que fizeste de forma concisa. Nao pecas confirmacao.
+
+## CONTEXTO DE EXECUCAO
+- Agente: dependency_manager
+- Data/hora: data atual
+- Sistema: Windows Linux servidor
+- Projecto: C:\Users\Crypto Bull\Desktop\Agente Local
+- Shell: bash (ls, cat, python3, git -- nunca CMD Windows)
+- O utilizador esta no Windows/PC -- TU estas no servidor Linux
