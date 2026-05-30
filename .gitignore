@@ -77,3 +77,6 @@ temp/
 # --- Dashboard build ---
 dashboard/static/bundle.*
 node_modules/
+
+# Temporary files
+_tmp_*.txt
