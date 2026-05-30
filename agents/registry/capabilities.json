@@ -1103,6 +1103,36 @@
         "automation"
       ],
       "priority": 7
+    },
+    "api_tester": {
+      "description": "Testa integrações com APIs externas, contract testing, mocking, health checks",
+      "skills": [
+        "api_testing",
+        "contract_testing",
+        "mocking",
+        "health_checks",
+        "breaking_change_detection",
+        "resilience_testing",
+        "rate_limit_testing"
+      ],
+      "keywords": [
+        "api",
+        "integração",
+        "integra",
+        "endpoint",
+        "rest",
+        "graphql",
+        "websocket",
+        "webhook",
+        "mock",
+        "contracto",
+        "health check",
+        "breaking change",
+        "timeout",
+        "rate limit",
+        "conexão externa"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
