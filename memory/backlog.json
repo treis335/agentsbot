@@ -875,10 +875,34 @@
     "id": "auto_7cbd90ca",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T16:07:49.030375",
     "source": "fallback",
-    "started_at": "2026-05-30T16:07:59.037770"
+    "started_at": "2026-05-30T16:07:59.037770",
+    "completed_at": "2026-05-30T16:08:32.657173",
+    "result": "---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Ficheiros modificados**: 40 (34 almas de agentes + 6 ficheiros de memória)\n- **Total de alterações**: +2298 / -1818 linhas\n\n### 📦 Commit Realizado\n| Commit | Hash |\n|---|---|\n| `chore: refina almas dos agentes e atualiza memoria do ecossistema` | `69434c5` |\n\n### 📊 Resumo\n- ✅ **34 almas (souls)** refinadas com melhorias estruturais\n- ✅ **Memória do ecossistema** actual"
+  },
+  {
+    "id": "auto_7a172e6c",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T16:08:42.671718",
+    "source": "fallback",
+    "started_at": "2026-05-30T16:08:52.681588",
+    "completed_at": "2026-05-30T16:18:58.373546",
+    "result": "H\n\n🔧 *Operações realizadas:* git_status, list_files"
+  },
+  {
+    "id": "auto_8f54f091",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T16:19:08.568925",
+    "source": "fallback",
+    "started_at": "2026-05-30T16:19:18.576899"
   }
 ]
