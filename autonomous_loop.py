@@ -310,52 +310,91 @@ class AutonomousLoop:
 
     def _generate_new_tasks(self, backlog: list) -> None:
         """
-        Quando o backlog fica vazio, gera novas tarefas autonomamente.
-        Combina brainstorming + análise do estado do sistema.
+        Quando o backlog fica vazio: os agentes debatem com LLM real (organic_mind)
+        e geram novas tarefas a partir do debate colectivo.
         """
-        log_cycle("[AutoGen] A gerar novas tarefas...")
+        log_cycle("[OrganicMind] Backlog vazio — a iniciar debate colectivo...")
         try:
-            import asyncio as _asyncio
-            from agents.llm_agent import get_agent
-
-            agent = get_agent()
-            AUTONOMOUS_USER_ID = 0
-
-            prompt = (
-                "Analisa o estado actual do ecossistema CORREOTO e gera 3 tarefas concretas "
-                "para melhorar o sistema. As tarefas devem ser técnicas e executáveis. "
-                "Responde APENAS com um JSON array no formato: "
-                '[{"id":"task_XXX","title":"...","desc":"instrucoes detalhadas...","priority":7}]. '
-                "Foca em: melhorias de código, novos módulos úteis, correcção de bugs conhecidos, "
-                "ou evolução das capacidades dos agentes."
+            from agents.organic_mind import (
+                generate_topics_from_context,
+                collective_debate,
+                save_debate,
             )
 
-            _loop = _asyncio.new_event_loop()
-            response = _loop.run_until_complete(
-                agent.chat(user_id=AUTONOMOUS_USER_ID, user_message=prompt)
-            )
-            _loop.close()
+            # 1. Gerar tópico relevante para o momento
+            topics = generate_topics_from_context()
+            topic = topics[0] if topics else "Como evoluir o ecossistema agentsbot?"
+            log_cycle(f"[OrganicMind] Tópico: {topic}")
 
-            # Extrair JSON da resposta
-            import re, json as _json
-            match = re.search(r'\[.*?\]', response, re.DOTALL)
-            if match:
-                new_tasks = _json.loads(match.group())
-                for t in new_tasks:
-                    t["status"] = "pending"
-                    t["created_at"] = datetime.now().isoformat()
-                    t["source"] = "auto_generated"
-                    backlog.append(t)
-                save_backlog(backlog)
-                log_cycle(f"[AutoGen] {len(new_tasks)} novas tarefas geradas")
-                for t in new_tasks:
-                    log_cycle(f"  + {t.get('title','?')}")
-            else:
-                # Fallback: adicionar tarefa genérica de auto-análise
+            # 2. Debate colectivo — agentes pensam com LLM real
+            debate = collective_debate(
+                topic=topic,
+                agents=["Explorador", "Developer", "Arquiteto", "AutoFixer", "Supervisor"]
+            )
+
+            # 3. Persistir debate
+            save_debate(debate)
+
+            # 4. Adicionar tarefas geradas ao backlog
+            tasks_added = 0
+            for t in debate.get("tasks", []):
+                task_entry = {
+                    "id": f"debate_{datetime.now().strftime('%H%M%S')}_{tasks_added}",
+                    "title": t.get("title", "Tarefa do debate"),
+                    "desc": t.get("description", t.get("title", "")),
+                    "status": "pending",
+                    "priority": int(t.get("priority", 5)),
+                    "agent": t.get("agent", "developer"),
+                    "created_at": datetime.now().isoformat(),
+                    "source": "organic_debate",
+                }
+                backlog.append(task_entry)
+                tasks_added += 1
+
+            if tasks_added == 0:
                 self._add_fallback_task(backlog)
+            else:
+                save_backlog(backlog)
+                log_cycle(f"[OrganicMind] {tasks_added} tarefas geradas pelo debate")
+
+            # 5. Notificar utilizador com resumo do debate
+            self._notify_debate(debate)
+
         except Exception as e:
-            log_cycle(f"[AutoGen] Erro: {e}")
+            log_cycle(f"[OrganicMind] Erro no debate: {e}")
             self._add_fallback_task(backlog)
+
+    def _notify_debate(self, debate: dict) -> None:
+        """Envia resumo do debate colectivo ao utilizador via Telegram."""
+        try:
+            contributions = debate.get("contributions", [])
+            synthesis = debate.get("synthesis", "")
+            topic = debate.get("topic", "")
+            tasks = debate.get("tasks", [])
+
+            lines = [f"🧠 **Debate colectivo**", f"📌 *{topic}*", ""]
+            for c in contributions[:4]:
+                agent = c["agent"]
+                thought = c["thought"][:120]
+                lines.append(f"**{agent}:** {thought}")
+
+            if synthesis:
+                lines.append(f"\n🎯 **Decisão:** {synthesis[:200]}")
+            if tasks:
+                lines.append(f"\n📋 **Tarefas geradas:** {len(tasks)}")
+                for t in tasks[:2]:
+                    lines.append(f"  • {t.get('title', '?')}")
+
+            msg = "\n".join(lines)
+
+            from bot.notifier import get_notifier
+            import asyncio as _asyncio
+            notifier = get_notifier()
+            _loop = _asyncio.new_event_loop()
+            _loop.run_until_complete(notifier.send(msg))
+            _loop.close()
+        except Exception as e:
+            log_cycle(f"[OrganicMind] Notificação falhou: {e}")
 
     def _add_fallback_task(self, backlog: list) -> None:
         """Adiciona tarefa de auto-análise quando geração automática falha."""
