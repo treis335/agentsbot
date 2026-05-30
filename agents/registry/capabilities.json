@@ -774,6 +774,38 @@
         "empatia"
       ],
       "priority": 7
+    },
+    "dependency_manager": {
+      "description": "Gere dependencias e compatibilidade do ecossistema. Analisa conflitos de versoes, atualiza libs com seguranca, mantem requirements.txt e pyproject.toml consistentes.",
+      "skills": [
+        "dependency_management",
+        "version_conflict_resolution",
+        "pip_audit",
+        "security_scanning",
+        "requirements_maintenance",
+        "compatibility_testing",
+        "changelog_documentation",
+        "rollback_procedures"
+      ],
+      "keywords": [
+        "dependencia",
+        "requirements",
+        "pip",
+        "versao",
+        "conflito",
+        "compatibilidade",
+        "atualiza",
+        "upgrade",
+        "pipdeptree",
+        "seguranca",
+        "vulnerabilidade",
+        "lib",
+        "pacote",
+        "biblioteca",
+        "changelog",
+        "rollback"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
