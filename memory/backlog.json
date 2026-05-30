@@ -1509,10 +1509,46 @@
     "id": "auto_19361f56",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T19:39:56.265568",
     "source": "fallback",
-    "started_at": "2026-05-30T19:40:06.276441"
+    "started_at": "2026-05-30T19:40:06.276441",
+    "completed_at": "2026-05-30T19:40:34.544968",
+    "result": "Perfeito. Tudo limpo e sincronizado.\n\n---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Working tree**: limpo ✅\n\n### 📦 Commit realizado\n| Commit | Descrição |\n|---|---|\n| `23670db` | sync: atualização automática do ecossistema — registo de agente data_pipeline_engineer, métricas, logs, backlog e estados de ciclo |\n\n### 📊 Ficheiros commitados (10)\n| Ficheiro | Tipo de alteração |\n|---|---|\n| `agents/registry/agents.json"
+  },
+  {
+    "id": "auto_48b388c9",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:48:22.967354",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:48:32.981011",
+    "completed_at": "2026-05-30T19:50:59.483478",
+    "result": "## ✅ Análise de Memória Episódica — Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 5 fontes de memória — `loop_episodes.json` (181+ episódios), `supervisor_log.json`, `licoes_episodicas.md`, `licoes_aprendidas.md`, `_relatorio_licoes_memoria.md`, `cycle_state.json` (64 ciclos, 18 loops detetados), `backlog.json` (128 tarefas), `episodica/` (101 episódios), e `semantic_index.json` — e extraí **10 lições críticas** consolidadas num relatório final.\n\n**O que ficou por fazer:** Guardar o r"
+  },
+  {
+    "id": "auto_ff4df768",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:51:09.642277",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:51:19.654039",
+    "completed_at": "2026-05-30T19:54:22.052645",
+    "result": "## ✅ Tarefa Concluída\n\n### Diagnóstico dos 3 Principais Problemas\n\n| # | Problema | Ocorrências | Causa Raiz | Solução |\n|---|---|---|---|---|\n| 🔴 **1** | **Conflitos Telegram** | **1.587** conflitos + **2.030** reinícios forçados | `heartbeat_system.py` e `wakeup_v3.py` reiniciam `main.py` sem usar `telegram_lock`, criando múltiplas instâncias do bot Telegram a competir | ✅ **Implementada** — Adicionado `telegram_lock` no `heartbeat_system.py` |\n| 🟠 **2** | **Erros de Encoding (Unicode)** | **1"
+  },
+  {
+    "id": "auto_91320333",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T19:54:32.270851",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:54:42.282184"
   }
 ]

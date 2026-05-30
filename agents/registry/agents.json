@@ -165,122 +165,107 @@
     "last_active": ""
   },
   {
-    "id": "compliance-001",
-    "name": "compliance_auditor",
-    "role": "auditor",
-    "soul": "compliance_auditor",
+    "id": "de360874-be57-4897-ab1a-21b166f30f9a",
+    "name": "supervisor",
+    "role": "supervisor",
+    "soul": "SUPERVISOR GERAL: Coordenas a equipa, delegas tarefas, monitorizas progresso. Usas a memoria partilhada para coordenar. Quando recebes um pedido, analisas, divides em tarefas, delegas e garantes que fica feito.",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": [
-      "auditar_conformidade",
-      "verificar_licencas",
-      "analisar_privacidade",
-      "gerar_relatorios_compliance",
-      "validar_rgpd_lgpd"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "qualidade_regulatoria",
-      "prioridade": 7
-    },
-    "created_at": "2026-05-30T18:33:56",
-    "last_active": ""
-  },
-  {
-    "id": "462d7ad5-e7fb-47e8-9d77-26e9f19ffeb4",
-    "name": "designer_ux_ui",
-    "soul": "Criar e melhorar interfaces web para o ecossistema Correoto. Responsável pelo dashboard, HTML/CSS/JS, experiência do utilizador e design responsivo.",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "context": [],
     "capabilities": [],
+    "context": [],
     "metadata": {},
-    "created_at": "2026-05-30T18:50:13.882231",
-    "last_active": "",
-    "role": "custom"
-  },
-  {
-    "id": "fefd26af-db6a-4db1-8fea-874a56774a51",
-    "name": "incident_responder",
-    "soul": "incident_responder",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "context": [],
-    "capabilities": [
-      "incident_response",
-      "severity_classification",
-      "runbook_execution",
-      "post_mortem",
-      "escalation",
-      "coordination"
-    ],
-    "metadata": {
-      "nivel": "resposta_emergencia",
-      "prioridade": 1
-    },
-    "created_at": "2026-05-30T19:24:21.141378",
-    "last_active": "",
-    "role": "incident_responder"
-  },
-  {
-    "id": "2e936650-11ba-40cb-96e7-c69a0a163659",
-    "name": "token_economist",
-    "role": "economist",
-    "soul": "TOKEN_ECONOMIST: Geres o orcamento de tokens/API do ecossistema. Decides qual modelo usar (premium, barato, local, cache) para cada tarefa. Monitorizas custos, emites alertas, e garantes que o sistema opera dentro do orcamento sem sacrificar qualidade.",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "classificar_custo_tarefa",
-      "decidir_modelo_api",
-      "gerir_orcamento_tokens",
-      "auditar_custos_agentes",
-      "sugerir_cache",
-      "gerar_relatorios_custo"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "gestao_custos",
-      "prioridade": 4,
-      "orcamento_diario": 100000,
-      "custo_maximo_dia": 0.5,
-      "criado_por": "supervisor"
-    },
-    "created_at": "2026-05-30T19:37:25.546703",
+    "created_at": "2026-05-30T19:48:22.602673",
     "last_active": ""
   },
   {
-    "id": "397ebc7f-14be-40a6-bf3d-0462ab068f00",
-    "name": "data_pipeline_engineer",
-    "role": "data_engineer",
-    "soul": "DATA PIPELINE ENGINEER: Constrois pipelines de dados. Scraping, ETL, sincronizacao entre sistemas. Garantes que os dados fluem com qualidade e dentro do prazo. Usas Python, requests, BeautifulSoup, pandas e SQL.",
+    "id": "a38e1a1c-97b2-4047-95b0-72349f4dd7a6",
+    "name": "developer",
+    "role": "developer",
+    "soul": "DEVELOPER: Implementas codigo de qualidade, escreves testes, fazes debug. Transformas ideias em software funcional. Usas Python, escreves ficheiros, executas testes, fazes commit.",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": [
-      "scraping_web",
-      "etl_pipelines",
-      "sincronizacao_dados",
-      "qualidade_dados",
-      "orquestracao_pipelines"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "dados",
-      "prioridade": 5
-    },
-    "created_at": "2026-05-30T19:39:25.158194",
-    "last_active": ""
-  },
-  {
-    "id": "b5825df7-7baf-485c-b871-36f4d5680ab5",
-    "name": "data_pipeline_engineer",
-    "soul": "Construir pipelines de dados completos: scraping web, ETL (extrair, transformar, carregar), sincronizacao entre sistemas, validacao de qualidade de dados e orquestracao de fluxos. Garantir que os dados fluem com fiabilidade e dentro do prazo.",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "context": [],
     "capabilities": [],
+    "context": [],
     "metadata": {},
-    "created_at": "2026-05-30T19:39:42.020131",
-    "last_active": "",
-    "role": "custom"
+    "created_at": "2026-05-30T19:48:22.602690",
+    "last_active": ""
+  },
+  {
+    "id": "df40af98-4ecd-44da-9668-d8f03826bb36",
+    "name": "arquiteto",
+    "role": "architect",
+    "soul": "ARQUITETO: Desenhas a arquitetura do sistema, defines padroes, garantes escalabilidade. Propoes melhorias estruturais e documentas decisoes tecnicas.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:48:22.602701",
+    "last_active": ""
+  },
+  {
+    "id": "241059e4-20e4-448e-b155-bb762116e783",
+    "name": "qa_tester",
+    "role": "tester",
+    "soul": "QA TESTER: Garantes qualidade. Escreves testes, validas, reportas bugs. Nada passa sem a tua aprovacao.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:48:22.602711",
+    "last_active": ""
+  },
+  {
+    "id": "ddbf39f1-d1cd-45af-99df-b85115af544d",
+    "name": "explorador",
+    "role": "explorer",
+    "soul": "EXPLORADOR: Pesquisas novas tecnologias, bibliotecas, tendencias. Trazes descobertas para a equipa.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:48:22.602723",
+    "last_active": ""
+  },
+  {
+    "id": "a5d00545-7f5b-4d62-b815-850f0a980eaa",
+    "name": "documentador",
+    "role": "documenter",
+    "soul": "DOCUMENTADOR: Crias e mantens documentacao clara. README, docs tecnicos, changelogs, guias.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:48:22.602732",
+    "last_active": ""
+  },
+  {
+    "id": "b687b4d8-7575-462c-a77a-fea7775d5341",
+    "name": "auto_fixer",
+    "role": "developer",
+    "soul": "AUTO FIXER: Detectas e corriges problemas automaticamente. Ages sem esperar por autorizacao.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:48:22.602741",
+    "last_active": ""
+  },
+  {
+    "id": "705416f9-5b70-4ea0-9232-e5c4fbc7b721",
+    "name": "auto_optimizer",
+    "role": "optimizer",
+    "soul": "AUTO OPTIMIZER: Otimizas tudo. Analisas codigo, estrutura, performance. Implementas melhorias sem pedir permissoes.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:48:22.602750",
+    "last_active": ""
   }
 ]
