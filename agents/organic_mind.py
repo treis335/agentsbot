@@ -158,10 +158,10 @@ def _supervisor_synthesize(topic: str, debate: str) -> str:
 def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
     """Extrai tarefas concretas do debate para o backlog."""
     prompt = (
-        f"Com base neste debate sobre '{topic}' e s?ntese:\n{synthesis}\n\n"
-        "Gera 1-2 tarefas CONCRETAS e IMPLEMENTÁVEIS para o backlog.\n"
-        "Responde APENAS em JSON válido:\n"
-        '[{"title": "título curto", "description": "o que fazer exactamente", '
+        f"Com base neste debate sobre '{topic}' e sintese:\n{synthesis}\n\n"
+        "Gera 1-2 tarefas CONCRETAS e IMPLEMENTAVEIS para o backlog.\n"
+        "Responde APENAS em JSON valido - sem markdown, sem texto extra:\n"
+        '[{"title": "titulo curto", "description": "o que fazer exactamente", '
         '"agent": "Developer|AutoFixer|Arquiteto|QATester|Explorador", "priority": 3}]'
     )
     try:
@@ -170,11 +170,23 @@ def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
             max_tokens=300
         )
         raw = raw.replace("```json", "").replace("```", "").strip()
-        return json.loads(raw)
+        # Tentar parse direto primeiro
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            # Fallback: tentar extrair array JSON com regex
+            import re
+            match = re.search(r'\[.*?\]', raw, re.DOTALL)
+            if match:
+                try:
+                    return json.loads(match.group())
+                except json.JSONDecodeError:
+                    pass
+            logger.warning(f"[OrganicMind] JSON invalido, fallback vazio: {raw[:100]}")
+            return []
     except Exception as e:
-        logger.warning(f"[OrganicMind] Extrac??o de tarefas falhou: {e}")
+        logger.warning(f"[OrganicMind] Extracao de tarefas falhou: {e}")
         return []
-
 
 def save_debate(debate: dict, path: str = "memory/debates/"):
     """Persiste debate no disco."""

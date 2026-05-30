@@ -1089,10 +1089,22 @@
     "id": "auto_6bbe5b64",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T17:12:17.036112",
     "source": "fallback",
-    "started_at": "2026-05-30T17:12:27.044567"
+    "started_at": "2026-05-30T17:12:27.044567",
+    "completed_at": "2026-05-30T17:15:52.542364",
+    "result": "## Relatório Final — Diagnóstico de Logs\n\n### O que fiz:\nAnalisei todos os logs do ecossistema (main.log, supervisor.log, wakeup.log, startup.log, auto_recovery.log, run_stderr.log, métricas da API) e **identifiquei os 3 problemas principais**: (1) **handlers.py com f-string mal formatada** que bloqueava o Telegram (já corrigido anteriormente), (2) **write_file com 79.8% de erro** (implementei retry com 3 tentativas + fallback para temp dir quando há PermissionError), e (3) **wakeup loop infinit"
+  },
+  {
+    "id": "auto_bafaad34",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T17:16:02.736138",
+    "source": "fallback",
+    "started_at": "2026-05-30T17:16:12.744712"
   }
 ]
