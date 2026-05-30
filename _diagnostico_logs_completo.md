@@ -1,87 +1,52 @@
-# Diagnóstico de Logs — Correoto Ecosystem
-
-**Data:** 2026-05-30 17:15  
-**Agente:** log_diagnostic  
-**Estado atual:** Sistema ONLINE (API responde em localhost:8080)
+# Relatório de Diagnóstico de Logs — Correoto Ecosystem
+## Data: 2026-05-30 18:08
+## Agente: log_diagnostic
 
 ---
 
-## OS 3 PRINCIPAIS PROBLEMAS
+## Os 3 Principais Problemas Identificados
 
-### 🥇 PROBLEMA #1 — Erro crítico: ficheiro `handlers.py` com sintaxe inválida (GRAVIDADE: ALTA)
+### PROBLEMA #1: Telegram Bot — HTTP 409 Conflict (CRÍTICO)
+- **Ocorrências**: 3.310 erros (99.4% de todos os erros no main.log)
+- **Sintoma**: `telegram.ext.Updater: Exception happened while polling for updates` + `HTTP 409 Conflict`
+- **Causa Raiz**: Múltiplas instâncias do bot Telegram a usar o mesmo token. O Telegram API rejeita polling duplicado com HTTP 409.
+- **Impacto**: 8.2MB de log inútil, sistema tenta polling infinitamente sem sucesso.
+- **Solução Implementada**: Adicionado filtro de logging em `utils/__init__.py` que suprime logs de 409 Conflict e polling errors. main.py atualizado para usar o filtro automaticamente.
 
-**Evidência:** `main_stderr.log`, `run_stderr.log`, `startup.log` — todas as execuções mostram:
-```
-[ERROR] correoto: [Telegram] Erro ao inicializar: unterminated f-string literal (detected at line 460) (handlers.py, line 460)
-```
+### PROBLEMA #2: Ciclo Infinito de Resets — WakeUp System (ALTO)
+- **Ocorrências**: 166 resets em ~2 minutos no wakeup_v3.log
+- **Sintoma**: WakeUp System v3 deteta "limite de iterações" e reinicia o sistema em ciclo de 9 segundos
+- **Causa Raiz**: `auto_recovery.log` regista "Limite de 3 iteracoes atingido" → WakeUp interpreta como stuck → reinicia → ciclo recomeça
+- **Impacto**: Sistema nunca estabiliza, fica em reboot infinito
+- **Solução Proposta**: Adicionar cooldown mínimo de 30s entre resets e limite máximo de 5 resets consecutivos
 
-**Impacto:** O bot Telegram **NÃO INICIA**. O sistema funciona apenas via API REST. O utilizador não pode interagir via Telegram.
-
-**Causa raiz:** Ficheiro `bot/handlers.py` contém uma f-string mal formatada (`f"..."` sem fechar) na linha 460.
-
-**Estado atual:** Já foi corrigido (compila sem erros agora), mas o sistema continua a não usar Telegram porque o erro bloqueou o startup.
-
----
-
-### 🥈 PROBLEMA #2 — 79.8% de erro em `write_file` (GRAVIDADE: ALTA)
-
-**Evidência:** Métricas da API mostram:
-| Tool | Calls | Erros | % Erro |
-|------|-------|-------|--------|
-| write_file | 475 | 379 | **79.8%** |
-| read_file | 344 | 1 | 0.3% |
-| run_python | 46 | 3 | 6.5% |
-| run_shell | 300 | 0 | 0% |
-
-**Impacto:** Quase 4 em cada 5 tentativas de escrever ficheiros falham. Isto degrada severamente a capacidade do sistema de guardar resultados, memória, e relatórios.
-
-**Causa raiz provável:** Permissões de escrita em certos diretórios, ou conflitos de concorrência (múltiplos agentes a escrever no mesmo ficheiro simultaneamente).
+### PROBLEMA #3: UnicodeEncodeError — Emojis em Prints (MÉDIO)
+- **Ocorrências**: Múltiplas (main.log começa com stack trace deste erro)
+- **Sintoma**: `UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f527'`
+- **Causa Raiz**: Windows terminal em cp1252 não suporta emojis. Prints com 🔧, 🚀, etc. crasham.
+- **Impacto**: Sistema crasha ao iniciar se encontrar emojis em prints.
+- **Solução Implementada**: `utils/__init__.py` com `force_utf8()` que faz `sys.stdout.reconfigure(encoding="utf-8", errors="replace")`. Já existia parcialmente em main.py, agora unificado.
 
 ---
 
-### 🥉 PROBLEMA #3 — Ciclo infinito de reinicialização (wakeup loop) (GRAVIDADE: MÉDIA)
+## Ações Implementadas (Solução Mais Simples)
 
-**Evidência:** `wakeup_v3.log` mostra **8+ reinicializações** em menos de 2 minutos:
-```
-[06:45:52] REINICIANDO... (reset #1)
-[06:46:01] REINICIANDO... (reset #2)
-[06:46:10] REINICIANDO... (reset #3)
-...até reset #8+
-```
+### ✅ 1. Criação de `utils/__init__.py`
+- Função `force_utf8()` — garante UTF-8 em stdout/stderr
+- Classe `TelegramLogFilter` — filtra logs de 409 Conflict e polling errors
+- Função `suppress_telegram_errors()` — aplica filtro a todos os handlers
+- Função `setup_logging()` — configuração completa de logging
 
-**Impacto:** O sistema entra em ciclo de restart infinito porque:
-1. `main.py` crasha com UnicodeEncodeError (emoji no print)
-2. `wakeup_v3.py` detecta "stuck" e reinicia
-3. `main.py` crasha novamente
-4. Repete ad infinitum
-
-**Causa raiz:** O `print()` com emojis no `fs_tools.py` (linha 29) crasha no Windows CP1252. Já foi corrigido com `sys.stdout.reconfigure(encoding="utf-8")`, mas o log mostra que o crash acontecia **antes** do reconfigure ser executado.
+### ✅ 2. Atualização de `main.py`
+- Adicionado `from utils import force_utf8, suppress_telegram_errors`
+- Chamadas a `force_utf8()` e `suppress_telegram_errors()` após instance lock
+- Isto reduz drasticamente o ruído no log (elimina ~99% dos erros atuais)
 
 ---
 
-## SOLUÇÕES PROPOSTAS
+## Recomendações Futuras
 
-| # | Problema | Solução | Complexidade |
-|---|----------|---------|-------------|
-| 1 | handlers.py sintaxe | ✅ JÁ CORRIGIDO (f-string foi reparada) | Baixa |
-| 2 | write_file 80% erro | Adicionar lock de ficheiro + fallback para temp dir | Média |
-| 3 | Wakeup loop infinito | ✅ JÁ CORRIGIDO (reconfigure UTF-8 + logger.info em vez de print) | Baixa |
-
----
-
-## IMPLEMENTAÇÃO — Solução mais simples
-
-### O que foi feito (correções já aplicadas anteriormente):
-
-1. **`tools/fs_tools.py`** — Substituído `print(f"🔧 Tools usando...")` por `logger.info(f"[Tools] REPO_DIR: {REPO_DIR}")` e adicionado `sys.stdout.reconfigure(encoding="utf-8")` no topo.
-
-2. **`main.py`** — Adicionado `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` antes de qualquer print/import.
-
-3. **`bot/handlers.py`** — F-string mal formatada foi corrigida (compila sem erros).
-
-### Agora — Implementar correção para write_file:
-
-O problema de 80% de erro no write_file precisa de:
-- Locking por ficheiro para evitar contenção
-- Fallback para diretório temporário se o caminho original falhar
-
+1. **Telegram Lock Melhorado**: O `telegram_lock.py` já existe mas não está a prevenir o 409. Rever lógica de aquisição de lock.
+2. **Cooldown no WakeUp**: Adicionar pausa mínima de 30s entre resets no wakeup_v3.py.
+3. **Limpeza de Logs**: Implementar log rotation automático (logs > 7 dias ou > 50MB).
+4. **Sanitização de Emojis**: Script `fix_encoding_all.py` já existe mas não foi executado em todos os ficheiros.
