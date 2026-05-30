@@ -9,7 +9,7 @@ import subprocess
 from datetime import datetime
 
 # Importar memória de conversa
-from core.memory import ConversationMemory, MEMORY_DIR
+from core.memory_hub import MemoryHub, get_memory_hub
 
 class Supervisor:
     def __init__(self):
@@ -21,7 +21,7 @@ class Supervisor:
         self.logs = self._load_logs()
         self.priorities = self._load_priorities()
         # Memória de conversa
-        self.memory = ConversationMemory()
+        self.memory = MemoryHub()
 
     def _load_agents(self):
         if os.path.exists(self.agents_file):

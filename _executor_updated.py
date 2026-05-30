@@ -136,35 +136,37 @@ class AgentExecutor:
                 result = d.get("result", "")[:60]
                 lines.append(f"[FAIL] {action}({d.get('args', {})}) -> {result}")
 
-        # Memória global partilhada
+        # Memória global partilhada via MemoryHub
         try:
-            from memory.global_memory import GlobalMemory
-            gm = GlobalMemory()
-
-            decisions = gm.get_decisions(5)
+            decisions = self.memory.get_decisions(limit=5)
             if decisions:
                 lines.append("\n### Decisões da Equipa (memória global)")
                 for d in decisions:
-                    lines.append(f"• [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
+                    agent = d.get("data", {}).get("agent", "?")
+                    decision = d.get("data", {}).get("decision", "?")
+                    ts = d.get("timestamp", "?")[:16]
+                    lines.append(f"• [{ts}] {agent}: {decision[:80]}")
 
-            knowledge = gm.get_knowledge()
+            knowledge = self.memory.get_knowledge(limit=5)
             if knowledge:
                 lines.append("\n### Conhecimento Partilhado")
-                for k in knowledge[-5:]:
-                    lines.append(f"• {k['topic']}: {k['content'][:80]}")
+                for k in knowledge:
+                    topic = k.get("data", {}).get("topic", "?")
+                    content = k.get("data", {}).get("content", "")[:80]
+                    lines.append(f"• {topic}: {content}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
+            logger.debug(f"[{self.agent_name}] Memória global via hub indisponível: {e}")
 
-                # Lições aprendidas (Batch 4)
+        # Lições aprendidas via MemoryHub
         try:
-            from memory.lesson_extractor import LessonExtractor
-            lessons = LessonExtractor().get_lessons_for_agent(self.agent_id, limit=4)
+            lessons = self.memory.get_lessons(agent_id=self.agent_id, limit=4)
             if lessons:
                 lines.append("\n### Lições Aprendidas (evita estes erros)")
                 for lesson in lessons:
-                    lines.append(f"⚡ {lesson}")
+                    content = lesson.get("data", {}).get("content", str(lesson))[:80]
+                    lines.append(f"• {content}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
+            logger.debug(f"[{self.agent_name}] Lições via hub indisponíveis: {e}")
 
         return "\n".join(lines)
 

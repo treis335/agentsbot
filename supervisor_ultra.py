@@ -48,7 +48,15 @@ state = {
 def log(msg):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     entry = f"[{ts}] {msg}"
-    print(entry, flush=True)
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except (ValueError, AttributeError):
+        pass
+    try:
+        print(entry, flush=True)
+    except UnicodeEncodeError:
+        safe_entry = entry.encode('utf-8', errors='replace').decode('utf-8')
+        print(safe_entry, flush=True)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(entry + "\n")
 

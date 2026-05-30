@@ -78,6 +78,13 @@ class Config:
     SELF_IMPROVE_EVERY_N_CYCLES: int = int(os.getenv("SELF_IMPROVE_EVERY_N_CYCLES", "10"))
     SELF_IMPROVE_MAX_PATCHES: int = int(os.getenv("SELF_IMPROVE_MAX_PATCHES", "3"))
 
+    # --- Notificações Proactivas ---
+    NOTIFY_ON_TASK_COMPLETE: str = os.getenv("NOTIFY_ON_TASK_COMPLETE", "true")
+    NOTIFY_ON_TASK_FAIL: str = os.getenv("NOTIFY_ON_TASK_FAIL", "true")
+    NOTIFY_ON_SELF_IMPROVE: str = os.getenv("NOTIFY_ON_SELF_IMPROVE", "true")
+    NOTIFY_DAILY_SUMMARY: str = os.getenv("NOTIFY_DAILY_SUMMARY", "true")
+    NOTIFY_DAILY_SUMMARY_HOUR: int = int(os.getenv("NOTIFY_DAILY_SUMMARY_HOUR", "8"))
+
     # --- Validacao ---
     @classmethod
     def validate(cls) -> list[str]:

@@ -358,17 +358,16 @@ class SelfImprovementLoop:
             logger.warning(f"[SelfImprove] Changelog falhou: {e}")
 
     async def _notify(self, result: ImprovementResult) -> None:
-        """Passo 8: notificar via Telegram se bot disponível."""
-        msg = result.telegram_msg
-        if not msg or not self.telegram_bot:
+        """Passo 8: notificar via Notifier singleton."""
+        if result.patches_applied == 0:
             return
         try:
-            owner_id = getattr(Config, "OWNER_TELEGRAM_ID", None)
-            if owner_id:
-                await self.telegram_bot.send_message(
-                    chat_id=int(owner_id),
-                    text=msg,
-                    parse_mode="Markdown",
-                )
+            from bot.notifier import get_notifier
+            notifier = get_notifier()
+            await notifier.self_improvement(
+                patches=result.patches_applied,
+                details=result.details,
+                commit=result.commit_hash,
+            )
         except Exception as e:
             logger.warning(f"[SelfImprove] Notificação falhou: {e}")

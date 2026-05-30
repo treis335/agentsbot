@@ -1,0 +1,156 @@
+def _read_all(self) -> list[dict]:
+        """Le todas as entradas do hub.jsonl."""
+        if not os.path.exists(self._filepath):
+            return []
+        with open(self._filepath, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        entries = []
+        for line in lines:
+            line = line.strip()
+            if line:
+                try:
+                    entries.append(json.loads(line))
+                except json.JSONDecodeError:
+                    pass
+        return entries
+    
+    def _load_all(self) -> list[dict]:
+        """Alias para _read_all (compatibilidade com testes)."""
+        return self._read_all()
+    
+    def _filter(self, entry_type: Optional[str] = None, 
+                limit: int = 0, **kwargs) -> list[dict]:
+        """Filtra entradas por tipo e campos."""
+        all_entries = self._read_all()
+        result = all_entries
+        
+        if entry_type:
+            result = [e for e in result if e.get("type") == entry_type]
+        
+        if kwargs:
+            for key, value in kwargs.items():
+                result = [e for e in result if e.get("data", {}).get(key) == value]
+        
+        if limit > 0:
+            result = result[-limit:]
+        
+        return result
+
+    # ─── API PÚBLICA ─────────────────────────────────────────────
+    
+    def store_chat(self, role: str, content: str, metadata: Optional[dict] = None) -> dict:
+        """Guarda uma mensagem de conversa.
+        
+        Args:
+            role: "user", "assistant", "system", "supervisor", etc.
+            content: Conteudo da mensagem
+            metadata: Metadados opcionais
+            
+        Returns:
+            A entrada criada
+        """
+        return self._append("chat", {
+            "role": role,
+            "content": content,
+            "metadata": metadata or {},
+        })
+    
+    def store_episode(self, agent_id: str, task: str, result: str,
+                      success: bool = True, context: str = "",
+                      lesson: str = "", action: str = "",
+                      args: Optional[dict] = None) -> dict:
+        """Guarda um episodio (experiencia de agente).
+        
+        Args:
+            agent_id: ID do agente
+            task: Descricao da tarefa
+            result: Resultado da execucao
+            success: Se foi bem sucedido
+            context: Contexto adicional
+            lesson: Licao aprendida
+            action: Acao executada
+            args: Argumentos da acao
+        """
+        return self._append("episode", {
+            "agent_id": agent_id,
+            "task": task,
+            "result": str(result)[:500],
+            "success": success,
+            "context": context,
+            "lesson": lesson,
+            "action": action,
+            "args": args or {},
+        })
+    
+    def store_knowledge(self, topic: str, content: str,
+                        source: str = "", tags: Optional[list] = None) -> dict:
+        """Guarda conhecimento semantico.
+        
+        Args:
+            topic: Topico do conhecimento
+            content: Conteudo
+            source: Fonte (ex: "discovery", "decision", "manual")
+            tags: Tags para categorizacao
+        """
+        return self._append("knowledge", {
+            "topic": topic,
+            "content": content,
+            "source": source,
+            "tags": tags or [],
+        })
+
+    def get_context(self, agent_id: Optional[str] = None, n: int = 10) -> str:
+        """Devolve contexto formatado para LLM.
+        
+        Inclui:
+        - Ultimas n/2 conversas
+        - Ultimos n/2 episodios do agente (se agent_id fornecido)
+        - Conhecimento relevante
+        
+        Args:
+            agent_id: ID do agente para filtrar episodios
+            n: Numero total de entradas a incluir
+            
+        Returns:
+            String formatada com o contexto
+        """
+        lines = []
+        
+        # Conversas recentes
+        chats = self.get_chats(n // 2)
+        if chats:
+            lines.append("=== CONVERSAS RECENTES ===")
+            for c in chats:
+                role = c["data"]["role"]
+                content = c["data"]["content"][:200]
+                lines.append(f"[{role}] {content}")
+        
+        # Episodios do agente
+        if agent_id:
+            episodes = self.get_episodes(agent_id, n // 2)
+            if episodes:
+                lines.append("\n=== EXPERIENCIAS RECENTES ===")
+                for ep in episodes:
+                    d = ep["data"]
+                    ok = "[OK]" if d["success"] else "[FAIL]"
+                    ts = ep["timestamp"][:16]
+                    lines.append(f"{ok} [{ts}] {d['task'][:80]} → {d['result'][:80]}")
+        
+        # Conhecimento (top 3 topics)
+        knowledge = self.get_knowledge(limit=3)
+        if knowledge:
+            lines.append("\n=== CONHECIMENTO ===")
+            for k in knowledge:
+                d = k["data"]
+                topic = d.get('topic', d.get('key', 'general'))
+                content_val = d.get('content', d.get('value', str(d)))
+                lines.append(f"[{topic}] {str(content_val)[:150]}")
+        
+        if not lines:
+            return "Sem historico de memoria."
+        
+        return "\n".join(lines)
+    
+    # ─── QUERIES ─────────────────────────────────────────────────
+    
+    

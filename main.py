@@ -214,6 +214,19 @@ async def main():
             # Dar o bot ao loop para enviar relatórios Telegram
             auto_loop.telegram_bot = app.bot
             set_auto_loop(auto_loop)
+
+            # Ligar o Notifier ao bot real
+            try:
+                from bot.notifier import get_notifier
+                from core.config import Config
+                owner_id = getattr(Config, "OWNER_TELEGRAM_ID", None)
+                if owner_id:
+                    notifier = get_notifier()
+                    notifier.set_bot(app.bot, int(owner_id))
+                    await notifier.system_started()
+                    logger.info("[Notifier] Notificações proactivas activas")
+            except Exception as e:
+                logger.warning(f"[Notifier] Falhou ao iniciar: {e}")
             while True:
                 await asyncio.sleep(1)
         else:
@@ -227,9 +240,16 @@ async def main():
         while True:
             await asyncio.sleep(60)
 if __name__ == "__main__":
+    # ─── Lock Singleton ────────────────────────────────────────────────
+    from lock_utils import acquire_lock, release_lock
+    if not acquire_lock():
+        sys.exit("Outra instância já está a correr. A encerrar.")
+    # ───────────────────────────────────────────────────────────────────
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("[Main] Interrompido pelo utilizador.")
     except Exception as e:
         logger.error(f"[Main] Erro fatal: {e}", exc_info=True)
+    finally:
+        release_lock()

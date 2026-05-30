@@ -138,33 +138,42 @@ class AgentExecutor:
 
         # Memória global partilhada
         try:
-            from memory.global_memory import GlobalMemory
-            gm = GlobalMemory()
-
-            decisions = gm.get_decisions(5)
+        # Memoria global partilhada (via MemoryHub)
+        try:
+            decisions = self.memory.get_decisions(limit=5)
             if decisions:
-                lines.append("\n### Decisões da Equipa (memória global)")
+                lines.append("\n### Decisoes da Equipa (memoria global)")
                 for d in decisions:
-                    lines.append(f"• [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
+                    data = d.get("data", d)
+                    ts = data.get("timestamp", "")[:16]
+                    agent = data.get("agent", "?")
+                    decision = data.get("decision", "")[:80]
+                    lines.append(f"[{ts}] {agent}: {decision}")
 
-            knowledge = gm.get_knowledge()
+            knowledge = self.memory.get_knowledge(limit=5)
             if knowledge:
                 lines.append("\n### Conhecimento Partilhado")
-                for k in knowledge[-5:]:
-                    lines.append(f"• {k['topic']}: {k['content'][:80]}")
+                for k in knowledge:
+                    data = k.get("data", k)
+                    topic = data.get("topic", "?")
+                    c = data.get("content", "")[:80]
+                    lines.append(f"{topic}: {c}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
+            logger.debug(f"[{self.agent_name}] Memoria global indisponivel: {e}")
 
                 # Lições aprendidas (Batch 4)
         try:
-            from memory.lesson_extractor import LessonExtractor
-            lessons = LessonExtractor().get_lessons_for_agent(self.agent_id, limit=4)
+        # Licoes aprendidas (via MemoryHub)
+        try:
+            lessons = self.memory.get_lessons(agent_id=self.agent_id, limit=4)
             if lessons:
-                lines.append("\n### Lições Aprendidas (evita estes erros)")
+                lines.append("\n### Licoes Aprendidas (evita estes erros)")
                 for lesson in lessons:
-                    lines.append(f"⚡ {lesson}")
+                    if isinstance(lesson, dict):
+                        lesson = lesson.get("data", lesson).get("lesson", str(lesson))
+                    lines.append(f"- {lesson}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
+            logger.debug(f"[{self.agent_name}] Licoes indisponiveis: {e}")
 
         return "\n".join(lines)
 
@@ -324,7 +333,15 @@ class AgentExecutor:
                 )
                 # Registar na memória global
                 try:
-                    from memory.global_memory import GlobalMemory
+                # Registar na memoria global (via MemoryHub)
+                try:
+                    self.memory.add_decision(
+                        agent    = self.agent_name,
+                        decision = f"Completou: {task[:80]}",
+                        context  = (msg.content or "")[:200],
+                    )
+                except Exception:
+                    pass
                     GlobalMemory().add_decision(
                         agent    = self.agent_name,
                         decision = f"Completou: {task[:80]}",

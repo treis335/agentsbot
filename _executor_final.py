@@ -138,31 +138,27 @@ class AgentExecutor:
 
         # Memória global partilhada
         try:
-            from memory.global_memory import GlobalMemory
-            gm = GlobalMemory()
-
-            decisions = gm.get_decisions(5)
+                        decisions = self.memory.get_decisions(5)
             if decisions:
                 lines.append("\n### Decisões da Equipa (memória global)")
                 for d in decisions:
-                    lines.append(f"• [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
+                    lines.append(f"  [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
 
-            knowledge = gm.get_knowledge()
+            knowledge = self.memory.get_knowledge()
             if knowledge:
                 lines.append("\n### Conhecimento Partilhado")
                 for k in knowledge[-5:]:
-                    lines.append(f"• {k['topic']}: {k['content'][:80]}")
+                    lines.append(f"  {k['topic']}: {k['content'][:80]}")
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
 
                 # Lições aprendidas (Batch 4)
         try:
-            from memory.lesson_extractor import LessonExtractor
-            lessons = LessonExtractor().get_lessons_for_agent(self.agent_id, limit=4)
+                        lessons = self.memory.get_lessons(self.agent_id, limit=4)
             if lessons:
                 lines.append("\n### Lições Aprendidas (evita estes erros)")
                 for lesson in lessons:
-                    lines.append(f"⚡ {lesson}")
+                    lines.append(f"  {lesson}")
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
 
@@ -192,13 +188,11 @@ class AgentExecutor:
         # Procedimentos HOW-TO relevantes (Batch 4)
         proc_ctx = ""
         try:
-            from memory.procedural import ProceduralMemory
-            proc_mem = ProceduralMemory()
-            relevant_procs = proc_mem.get_relevant(task, limit=2)
+                        relevant_procs = self.memory.get_procedural(task, limit=2)
             if relevant_procs:
-                proc_ctx = "\n" + proc_mem.format_for_prompt(relevant_procs)
+                proc_ctx = "\n" + "\n".join(relevant_procs)
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Procedimentos indisponiveis: {e}")
+            logger.debug(f"[{self.agent_name}] Procedimentos indisponíveis: {e}")
 
         # Falhas similares (Batch 4)
         failure_ctx = ""
@@ -324,14 +318,13 @@ class AgentExecutor:
                 )
                 # Registar na memória global
                 try:
-                    from memory.global_memory import GlobalMemory
-                    GlobalMemory().add_decision(
+                                        self.memory.add_decision(
                         agent    = self.agent_name,
                         decision = f"Completou: {task[:80]}",
                         context  = (msg.content or "")[:200],
                     )
                 except Exception:
-                    pass
+
                 return msg.content or "Tarefa concluída.", messages
 
             # Executar tool calls (com verificação e retry automático)
