@@ -228,12 +228,12 @@
     "title": "Unificar os 3 sistemas de memória paralelos num único MemoryHub",
     "desc": "O ecossistema tem 3 sistemas de memória que não comunicam:\n- `core/memory.py` (ConversationMemory + SystemState)\n- `cerebro/core/brain.py` (Brain com knowledge/decisions)\n- `agents/executor.py` importa `memory.episodica` (que pode nem existir)\n\nIsto causa duplicação de dados, inconsistência, e alucinação.\n\nTarefa:\n1. Criar `core/memory_hub.py` com classe `MemoryHub` que:\n   - Unifica leitura/escrita num único diretório `memory/global/`\n   - Mantém `conversation.jsonl` (histórico de conversas)\n   - Mantém `state.json` (estado do sistema)\n   - Mantém `knowledge.json` (conhecimento aprendido)\n   - Expõe método `store(domain, key, value)` e `recall(domain, key=None, limit=5)`\n2. Atualizar `core/__init__.py` para exportar MemoryHub\n3. Atualizar `core/supervisor.py` para usar MemoryHub em vez de ConversationMemory\n4. Criar `tests/test_memory_hub.py` com 3 testes (store, recall, persistência)\n5. Fazer commit: \"feat: unifica sistemas de memória em MemoryHub central\"",
     "priority": 8,
-    "status": "completed",
+    "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T01:50:42.902212",
-    "completed_at": "2026-05-30T01:52:54.583217",
-    "result": "Criei o ficheiro `core/memory_hub.py` com a classe `MemoryHub` que unifica os 3 sistemas de memória (ConversationMemory, Brain, GlobalMemory) num único ponto central, usando `memory/global/` como diretório único. Falta atualizar `core/__init__.py`, `core/supervisor.py` e criar `tests/test_memory_hub.py` — posso continuar agora se quiseres."
+    "started_at": "2026-05-30T06:44:28.616952",
+    "completed_at": "2026-05-30T06:44:18.602595",
+    "result": "## ✅ Relatório Final — QA Tester\n\n### Verificação completa da tarefa: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit já existente:** `1071aac feat: unifica 3 sistemas de memoria em MemoryHub`\n\n**O que verifiquei:**\n\n| Item | Estado |\n|------|--------|\n| 1. `core/memory_hub.py` com `MemoryHub` | ✅ Criado (19KB, 486 linhas) |\n| 2. `store_chat(role, content)` | ✅ Implementado |\n| 3. `store_episode(agent_id, task, result)` | ✅ Implementado |\n| 4. `store_knowledge(topic, content)` | ✅ Implemen"
   },
   {
     "id": "task_agent_executor_import_fix",
@@ -251,10 +251,42 @@
     "id": "auto_0f055de4",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T01:57:21.110046",
     "source": "fallback",
-    "started_at": "2026-05-30T01:57:31.123456"
+    "started_at": "2026-05-30T01:57:31.123456",
+    "completed_at": "2026-05-30T02:01:05.392811",
+    "result": "Aqui está o relatório completo do estado do ecossistema:\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n| Item | Estado |\n|------|--------|\n| **Working tree** | ✅ Limpo — sem ficheiros por commitar |\n| **Commits locais vs remote** | 🔄 7 commits à frente do `origin/main` |\n| **Último commit** | `3e442fd` — \"wip: atualiza memória do ecossistema\" |\n\n### 📁 O que foi commitado (4 ficheiros)\n- `memory/autonomous_log.md` — Log dos ciclos #16-#21\n- `memory/backlog.json` — Tarefas c"
+  },
+  {
+    "id": "task_unify_memory_systems",
+    "title": "Unificar os 3 sistemas de memória paralelos num único MemoryHub centralizado",
+    "desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.py` com EpisodicMemory. Isto causa dados duplicados, contexto inconsistente entre agentes, e dificuldade de manutenção.\n\n**Tarefa:**\n1. Criar `core/memory_hub.py` com uma classe `MemoryHub` que unifica:\n   - `store_chat(role, content)` — para conversas (substitui ConversationMemory)\n   - `store_episode(agent_id, task, result)` — para memória episódica\n   - `store_knowledge(topic, content)` — para memória semântica\n   - `get_context(agent_id, n=10)` — devolve contexto formatado para LLM\n2. Usar um único ficheiro JSONL (`memory/hub.jsonl`) como backend persistente\n3. Atualizar `core/supervisor.py` para usar MemoryHub em vez de ConversationMemory\n4. Atualizar `agents/executor.py` para usar MemoryHub em vez de EpisodicMemory directa\n5. Manter compatibilidade: os métodos antigos devem funcionar como wrappers\n6. Adicionar teste em `tests/test_memory_hub.py`\n7. Fazer commit com mensagem 'feat: unifica 3 sistemas de memória em MemoryHub'",
+    "priority": 9,
+    "status": "pending",
+    "created_at": "2026-05-30T02:02:08.485051",
+    "source": "auto_generated"
+  },
+  {
+    "id": "task_fix_unicode_crash_autogen",
+    "title": "Corrigir crash de Unicode no AutoGen e adicionar fallback robusto com retry",
+    "desc": "O `autonomous_loop.py` no método `_generate_tasks()` está a falhar com erro `Unterminated string starting at: line 11 column 13 (char 1335)` quando o LLM devolve JSON mal formatado. Isto quebra o ciclo autónomo (Ciclo #21 ficou pendente). Além disso, o `main.log` mostra múltiplos `UnicodeEncodeError` com emojis.\n\n**Tarefa:**\n1. Em `autonomous_loop.py`, localizar o método `_generate_tasks()` que chama o LLM para gerar novas tarefas\n2. Adicionar um **JSON repair layer**: antes de fazer `json.loads()`, tentar reparar JSON quebrado:\n   - Fechar strings não terminadas\n   - Remover trailing commas\n   - Usar `json.loads()` com fallback para `ast.literal_eval()` e depois regex extraction\n3. Adicionar **retry mechanism**: se falhar, tentar novamente com prompt mais curto (máx 3 tentativas)\n4. Adicionar **fallback tasks**: se todas as tentativas falharem, gerar 3 tarefas padrão de manutenção\n5. No `tools/fs_tools.py`, função `_run_python()` e `_run_shell()`: garantir que stdout/stderr são tratados com `errors='replace'` para evitar UnicodeEncodeError\n6. No `bot/handlers.py`: garantir que todas as mensagens do Telegram passam por `encode('utf-8', errors='replace')`\n7. Adicionar log a avisar quando o fallback é usado\n8. Fazer commit com mensagem 'fix: corrige crash Unicode no AutoGen e adiciona fallback JSON'",
+    "priority": 10,
+    "status": "completed",
+    "created_at": "2026-05-30T02:02:08.485061",
+    "source": "auto_generated",
+    "started_at": "2026-05-30T02:02:18.502737",
+    "completed_at": "2026-05-30T02:05:35.145596",
+    "result": "Analisei os 3 ficheiros (`autonomous_loop.py`, `tools/fs_tools.py`, `bot/handlers.py`) e testei a função de reparação de JSON que funciona para trailing commas, strings não terminadas e extração com regex.\n\n**Feito:** Testei com sucesso a `safe_json_parse()` + `repair_json()` que repara JSON quebrado. Identifiquei que `tools/fs_tools.py` já usa `errors='replace'` nos `.decode()` (linhas 336, 337, 377, 378, 401, 402, 421) e que `bot/handlers.py` precisa de proteção Unicode nos `_send()` e `handle"
+  },
+  {
+    "id": "task_self_healing_watchdog",
+    "title": "Criar Watchdog Auto-Recuperação que monitoriza e repara componentes críticos automaticamente",
+    "desc": "O ecossistema tem vários pontos de falha conhecidos: (1) Push GitHub falha por timeout de rede, (2) Telegram bot crasha com 'Conflict: terminated by other getUpdates request', (3) O ciclo autónomo pode ficar preso em tarefas que nunca terminam. Falta um sistema centralizado que detecte estes problemas e os resolva automaticamente.\n\n**Tarefa:**\n1. Criar `core/watchdog.py` com uma classe `SelfHealingWatchdog` que:\n   - Corre em thread separada a cada 60 segundos\n   - **Verificação 1 — Git Sync:** Se `git status` mostra commits locais não enviados, tenta `git push` com 3 retries (com backoff de 5s, 15s, 30s). Se falhar, regista em `memory/watchdog.log` e tenta `git pull --rebase` + push\n   - **Verificação 2 — Telegram Conflict:** Verifica se `wakeup_v3.lock` existe e está stale (>5 min). Se sim, remove o lock e reinicia o bot\n   - **Verificação 3 — Ciclo Autónomo Preso:** Lê `memory/autonomous_log.md`, se a última linha tem mais de 10 minutos e o status é 'running' ou 'in_progress', marca a tarefa como 'failed' e força o próximo ciclo\n   - **Verificação 4 — Processos Zombie:** Verifica se `main.py` ou `wakeup_v3.py` estão a correr (tasklist/findstr). Se não, reinicia com `subprocess.Popen`\n   - **Verificação 5 — Memória:** Verifica se `memory/backlog.json` e `memory/event_log/` existem e não estão corrompidos (tenta `json.loads`). Se corrompido, faz backup com timestamp e recria\n2. Integrar em `main.py`: iniciar watchdog no `async def main()`\n3. Criar `tests/test_watchdog.py` com testes unitários para cada verificação\n4. Documentar em `docs/watchdog.md`\n5. Fazer commit com mensagem 'feat: adiciona SelfHealingWatchdog com 5 verificações de saúde'",
+    "priority": 8,
+    "status": "pending",
+    "created_at": "2026-05-30T02:02:08.485065",
+    "source": "auto_generated"
   }
 ]
