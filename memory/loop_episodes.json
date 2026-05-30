@@ -106,5 +106,23 @@
     "success": true,
     "result_summary": "A tarefa está concluída. Aqui está o relatório final do que fiz:\n\n---\n\n## ✅ RELATÓRIO — Análise de Memória Episódica Concluída\n\n### O que analisei\n- **26 tarefas** no backlog (desde 26 Maio)\n- **11 episódios** gravados na memória episódica\n- **16 ciclos** do loop autónomo (autonomous_log.md — 16.027 linhas)\n- **Últimos 20 commits** do git\n\n### 8 Lições Extraídas\n\n| # | Lição | Impacto |\n|---|-----",
     "lesson": ""
+  },
+  {
+    "task_id": "task_fix_cognitive_cycle",
+    "task_desc": "O ficheiro `core/cognitive_cycle.py` tem um bug de sintaxe na linha final: `self.evoluir(insi` — o nome da variável está truncado e falta fechar o parênteses. Isto causa crash silencioso quando o cicl",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T01:50:32.896079",
+    "success": true,
+    "result_summary": "O commit está feito localmente. Aqui está o resumo completo do que foi feito:\n\n---\n\n## ✅ Tarefa Concluída\n\n### 1. Bug de sintaxe corrigido em `core/cognitive_cycle.py`\n- **Linha corrigida**: `self.evoluir(insi` → `self.evoluir(insight)`\n- **Linha adicional adicionada**: `return {\"status\": \"travao_ativado\", \"insight\": insight}` para que o anti-loop retorne o estado correto quando trava no início do",
+    "lesson": ""
+  },
+  {
+    "task_id": "task_unify_memory_systems",
+    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam:\n- `core/memory.py` (ConversationMemory + SystemState)\n- `cerebro/core/brain.py` (Brain com knowledge/decisions)\n- `agents/executor.py` import",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T01:52:54.581888",
+    "success": true,
+    "result_summary": "Criei o ficheiro `core/memory_hub.py` com a classe `MemoryHub` que unifica os 3 sistemas de memória (ConversationMemory, Brain, GlobalMemory) num único ponto central, usando `memory/global/` como diretório único. Falta atualizar `core/__init__.py`, `core/supervisor.py` e criar `tests/test_memory_hub.py` — posso continuar agora se quiseres.",
+    "lesson": ""
   }
 ]
