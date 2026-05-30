@@ -1,23 +1,5 @@
 [
   {
-    "task_id": "task_agent_executor_import_fix",
-    "task_desc": "O ficheiro `agents/executor.py` (linhas ~25-30) importa módulos que podem não existir no sistema atual:\n- `from tools import TOOLS, execute_tool` — não existe módulo `tools`\n- `from memory.episodica i",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T01:56:27.971314",
-    "success": true,
-    "result_summary": "Push não conseguiu completar (timeout de rede). Mas o commit local foi feito com sucesso. Vou resumir o que foi feito.\n\n---\n\n## ✅ Resumo da Tarefa\n\n### 1. Análise dos imports quebrados\nLi o ficheiro `agents/executor.py` e identifiquei estes imports:\n\n| Import | Módulo | Status |\n|--------|--------|--------|\n| `from tools import TOOLS, execute_tool` | `tools/__init__.py` → `tools/fs_tools.py` | ✅ J",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_0f055de4",
-    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "agent": "supervisor",
-    "timestamp": "2026-05-30T02:01:05.391424",
-    "success": true,
-    "result_summary": "Aqui está o relatório completo do estado do ecossistema:\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n| Item | Estado |\n|------|--------|\n| **Working tree** | ✅ Limpo — sem ficheiros por commitar |\n| **Commits locais vs remote** | 🔄 7 commits à frente do `origin/main` |\n| **Último commit** | `3e442fd` — \"wip: atualiza memória do ecossistema\" |\n\n### 📁 O que foi commitado (4 ",
-    "lesson": ""
-  },
-  {
     "task_id": "task_fix_unicode_crash_autogen",
     "task_desc": "O `autonomous_loop.py` no método `_generate_tasks()` está a falhar com erro `Unterminated string starting at: line 11 column 13 (char 1335)` quando o LLM devolve JSON mal formatado. Isto quebra o cicl",
     "agent": "auto_fixer",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-30T15:35:07.302623",
     "success": true,
     "result_summary": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Prompt Engineer** 🧠⚡\n\n**Área coberta:** Prompt Engineering & Otimização de LLMs\n\n**Problema identificado:** O ecossistema tem 24 agentes, mas nenhum especializado em otimizar os próprios prompts que alimentam todos os outros. Cada chamada de API gasta tokens — prompts mal otimizados custam dinheiro e produzem resultados inconsistentes.\n\n**O que ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_bf217638",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:36:29.750832",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Comunicador** 🗣️\n\n**Área coberta:** Interface Humano-Sistema — a lacuna mais crítica que identifiquei no ecossistema.\n\n### 📋 Análise prévia\nO ecossistema já tinha 33 agentes cobrindo: desenvolvimento, QA, DevOps, segurança, design, marketing, diagnóstico, prompts, memória, tarefas... **Mas faltava alguém especializado em comunicar com o humano.*",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_a95c353c",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:40:28.293849",
+    "success": true,
+    "result_summary": "Analisei os logs e identifiquei os **3 problemas principais**: (1) **UnicodeEncodeError** com emojis no Windows (CP1252) no `tools/fs_tools.py` e `supervisor_ultra.py` — **crítico**, impede o sistema de iniciar; (2) **Telegram handlers** com f-string mal formatada em `bot/handlers.py` — **alto impacto**, sem comunicação com utilizador; (3) **Loop de reset infinito** entre WakeUp e AutoRecovery — *",
     "lesson": ""
   }
 ]

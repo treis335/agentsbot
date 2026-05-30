@@ -1793,6 +1793,42 @@
       "decision": "Telegram: mas tu reparas alguma coisa baseado no que analisas ou apenas registas isso?",
       "context": "Telegram",
       "timestamp": "2026-05-30T15:22:37.907134"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: mas atualmente o dashboard continua exatamente igual",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T15:37:29.551544"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: qual era o problemas dos agentes eliminados?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T15:37:59.701722"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: qual era o problemas dos agentes eliminados?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T15:38:21.535001"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: oi",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T15:38:23.947684"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ola",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T15:38:26.377240"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ja funcionas?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T15:38:28.300960"
     }
   ],
   "discoveries": [],

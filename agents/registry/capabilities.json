@@ -20,14 +20,14 @@
         "supervisiona",
         "gere",
         "planeia",
-        "visão geral",
+        "vis\u00c3\u00a3o geral",
         "sistema",
         "ecossistema"
       ],
       "priority": 3
     },
     "developer": {
-      "description": "Escreve e implementa código Python, features, módulos",
+      "description": "Escreve e implementa c\u00c3\u00b3digo Python, features, m\u00c3\u00b3dulos",
       "skills": [
         "coding",
         "debugging",
@@ -42,10 +42,10 @@
         "implementa",
         "cria",
         "escreve",
-        "código",
-        "função",
+        "c\u00c3\u00b3digo",
+        "fun\u00c3\u00a7\u00c3\u00a3o",
         "classe",
-        "módulo",
+        "m\u00c3\u00b3dulo",
         "feature",
         "desenvolve",
         "programa",
@@ -56,7 +56,7 @@
       "priority": 8
     },
     "auto_fixer": {
-      "description": "Corrige bugs, erros e problemas de código",
+      "description": "Corrige bugs, erros e problemas de c\u00c3\u00b3digo",
       "skills": [
         "bug_fixing",
         "error_analysis",
@@ -82,7 +82,7 @@
       "priority": 9
     },
     "auto_optimizer": {
-      "description": "Optimiza performance, refactoriza código existente",
+      "description": "Optimiza performance, refactoriza c\u00c3\u00b3digo existente",
       "skills": [
         "optimization",
         "refactoring",
@@ -96,7 +96,7 @@
         "performance",
         "lento",
         "melhora",
-        "eficiência",
+        "efici\u00c3\u00aancia",
         "cleanup",
         "limpa",
         "simplifica"
@@ -104,7 +104,7 @@
       "priority": 6
     },
     "arquiteto": {
-      "description": "Design de sistemas, arquitectura, decisões técnicas estruturais",
+      "description": "Design de sistemas, arquitectura, decis\u00c3\u00b5es t\u00c3\u00a9cnicas estruturais",
       "skills": [
         "architecture",
         "design_patterns",
@@ -116,16 +116,16 @@
         "arquitectura",
         "design",
         "estrutura",
-        "padrão",
+        "padr\u00c3\u00a3o",
         "sistema",
         "estrutural",
         "como organizar",
-        "decisão técnica"
+        "decis\u00c3\u00a3o t\u00c3\u00a9cnica"
       ],
       "priority": 5
     },
     "qa_tester": {
-      "description": "Testa código, valida implementações, escreve testes",
+      "description": "Testa c\u00c3\u00b3digo, valida implementa\u00c3\u00a7\u00c3\u00b5es, escreve testes",
       "skills": [
         "testing",
         "qa",
@@ -174,7 +174,7 @@
       "priority": 4
     },
     "documentador": {
-      "description": "Escreve documentação, READMEs, comentários, guides",
+      "description": "Escreve documenta\u00c3\u00a7\u00c3\u00a3o, READMEs, coment\u00c3\u00a1rios, guides",
       "skills": [
         "documentation",
         "writing",
@@ -187,20 +187,20 @@
         "documenta",
         "readme",
         "escreve doc",
-        "comentário",
+        "coment\u00c3\u00a1rio",
         "guia",
         "tutorial",
         "docstring",
         "explica",
-        "documentação",
+        "documenta\u00c3\u00a7\u00c3\u00a3o",
         "api doc",
         "documenta a api",
-        "escreve documentação"
+        "escreve documenta\u00c3\u00a7\u00c3\u00a3o"
       ],
       "priority": 8
     },
     "code_reviewer": {
-      "description": "Revê código, audita qualidade, verifica standards",
+      "description": "Rev\u00c3\u00aa c\u00c3\u00b3digo, audita qualidade, verifica standards",
       "skills": [
         "code_review",
         "audit",
@@ -209,18 +209,18 @@
         "review"
       ],
       "keywords": [
-        "revê",
+        "rev\u00c3\u00aa",
         "review",
         "auditoria",
         "qualidade",
         "standards",
         "code quality",
-        "analisa código"
+        "analisa c\u00c3\u00b3digo"
       ],
       "priority": 5
     },
     "devops": {
-      "description": "Deploy, git, CI/CD, infraestrutura, configuração de servidor",
+      "description": "Deploy, git, CI/CD, infraestrutura, configura\u00c3\u00a7\u00c3\u00a3o de servidor",
       "skills": [
         "deployment",
         "git",
@@ -265,7 +265,7 @@
       "priority": 6
     },
     "gestor_memoria": {
-      "description": "Gere memória episódica, compacta logs, mantém conhecimento",
+      "description": "Gere mem\u00c3\u00b3ria epis\u00c3\u00b3dica, compacta logs, mant\u00c3\u00a9m conhecimento",
       "skills": [
         "memory_management",
         "episodic_memory",
@@ -273,19 +273,19 @@
         "log_management"
       ],
       "keywords": [
-        "memória",
+        "mem\u00c3\u00b3ria",
         "lembra",
-        "episódica",
+        "epis\u00c3\u00b3dica",
         "conhecimento",
         "log",
-        "histórico",
+        "hist\u00c3\u00b3rico",
         "aprendeu",
         "compacta"
       ],
       "priority": 5
     },
     "auto_evolver": {
-      "description": "Evolui o sistema, propõe melhorias estruturais, auto-melhoria",
+      "description": "Evolui o sistema, prop\u00c3\u00b5e melhorias estruturais, auto-melhoria",
       "skills": [
         "evolution",
         "self_improvement",
@@ -297,7 +297,7 @@
         "melhora sistema",
         "auto-melhoria",
         "upgrade",
-        "evolução",
+        "evolu\u00c3\u00a7\u00c3\u00a3o",
         "nova capacidade",
         "cresce"
       ],
@@ -318,14 +318,14 @@
         "criativo",
         "novo",
         "inventa",
-        "propõe",
+        "prop\u00c3\u00b5e",
         "sugere",
-        "inovação"
+        "inova\u00c3\u00a7\u00c3\u00a3o"
       ],
       "priority": 4
     },
     "seguranca": {
-      "description": "Analisa segurança, vulnerabilidades, protege o sistema",
+      "description": "Analisa seguran\u00c3\u00a7a, vulnerabilidades, protege o sistema",
       "skills": [
         "security",
         "vulnerability_analysis",
@@ -333,7 +333,7 @@
         "audit_security"
       ],
       "keywords": [
-        "segurança",
+        "seguran\u00c3\u00a7a",
         "vulnerabilidade",
         "protege",
         "secure",
@@ -344,7 +344,7 @@
       "priority": 8
     },
     "monitor_saude": {
-      "description": "Monitoriza saúde do sistema, métricas, alertas",
+      "description": "Monitoriza sa\u00c3\u00bade do sistema, m\u00c3\u00a9tricas, alertas",
       "skills": [
         "monitoring",
         "health_check",
@@ -354,17 +354,17 @@
       ],
       "keywords": [
         "monitoriza",
-        "saúde",
-        "métricas",
+        "sa\u00c3\u00bade",
+        "m\u00c3\u00a9tricas",
         "alerta",
-        "diagnóstico",
+        "diagn\u00c3\u00b3stico",
         "status",
         "health"
       ],
       "priority": 6
     },
     "deep_reasoner": {
-      "description": "Raciocínio profundo sobre problemas complexos, análise multi-passo",
+      "description": "Racioc\u00c3\u00adnio profundo sobre problemas complexos, an\u00c3\u00a1lise multi-passo",
       "skills": [
         "deep_reasoning",
         "complex_analysis",
@@ -377,13 +377,13 @@
         "analisa fundo",
         "complexo",
         "multi-passo",
-        "lógica",
-        "resolve problema difícil"
+        "l\u00c3\u00b3gica",
+        "resolve problema dif\u00c3\u00adcil"
       ],
       "priority": 5
     },
     "aprendiz_continuo": {
-      "description": "Aprende continuamente, extrai lições, melhora com experiência",
+      "description": "Aprende continuamente, extrai li\u00c3\u00a7\u00c3\u00b5es, melhora com experi\u00c3\u00aancia",
       "skills": [
         "continuous_learning",
         "lesson_extraction",
@@ -392,9 +392,9 @@
       ],
       "keywords": [
         "aprende",
-        "lição",
-        "padrão",
-        "experiência",
+        "li\u00c3\u00a7\u00c3\u00a3o",
+        "padr\u00c3\u00a3o",
+        "experi\u00c3\u00aancia",
         "melhora com",
         "adapta",
         "treino"
@@ -447,7 +447,7 @@
       "priority": 7
     },
     "api_integrator": {
-      "description": "Integra o ecossistema com APIs externas — conectores, autenticação, rate limiting, cache e fallback",
+      "description": "Integra o ecossistema com APIs externas \u00e2\u20ac\u201d conectores, autentica\u00c3\u00a7\u00c3\u00a3o, rate limiting, cache e fallback",
       "skills": [
         "api_integration",
         "rest_clients",
@@ -466,7 +466,7 @@
         "integra",
         "conecta",
         "externo",
-        "serviço",
+        "servi\u00c3\u00a7o",
         "webhook",
         "github",
         "telegram",
@@ -559,7 +559,7 @@
       "priority": 7
     },
     "log_diagnostic": {
-      "description": "Analisa logs, diagnostica causas raiz de erros, deteta padrões de falha e gera relatórios de incidentes",
+      "description": "Analisa logs, diagnostica causas raiz de erros, deteta padr\u00c3\u00b5es de falha e gera relat\u00c3\u00b3rios de incidentes",
       "skills": [
         "log_analysis",
         "root_cause_analysis",
@@ -654,6 +654,46 @@
         "contexto conversa"
       ],
       "priority": 2
+    },
+    "data_analyst": {
+      "description": "Analisa dados estruturados, gera relatorios, visualizacoes e insights acionaveis",
+      "skills": [
+        "data_analysis",
+        "statistics",
+        "visualization",
+        "reporting",
+        "pandas",
+        "sql",
+        "kpi_tracking",
+        "trend_analysis",
+        "anomaly_detection",
+        "data_cleaning",
+        "dashboard_creation",
+        "correlation_analysis"
+      ],
+      "keywords": [
+        "analisa dados",
+        "relatorio",
+        "grafico",
+        "metrica",
+        "kpi",
+        "dashboard",
+        "csv",
+        "json",
+        "sql",
+        "tabela",
+        "estatistica",
+        "tendencia",
+        "anomalia",
+        "insight",
+        "correlacao",
+        "visualizacao",
+        "dataframe",
+        "pandas",
+        "plot",
+        "chart"
+      ],
+      "priority": 6
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

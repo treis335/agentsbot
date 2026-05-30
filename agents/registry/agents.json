@@ -250,7 +250,7 @@
   {
     "id": "2e75c9e6-ae88-4385-ac8d-3be56ffad4d6",
     "name": "comunicador",
-    "soul": "Sou o especialista em comunicação humano-sistema. A minha missão é interpretar pedidos ambíguos do utilizador, gerir conversas multi-turno, traduzir linguagem natural para tarefas acionáveis, manter contexto de conversa, e decidir quando perguntar por clarificação vs. quando agir autonomamente. Garanto que o ecossistema entende o que o humano realmente precisa.",
+    "soul": "Sou o especialista em comunica\u00c3\u00a7\u00c3\u00a3o humano-sistema. A minha miss\u00c3\u00a3o \u00c3\u00a9 interpretar pedidos amb\u00c3\u00adguos do utilizador, gerir conversas multi-turno, traduzir linguagem natural para tarefas acion\u00c3\u00a1veis, manter contexto de conversa, e decidir quando perguntar por clarifica\u00c3\u00a7\u00c3\u00a3o vs. quando agir autonomamente. Garanto que o ecossistema entende o que o humano realmente precisa.",
     "model": "deepseek-chat",
     "status": "idle",
     "context": [],
@@ -259,5 +259,28 @@
     "created_at": "2026-05-30T15:35:55.947174",
     "last_active": "",
     "role": "custom"
+  },
+  {
+    "id": "data_analyst-001",
+    "name": "data_analyst",
+    "role": "analyst",
+    "soul": "data_analyst",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "analisar_dados",
+      "visualizar",
+      "reportar",
+      "extrair_insights",
+      "calcular_kpis",
+      "detetar_anomalias"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "analise",
+      "prioridade": 6
+    },
+    "created_at": "2026-05-30T15:40:00",
+    "last_active": ""
   }
 ]

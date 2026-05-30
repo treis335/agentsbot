@@ -755,10 +755,34 @@
     "id": "auto_bf217638",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T15:35:17.505716",
     "source": "fallback",
-    "started_at": "2026-05-30T15:35:27.513249"
+    "started_at": "2026-05-30T15:35:27.513249",
+    "completed_at": "2026-05-30T15:36:29.764403",
+    "result": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Comunicador** 🗣️\n\n**Área coberta:** Interface Humano-Sistema — a lacuna mais crítica que identifiquei no ecossistema.\n\n### 📋 Análise prévia\nO ecossistema já tinha 33 agentes cobrindo: desenvolvimento, QA, DevOps, segurança, design, marketing, diagnóstico, prompts, memória, tarefas... **Mas faltava alguém especializado em comunicar com o humano.**\n\n### 🧠 O que o Comunicador faz:\n| Competência | Descrição |\n|---|---|\n| **Interpretação de LN** | "
+  },
+  {
+    "id": "auto_a95c353c",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:36:39.776909",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:36:49.783992",
+    "completed_at": "2026-05-30T15:40:28.308489",
+    "result": "Analisei os logs e identifiquei os **3 problemas principais**: (1) **UnicodeEncodeError** com emojis no Windows (CP1252) no `tools/fs_tools.py` e `supervisor_ultra.py` — **crítico**, impede o sistema de iniciar; (2) **Telegram handlers** com f-string mal formatada em `bot/handlers.py` — **alto impacto**, sem comunicação com utilizador; (3) **Loop de reset infinito** entre WakeUp e AutoRecovery — **crítico**, sistema nunca estabiliza. **Ficou por implementar** a correção mais simples (adicionar `"
+  },
+  {
+    "id": "auto_c2d5b284",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T15:40:38.484610",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:40:48.491356"
   }
 ]
