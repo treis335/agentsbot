@@ -1875,10 +1875,12 @@
     "id": "auto_c99375ba",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T23:27:02.542929",
     "source": "fallback",
-    "started_at": "2026-05-30T23:27:12.555814"
+    "started_at": "2026-05-30T23:27:12.555814",
+    "completed_at": "2026-05-30T23:27:26.925170",
+    "result": "✅ Verificação concluída: 8 ficheiros actualizados e commitados (logs, backlog, ciclo, episódios, índice semântico, auto-melhoria, métricas). Commit: d9ee8d6."
   }
 ]
