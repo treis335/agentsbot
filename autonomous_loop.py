@@ -308,18 +308,36 @@ class AutonomousLoop:
             )
             _loop.close()
 
-            # 5. Gravar memória episódica + reflexão pós-tarefa
+            # 5. Gravar memória episódica + reflexão + skill metrics + event log
             mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
             try:
                 from agents.reflection_engine import get_reflection_engine
                 reflection = get_reflection_engine().reflect(
-                    task_id=task_id, task_desc=task_desc,
-                    agent=chosen_agent, success=True, result=str(result)
+                    task=task_desc, result=str(result),
+                    agent=chosen_agent, success=True, task_id=task_id
                 )
-                log_cycle(f"[Reflection] OK: {reflection.what_worked[:60]}")
+                log_cycle(f"[Reflection] ✅ {reflection.what_worked[:60]}")
                 if reflection.new_skill_triggered:
-                    log_cycle(f"[Reflection] Nova skill criada: {reflection.new_skill_name}")
+                    log_cycle(f"[Skill] 🧬 Nova skill: {reflection.new_skill_name}")
             except Exception as _re:
+                pass
+
+            # Registar na skill registry
+            try:
+                from skills.skill_registry import get_registry as _get_skill_reg
+                skill_reg = _get_skill_reg()
+                matched = skill_reg.match_task(task_desc)
+                if matched:
+                    skill_reg.record_execution(matched.id, success=True)
+            except Exception:
+                pass
+
+            # Event log
+            try:
+                from core.event_logger import log_skill_execution
+                log_skill_execution(chosen_agent, "task", task_desc, True, 0.0,
+                                    result_preview=str(result)[:200])
+            except Exception:
                 pass
 
             log_cycle(f"[Memory] Episodio de sucesso: {chosen_agent}")
