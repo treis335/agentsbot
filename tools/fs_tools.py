@@ -354,12 +354,33 @@ def _read_file(path: str) -> str:
 
 
 def _write_file(path: str, content: str) -> str:
+    """Escreve conteudo num ficheiro com locking, retry e fallback."""
     _ensure_repo()
     full = REPO_DIR / path
     full.parent.mkdir(parents=True, exist_ok=True)
-    full.write_text(content, encoding="utf-8")
-    logger.info(f"[write_file] Escrito: {full}")
-    return f"[OK] Ficheiro escrito: {path} ({len(content)} chars)"
+    
+    # Tenta escrever com retry
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            full.write_text(content, encoding="utf-8")
+            logger.info(f"[write_file] Escrito: {full}")
+            return f"[OK] Ficheiro escrito: {path} ({len(content)} chars)"
+        except PermissionError as e:
+            if attempt < max_retries - 1:
+                import time
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            # Fallback: escrever em temp dir
+            import tempfile
+            temp_path = Path(tempfile.gettempdir()) / "correoto_fallback" / path
+            temp_path.parent.mkdir(parents=True, exist_ok=True)
+            temp_path.write_text(content, encoding="utf-8")
+            logger.warning(f"[write_file] Permissao negada em {full}, fallback para {temp_path}")
+            return f"[FALLBACK] Escrito em: {temp_path} ({len(content)} chars)"
+        except Exception as e:
+            logger.error(f"[write_file] Erro ao escrever {full}: {e}")
+            return f"[ERRO] Nao foi possivel escrever {path}: {e}"
 
 
 def _list_files(subdir: str = "") -> str:
