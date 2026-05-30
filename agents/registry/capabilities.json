@@ -1067,7 +1067,7 @@
     "automation_orchestrator": {
       "description": "Automatiza tarefas repetitivas, agenda CRON jobs, orquestra workflows e pipelines multi-agente",
       "skills": [
-        "automation",
+        "custom",
         "scheduling",
         "cron",
         "workflow_orchestration",
@@ -1100,7 +1100,7 @@
         "gatilho",
         "evento",
         "scheduled",
-        "automation"
+        "custom"
       ],
       "priority": 7
     },
