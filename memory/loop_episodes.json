@@ -1627,5 +1627,23 @@
     "success": true,
     "result_summary": "---\n\n## 📊 Relatório Final — Supervisor\n\n### Diagnóstico: 3 Problemas Principais Identificados\n\n| # | Problema | Gravidade | Ficheiros Afetados |\n|---|---|---|---|\n| **1** | **UnicodeEncodeError com emojis no Windows** | 🔴 **CRÍTICO** | 45 ficheiros `.py` |\n| **2** | **Loop infinito de reboot** (wakeup canibaliza-se) | 🔴 **CRÍTICO** | `wakeup.py`, `wakeup_v3.py`, `supervisor_ultra.py` |\n| **3** | *",
     "lesson": ""
+  },
+  {
+    "task_id": "auto_6573b0ff",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T14:03:16.179631",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente toda a memória do ecossistema (281 episódios no total) e extraí **6 lições críticas** para melhorar futuras execuções.\n\n### Dados Analisados\n| Fonte | Episódios | Período |\n|-------|-----------|---------|\n| `memory/episodica/supervisor-1094139387.json` | 100 | 26 Maio |\n| `memory/loop_episodes.json` | 18",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_e585975f",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T14:04:56.835170",
+    "success": true,
+    "result_summary": "✅ **Agente `data_analyst` criado e registado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🆕 Novo Agente: **Data Analyst & Business Intelligence**\n\n| Propriedade | Valor |\n|---|---|\n| **Nome** | `data_analyst` |\n| **Role** | `analyst` |\n| **Soul** | `agents/souls/data_analyst.md` |\n| **Capacidades** | 9 (analisar_dados, detetar_anomalias, gerar_relatorios, criar_dashboards, analise_estatisti",
+    "lesson": ""
   }
 ]

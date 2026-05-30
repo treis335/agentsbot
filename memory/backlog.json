@@ -359,10 +359,34 @@
     "id": "auto_6573b0ff",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T13:58:41.200480",
     "source": "fallback",
-    "started_at": "2026-05-30T13:58:51.205797"
+    "started_at": "2026-05-30T13:58:51.205797",
+    "completed_at": "2026-05-30T14:03:16.191510",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente toda a memória do ecossistema (281 episódios no total) e extraí **6 lições críticas** para melhorar futuras execuções.\n\n### Dados Analisados\n| Fonte | Episódios | Período |\n|-------|-----------|---------|\n| `memory/episodica/supervisor-1094139387.json` | 100 | 26 Maio |\n| `memory/loop_episodes.json` | 181 | 30 Maio |\n| `memory/autonomous_log.md` | Log completo | 26-30 Maio |\n\n### 🔴 Descoberta Crítica #"
+  },
+  {
+    "id": "auto_e585975f",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:03:26.201979",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:03:36.206797",
+    "completed_at": "2026-05-30T14:04:56.847044",
+    "result": "✅ **Agente `data_analyst` criado e registado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🆕 Novo Agente: **Data Analyst & Business Intelligence**\n\n| Propriedade | Valor |\n|---|---|\n| **Nome** | `data_analyst` |\n| **Role** | `analyst` |\n| **Soul** | `agents/souls/data_analyst.md` |\n| **Capacidades** | 9 (analisar_dados, detetar_anomalias, gerar_relatorios, criar_dashboards, analise_estatistica, analise_preditiva, visualizar_dados, identificar_padroes, business_intelligence) |\n| **Nível** |"
+  },
+  {
+    "id": "auto_aa205a57",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T14:05:06.993443",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:05:16.999642"
   }
 ]
