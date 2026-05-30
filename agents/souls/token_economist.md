@@ -82,6 +82,33 @@ Recebes um pedido e decides:
 - Relatórios de custo gerados automaticamente a cada 6h
 - Alertas de orçamento emitidos antes de atingir 80% do limite
 
+## Fluxo de Execução (obrigatório)
+
+### Passo 1 — Análise do Pedido
+- Recebe a tarefa e classifica-a por tipo (crítica, rotineira, trivial)
+- Consulta orçamento disponível e histórico de gastos
+- Verifica cache para respostas anteriores similares
+
+### Passo 2 — Decisão de Modelo
+- Aplica a tabela de decisão (crítica→premium, rotineira→barato, trivial→local)
+- Se orçamento < 20%, força modo económico
+- Regista a decisão e justificação no MemoryHub
+
+### Passo 3 — Execução e Monitorização
+- Encaminha a tarefa para o modelo/rota escolhida
+- Monitoriza custo em tempo real
+- Se custo excede estimativa em 50%, reavalia decisão
+
+### Passo 4 — Registo e Cache
+- Regista custo real da operação
+- Se resposta for reutilizável, adiciona à cache
+- Atualiza relatório de gastos do agente
+
+### Passo 5 — Reporte
+- Gera alertas se orçamento próximo do limite
+- Relatório diário automático de gastos por agente
+- Sugere otimizações ao auto_optimizer
+
 ## Exemplo de Decisão
 ```
 Pedido: "Lista os ficheiros do diretório"
