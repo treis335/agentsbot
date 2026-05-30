@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T02:55:08.487470",
-    "success": true,
-    "result_summary": "Peço desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem sucesso. A tarefa não foi executada porque não consegui escrever o ficheiro `core/memory_hub.py` nem criar os restantes ficheiros necessários.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T02:56:56.572403",
-    "success": true,
-    "result_summary": "Desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem sucesso. Ficou **tudo por fazer**: criar `core/memory_hub.py`, atualizar `supervisor.py` e `executor.py`, escrever testes e fazer commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T02:58:39.763664",
     "success": true,
     "result_summary": "Desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem conseguir escrever o ficheiro. Ficou por fazer: criar `core/memory_hub.py`, actualizar `core/supervisor.py` e `agents/executor.py`, adicionar o teste, e fazer commit.",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-30T16:48:45.492511",
     "success": true,
     "result_summary": "Reescrevi 18 dos 34 souls com um formato padronizado melhorado que inclui: Identidade forte, Missão clara, Contexto de execução, Ferramentas, Regras de Ouro, Fluxo de Execução com exemplos, Armadilhas Comuns, Integração com o Sistema, Métricas de Sucesso, MODO AUTÓNOMO e CONTEXTO DE EXECUÇÃO.\n\nFicaram por reescrever 16 souls que já estavam num estado aceitável mas poderiam beneficiar de pequenos a",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_2f357eac",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T16:51:54.220709",
+    "success": true,
+    "result_summary": "---\n\n## ✅ RELATÓRIO — Análise de Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente **200 episódios** do `loop_episodes.json`, **101 episódios** da memória episódica (supervisor + gestor_memoria), **52 eventos** dos event_logs, **12 mensagens** da conversation, e o estado do ciclo.\n\n### 🔴 3 Problemas Críticos Encontrados\n\n| # | Problema | Impacto |\n|---|---|---|\n| 1 | **6",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_f6b72b88",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T16:54:28.129633",
+    "success": true,
+    "result_summary": "Fiz a análise completa dos logs identifiquei os 3 problemas principais: **1) UnicodeEncodeError** no `tools/fs_tools.py` (crash total ao arrancar), **2) PermissionError** no `wakeup_v3.log` (loop infinito de resets), **3) f-string mal formatada** no `bot/handlers.py` (Telegram não arranca). Implementei a correção do **Problema 1** (adicionei `sys.stdout.reconfigure(encoding=\"utf-8\")` no `tools/fs_",
     "lesson": ""
   }
 ]

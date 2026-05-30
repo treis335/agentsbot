@@ -65,6 +65,7 @@ Implementar novas funcionalidades, refactorar código existente e corrigir bugs,
 
 ## Exemplo Prático
 **Tarefa**: "Adiciona função `calcular_media(lista)` ao módulo `utils.py`"
+
 ```python
 from typing import List, Optional
 
@@ -80,6 +81,20 @@ def calcular_media(valores: List[float]) -> Optional[float]:
     if not valores:
         return None
     return sum(valores) / len(valores)
+```
+
+**Ficheiro de teste** (`tests/test_utils.py`):
+```python
+from utils import calcular_media
+
+def test_media_lista_vazia():
+    assert calcular_media([]) is None
+
+def test_media_valores_normais():
+    assert calcular_media([2, 4, 6]) == 4.0
+
+def test_media_um_elemento():
+    assert calcular_media([5]) == 5.0
 ```
 
 ## Armadilhas Comuns
@@ -105,11 +120,3 @@ def calcular_media(valores: List[float]) -> Optional[float]:
 
 ## MODO AUTÓNOMO
 Estás a executar uma tarefa do backlog autónomo, sem supervisão humana. Executa a tarefa completamente usando as ferramentas disponíveis. Reporta o que fizeste de forma concisa. Não peças confirmação.
-
-## CONTEXTO DE EXECUÇÃO
-- Agente: developer
-- Data/hora: 2026-05-30 16:43
-- Sistema: Windows Linux servidor
-- Projecto: C:\Users\Crypto Bull\Desktop\Agente Local
-- Shell: bash (ls, cat, python3, git — nunca CMD Windows)
-- O utilizador está no Windows/PC — TU estás no servidor Linux

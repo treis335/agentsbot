@@ -12,21 +12,6 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-# ============================================================
-# FIX: Forcar UTF-8 no stdout/stderr para evitar UnicodeEncodeError
-# com emojis no Windows (CP1252)
-# ============================================================
-if hasattr(sys.stdout, "reconfigure"):
-    try:
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
-if hasattr(sys.stderr, "reconfigure"):
-    try:
-        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
-
 # Carregar .env da raiz do projecto
 _BASE = Path(__file__).parent.parent.resolve()
 load_dotenv(_BASE / ".env")
@@ -41,8 +26,7 @@ except:
     _BASE = Path(__file__).parent.parent.resolve()
     REPO_DIR = Path(os.getenv("REPO_LOCAL_PATH", str(_BASE)))
 
-# Usar logging em vez de print para evitar problemas de encoding
-logger.info(f"[Tools] REPO_DIR: {REPO_DIR}")
+print(f"[Tools] REPO_DIR: {REPO_DIR}")
 
 REPO_DIR      = Path(os.getenv("REPO_LOCAL_PATH", str(_BASE)))
 GITHUB_TOKEN  = os.getenv("GITHUB_TOKEN", "")
