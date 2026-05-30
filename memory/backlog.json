@@ -231,9 +231,9 @@
     "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T07:26:25.788471",
-    "completed_at": "2026-05-30T07:26:15.772158",
-    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `3f4891d`\n\n### Verificação dos 7 pontos da tarefa:\n\n| # | Requisito | Estado |\n|---|-----------|--------|\n| 1 | `core/memory_hub.py` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` | ✅ Completo |\n| 2 | Único ficheiro `memory/hub.jsonl` como backend | ✅ `memory/hub.jsonl` |\n| 3 | `core/supervisor.py` usa `MemoryHub` em vez de `ConversationMemory` | ✅ `from core.memory"
+    "started_at": "2026-05-30T07:28:05.424490",
+    "completed_at": "2026-05-30T07:27:55.389394",
+    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `aafb31b` (push para origin/main)\n\n### O que foi verificado/confirmado:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** | ✅ Já existia completo com `store_chat`, `store_episode`, `store_knowledge`, `get_context`, `remember`, `summary`, `clear`, `get_stats` |\n| **2. `memory/hub.jsonl`** | ✅ Ficheiro único JSONL como backend persistente |\n| **3. `core/supervisor.py`** |"
   },
   {
     "id": "task_agent_executor_import_fix",

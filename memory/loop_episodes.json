@@ -1339,5 +1339,14 @@
     "success": true,
     "result_summary": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `3f4891d`\n\n### Verificação dos 7 pontos da tarefa:\n\n| # | Requisito | Estado |\n|---|-----------|--------|\n| 1 | `core/memory_hub.py` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` | ✅ Completo |\n| 2 | Único ficheiro `memory/hub.jsonl` como backend | ✅ `memory/hub.json",
     "lesson": ""
+  },
+  {
+    "task_id": "task_unify_memory_systems",
+    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T07:27:55.386314",
+    "success": true,
+    "result_summary": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `aafb31b` (push para origin/main)\n\n### O que foi verificado/confirmado:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** | ✅ Já existia completo com `store_chat`, `store_episode`, `store_knowledge`, `get_context`, `remember`, `summary`, `clear`, `get_stats` |\n| **2. `mem",
+    "lesson": ""
   }
 ]
