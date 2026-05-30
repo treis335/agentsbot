@@ -695,10 +695,34 @@
     "id": "auto_144ff4b3",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T15:23:32.777529",
     "source": "fallback",
-    "started_at": "2026-05-30T15:23:42.784666"
+    "started_at": "2026-05-30T15:23:42.784666",
+    "completed_at": "2026-05-30T15:25:57.243835",
+    "result": "## 📋 Relatório Final\n\n### Diagnóstico dos Logs — 3 Problemas Principais\n\n| # | Problema | Ocorrências | Impacto |\n|---|---|---|---|\n| **1** | **Telegram Conflict (409)** | **4.895** no main.log | Bot não responde a comandos — sistema reinicia em loop infinito |\n| **2** | **UnicodeEncodeError** | **6** no main.log + **1** no supervisor_ultra.log | Bloqueia startup se emoji aparecer antes do encoding ser configurado |\n| **3** | **SyntaxError no main.py** | Bloqueia **100%** das execuções | `unexpe"
+  },
+  {
+    "id": "auto_a2861b8d",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:26:07.448708",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:26:17.455702",
+    "completed_at": "2026-05-30T15:29:10.078515",
+    "result": "## O que fiz\n\nAnalisei exaustivamente os **200 episódios** do `loop_episodes.json`, a `conversation.jsonl`, o `shared_memory.json`, a memória episódica do gestor_memoria e supervisor, e as lições já extraídas. Identifiquei **6 lições críticas consolidadas**:\n\n1. **LOOP de 158 execuções** da mesma tarefa (task_unify_memory_systems) durante 11h36m — sem deteção  \n2. **Falha silenciosa de write_file** — 19+ erros ignorados, tarefas marcadas como sucesso  \n3. **0% de lições preenchidas** — nenhum do"
+  },
+  {
+    "id": "auto_4f5bcb36",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T15:29:20.093157",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:29:30.099879"
   }
 ]

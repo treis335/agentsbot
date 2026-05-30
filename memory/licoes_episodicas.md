@@ -1,52 +1,67 @@
 # LICOES APRENDIDAS DA MEMORIA EPISODICA
-# Gerado por gestor_memoria em 2026-05-30 14:05
+# Gerado por gestor_memoria em 2026-05-30 15:30
+# Analise de 200 episodios do loop_episodes.json
 
-## LICAO 1: UnicodeEncodeError no Windows (cp1252) - CRITICO
-**Problema:** Emojis em prints de ficheiros .py causam crash total no Windows
-**Ficheiros afetados:** tools/fs_tools.py, tools/web_tools.py, auto_evolve.py, auto_evolve_loop.py, auto_update.py, supervisor_ultra.py
-**Impacto:** 6 crashes que impediram o sistema de iniciar, levando a 140 resets
-**Solucao:** Remover emojis de todos os prints. Usar texto ASCII simples.
-**Status:** JA CORRIGIDO (commit 4c3011f)
-**Regra:** NUNCA usar emojis em prints de ficheiros que correm no Windows
+## LICAO 1: LOOP DE TAREFAS SEM DETECAO - CRITICO
+**Problema:** 157 de 200 episodios (78.5%) sao a mesma tarefa repetida: "unificar 3 sistemas de memoria"
+**Causa:** O gerador de tarefas nao verifica se a tarefa ja foi executada antes
+**Impacto:** 157 execucoes identicas que nao acrescentam valor, desperdicio de recursos
+**Solucao:** Antes de gerar nova tarefa, verificar se ja existe no historico. Se taxa de repeticao >50%, parar e reportar.
+**Status:** NAO CORRIGIDO
+**Regra:** Toda nova tarefa deve ser comparada com as ultimas 50 do historico antes de executar
 
-## LICAO 2: Loop Infinito de Resets - CRITICO
-**Problema:** WakeUp system detetava 'stuck' e reiniciava main.py repetidamente (140x)
-**Causa:** O erro de Unicode impedia o main.py de iniciar, wakeup interpretava como 'stuck'
-**Impacto:** ~7 minutos de loop, logs inchados para 8.2MB
-**Solucao:** Implementar backoff exponencial (esperar mais a cada reset), maximo de N resets antes de alertar humano
-**Regra:** Sistema de recovery precisa de detetar se o erro e o mesmo da tentativa anterior
+## LICAO 2: CAMPO 'lesson' VAZIO EM TODOS OS EPISODIOS - CRITICO
+**Problema:** 0 de 200 episodios tem o campo 'lesson' preenchido
+**Causa:** O lesson_extractor.py existe mas nunca e chamado pelo loop principal
+**Impacto:** A memoria episodica nao esta a gerar aprendizagem ativa
+**Solucao:** Integrar lesson_extractor.extract_all() no ciclo de vida de cada tarefa
+**Status:** NAO CORRIGIDO
+**Regra:** Apos cada execucao de tarefa, extrair licao automaticamente
 
-## LICAO 3: Telegram Conflict - ALTO
-**Problema:** 'Conflict: terminated by other getUpdates request'
-**Causa:** Duas instancias do bot Telegram a correr em simultaneo
-**Impacto:** Bot para de responder
-**Solucao:** Usar lock file (.correoto.lock) para impedir segunda instancia. Verificar processo antes de iniciar.
-**Status:** Lock file existe mas nao e verificado antes de iniciar
+## LICAO 3: FALTA DE DIVERSIDADE NAS TAREFAS - ALTO
+**Problema:** Apenas 11 tipos de tarefas diferentes em 200 execucoes
+**Causa:** O gerador de tarefas (_generate_tasks) tem um conjunto fixo e limitado de templates
+**Impacto:** O ecossistema nao esta a explorar novas areas de melhoria
+**Solucao:** Expandir o gerador para incluir analise de codigo, testes, documentacao, metricas, etc.
+**Status:** NAO CORRIGIDO
+**Regra:** Garantir que o gerador produz pelo menos 20 tipos de tarefas diferentes
 
-## LICAO 4: Heartbeat Parou - MEDIO
-**Problema:** heartbeat.flg parou em 2026-05-26, sistema ficou sem batimento cardiaco
-**Impacto:** Nao havia monitorizacao de saude ativa
-**Solucao:** Heartbeat deve ser watchdog independente com alerta se parar
+## LICAO 4: MEMORYHUB CRIADO MAS NAO UTILIZADO - ALTO
+**Problema:** hub.jsonl existe mas tem 0 linhas. O sistema continua a usar loop_episodes.json
+**Causa:** A migracao para MemoryHub foi iniciada mas nunca forcada
+**Impacto:** Dois sistemas de memoria paralelos, nenhum sincronizado
+**Solucao:** Forcar roteamento de todas as escritas de memoria para o MemoryHub
+**Status:** NAO CORRIGIDO
+**Regra:** Apenas um sistema de memoria deve estar ativo
 
-## LICAO 5: smart_pace com iteration_count=0 - MEDIO
-**Problema:** smart_pace.flg mostra iteration_count=0 apesar de 140 resets
-**Causa:** Os resets reiniciavam o contador antes de incrementar
-**Solucao:** Persistir contagem de iteracoes num ficheiro separado, nao em memoria
+## LICAO 5: TAXA DE SUCESSO SUSPEITA (100%) - MEDIO
+**Problema:** Todos os 200 episodios tem success=true, incluindo 157 repeticoes da mesma tarefa
+**Causa:** O success e definido automaticamente sem verificacao real do resultado
+**Impacto:** Metricas de desempenho sao irreais, nao e possivel identificar problemas
+**Solucao:** Implementar validacao real de sucesso: o resultado deve conter evidencias de progresso
+**Status:** NAO CORRIGIDO
+**Regra:** success=true so deve ser atribuido se houver mudanca real no sistema
 
-## LICAO 6: agents.json vs agents.json.bak - BAIXO
-**Problema:** agents.json (1.5KB, 17 agentes) vs agents.json.bak (27KB, agentes com detalhes)
-**Causa:** agents.json foi simplificado perdendo informacao de agentes anteriores
-**Solucao:** Manter schema unico. Se ha backup com mais dados, consolidar.
+## LICAO 6: EXECUCOES CONCENTRADAS NUM UNICO DIA - BAIXO
+**Problema:** 200 episodios todos em 2026-05-30, sem dados historicos
+**Causa:** Sistema foi reiniciado/resetado, perdendo historico anterior
+**Impacto:** Nao e possivel analisar tendencias ou evolucao ao longo do tempo
+**Solucao:** Persistir historico fora do diretorio de trabalho (ex: backups diarios)
+**Status:** NAO CORRIGIDO
+**Regra:** Manter snapshots diarios da memoria episodica
 
-## LICAO 7: MemoryHub Existe mas Nao e Usado - MEDIO
-**Problema:** MemoryHub (hub.jsonl) implementado mas sistema continua a usar memory/ antigo
-**Causa:** Compatibilidade mantida mas migracao nao forcada
-**Solucao:** Forcar migracao para MemoryHub como unico ponto de verdade
+## LICAO 7: TAMANHO DOS RESULTADOS ESTAGNADO - BAIXO
+**Problema:** Todos os resultados tem ~263-400 chars, formato identico
+**Causa:** Template fixo de output, sem variacao por tipo de tarefa
+**Impacto:** Resultados sao previsiveis e pouco informativos
+**Solucao:** Adaptar o formato do resultado ao tipo de tarefa executada
+**Status:** NAO CORRIGIDO
+**Regra:** Cada tipo de tarefa deve ter um template de output especifico
 
 ## RECOMENDACOES PRIORITARIAS:
-1. [CRITICO] Validar que nenhum ficheiro .py tem emojis (pre-commit hook)
-2. [CRITICO] Adicionar backoff exponencial ao wakeup system
-3. [ALTO] Verificar lock file antes de iniciar bot Telegram
-4. [ALTO] Implementar watchdog para heartbeat
-5. [MEDIO] Consolidar agents.json com dados do backup
-6. [MEDIO] Forcar migracao para MemoryHub
+1. [CRITICO] Implementar deduplicacao de tarefas no gerador de backlog
+2. [CRITICO] Integrar lesson_extractor no ciclo de vida do loop
+3. [ALTO] Expandir templates de tarefas para >20 tipos
+4. [ALTO] Migrar toda a memoria para o MemoryHub (hub.jsonl)
+5. [MEDIO] Implementar validacao real de sucesso nas tarefas
+6. [MEDIO] Criar snapshots diarios da memoria episodica

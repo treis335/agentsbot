@@ -1,23 +1,5 @@
 [
   {
-    "task_id": "task_memory_consolidator",
-    "task_desc": "O ecossistema tem múltiplos sistemas de memória sobrepostos: `memory/` (backlog.json, autonomous_log.md, loop_episodes.json, self_improve_cycle.json), `agents/memory/`, `cerebro/brain.log`, `data/`, e",
-    "agent": "developer",
-    "timestamp": "2026-05-30T01:39:21.705041",
-    "success": true,
-    "result_summary": "## Sumário\n\n**O que fiz:** Analisei o ecossistema completo — mapeei todos os diretórios de memória (`memory/`, `agents/memory/`, `data/`, `evolution/`, `cerebro/`), identifiquei os 13 ficheiros temporários obsoletos na raiz (`_temp_*.txt`, `_tmp_*.txt`, `_debug_*.txt`), e verifiquei a estrutura do `autonomous_loop.py` para integração.\n\n**O que ficou por fazer:** Criar o ficheiro `core/memory_conso",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_sandbox_executor_real",
-    "task_desc": "O ficheiro `core/config.py` já tem flags `SANDBOX_ENABLED`, `SANDBOX_TIMEOUT`, `SANDBOX_MEMORY_MB` mas não existe implementação real. Criar `core/sandbox_executor.py` que: 1) executa código Python e c",
-    "agent": "developer",
-    "timestamp": "2026-05-30T01:41:44.600620",
-    "success": true,
-    "result_summary": "Peço desculpa pelo spam de chamadas. O sistema `write_file` estava a rejeitar os meus parâmetros. **O que fiz:** analisei todo o código existente (`core/config.py`, `tools/fs_tools.py`, `tools/__init__.py`, `.env`, `memory/backlog.json`) e planeei a implementação completa do sandbox executor. **O que ficou por fazer:** criar o ficheiro `core/sandbox_executor.py`, atualizar `core/config.py` para le",
-    "lesson": ""
-  },
-  {
     "task_id": "auto_341d646b",
     "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
     "agent": "gestor_memoria",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-30T15:23:22.352070",
     "success": true,
     "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nAnalisei exaustivamente **200 episódios** do `loop_episodes.json`, o `autonomous_log.md` (887 linhas, 308 ciclos), `conversation.jsonl`, `hub.jsonl`, e os ficheiros de memória semântica. Extraí **8 lições críticas** com base em dados quantitativos: eficiência real do sistema é **29.2%** (70.8% ciclos desperdiçados), **186 execu",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_144ff4b3",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:25:57.227125",
+    "success": true,
+    "result_summary": "## 📋 Relatório Final\n\n### Diagnóstico dos Logs — 3 Problemas Principais\n\n| # | Problema | Ocorrências | Impacto |\n|---|---|---|---|\n| **1** | **Telegram Conflict (409)** | **4.895** no main.log | Bot não responde a comandos — sistema reinicia em loop infinito |\n| **2** | **UnicodeEncodeError** | **6** no main.log + **1** no supervisor_ultra.log | Bloqueia startup se emoji aparecer antes do encodin",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_a2861b8d",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T15:29:10.064473",
+    "success": true,
+    "result_summary": "## O que fiz\n\nAnalisei exaustivamente os **200 episódios** do `loop_episodes.json`, a `conversation.jsonl`, o `shared_memory.json`, a memória episódica do gestor_memoria e supervisor, e as lições já extraídas. Identifiquei **6 lições críticas consolidadas**:\n\n1. **LOOP de 158 execuções** da mesma tarefa (task_unify_memory_systems) durante 11h36m — sem deteção  \n2. **Falha silenciosa de write_file*",
     "lesson": ""
   }
 ]
