@@ -1839,10 +1839,34 @@
     "id": "auto_84f20193",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T23:20:36.777027",
     "source": "fallback",
-    "started_at": "2026-05-30T23:20:46.794038"
+    "started_at": "2026-05-30T23:20:46.794038",
+    "completed_at": "2026-05-30T23:21:03.482585",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **8 ficheiros modificados**: eventos, logs, backlog, ciclo, episódios, auto-melhoria, índice semântico, métricas\n- **Commit feito**: `1403945` — *\"sync: verificação do ecossistema\"*\n- **Push**: ✅ enviado com sucesso para o GitHub\n\n### 📋 Resumo das alterações\n| Ficheiro | Alterações |\n|---|---|\n| `events/.../events.jsonl` | +1 evento |\n| `memory/autonomous_log.md` | +13 li"
+  },
+  {
+    "id": "auto_0575ee61",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T23:21:13.502611",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:21:23.515174",
+    "completed_at": "2026-05-30T23:23:56.108409",
+    "result": "## Resumo do que fiz\n\nMelhorei os system prompts dos 45 souls do ecossistema: **adicionei secções em falta a 5 souls** (scenario_tester.md, automation_orchestrator.md, incident_responder.md, predictive_analyst.md, token_economist.md) com Regras de Ouro, Fluxo de Execução, Armadilhas Comuns, Integração com o Sistema, Métricas de Sucesso e MODO AUTÓNOMO onde faltavam; **reformulei o system prompt do llm_agent.py** (de 1219 para 1986 chars) com secção de ferramentas, 10 regras de conduta claras e ê"
+  },
+  {
+    "id": "auto_24f09ba8",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T23:24:06.263265",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:24:16.276196"
   }
 ]

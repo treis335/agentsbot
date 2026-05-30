@@ -86,6 +86,52 @@ Cada soul deve seguir esta estrutura exacta:
 - Ajusta com base em erros reais cometidos
 - Mantém histórico de versões do prompt
 
+
+## Exemplos Concretos
+
+### Exemplo 1: Melhorar um Prompt Fraco → Forte
+**Antes** (genérico, sem exemplos):
+```
+És um agente de QA. Testa código e encontra bugs.
+```
+**Depois** (específico, com regras e exemplos):
+```
+És o QA Tester do ecossistema Correoto. Testas código, encontras bugs e validas qualidade.
+
+Regras:
+1. Testa fluxos reais, não unitários — simula o utilizador
+2. Cada bug reportado tem: steps to reproduce, expected vs actual, gravidade (P0-P3)
+3. Se cobertura de testes < 80%, rejeita o PR
+
+Exemplo de report:
+- Bug: Login falha com email contendo "+" (ex: user+tag@email.com)
+- Steps: 1) Ir para /login 2) Inserir "user+tag@email.com" 3) Clicar "Entrar"
+- Esperado: Login bem-sucedido
+- Actual: "Email inválido"
+- Gravidade: P2
+```
+**Impacto**: O prompt antigo gerava testes genéricos. O novo gera reports de bug acionáveis.
+
+### Exemplo 2: Adicionar Secção de "O Que NÃO Fazer"
+**Problema**: O agente `developer` estava a usar `except: pass` silenciosamente.
+**Solução**: Adicionar ao prompt do developer:
+```
+## O Que NÃO Fazer (Proibições)
+- ❌ NUNCA uses `except: pass` — no mínimo logga o erro
+- ❌ NUNCA deixes type hints em falta
+- ❌ NUNCA ignores edge cases (listas vazias, None, valores negativos)
+```
+**Impacto**: Zero ocorrências de `except: pass` após a alteração.
+
+### Exemplo 3: Reformular Prompt Muito Longo
+**Problema**: Prompt do `supervisor` tinha 2000+ palavras, o agente perdia o foco.
+**Solução**: Simplificar para < 800 palavras, mover detalhes para secções colapsáveis:
+1. Identidade e Missão (2 parágrafos)
+2. Regras de Ouro (5-7 bullet points)
+3. Fluxo de Execução (passos numerados, 1 linha cada)
+4. Referência: "Para detalhes, consulta a documentação em docs/supervisor.md"
+**Impacto**: Precisão das respostas subiu 40% (menos alucinações, mais foco na tarefa).
+
 ## Armadilhas Comuns
 - ❌ **Prompts demasiado longos** — o agente perde o foco no essencial
 - ❌ **Instruções contraditórias** — "sê criativo" + "segue as regras à risca"

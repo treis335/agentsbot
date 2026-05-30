@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:47:48.264999",
-    "success": true,
-    "result_summary": "Fiz a análise completa do ecossistema: confirmei que `core/memory_hub.py` já está completo (17242 chars, 39 métodos), `core/supervisor.py` já usa MemoryHub, e corrigi 3 bugs (get_failures, get_successes, get_decisions, get_context) que impediam os testes de passar. Ficou por fazer: escrever o ficheiro `tests/test_memory_hub.py` com os testes formais e fazer o commit — a ferramenta write_file não e",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:50:19.245721",
-    "success": true,
-    "result_summary": "Fiz a análise completa do ecossistema e confirmei que `core/memory_hub.py` já está completo (471 linhas, 39 métodos, singleton funcional), `core/supervisor.py` e `agents/executor.py` já usam MemoryHub, e todos os métodos necessários existem e passam nos 17 testes que executei. Falta escrever o ficheiro `tests/test_memory_hub.py` com os testes reais (de pytest) e fazer o commit — a ferramenta `writ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T05:53:42.059373",
     "success": true,
     "result_summary": "**O que fiz:** Confirmei que `core/memory_hub.py` já está completo (470 linhas, singleton, todos os métodos pedidos), `core/supervisor.py` e `agents/executor.py` já importam e usam `MemoryHub`, e `memory/hub.jsonl` já existe (vazio).\n\n**O que ficou por fazer:** O ficheiro `tests/test_memory_hub.py` está vazio (só `import pytest`) — precisa de ser preenchido com testes unitários para `store_chat`, ",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-30T23:20:26.592426",
     "success": true,
     "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `scenario_tester` 🧪🔍\n\n### Lacuna Identificada\nO ecossistema tinha **45 agentes** mas **nenhum** especializado em testar fluxos completos end-to-end simulando comportamento humano real. Existiam:\n- **QA Tester** → foco em testes unitários\n- **Integrador Testes** → foco em integração de código\n- **Load Tester** → foco em performance sob carga\n\nFaltava quem *",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_84f20193",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T23:21:03.465665",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **8 ficheiros modificados**: eventos, logs, backlog, ciclo, episódios, auto-melhoria, índice semântico, métricas\n- **Commit feito**: `1403945` — *\"sync: verificação do ecossistema\"*\n- **Push**: ✅ enviado com sucesso para o GitHub\n\n### 📋 Resumo das alterações\n| Ficheiro | Al",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_0575ee61",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T23:23:56.092641",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\nMelhorei os system prompts dos 45 souls do ecossistema: **adicionei secções em falta a 5 souls** (scenario_tester.md, automation_orchestrator.md, incident_responder.md, predictive_analyst.md, token_economist.md) com Regras de Ouro, Fluxo de Execução, Armadilhas Comuns, Integração com o Sistema, Métricas de Sucesso e MODO AUTÓNOMO onde faltavam; **reformulei o system prompt do",
     "lesson": ""
   }
 ]
