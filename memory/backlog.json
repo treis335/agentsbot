@@ -527,10 +527,106 @@
     "id": "auto_77ef1849",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T14:35:32.672558",
     "source": "fallback",
-    "started_at": "2026-05-30T14:35:42.679414"
+    "started_at": "2026-05-30T14:35:42.679414",
+    "completed_at": "2026-05-30T14:36:07.955708",
+    "result": "✅ **Tudo concluído com sucesso!** Aqui está o resumo:\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- **6 ficheiros modificados** (todos na pasta `memory/`):\n  - `memory/autonomous_log.md` — +26 linhas (log do ciclo #39)\n  - `memory/backlog.json` — +28 linhas (2 tarefas concluídas: novo agente Growth Marketer + análise de memória episódica)\n  - `memory/global/shared_memory.json` — +6 linhas (decisão Telegram registada)\n  - `memory/loop_episodes.json` — +18 linhas (novos ep"
+  },
+  {
+    "id": "auto_1fc356b8",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:36:18.111472",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:36:28.118033",
+    "completed_at": "2026-05-30T14:41:35.557059",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei **296 episódios** (196 loop + 100 supervisor), o backlog (54 itens, 52 \"done\" por limpar) e o autonomous_log.md. Identifiquei **6 padrões críticos**: (1) loop de 157 execuções da mesma tarefa sem deteção, (2) tarefa de análise de memória repetida 7x sem consolidação, (3) falha silenciosa (timeouts/erros marcados como sucesso), (4) backlog inflacionado com tarefas concluídas há 2 dias, (5) Cognitive Cycle quebrado com"
+  },
+  {
+    "id": "auto_0ea69066",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:41:45.700066",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:41:55.711014",
+    "completed_at": "2026-05-30T14:44:52.638238",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente **297 episódios** (197 loop_episodes + 100 supervisor), o autonomous_log.md (264 ciclos), e o ficheiro episódico do gestor. Extraí **7 lições críticas** com dados quantitativos: loop de 157x da mesma tarefa, 11 erros consecutivos de `task_desc` no CognitiveCycle, 4 falhas silenciosas de `write_file`, e parser JSON frágil no AutoGen.\n\n**O que ficou por fazer:** A consolidação das lições na memória semân"
+  },
+  {
+    "id": "auto_d994bdf6",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:45:02.928597",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:45:12.934988",
+    "completed_at": "2026-05-30T14:47:58.114457",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nAnalisei exaustivamente **198 episódios** do `loop_episodes.json`, os 2 ficheiros de episódios individuais (`gestor_memoria`, `supervisor`), o `licoes_episodicas.md` existente, o `semantic_index.json`, o `backlog.json`, o `autonomous_log.md` e o `shared_memory.json`. Identifiquei **8 lições críticas** (confirmando as 6 existentes e adicionando 2 novas: loop de 158x da mesma tarefa sem deteção, e 9 execuções repetidas da minha"
+  },
+  {
+    "id": "auto_c4283493",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:48:08.126415",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:48:18.133893",
+    "completed_at": "2026-05-30T14:53:58.466798",
+    "result": "Reescrevi todos os 31 souls do ecossistema com um formato padronizado que inclui: Identidade, Missão, Contexto de Execução (com nota do Windows/Linux), Ferramentas Disponíveis, Regras, Fluxo de Execução, Integração com o Sistema e Indicadores de Sucesso — eliminando inconsistências e tornando cada system prompt mais eficaz para o LLM.\n\nFalta fazer commit e push das alterações para o GitHub, e validar que o executor (`agents/executor.py`) carrega corretamente os novos souls."
+  },
+  {
+    "id": "auto_a7f5daf9",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:54:08.668692",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:54:18.674643",
+    "completed_at": "2026-05-30T14:56:56.494300",
+    "result": "## O que fiz\n\nAnalisei exaustivamente **200 episódios** do `loop_episodes.json`, o `conversation.jsonl` (12 linhas), a `episodica/gestor_memoria`, `cycle_state.json`, `checkpoint.json`, `semantic_index.json`, `licoes_episodicas.md` e `resumo_semanal.md`. Extraí **5 lições novas** e **3 recomendações prioritárias** (deteção de loops, validação de ferramentas, limpeza de backlog), mas **não consegui gravar** as lições atualizadas no ficheiro `licoes_episodicas.md` — a ferramenta `write_file` recus"
+  },
+  {
+    "id": "auto_67c77550",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:57:06.505790",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:57:16.511586",
+    "completed_at": "2026-05-30T15:01:25.836992",
+    "result": "Reescrevi todos os 31 souls do ecossistema com um formato padronizado que inclui: Identidade, Missão, Contexto de Execução, Ferramentas Disponíveis, Regras/Fluxo de Execução e Integração com o Sistema — todos validados com as 5 secções obrigatórias. Ficou por fazer: verificar se o `executor.py` carrega os souls atualizados corretamente e fazer commit das alterações."
+  },
+  {
+    "id": "auto_4391156c",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:01:36.012849",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:01:46.019714",
+    "completed_at": "2026-05-30T15:05:02.819596",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente os **200 episódios** do `loop_episodes.json`, o ficheiro de lições existente (`licoes_episodicas.md` com 7 lições), o `hub.jsonl`, `conversation.jsonl`, `backlog.json` e `autonomous_log.md`. Extraí **padrões críticos**: 80.5% dos episódios são do `qa_tester`, 158 execuções repetidas da mesma tarefa (`task_unify_memory_systems` — um loop de 79% de todo o ficheiro), 50 tarefas incompletas por falhas de `"
+  },
+  {
+    "id": "auto_c5ebf206",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T15:05:12.831746",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:05:22.838194"
   }
 ]

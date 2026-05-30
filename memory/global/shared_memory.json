@@ -1763,6 +1763,30 @@
       "decision": "Telegram: sim claro",
       "context": "Telegram",
       "timestamp": "2026-05-30T14:35:48.252210"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: percebes o que disse?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:37:15.145473"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: sim",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:39:46.105618"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: tu tens essa autorização",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:42:19.530857"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: do you speak also in english?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:58:30.716284"
     }
   ],
   "discoveries": [],

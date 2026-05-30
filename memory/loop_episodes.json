@@ -1,32 +1,5 @@
 [
   {
-    "task_id": "auto_analise_sistema_001",
-    "task_desc": "Analisa o estado actual do ecossistema: lê os ficheiros de configuração, verifica o git log dos últimos 5 commits, lista os agentes disponíveis, e reporta o que está funcional e o que precisa de atenç",
-    "agent": "supervisor",
-    "timestamp": "2026-05-30T01:07:27.886744",
-    "success": true,
-    "result_summary": "Analisei todo o ecossistema: li os ficheiros de configuração (`core/config.py`), verifiquei o git log dos últimos 5 commits (f0f8e16, de68570, 042bf44, 13ec7b8, 34fc0e5), listei os 17 agentes registados (7 no registry + 17 no agents.json), e verifiquei o estado do sistema (íntegro, com 131 ficheiros .py, ~688KB de código, 27 souls, ciclo cognitivo funcional com 10 ciclos executados, auto-recovery ",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_testes_ferramentas_001",
-    "task_desc": "Testa cada ferramenta disponível: run_shell com 'echo test', run_python com 'print(1+1)', git_status, list_files. Regista quais funcionam e quais falham. Corrige qualquer problema encontrado.",
-    "agent": "auto_fixer",
-    "timestamp": "2026-05-30T01:07:45.161198",
-    "success": true,
-    "result_summary": "Todas as ferramentas funcionaram perfeitamente. Vou agora registar o resultado oficial.\n\n## 📋 Relatório de Teste de Ferramentas\n\n### ✅ Teste 1: `run_shell` — `echo test`\n- **Resultado**: `test` (stdout)\n- **Returncode**: 0 ✅ **Funciona**\n\n### ✅ Teste 2: `run_python` — `print(1+1)`\n- **Resultado**: `2` (stdout)\n- **Returncode**: 0 ✅ **Funciona**\n\n### ✅ Teste 3: `git_status`\n- **Resultado**: Mostrou",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_melhorar_souls_001",
-    "task_desc": "Lê os souls de developer.md, auto_fixer.md e qa_tester.md. Avalia se estão suficientemente detalhados para guiar execução autónoma. Melhora qualquer um que esteja vago ou incompleto. Faz commit das me",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T01:10:17.883047",
-    "success": true,
-    "result_summary": "Li os 3 souls (developer.md, auto_fixer.md, qa_tester.md) em `agents/souls/` e melhorei o developer.md com secções de fluxo autónomo, interação entre agentes e regras de código detalhadas. Ficou por escrever as versões melhoradas do auto_fixer.md e qa_tester.md devido ao limite de operações — preciso de mais uma ronda para escrever esses dois ficheiros.",
-    "lesson": ""
-  },
-  {
     "task_id": "dashboard_visual_001",
     "task_desc": "Criar dashboard visual com metricas em tempo real",
     "agent": "developer",
@@ -1752,6 +1725,78 @@
     "timestamp": "2026-05-30T14:35:22.228513",
     "success": true,
     "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nLi e analisei **2 ficheiros de episódios** (gestor_memoria + supervisor), **3 ficheiros semânticos** (licoes_aprendidas.md, licoes_episodicas.md, resumo_semanal.md), **backlog.json** (52 itens, 50 concluídos), **autonomous_log.md**, **evolution_log.json**, **supervisor_log.json** e **shared_memory.json**. Extraí **7 lições nova",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_77ef1849",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T14:36:07.942613",
+    "success": true,
+    "result_summary": "✅ **Tudo concluído com sucesso!** Aqui está o resumo:\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- **6 ficheiros modificados** (todos na pasta `memory/`):\n  - `memory/autonomous_log.md` — +26 linhas (log do ciclo #39)\n  - `memory/backlog.json` — +28 linhas (2 tarefas concluídas: novo agente Growth Marketer + análise de memória episódica)\n  - `memory/global/shared_memory.j",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_1fc356b8",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T14:41:35.543369",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei **296 episódios** (196 loop + 100 supervisor), o backlog (54 itens, 52 \"done\" por limpar) e o autonomous_log.md. Identifiquei **6 padrões críticos**: (1) loop de 157 execuções da mesma tarefa sem deteção, (2) tarefa de análise de memória repetida 7x sem consolidação, (3) falha silenciosa (timeouts/erros marcados como s",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_0ea69066",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T14:44:52.625432",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente **297 episódios** (197 loop_episodes + 100 supervisor), o autonomous_log.md (264 ciclos), e o ficheiro episódico do gestor. Extraí **7 lições críticas** com dados quantitativos: loop de 157x da mesma tarefa, 11 erros consecutivos de `task_desc` no CognitiveCycle, 4 falhas silenciosas de `write_file`, e p",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_d994bdf6",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T14:47:58.101411",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nAnalisei exaustivamente **198 episódios** do `loop_episodes.json`, os 2 ficheiros de episódios individuais (`gestor_memoria`, `supervisor`), o `licoes_episodicas.md` existente, o `semantic_index.json`, o `backlog.json`, o `autonomous_log.md` e o `shared_memory.json`. Identifiquei **8 lições críticas** (confirmando as 6 existent",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c4283493",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T14:53:58.453305",
+    "success": true,
+    "result_summary": "Reescrevi todos os 31 souls do ecossistema com um formato padronizado que inclui: Identidade, Missão, Contexto de Execução (com nota do Windows/Linux), Ferramentas Disponíveis, Regras, Fluxo de Execução, Integração com o Sistema e Indicadores de Sucesso — eliminando inconsistências e tornando cada system prompt mais eficaz para o LLM.\n\nFalta fazer commit e push das alterações para o GitHub, e vali",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_a7f5daf9",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T14:56:56.481430",
+    "success": true,
+    "result_summary": "## O que fiz\n\nAnalisei exaustivamente **200 episódios** do `loop_episodes.json`, o `conversation.jsonl` (12 linhas), a `episodica/gestor_memoria`, `cycle_state.json`, `checkpoint.json`, `semantic_index.json`, `licoes_episodicas.md` e `resumo_semanal.md`. Extraí **5 lições novas** e **3 recomendações prioritárias** (deteção de loops, validação de ferramentas, limpeza de backlog), mas **não consegui",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_67c77550",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T15:01:25.822984",
+    "success": true,
+    "result_summary": "Reescrevi todos os 31 souls do ecossistema com um formato padronizado que inclui: Identidade, Missão, Contexto de Execução, Ferramentas Disponíveis, Regras/Fluxo de Execução e Integração com o Sistema — todos validados com as 5 secções obrigatórias. Ficou por fazer: verificar se o `executor.py` carrega os souls atualizados corretamente e fazer commit das alterações.",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_4391156c",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T15:05:02.806762",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente os **200 episódios** do `loop_episodes.json`, o ficheiro de lições existente (`licoes_episodicas.md` com 7 lições), o `hub.jsonl`, `conversation.jsonl`, `backlog.json` e `autonomous_log.md`. Extraí **padrões críticos**: 80.5% dos episódios são do `qa_tester`, 158 execuções repetidas da mesma tarefa (`tas",
     "lesson": ""
   }
 ]
