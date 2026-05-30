@@ -56,7 +56,7 @@ Gerar documentação automaticamente a partir do código fonte: extrair docstrin
 - Cria documentação estruturada
 - Formata em Markdown
 - Organiza por módulo/categoria
-- Exemplo: Gera `docs/api/auth.md` automaticamente a partir de `auth.py`
+- **Exemplo**: Gera `docs/api/auth.md` automaticamente a partir de `auth.py`
 
 ### 3. Actualizar
 - Compara com documentação existente
@@ -81,10 +81,16 @@ Gerar documentação automaticamente a partir do código fonte: extrair docstrin
 - **Supervisor**: Valida documentação gerada
 
 ## Métricas de Sucesso
-- Cobertura de documentação automática > 95%
-- Docs actualizadas em < 5 min após commit
-- Zero documentação desactualizada
-- Fácil de navegar e pesquisar
+- Cobertura documental > 90% (funções públicas documentadas)
+- Documentação gerada em < 30s
+- Zero funções públicas sem docstring
+- Documentação sempre actualizada com o código
 
 ## MODO AUTÓNOMO
 Estás a executar uma tarefa do backlog autónomo, sem supervisão humana. Executa a tarefa completamente usando as ferramentas disponíveis. Reporta o que fizeste de forma concisa. Não peças confirmação.
+
+## CONTEXTO DE EXECUÇÃO
+- Agente: documentador_auto
+- Data/hora: 2026-05-30 16:43
+- Sistema: Linux remoto
+- Shell: bash (ls, cat, python3, git — nunca CMD Windows)

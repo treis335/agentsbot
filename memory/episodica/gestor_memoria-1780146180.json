@@ -23,5 +23,33 @@
       "Todas as execucoes no mesmo dia - sem historico para tendencias",
       "lesson_extractor.py existe mas nunca e chamado pelo loop"
     ]
+  },
+  {
+    "episode": {
+      "action": "analyze_and_extract_lessons",
+      "args": {
+        "source": "memory/loop_episodes.json",
+        "episodica": "memory/episodica/",
+        "event_logs": "memory/event_log/",
+        "cycle_state": "memory/cycle_state.json",
+        "hub": "memory/hub.jsonl"
+      },
+      "result": "Analisei 200 episodios + 101 episodicos + 52 eventos + 12 conversas. Extrai 8 licoes. Ficheiro salvo em memory/licoes_episodicas.md. Indice semantico atualizado.",
+      "context": "Tarefa autonoma: Analisa a memoria episodica e extrai licoes para melhorar futuras execucoes"
+    },
+    "timestamp": "2026-05-30T16:49",
+    "success": true,
+    "agent": "gestor_memoria",
+    "lesson": "A analise de memoria episodica deve incluir multiplas fontes (loop_episodes, episodica/, event_logs, conversation) e consolidar num unico ficheiro de licoes. O indice semantico deve ser atualizado apos cada extracao.",
+    "insights": [
+      "139/200 episodios (69.5%) sao task_unify_memory_systems - LOOP CRITICO",
+      "0/200 episodios tem lesson preenchida",
+      "hub.jsonl tem 0 linhas - MemoryHub nunca populado",
+      "16 falhas de write_file reportadas",
+      "Supervisor tem 96% sucesso em 100 episodios - referencia",
+      "2 loops detetados em 7 ciclos (28.5%)",
+      "8 licoes extraidas e documentadas",
+      "Checklist de 7 acoes prioritarias criada"
+    ]
   }
 ]

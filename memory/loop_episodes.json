@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T02:48:47.272470",
-    "success": true,
-    "result_summary": "Peço desculpa, tive um problema técnico onde as chamadas às ferramentas `write_file` e `run_python` estavam a ser enviadas sem os parâmetros obrigatórios (path/code), resultando em falhas repetidas. Nada foi criado nem alterado — preciso de executar a tarefa completa: criar `core/memory_hub.py`, actualizar `core/supervisor.py`, `agents/executor.py`, criar `tests/test_memory_hub.py`, e fazer commit",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T02:50:49.079951",
-    "success": true,
-    "result_summary": "Desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem sucesso. A tarefa ficou por fazer: criar `core/memory_hub.py`, atualizar `supervisor.py` e `executor.py`, adicionar testes, e fazer commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T02:52:33.737694",
-    "success": true,
-    "result_summary": "Desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias antes de perceber. Preciso de recomeçar a tarefa: criar `core/memory_hub.py`, atualizar `supervisor.py` e `executor.py`, adicionar testes, e fazer commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T02:55:08.487470",
     "success": true,
     "result_summary": "Peço desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem sucesso. A tarefa não foi executada porque não consegui escrever o ficheiro `core/memory_hub.py` nem criar os restantes ficheiros necessários.",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-30T16:36:55.793420",
     "success": true,
     "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente **200 episódios** — 143 do qa_tester, 31 do supervisor, 17 meus, 8 do developer, 1 do devops. Cruzei com **4 event_logs** (27-30 Maio), **backlog.json** (39 itens), **state.json**, **cycle_state.json**, **hub.jsonl** (0 linhas), **licoes_episodicas.md** e **licoes_aprendidas.md**. Identifiquei ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_92570db9",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T16:38:35.741799",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `cost_controller` 💰📊\n\n### Lacuna Identificada\nO ecossistema tinha **37 souls** mas **nenhum agente especializado em gestão de custos de API**. Com chamadas constantes a APIs pagas (DeepSeek, etc.), esta era a maior vulnerabilidade financeira do sistema. Sem monitorização, os custos podem disparar despercebidos.\n\n### O que foi criado\n\n| Item | Descrição |\n|",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_ccbb0183",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T16:42:41.787856",
+    "success": true,
+    "result_summary": "Analisei os logs e identifiquei os **3 problemas principais**: (1) **1585 Telegram Conflicts** por múltiplas instâncias do bot, (2) **290 resets em loop** porque o `heartbeat_system.py` tenta reiniciar `supervisor_ultra.py` que já não existe, (3) **UnicodeEncodeError** com emojis no Windows CP1252. \n\n**Ficou por implementar** a correção no `heartbeat_system.py` (substituir `supervisor_ultra.py` po",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_ae0b737f",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T16:48:45.492511",
+    "success": true,
+    "result_summary": "Reescrevi 18 dos 34 souls com um formato padronizado melhorado que inclui: Identidade forte, Missão clara, Contexto de execução, Ferramentas, Regras de Ouro, Fluxo de Execução com exemplos, Armadilhas Comuns, Integração com o Sistema, Métricas de Sucesso, MODO AUTÓNOMO e CONTEXTO DE EXECUÇÃO.\n\nFicaram por reescrever 16 souls que já estavam num estado aceitável mas poderiam beneficiar de pequenos a",
     "lesson": ""
   }
 ]
