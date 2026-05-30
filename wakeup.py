@@ -62,14 +62,18 @@ class WakeUpSystemV2:
         # 2. Verifica se o processo python principal (main.py) ainda existe
         try:
             result = subprocess.run(
-                ["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"],
+                ["tasklist", "/FI", "IMAGENAME eq python3.13.exe", "/FO", "CSV"],
                 capture_output=True, text=True, timeout=3
             )
-            python_count = result.stdout.count("python.exe")
+            python_count = result.stdout.count("python3.13.exe")
             # Só considera stuck se houver 0 ou 1 processos (apenas o wakeup)
             if python_count <= 1:
                 self.log("[!] Apenas wakeup.py ativo - main.py pode ter morrido!")
                 return True
+            # Se houver mais de 3 processos python, há duplicatas - não reiniciar
+            if python_count > 3:
+                self.log(f"[!] {python_count} processos detetados - possivel duplicacao. A aguardar...")
+                return False
         except:
             pass
         
@@ -87,19 +91,32 @@ class WakeUpSystemV2:
         return False
     
     def force_restart(self):
-        """Forca o reinicio do sistema principal"""
+        """Forca o reinicio do sistema principal com rate limiting"""
+        # Rate limiting: max 3 reinícios por minuto
+        now = time.time()
+        if now - self.last_restart_time < 60:
+            self.restart_count += 1
+            if self.restart_count > self.max_restarts_per_minute:
+                cooldown = 120  # 2 minutos de espera
+                self.log(f"[BACKOFF] Demasiados reinicios ({self.restart_count}/min). A aguardar {cooldown}s...")
+                time.sleep(cooldown)
+                self.restart_count = 0
+        else:
+            self.restart_count = 1
+        self.last_restart_time = now
+        
         self.log("[LANCAR] A FORCAR REINICIO DO SISTEMA...")
         
         # Mata processos python antigos (exceto este)
         try:
             result = subprocess.run(
-                ["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"],
+                ["tasklist", "/FI", "IMAGENAME eq python3.13.exe", "/FO", "CSV"],
                 capture_output=True, text=True, timeout=3
             )
             
             current_pid = os.getpid()
             for line in result.stdout.split("\n"):
-                if "python.exe" in line and str(current_pid) not in line:
+                if "python3.13.exe" in line and str(current_pid) not in line:
                     # Extrai PID
                     parts = line.split(",")
                     if len(parts) >= 2:

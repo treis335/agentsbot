@@ -1923,10 +1923,46 @@
     "id": "auto_2079682f",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T23:29:57.388047",
     "source": "fallback",
-    "started_at": "2026-05-30T23:30:07.400280"
+    "started_at": "2026-05-30T23:30:07.400280",
+    "completed_at": "2026-05-30T23:30:45.289025",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `api_tester` 🧪🔌\n\n### Lacuna Identificada\nO ecossistema tinha **46 agentes** mas **nenhum especializado em testar integrações com APIs externas**. O `qa_tester` testa código interno, o `scenario_tester` testa cenários de utilizador, mas ninguém validava se as APIs externas (REST, GraphQL, WebSocket, webhooks) funcionam corretamente.\n\n### O que foi criado\n\n| Item | Detalhe |\n|------|---------|\n| **Nome** | `api_tester` |\n| **ID** | `0aa4d9b8` |\n| **Soul** "
+  },
+  {
+    "id": "auto_af0445c3",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-30T23:30:55.547274",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:31:05.562230",
+    "completed_at": "2026-05-30T23:34:23.686046",
+    "result": "Analisei todos os 47 ficheiros `souls/*.md` e identifiquei que apenas 1 soul (`api_tester.md`) tem secções em falta (Fluxo, Armadilhas, Integração, Métricas, Exemplos e MODO AUTÓNOMO), e que 39 dos 47 souls não têm exemplos de código concretos (` ```python`, ` ```bash`, etc.).\n\nFicou por fazer: reescrever o `api_tester.md` com as secções em falta e adicionar exemplos de código a todos os 39 souls que não os têm — não consegui executar `write_file` nem `run_python` devido a erros de formatação do"
+  },
+  {
+    "id": "auto_d8f3af39",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T23:34:33.705412",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:34:43.718174",
+    "completed_at": "2026-05-30T23:38:53.949625",
+    "result": "Analisei todos os 46 souls e identifiquei que 36 precisam de secção de Exemplos adicionada, e 1 (`api_tester.md`) está muito incompleto. No entanto, encontrei um bug na ferramenta `write_file` que impede escrever ficheiros com conteúdo longo — recebo erro \"ERRO: A ferramenta 'write_file' foi chamada sem argumentos\" mesmo fornecendo `path` e `content`.\n\nFicou por fazer: aplicar as melhorias reais aos ficheiros. Preciso que verifiques se há alguma restrição no servidor que bloqueia `write_file` co"
+  },
+  {
+    "id": "auto_125e379f",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T23:39:04.146410",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:39:14.158530"
   }
 ]

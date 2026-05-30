@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:06:47.134835",
-    "success": true,
-    "result_summary": "## Resumo\n\n**O que fiz:** Verifiquei o estado actual do ecossistema. O `core/memory_hub.py` (486 linhas) e `tests/test_memory_hub.py` (19 testes) já existem e estão completos. O `core/supervisor.py` já importa e usa `MemoryHub`, e o `agents/executor.py` também já importa `MemoryHub`.\n\n**O que ficou por fazer:** Preciso verificar se os métodos wrapper antigos (como `remember`, `summary`, `last_huma",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:08:49.198290",
-    "success": true,
-    "result_summary": "## Resumo do que fiz\n\nCorrigi os 4 testes que falhavam no `tests/test_memory_hub.py` — os acessos a chaves estavam errados (ex: `chats[0][\"role\"]` em vez de `chats[0][\"data\"][\"role\"]`, `result` como dict quando é string, e cabeçalho `CONHECIMENTO` vs `CONHECIMENTOS`). Agora 10/11 testes passam, só o `test_get_context_returns_string` ainda falha porque o header real é `=== CONHECIMENTO ===` e o tes",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:11:30.564759",
-    "success": true,
-    "result_summary": "O push deu timeout (sem internet). O commit local foi feito com sucesso.\n\n## ✅ Resumo do que fiz\n\n**Tarefa completa: Unificação dos 3 sistemas de memória em MemoryHub**\n\n### O que já existia (de tentativas anteriores):\n- `core/memory_hub.py` — classe MemoryHub completa (486 linhas) com todos os métodos necessários\n- `tests/test_memory_hub.py` — 11 testes unitários\n\n### O que verifiquei/confirmei h",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:12:47.567130",
     "success": true,
     "result_summary": "O commit já foi feito com sucesso! Tudo está completo:\n\n1. ✅ **`core/memory_hub.py`** (486 linhas) — MemoryHub com `store_chat`, `store_episode`, `store_knowledge`, `get_context`, mais wrappers de compatibilidade (`remember`, `summary`, `last_human_message`, `last_supervisor_message`, `count_human_messages`, `set_agent_id`, `get_episodes`, `record`, `clear`, `stats`)\n2. ✅ **`memory/hub.jsonl`** — ",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-30T23:29:47.351018",
     "success": true,
     "result_summary": "Perfeito. Tudo limpo e sincronizado.\n\n---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Último commit**: `b70721a` — feito e enviado com sucesso\n\n### 📦 O que foi commitado\n\n| Ficheiro | Alterações |\n|----------|-----------|\n| `events/2026/05/30/events.jsonl` | +1 evento |\n| `memory/autonomous_log.md` | +13 linhas (ciclos",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_2079682f",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T23:30:45.271065",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `api_tester` 🧪🔌\n\n### Lacuna Identificada\nO ecossistema tinha **46 agentes** mas **nenhum especializado em testar integrações com APIs externas**. O `qa_tester` testa código interno, o `scenario_tester` testa cenários de utilizador, mas ninguém validava se as APIs externas (REST, GraphQL, WebSocket, webhooks) funcionam corretamente.\n\n### O que foi criado\n\n|",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_af0445c3",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T23:34:23.668318",
+    "success": false,
+    "result_summary": "Analisei todos os 47 ficheiros `souls/*.md` e identifiquei que apenas 1 soul (`api_tester.md`) tem secções em falta (Fluxo, Armadilhas, Integração, Métricas, Exemplos e MODO AUTÓNOMO), e que 39 dos 47 souls não têm exemplos de código concretos (` ```python`, ` ```bash`, etc.).\n\nFicou por fazer: reescrever o `api_tester.md` com as secções em falta e adicionar exemplos de código a todos os 39 souls ",
+    "lesson": "Tarefa falhou. Tentar abordagem diferente."
+  },
+  {
+    "task_id": "auto_d8f3af39",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T23:38:53.932959",
+    "success": true,
+    "result_summary": "Analisei todos os 46 souls e identifiquei que 36 precisam de secção de Exemplos adicionada, e 1 (`api_tester.md`) está muito incompleto. No entanto, encontrei um bug na ferramenta `write_file` que impede escrever ficheiros com conteúdo longo — recebo erro \"ERRO: A ferramenta 'write_file' foi chamada sem argumentos\" mesmo fornecendo `path` e `content`.\n\nFicou por fazer: aplicar as melhorias reais a",
     "lesson": ""
   }
 ]
