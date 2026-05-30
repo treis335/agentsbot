@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:56:14.043439",
-    "success": true,
-    "result_summary": "**O que fiz:** Confirmei que `core/memory_hub.py` já está completo (470 linhas, singleton, todos os métodos pedidos), `core/supervisor.py` já usa MemoryHub, `agents/executor.py` já usa MemoryHub, e escrevi o início do ficheiro `tests/test_memory_hub.py`.\n\n**O que ficou por fazer:** Preciso de escrever o conteúdo completo do teste (`tests/test_memory_hub.py`) com testes unitários para store_chat, s",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:00:22.815552",
     "success": true,
     "result_summary": "**O que fiz:** Confirmei que `core/memory_hub.py` já está completo (470 linhas, singleton, todos os métodos pedidos), `core/supervisor.py` e `agents/executor.py` já usam MemoryHub, e criei o ficheiro `tests/test_memory_hub.py` com 11 testes unitários.\n\n**O que ficou por fazer:** Os testes falham porque o `setUp` tenta aceder a `hub.filepath` que não existe na implementação real — preciso de reescr",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T23:26:52.508211",
     "success": true,
     "result_summary": "## Resumo do que fiz\n\n### Problema identificado\n7 dos 45 souls do ecossistema estavam **completamente sem exemplos concretos** nos seus system prompts. Exemplos são críticos para a eficácia de prompts de IA — \"um exemplo vale 100 palavras de instrução\".\n\n### O que fiz\nAdicionei **3 exemplos concretos cada** a 7 souls:\n\n| Soul | Exemplos |\n|------|----------|\n| **automation_orchestrator** | Backup ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c99375ba",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T23:27:33.267828",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Commit mais recente**: `eff2860`\n\n### 📦 O que foi commitado\n\n| Commit | Ficheiros | Descrição |\n|--------|-----------|-----------|\n| `d9ee8d6` | 8 ficheiros | Logs, backlog, ciclo, episódios, índice semântico, auto-melhoria, métricas |\n| `eff2860` | 1 ficheiro | Backlog a",
     "lesson": ""
   }
 ]
