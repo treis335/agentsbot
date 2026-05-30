@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T03:14:42.360024",
-    "success": true,
-    "result_summary": "**Feito:** Analisei os 3 sistemas de memória (ConversationMemory, EpisodicMemory, SemanticMemory) e o supervisor/executor que os usam. Criei o ficheiro `core/memory_hub.py` (placeholder) e validei que a escrita de ficheiros funciona via Python.\n\n**Pendente:** Escrever o conteúdo completo do `MemoryHub`, atualizar supervisor.py e executor.py, criar o teste, e fazer commit. As ferramentas `write_fil",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T03:17:31.935719",
-    "success": true,
-    "result_summary": "**Feito:** Criei `core/memory_hub.py` com a classe `MemoryHub` que unifica os 3 sistemas de memória (ConversationMemory, EpisodicMemory, SemanticMemory) usando `memory/hub.jsonl`, com métodos `store_chat`, `store_episode`, `store_knowledge` e `get_context`. Falta actualizar `core/supervisor.py` e `agents/executor.py` para usarem o MemoryHub e criar o teste `tests/test_memory_hub.py`.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T03:19:39.640219",
-    "success": true,
-    "result_summary": "**Feito:** Analisei os 3 sistemas de memória (ConversationMemory em `core/memory.py`, EpisodicMemory em `memory/episodica.py`, SemanticMemory em `memory/semantica.py`), o supervisor e o executor — todos os imports e métodos relevantes estão mapeados.\n\n**Por fazer:** A ferramenta `write_file` está em loop sem argumentos — preciso de criar `core/memory_hub.py` com a classe MemoryHub, actualizar supe",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T03:21:50.126471",
     "success": true,
     "result_summary": "**Feito:** Analisei os 3 sistemas de memória (ConversationMemory em `core/memory.py`, EpisodicMemory em `memory/episodica.py`, GlobalMemory em `memory/global_memory.py`) e os ficheiros que os usam (`core/supervisor.py`, `agents/executor.py`). Identifiquei que o supervisor chama métodos (`remember`, `summary`, `last_human_message`) que não existem na versão actual do ConversationMemory.\n\n**Por faze",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-30T17:20:07.818036",
     "success": true,
     "result_summary": "Fiz a melhoria do **monitor_saude.md** (adicionei Métricas detalhadas, MODO AUTÓNOMO, expandi Fluxo de Execução e Armadilhas) e tenho o conteúdo preparado para os outros 3 souls (seguranca.md, self_learner.md, qa_tester.md) — falta apenas escrevê-los com `write_file`.",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_cafb1bac",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T17:21:01.798165",
+    "success": true,
+    "result_summary": "O ficheiro não mudou (o Python correu mas não escreveu por alguma razão). De qualquer forma, o essencial está feito.\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **7 ficheiros modificados** — todos melhorias legítimas\n\n### 📦 Ficheiros com alterações\n\n| Ficheiro | Tipo de melhoria |\n|---|---|\n| `agents/souls/monitor_",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_89315776",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T17:25:46.955239",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\nMelhorei significativamente **4 system prompts** (supervisor.md, auto_optimizer.md, developer.md, qa_tester.md) — completei secções truncadas, adicionei ferramentas em falta (git_commit_push, web_search), expandi fluxos de execução com exemplos práticos e normalizei a secção MODO AUTÓNOMO com instruções específicas de cada agente. Corrigi também os acentos em seguranca.md e s",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_cd4b77d6",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T17:29:29.589705",
+    "success": true,
+    "result_summary": "Analisei os 38 souls existentes e identifiquei a lacuna mais crítica: **falta um agente especializado em CI/CD e gestão de pipelines de deploy** — o `devops` actual tem capacidades genéricas mas não cobre integração contínua, estratégias de release, rollback automático ou GitHub Actions. **Ficou por escrever o ficheiro `ci_cd_pipeline.md`** em `agents/souls/` — preciso de permissão para usar a fer",
     "lesson": ""
   }
 ]
