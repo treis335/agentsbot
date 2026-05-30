@@ -81,11 +81,19 @@ def release_telegram_lock():
 
 
 def _is_process_alive(pid: int) -> bool:
-    """Verifica se um processo com o PID dado ainda existe (cross-platform)."""
+    """Verifica se um processo com o PID dado ainda existe e é o main.py (cross-platform)."""
     if pid <= 0:
         return False
     try:
+        # Verificação extra: o processo tem de ser python E estar a correr main.py
         if os.name == "nt":
+            result = subprocess.run(
+                ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV"],
+                capture_output=True, text=True, timeout=3
+            )
+            if "python.exe" not in result.stdout:
+                print(f"[TelegramLock] PID {pid} existe mas não é python. Lock expirado.")
+                return False
             result = subprocess.run(
                 ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"],
                 capture_output=True, text=True, timeout=5,

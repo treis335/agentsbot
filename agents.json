@@ -66,5 +66,9 @@
   {
     "name": "SoulAgent",
     "mission": "Manter a identidade e personalidade do ecossistema"
+  },
+  {
+    "name": "DataPipelineEngineer",
+    "mission": "Construir pipelines de dados, ETL, scraping e sincronizacao entre sistemas"
   }
 ]

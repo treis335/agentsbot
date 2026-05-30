@@ -1847,12 +1847,72 @@
       "decision": "Telegram: quando finalizares a tua tarefa atual aguarda",
       "context": "Telegram",
       "timestamp": "2026-05-30T17:16:41.170014"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: como esta o teu estado atual?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T18:48:28.178076"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ativa a tarefa de dashboard, dá inicio á atualização e construção/melhoria do da",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T18:50:21.656297"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ja estas na tarefa de melhoria do dashboard?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T18:51:23.479211"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ja estas na tarefa de melhoria do dashboard?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T18:52:05.486051"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: parece que estas a ficar mais desenvolvido!!",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:24:34.640755"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: 2 - implementar os agentes reais",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:25:14.004619"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: dou",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:40:10.596612"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: entra em modo autonomo!",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:52:14.725458"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: quando puderes visita, verifica e aprende, se algo fizer sentido para ti, usa\n\nh",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:55:45.508115"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: quando puderes visita, verifica e aprende, se algo fizer sentido para ti, usa\n\nh",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:58:46.779412"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-30T17:05:12.818737",
+    "last_start": "2026-05-30T19:48:22.625109",
     "agents_count": 19,
     "tasks_count": 0
   },

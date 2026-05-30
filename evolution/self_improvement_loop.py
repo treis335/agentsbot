@@ -244,23 +244,41 @@ class SelfImprovementLoop:
             return []
 
     async def _validate_patches(self, patches: list[dict], result: ImprovementResult) -> list[dict]:
-        """Passo 4: validar sintaxe e segurança."""
-        try:
-            from evolution.patch_validator import PatchValidator
-            validator = PatchValidator()
-            valid = []
-            for patch in patches:
-                ok, reason = validator.validate(patch)
-                if ok:
-                    valid.append(patch)
-                    logger.info(f"[SelfImprove] Patch v?lido: {patch.get('description','?')[:60]}")
+        """Passo 4: validar patches — sintaxe local + Conselho Multi-Agente."""
+        from evolution.patch_validator import PatchValidator
+        from evolution.council import get_council
+
+        validator = PatchValidator()
+        council = get_council()
+        approved = []
+
+        for patch in patches:
+            desc = patch.get("description", "?")[:60]
+
+            # 4a: validacao local (sintaxe, search_str existe)
+            local_result = validator.validate(patch)
+            if not local_result.get("valid", False):
+                errors = local_result.get("errors", [])
+                logger.warning(f"[SelfImprove] Sintaxe invalida: {'; '.join(str(e) for e in errors[:2])}")
+                continue
+
+            # 4b: Conselho Multi-Agente (4 agentes revisam)
+            try:
+                decision = council.review(patch)
+                if decision.approved:
+                    approved.append(patch)
+                    logger.info(f"[Council] Aprovado ({decision.approve_count}/4): {desc}")
                 else:
-                    logger.warning(f"[SelfImprove] Patch rejeitado: {reason}")
-            result.patches_validated = len(valid)
-            return valid
-        except Exception as e:
-            logger.warning(f"[SelfImprove] Valida??o falhou: {e}")
-            return []
+                    veto = " [VETO]" if decision.veto else ""
+                    logger.warning(f"[Council] Rejeitado{veto}: {desc} — {decision.final_reasoning[:80]}")
+            except Exception as e:
+                # Council falhou — usar validacao local como fallback
+                logger.warning(f"[Council] Fallback para validacao local: {e}")
+                approved.append(patch)
+
+        result.patches_validated = len(approved)
+        logger.info(f"[SelfImprove] {len(approved)}/{len(patches)} patches aprovados")
+        return approved
 
     async def _apply_patches(self, patches: list[dict], result: ImprovementResult) -> int:
         """Passo 5: aplicar patches nos ficheiros reais."""

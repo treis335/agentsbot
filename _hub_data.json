@@ -488,5 +488,20 @@
     "    \"\"\"Devolve a instancia unica do MemoryHub (singleton).\"\"\"",
     "    return MemoryHub()",
     ""
+  ],
+  "memoria": [
+    {
+      "timestamp": "2026-05-30T20:15:48.250598",
+      "agente": "supervisor",
+      "acao": "criar_agente",
+      "detalhes": "Criado predictive_analyst - analista preditivo e forecaster",
+      "resultado": "sucesso",
+      "ficheiros": [
+        "agents/souls/predictive_analyst.md",
+        "agents/registry/agents.json",
+        "agents/registry/capabilities.json",
+        "agents/memory/predictive-001.json"
+      ]
+    }
   ]
 }

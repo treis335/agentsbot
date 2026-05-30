@@ -1,51 +1,69 @@
 """
-utils/__init__.py — Utilitarios seguros para o ecossistema Correoto.
+utils — Utilitários do ecossistema Correoto
 """
-
 import sys
+import os
+import logging
 
-
-def safe_print(*args, sep=" ", end="\n", file=None):
-    """
-    Print seguro que nunca causa UnicodeEncodeError.
-    Substitui caracteres problematicos por '?' em vez de crashar.
-    """
-    if file is None:
-        file = sys.stdout
-    
-    # Tentar reconfigurar stdout para utf-8
-    try:
-        file.reconfigure(encoding='utf-8', errors='replace')
-    except (ValueError, AttributeError):
-        pass
-    
-    text = sep.join(str(a) for a in args) + end
-    
-    try:
-        file.write(text)
-        file.flush()
-    except UnicodeEncodeError:
-        # Fallback: substituir caracteres nao-ASCII
-        safe_text = text.encode('utf-8', errors='replace').decode('utf-8')
-        # Ainda pode falhar se o terminal for CP1252
+def force_utf8():
+    """Força UTF-8 no stdout/stderr para evitar UnicodeEncodeError no Windows."""
+    if hasattr(sys.stdout, "reconfigure"):
         try:
-            file.write(safe_text)
-            file.flush()
-        except UnicodeEncodeError:
-            # Ultimo recurso: ASCII puro
-            ascii_text = safe_text.encode('ascii', errors='replace').decode('ascii')
-            file.write(ascii_text)
-            file.flush()
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+    if hasattr(sys.stderr, "reconfigure"):
+        try:
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+    os.environ["PYTHONIOENCODING"] = "utf-8:replace"
 
 
-def safe_log(filepath: str, msg: str):
-    """Escreve no ficheiro de log de forma segura (UTF-8 sempre)."""
-    import os
-    from datetime import datetime
+class TelegramLogFilter(logging.Filter):
+    """Filtra logs de erro do Telegram HTTP 409 Conflict para evitar spam."""
     
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    line = f"[{timestamp}] {msg}\n"
+    def filter(self, record):
+        msg = record.getMessage()
+        # Filtrar 409 Conflict do Telegram (múltiplas instâncias)
+        if "409 Conflict" in msg and "telegram" in msg.lower():
+            return False
+        # Filtrar polling exceptions do Telegram
+        if "Exception happened while polling" in msg:
+            return False
+        # Filtrar "No error handlers are registered"
+        if "No error handlers are registered" in msg:
+            return False
+        return True
+
+
+def suppress_telegram_errors():
+    """Adiciona filtro para suprimir logs de erro do Telegram."""
+    for handler in logging.root.handlers:
+        handler.addFilter(TelegramLogFilter())
     
-    os.makedirs(os.path.dirname(filepath) or ".", exist_ok=True)
-    with open(filepath, "a", encoding="utf-8") as f:
-        f.write(line)
+    # Também filtrar loggers específicos do Telegram
+    for name in ['telegram', 'telegram.ext.Updater', 'telegram.ext.Application', 'httpx']:
+        logger = logging.getLogger(name)
+        logger.addFilter(TelegramLogFilter())
+        logger.setLevel(logging.WARNING)  # Só mostrar WARNING+ do Telegram
+
+
+def setup_logging(level=logging.INFO, suppress_telegram=True):
+    """Configura logging do ecossistema com opção de suprimir Telegram."""
+    force_utf8()
+    
+    logging.basicConfig(
+        level=level,
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+            logging.FileHandler('main.log', encoding='utf-8'),
+        ]
+    )
+    
+    if suppress_telegram:
+        suppress_telegram_errors()
+    
+    return logging.getLogger(__name__)

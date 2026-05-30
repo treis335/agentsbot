@@ -1,0 +1,15 @@
+{
+  "agent_id": "predictive-001",
+  "name": "predictive_analyst",
+  "created_at": "2026-05-30T20:13:00",
+  "last_active": "",
+  "total_analyses": 0,
+  "total_forecasts": 0,
+  "accuracy_history": [],
+  "models_trained": [],
+  "context": [
+    "Sou o Predictive Analyst, o oráculo do ecossistema Correoto.",
+    "Uso dados históricos para prever o futuro do sistema.",
+    "Acabei de ser criado e estou pronto para começar a analisar."
+  ]
+}

@@ -837,6 +837,232 @@
         "quanto custa"
       ],
       "priority": 7
+    },
+    "compliance_auditor": {
+      "description": "Audita conformidade legal, RGPD/LGPD, licencas de software, privacidade de dados e etica IA",
+      "skills": [
+        "compliance",
+        "rgpd",
+        "lgpd",
+        "privacy",
+        "licensing",
+        "audit",
+        "data_protection",
+        "ethics",
+        "regulation"
+      ],
+      "keywords": [
+        "compliance",
+        "rgpd",
+        "lgpd",
+        "privacidade",
+        "licencas",
+        "auditoria",
+        "conformidade",
+        "regulamentacao",
+        "dados pessoais",
+        "termos de servico",
+        "politica de privacidade",
+        "consentimento",
+        "etico",
+        "fairness",
+        "transparencia",
+        "lei",
+        "legal",
+        "regulatorio"
+      ],
+      "priority": 7
+    },
+    "incident_responder": {
+      "description": "Responde a incidentes, classifica gravidade, executa runbooks, coordena resolução, faz post-mortem",
+      "skills": [
+        "incident_response",
+        "severity_classification",
+        "runbook_execution",
+        "post_mortem",
+        "escalation",
+        "mttr_reduction",
+        "coordination"
+      ],
+      "keywords": [
+        "incidente",
+        "p0",
+        "p1",
+        "crash",
+        "falha",
+        "emergência",
+        "alerta",
+        "on-call",
+        "plantão",
+        "runbook",
+        "post-mortem",
+        "mttr",
+        "sla",
+        "escalar",
+        "responder",
+        "recuperar",
+        "rollback",
+        "incident response"
+      ],
+      "priority": 10
+    },
+    "predictive_analyst": {
+      "description": "Analisa padrões históricos e faz previsões de carga, tokens, tendências e anomalias no ecossistema",
+      "skills": [
+        "time_series_forecasting",
+        "statistical_modeling",
+        "anomaly_detection",
+        "trend_analysis",
+        "predictive_maintenance",
+        "data_visualization",
+        "report_generation"
+      ],
+      "keywords": [
+        "previsao",
+        "forecast",
+        "tendencia",
+        "predicao",
+        "padrao",
+        "sazonalidade",
+        "anomalia",
+        "preditivo",
+        "futuro",
+        "projecao",
+        "carga",
+        "tokens",
+        "performance",
+        "degradacao",
+        "antecipar"
+      ]
+    },
+    "knowledge_generator": {
+      "description": "Gera conhecimento estruturado, extrai insights e sintetiza informação",
+      "skills": [
+        "knowledge_synthesis",
+        "insight_extraction",
+        "summarization"
+      ],
+      "keywords": [
+        "conhecimento",
+        "insight",
+        "sintetiza",
+        "extrai informação",
+        "gera doc",
+        "knowledge base"
+      ],
+      "priority": 5
+    },
+    "integrador_testes": {
+      "description": "Integra testes no CI/CD, escreve testes de integração end-to-end",
+      "skills": [
+        "integration_testing",
+        "e2e_testing",
+        "ci_cd_testing"
+      ],
+      "keywords": [
+        "integração",
+        "e2e",
+        "ci cd",
+        "pipeline de testes",
+        "testes de integração"
+      ],
+      "priority": 7
+    },
+    "aprendiz": {
+      "description": "Aprende com experiências passadas e aplica lições em novas situações",
+      "skills": [
+        "learning",
+        "adaptation",
+        "pattern_application"
+      ],
+      "keywords": [
+        "aprende",
+        "aplica lição",
+        "padrão",
+        "experiência",
+        "adapta"
+      ],
+      "priority": 4
+    },
+    "meta_cognition_engine": {
+      "description": "Raciocina sobre o próprio raciocínio, melhora estratégias de pensamento",
+      "skills": [
+        "meta_reasoning",
+        "strategy_improvement",
+        "self_analysis"
+      ],
+      "keywords": [
+        "meta",
+        "raciocínio sobre",
+        "estratégia de pensamento",
+        "auto-análise",
+        "cognição"
+      ],
+      "priority": 5
+    },
+    "token_economist": {
+      "description": "Optimiza uso de tokens e custos de API, reduz desperdício",
+      "skills": [
+        "token_optimization",
+        "cost_reduction",
+        "prompt_compression"
+      ],
+      "keywords": [
+        "token",
+        "custo api",
+        "optimiza tokens",
+        "reduz custo",
+        "comprime prompt"
+      ],
+      "priority": 6
+    },
+    "documentador_auto": {
+      "description": "Gera documentação automaticamente a partir de código existente",
+      "skills": [
+        "auto_documentation",
+        "code_analysis",
+        "docstring_generation"
+      ],
+      "keywords": [
+        "auto doc",
+        "documenta código",
+        "gera docstring",
+        "documenta automaticamente"
+      ],
+      "priority": 5
+    },
+    "auto_evolver_v2": {
+      "description": "Versão evoluída do auto_evolver com capacidades de análise mais profundas",
+      "skills": [
+        "advanced_evolution",
+        "deep_analysis",
+        "system_upgrade"
+      ],
+      "keywords": [
+        "evolução avançada",
+        "upgrade profundo",
+        "melhoria sistémica"
+      ],
+      "priority": 7
+    },
+    "data_pipeline_engineer": {
+      "description": "Constrói e mantém pipelines de dados, ETL, scraping e processamento",
+      "skills": [
+        "data_pipeline",
+        "etl",
+        "scraping",
+        "data_processing"
+      ],
+      "keywords": [
+        "pipeline",
+        "etl",
+        "scraping",
+        "dados",
+        "extrai dados",
+        "processa dados",
+        "data engineer"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

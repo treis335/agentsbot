@@ -12,6 +12,10 @@ Inspirado no Memory Knowledge Graph do Mission Control.
 """
 import json
 import logging
+import os
+import tempfile
+import time
+from pathlib import Path
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
@@ -52,12 +56,49 @@ class GlobalMemory:
             return self._default()
 
     def _save(self) -> None:
-        """Guarda memoria no ficheiro."""
+        """Guarda memoria no ficheiro com escrita atomica e locking."""
         self.memory_file.parent.mkdir(parents=True, exist_ok=True)
-        self.memory_file.write_text(
-            json.dumps(self._data, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
+        lock_file = self.memory_file.with_suffix(".json.lock")
+        # Tentar adquirir lock (max 5s)
+        for attempt in range(50):
+            try:
+                # Criar lock file atomicamente
+                fd = os.open(str(lock_file), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.close(fd)
+                break
+            except FileExistsError:
+                # Lock existe - verificar se e' stale (>2s)
+                try:
+                    age = time.time() - os.path.getmtime(lock_file)
+                    if age > 2.0:
+                        os.unlink(str(lock_file))
+                        continue
+                except:
+                    pass
+                time.sleep(0.1)
+        else:
+            # Timeout - forcar lock
+            try:
+                os.unlink(str(lock_file))
+                fd = os.open(str(lock_file), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.close(fd)
+            except:
+                pass
+        try:
+            # Escrita atomica: temp file -> rename
+            tmp = tempfile.NamedTemporaryFile(
+                mode='w', encoding='utf-8', dir=str(self.memory_file.parent),
+                prefix='.shared_memory_tmp_', suffix='.json', delete=False
+            )
+            tmp.write(json.dumps(self._data, indent=2, ensure_ascii=False))
+            tmp.close()
+            os.replace(tmp.name, str(self.memory_file))
+        finally:
+            # Libertar lock
+            try:
+                os.unlink(str(lock_file))
+            except:
+                pass
 
     def _default(self) -> dict:
         return {

@@ -59,15 +59,16 @@ class WakeUpSystemV2:
                 except:
                     pass
         
-        # 2. Verifica se o processo python principal ainda existe
+        # 2. Verifica se o processo python principal (main.py) ainda existe
         try:
             result = subprocess.run(
                 ["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"],
                 capture_output=True, text=True, timeout=3
             )
             python_count = result.stdout.count("python.exe")
-            if python_count == 0:
-                self.log("[!] Nenhum processo python encontrado - sistema pode estar preso!")
+            # Só considera stuck se houver 0 ou 1 processos (apenas o wakeup)
+            if python_count <= 1:
+                self.log("[!] Apenas wakeup.py ativo - main.py pode ter morrido!")
                 return True
         except:
             pass
@@ -77,8 +78,8 @@ class WakeUpSystemV2:
             try:
                 mod_time = os.path.getmtime(LOG_FILE)
                 elapsed = time.time() - mod_time
-                if elapsed > 30:  # Mais de 30s sem logs
-                    self.log(f"[!] Sem atividade ha {elapsed:.0f}s - possivel stuck!")
+                if elapsed > 120:  # Mais de 2min sem logs (aumentado de 30s para evitar falsos stuck)
+                    self.log(f"[!] Sem atividade ha {elapsed:.0f}s - a verificar...")
                     return True
             except:
                 pass

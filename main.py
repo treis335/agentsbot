@@ -64,6 +64,11 @@ if hasattr(sys.stderr, "reconfigure"):
 
 _check_instance_lock()
 
+# --- Correção de Encoding + Supressão de Logs Telegram ---
+from utils import force_utf8, suppress_telegram_errors
+force_utf8()
+suppress_telegram_errors()
+
 # --- Configuração ---------------------------------------------------------
 from core.config import Config
 from core.orchestrator import Orchestrator

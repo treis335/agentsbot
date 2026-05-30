@@ -1,0 +1,201 @@
+=== _autonomous_loop_debug.txt ===
+"""
+autonomous_loop.py
+Motor de autonomia do ecossistema Correoto.
+Corre para sempre — acorda, pensa, age, reporta, dorme, repete.
+"""
+
+import json
+import os
+import time
+import random
+import asyncio
+from datetime import datetime
+from pathlib import Path
+
+
+# ─── CONFIGURAÇÃO ──────────────────────────────────────────────────────────────
+
+CYCLE_INTERVAL_MINUTES = 15        # Ciclo principal (acordar + trabalhar)
+BRAINSTORM_INTERVAL_CYCLES = 4     # Brainstorm a cada N ciclos sem tarefas
+MAX_TASKS_PER_CYCLE = 2            # Máximo de tarefas por ciclo
+MEMORY_DIR = Path("memory")
+BACKLOG_FILE = MEMORY_DIR / "backlog.json"
+LOG_FILE = MEMORY_DIR / "autonomous_log.md"
+
+
+# ─── AGENTES DA EQUIPA ─────────────────────────────────────────────────────────
+
+AGENTS = {
+    "supervisor":     "agents/souls/supervisor.md",
+    "developer":      "agents/souls/developer.md",
+    "arquiteto":      "agents/souls/arquiteto.md",
+    "auto_fixer":     "agents/souls/auto_fixer.md",
+    "auto_evolver":   "agents/souls/auto_evolver.md",
+    "qa_tester":      "agents/souls/qa_tester.md",
+    "gestor_memoria": "agents/souls/gestor_memoria.md",
+}
+
+# Papéis de cada agente no brainstorm
+AGENT_ROLES = {
+    "supervisor":     "Coordenação, prioridades e visão global",
+    "developer":      "Implementação técnica e código",
+    "arquiteto":      "Estrutura do sistema e design patterns",
+    "auto_fixer":     "Bugs, erros e estabilidade",
+    "auto_evolver":   "Melhorias, otimizações e novas features",
+    "qa_tester":      "Qualidade, testes e validação",
+    "gestor_memoria": "Memória, contexto e conhecimento acumulado",
+}
+
+
+# ─── BACKLOG DE TAREFAS ────────────────────────────────────────────────────────
+
+def load_backlog() -> list:
+    MEMORY_DIR.mkdir(exist_ok=True)
+    if not BACKLOG_FILE.exists():
+        return []
+    with open(BACKLOG_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_backlog(backlog: list):
+    MEMORY_DIR.mkdir(exist_ok=True)
+    with open(BACKLOG_FILE, "w", encoding="utf-8") as f:
+        json.dump(backlog, f, ensure_ascii=False, indent=2)
+
+
+def add_to_backlog(title: str, description: str, priority: int = 5,
+                   source: str = "brainstorm"):
+    """Adiciona tarefa ao backlog. Prioridade: 1 (alta) a 10 (baixa)."""
+    backlog = load_backlog()
+    task = {
+        "id": f"task_{int(time.time())}_{random.randint(100, 999)}",
+        "title": title,
+        "description": description,
+        "priority": priority,
+        "source": source,
+        "created": datetime.now().isoformat(),
+        "status": "pending",
+    }
+    backlog.append(task)
+    backlog.sort(key=lambda x: x["priority"])
+    save_backlog(backlog)
+    return task
+
+
+def get_next_task() -> dict | None:
+    """Retorna a próxima tarefa pendente de maior prioridade."""
+    backlog = load_backlog()
+    for task in backlog:
+        if task["status"] == "pending":
+            return task
+    return None
+
+
+def mark_task_done(task_id: str, result: str = ""):
+    backlog = load_backlog()
+    for task in backlog:
+        if task["id"] == task_id:
+            task["status"] = "done"
+            task["completed"] = datetime.now().isoformat()
+            task["result"] = result
+    save_backlog(backlog)
+
+
+def mark_task_failed(task_id: str, reason: str = ""):
+    backlog = load_backlog()
+    for task in backlog:
+        if task["id"] == task_id:
+            task["status"] = "failed"
+            task["failed_at"] = datetime.now().isoformat()
+            task["reason"] = reason
+    save_backlog(backlog)
+
+
+# ─── LOG DE AUTONOMIA ──────────────────────────────────────────────────────────
+
+def log(message: str, level: str = "INFO"):
+    MEMORY_DIR.mkdir(exist_ok=True)
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    emoji = {"INFO": "ℹ️", "SUCCESS": "[OK]", "ERROR": "[FAIL]",
+             "BRAINSTORM": "[BULB]", "SLEEP": "😴", "WAKE": "🌅"}.get(level, "•")
+    entry = f"[{timestamp}] {emoji} {message}\n"
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(entry)
+    print(entry.strip())
+
+
+# ─── BRAINSTORM AUTÓNOMO ───────────────────────────────────────────────────────
+
+# Ideias pré-carregadas para brainstorm autónomo
+# (O sistema real chamaria a LLM — aqui é o template de integração)
+BRAINSTORM_PROMPTS = [
+    "Que melhorias podemos fazer ao sistema de logs?",
+    "Como tornar o orchestrator mais eficiente?",
+    "Que novas ferramentas poderiam ser úteis para os agentes?",
+    "Como melhorar a comunicação entre agentes?",
+    "Que testes de stress devemos implementar?",
+    "Como otimizar o uso de tokens nas chamadas à LLM?",
+    "Que sistema de alertas seria útil para o Joel?",
+    "Como melhorar o sistema de memória persistente?",
+    "Que métricas devemos monitorizar automaticamente?",
+    "Como tornar o sistema mais resiliente a falhas?",
+]
+
+def autonomous_brainstorm(orchestrator=None) -> list:
+    """
+    Sessão de brainstorm autónomo entre agentes.
+    Se orchestrator for fornecido, usa a LLM real.
+
+...
+
+lers devem ser adaptados ao framework do bot usado
+    commands = {
+        "/status":  lambda: loop.status(),
+        "/pausar":  lambda: (loop.pause(), "⏸️ Sistema pausado."),
+        "/retomar": lambda: (loop.resume(), "▶️ Sistema retomado."),
+        "/backlog": lambda: _format_backlog(),
+        # Joel pode adicionar tarefa: /tarefa Título | Descrição
+    }
+    log(f"Comandos Telegram registados: {', '.join(commands.keys())}", "INFO")
+    return commands
+
+
+def _format_backlog() -> str:
+    backlog = load_backlog()
+    pending = [t for t in backlog if t["status"] == "pending"]
+    if not pending:
+        return "📭 Backlog vazio — a fazer brainstorm!"
+    lines = ["📋 Backlog atual:\n"]
+    for i, t in enumerate(pending[:10], 1):
+        lines.append(f"{i}. [{t['priority']}] {t['title']}")
+    return "\n".join(lines)
+
+
+def _seed_initial_backlog():
+    """Popula o backlog com tarefas iniciais de setup."""
+    initial_tasks = [
+        ("Verificar integridade do sistema",
+         "Verificar todos os ficheiros críticos, logs recentes e estado do git", 1),
+        ("Melhorar sistema de logs",
+         "Implementar logs estruturados com níveis e rotação automática", 4),
+        ("Adicionar testes ao orchestrator",
+         "Criar testes unitários básicos para o orchestrator principal", 5),
+        ("Documentar APIs internas",
+         "Gerar documentação automática dos módulos principais", 6),
+        ("Otimizar uso de tokens",
+         "Analisar e reduzir tokens usados por ciclo de LLM", 4),
+    ]
+    for title, desc, priority in initial_tasks:
+        add_to_backlog(title, desc, priority, source="seed_inicial")
+    log(f"Backlog inicializado com {len(initial_tasks)} tarefas", "INFO")
+
+
+# ─── PONTO DE ENTRADA STANDALONE ──────────────────────────────────────────────
+
+if __name__ == "__main__":
+    print("A iniciar loop autónomo em modo standalone (sem LLM)...")
+    print("Ctrl+C para parar.\n")
+    loop = AutonomousLoop()
+    _seed_initial_backlog()
+    loop.start()
