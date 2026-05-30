@@ -233,3 +233,17 @@
 [2026-05-30 12:45:50] [Ciclo #3] Tarefa: O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/me
 [2026-05-30 12:45:50] [MultiAgent] 'qa_tester' → O ecossistema tem 3 sistemas de memória que não comunicam en
 [2026-05-30 12:45:50] [Memory] Contexto injectado (634 chars)
+[2026-05-30 12:46:58] [Memory] ✅ Gravado episódio de sucesso: qa_tester
+[2026-05-30 12:46:58] [Ciclo #3] ✅ O ecossistema tem 3 sistemas de memória que não comunicam en → completed
+[2026-05-30 12:46:58] [Notifier] name 'asyncio' is not defined
+[2026-05-30 12:47:08] [Ciclo #4] Inicio
+[2026-05-30 12:47:08] [Ciclo #4] Tarefa: O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/me
+[2026-05-30 12:47:08] [MultiAgent] 'qa_tester' → O ecossistema tem 3 sistemas de memória que não comunicam en
+[2026-05-30 12:47:08] [Memory] Contexto injectado (634 chars)
+[2026-05-30 12:48:05] [Memory] ✅ Gravado episódio de sucesso: qa_tester
+[2026-05-30 12:48:05] [Ciclo #4] ✅ O ecossistema tem 3 sistemas de memória que não comunicam en → completed
+[2026-05-30 12:48:05] [Notifier] name 'asyncio' is not defined
+[2026-05-30 12:48:15] [Ciclo #5] Inicio
+[2026-05-30 12:48:15] [Ciclo #5] Tarefa: O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/me
+[2026-05-30 12:48:15] [MultiAgent] 'qa_tester' → O ecossistema tem 3 sistemas de memória que não comunicam en
+[2026-05-30 12:48:15] [Memory] Contexto injectado (634 chars)

@@ -1,6 +1,0 @@
-{"type": "chat", "data": {"role": "user", "content": "test", "metadata": {}}, "timestamp": "2026-05-30T07:14:23.918986"}
-{"type": "chat", "data": {"role": "user", "content": "msg1", "metadata": {}}, "timestamp": "2026-05-30T07:14:38.219763"}
-{"type": "episode", "data": {"agent_id": "qa_tester", "task": "Verificar unificação dos 3 sistemas de memória em MemoryHub", "result": "✅ Tudo verificado. MemoryHub unifica chat, episódios e conhecimento num único hub.jsonl. 11/11 testes passam. Commit: 4b74e01.", "success": true, "context": "", "lesson": "O MemoryHub está operacional. Os 3 sistemas de memória (ConversationMemory, EpisodicMemory, SemanticMemory) comunicam agora através do hub.jsonl.", "action": "", "args": {}}, "timestamp": "2026-05-30T07:18:59.695532"}
-{"type": "chat", "data": {"role": "user", "content": "teste wrapper", "metadata": {}}, "timestamp": "2026-05-30T07:20:59.670949"}
-{"type": "chat", "data": {"role": "user", "content": "teste supervisor", "metadata": {"agents_count": 17, "logs_count": 0, "priorities_count": 0}}, "timestamp": "2026-05-30T07:21:01.977871"}
-{"type": "chat", "data": {"role": "test", "content": "mensagem de teste", "metadata": {"agents_count": 17, "logs_count": 0, "priorities_count": 0}}, "timestamp": "2026-05-30T07:29:09.798491"}
