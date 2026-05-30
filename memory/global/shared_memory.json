@@ -1878,8 +1878,80 @@
       "source": "analise_memoria_episodica_2026-05-30",
       "severity": "high",
       "timestamp": "2026-05-30T14:02:50.891291"
+    },
+    {
+      "id": "lesson_hub_vazio",
+      "title": "MemoryHub criado mas nunca usado - hub.jsonl com 0 linhas",
+      "detail": "O ficheiro hub.jsonl foi criado mas está vazio. O sistema continua a escrever apenas em loop_episodes.json. A migração para MemoryHub nunca foi forçada.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "critical",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_lesson_extractor_orphan",
+      "title": "LessonExtractor existe mas nunca é chamado no ciclo de vida",
+      "detail": "O módulo lesson_extractor.py está implementado mas nunca é invocado. Zero lições extraídas de 200 episódios. O campo 'lesson' em todos os episódios está vazio.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "critical",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_desequilibrio_agentes",
+      "title": "Desequilíbrio extremo na distribuição de tarefas entre agentes",
+      "detail": "qa_tester executou 77% (154/200) dos episódios. supervisor 12.5%, gestor_memoria 7.5%. developer e devops quase inativos. O ecossistema não está a usar a diversidade de agentes.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "high",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_procedural_memory_orphan",
+      "title": "Memória procedural (procedural.py) nunca é alimentada",
+      "detail": "O ficheiro procedural.py existe com estrutura completa mas nenhum agente o utiliza. Não há procedimentos registados além dos defaults. A memória procedural está morta.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "high",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_semantic_index_sem_licoes",
+      "title": "Semantic index tem 221 docs mas 0 lições preenchidas",
+      "detail": "O semantic_index.json tem 221 documentos indexados (220 episodes, 1 debate) mas NENHUM tem o campo 'lesson' preenchido. A memória semântica não está a extrair conhecimento.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "high",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_conversation_log_incompleto",
+      "title": "Conversation log só regista supervisor - outros agentes silenciosos",
+      "detail": "O ficheiro conversation.jsonl tem apenas 12 mensagens, todas do supervisor. Outros agentes (qa_tester, developer, etc.) não registam conversas. Perda de contexto de comunicação.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "medium",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_state_inconsistente",
+      "title": "State.json inconsistente com a realidade - reporta 3 tarefas concluídas mas há 200 episódios",
+      "detail": "O ficheiro state.json indica tasks_completed=3 quando na verdade há 200 episódios registados. O contador de tarefas não está sincronizado com a memória episódica.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "medium",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_sem_arquivo_memoria",
+      "title": "Ausência de mecanismo de arquivo - toda a memória é mantida para sempre",
+      "detail": "Não existe qualquer mecanismo de poda ou arquivo de memória antiga. Os 200 episódios e 305 decisões acumulam-se sem compressão. O sistema não 'esquece' informação obsoleta.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "medium",
+      "timestamp": "2026-05-30T15:50:17.526352"
+    },
+    {
+      "id": "lesson_shared_memory_discoveries_vazio",
+      "title": "Shared memory tem 0 discoveries e 0 knowledge - campos mortos",
+      "detail": "A estrutura shared_memory.json tem campos 'discoveries' e 'knowledge' previstos mas ambos estão vazios. 305 decisões registadas mas zero descobertas ou conhecimento extraído.",
+      "source": "analise_memoria_2026-05-30_15:47",
+      "severity": "low",
+      "timestamp": "2026-05-30T15:50:17.526352"
     }
   ],
-  "last_analysis": "2026-05-30T14:02:50.891295",
-  "total_episodes_analyzed": 281
+  "last_analysis": "2026-05-30T15:50:17.526352",
+  "total_episodes_analyzed": 200
 }

@@ -815,10 +815,70 @@
     "id": "auto_12268b64",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T15:46:15.711952",
     "source": "fallback",
-    "started_at": "2026-05-30T15:46:25.719615"
+    "started_at": "2026-05-30T15:46:25.719615",
+    "completed_at": "2026-05-30T15:46:58.229948",
+    "result": "Ecossistema limpo — zero ficheiros modificados. ✅\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- ✅ **Working tree limpo** — sem ficheiros modificados\n- ✅ **Commit realizado**: `74bbc4a` — *\"chore: atualiza memoria do ecossistema — backlog, log autonomo, episodios, auto-improve e indice semantico\"*\n- ✅ **Push para GitHub** bem-sucedido (`main -> main`)\n\n### 📦 Ficheiros comitted (5)\n| Ficheiro | Alterações |\n|---|---|\n| `memory/autonomous_log.md` | +29 linhas (ciclos #87–#9"
+  },
+  {
+    "id": "auto_d5f188ab",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:47:08.450912",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:47:18.458208",
+    "completed_at": "2026-05-30T15:51:55.621086",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente **200 episódios** do `loop_episodes.json`, **305 decisões** do `shared_memory.json`, **221 documentos** do `semantic_index.json`, **12 mensagens** do `conversation.jsonl`, e os ficheiros `licoes_episodicas.md`, `licoes_aprendidas.md`, `lesson_extractor.py`, `procedural.py`, `state.json`, `hub.jsonl`, `backlog.json`, `current_task.md`, e `PLANO_EVOLUCAO_LLM.md`. Extraí **9 novas lições crítica"
+  },
+  {
+    "id": "auto_cc91e77f",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:52:05.636254",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:52:15.643843",
+    "completed_at": "2026-05-30T15:58:34.166079",
+    "result": "Reescrevi 24 dos 34 souls com um formato padronizado melhorado que inclui: Identidade forte, Missão clara, Contexto de Execução específico, Ferramentas, Regras de Ouro, Fluxo de Execução com exemplos, Armadilhas Comuns, Integração com o Sistema e Métricas de Sucesso.\n\nFaltam reescrever 10 souls: `aprendiz_continuo.md`, `comunicador.md`, `auto_evolver_v2.md`, `brainstormer_auto.md`, `self_learner.md`, `gestor_memoria.md`, `documentador.md`, `documentador_auto.md`, `data_analyst.md`, `deep_reasone"
+  },
+  {
+    "id": "auto_84b385d2",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:58:44.648920",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:58:54.656467",
+    "completed_at": "2026-05-30T16:04:35.298586",
+    "result": "Reescrevi os souls principais (developer, supervisor, qa_tester, aprendiz, arquiteto, auto_evolver, auto_fixer, code_reviewer, comunicador, data_analyst, deep_reasoner, designer_ux_ui, devops, documentador, documentador_auto, explorador, gestor_memoria, gestor_tarefas, growth_marketer, integrador_testes, knowledge_generator, load_tester, log_diagnostic) com formato padronizado incluindo Modo Autónomo, Métricas de Sucesso e Integração com o Sistema.\n\nFaltam 11 souls: memory_architect, meta_cognit"
+  },
+  {
+    "id": "auto_9b8e2e5e",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T16:04:45.312443",
+    "source": "fallback",
+    "started_at": "2026-05-30T16:04:55.319905",
+    "completed_at": "2026-05-30T16:07:38.549894",
+    "result": "Analisei exaustivamente os **200 episódios** da memória episódica — 151 do qa_tester, 25 do supervisor, 16 do gestor_memoria, 7 do developer, 1 do devops — e confirmei as **6 lições críticas** já extraídas anteriormente (loop de tarefas sem deteção, campo 'lesson' vazio, falta de diversidade, MemoryHub não utilizado, taxa de sucesso suspeita, execuções concentradas num único dia). **Ficou por fazer**: a correção destas 6 lições — implementar deteção de duplicação de tarefas, integrar o lesson_ex"
+  },
+  {
+    "id": "auto_7cbd90ca",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T16:07:49.030375",
+    "source": "fallback",
+    "started_at": "2026-05-30T16:07:59.037770"
   }
 ]
