@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:39:50.563001",
-    "success": true,
-    "result_summary": "Analisei todo o ecossistema e verifiquei que `core/memory_hub.py` já está completo (365+ linhas) com MemoryHub e todos os métodos pedidos, `core/supervisor.py` já importa e usa MemoryHub correctamente, e `agents/executor.py` já importa MemoryHub mas ainda usa `GlobalMemory` e `FailureMemory` directamente no `_build_memory_context()`. Falta actualizar o executor para usar apenas MemoryHub, criar o ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T04:42:54.995623",
     "success": true,
     "result_summary": "**O que fiz:** Analisei todo o ecossistema — `core/memory_hub.py` (366 linhas) já está completo com todos os métodos (store_chat, store_episode, store_knowledge, get_context, wrappers de compatibilidade), `core/supervisor.py` e `agents/executor.py` já importam e usam `MemoryHub`.\n\n**O que ficou por fazer:** Criar o ficheiro `tests/test_memory_hub.py` (não consegui escrever devido a erro na ferrame",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T19:37:39.810428",
     "success": true,
     "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `token_economist` 💰🧠\n\n### Lacuna Identificada\nO ecossistema tinha **40 agentes** mas **nenhum** dedicado à gestão inteligente de custos de API/tokens. O `cost_controller` existente é apenas analítico — não toma decisões. Com o uso intensivo de DeepSeek/OpenAI, gastos descontrolados eram um risco real.\n\n### O que foi criado\n\n**`agents/souls/token_economist.",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_488b1d1a",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T19:39:46.050816",
+    "success": true,
+    "result_summary": "Tudo concluído com sucesso. Aqui está o resumo:\n\n---\n\n## ✅ Missão Concluída — Novo Agente: `data_pipeline_engineer` 🚀📊\n\n### Lacuna Identificada\nO ecossistema tem **41 agentes souls** mas faltava especialização em **pipelines de dados**:\n- `data_analyst` → analisa dados existentes\n- `database_manager` → gere a base de dados\n- `api_integrator` → liga APIs externas\n- **Ninguém construía pipelines ETL",
     "lesson": ""
   }
 ]

@@ -269,5 +269,18 @@
     },
     "created_at": "2026-05-30T19:39:25.158194",
     "last_active": ""
+  },
+  {
+    "id": "b5825df7-7baf-485c-b871-36f4d5680ab5",
+    "name": "data_pipeline_engineer",
+    "soul": "Construir pipelines de dados completos: scraping web, ETL (extrair, transformar, carregar), sincronizacao entre sistemas, validacao de qualidade de dados e orquestracao de fluxos. Garantir que os dados fluem com fiabilidade e dentro do prazo.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [],
+    "metadata": {},
+    "created_at": "2026-05-30T19:39:42.020131",
+    "last_active": "",
+    "role": "custom"
   }
 ]

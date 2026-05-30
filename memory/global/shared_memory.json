@@ -1883,6 +1883,12 @@
       "decision": "Telegram: 2 - implementar os agentes reais",
       "context": "Telegram",
       "timestamp": "2026-05-30T19:25:14.004619"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: dou",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T19:40:10.596612"
     }
   ],
   "discoveries": [],
