@@ -287,8 +287,10 @@ async def main():
             while True:
                 await asyncio.sleep(60)
     else:
-        logger.info("[Main] Modo sem Telegram. A manter servi?os...")
+        logger.info("[Main] Modo sem Telegram. Sistema autonomo a correr...")
         set_auto_loop(auto_loop)
+        # Keepalive — o loop autonomo corre em daemon thread, precisamos manter o processo vivo
+        logger.info("[Main] Sistema activo. Ctrl+C para sair.")
         while True:
             await asyncio.sleep(60)
     # --- Lock Singleton ------------------------------------------------
