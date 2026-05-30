@@ -256,12 +256,12 @@ async def main():
         if app:
             # Lock Telegram: garantir que apenas uma instancia faz polling
             if not acquire_telegram_lock():
-                logger.warning("[Telegram] Outra instancia ja ativa. A ignorar polling.")
-            else:
-                logger.info("[Telegram] Bot a correr...")
-                await app.initialize()
-                await app.start()
-                await app.updater.start_polling()
+                logger.warning("[Telegram] Outra instancia ja ativa. A encerrar esta.")
+                return  # ← FIX: sair em vez de ficar em loop
+            logger.info("[Telegram] Bot a correr...")
+            await app.initialize()
+            await app.start()
+            await app.updater.start_polling()
             logger.info("[Telegram] Bot online. A aguardar mensagens...")
             # Dar o bot ao loop para enviar relatórios Telegram
             auto_loop.telegram_bot = app.bot
@@ -291,7 +291,6 @@ async def main():
         set_auto_loop(auto_loop)
         while True:
             await asyncio.sleep(60)
-if __name__ == "__main__":
     # --- Lock Singleton ------------------------------------------------
     from lock_utils import acquire_lock, release_lock
     from telegram_lock import acquire_telegram_lock, release_telegram_lock
