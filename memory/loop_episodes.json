@@ -1,14 +1,5 @@
 [
   {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam:\n- `core/memory.py` (ConversationMemory + SystemState)\n- `cerebro/core/brain.py` (Brain com knowledge/decisions)\n- `agents/executor.py` import",
-    "agent": "supervisor",
-    "timestamp": "2026-05-30T01:52:54.581888",
-    "success": true,
-    "result_summary": "Criei o ficheiro `core/memory_hub.py` com a classe `MemoryHub` que unifica os 3 sistemas de memória (ConversationMemory, Brain, GlobalMemory) num único ponto central, usando `memory/global/` como diretório único. Falta atualizar `core/__init__.py`, `core/supervisor.py` e criar `tests/test_memory_hub.py` — posso continuar agora se quiseres.",
-    "lesson": ""
-  },
-  {
     "task_id": "task_agent_executor_import_fix",
     "task_desc": "O ficheiro `agents/executor.py` (linhas ~25-30) importa módulos que podem não existir no sistema atual:\n- `from tools import TOOLS, execute_tool` — não existe módulo `tools`\n- `from memory.episodica i",
     "agent": "qa_tester",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T15:32:47.350835",
     "success": true,
     "result_summary": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Log Diagnostic** 🔍\n\n**Área coberta:** Análise Inteligente de Logs e Diagnóstico de Causa Raiz\n\n**Porquê esta área?** O ecossistema já tinha agentes para monitorização de sistema (`monitor_saude`), testes (`qa_tester`, `load_tester`), e correção de bugs (`auto_fixer`), mas **nenhum especializado em analisar logs, extrair causas raiz, detetar padr",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_aa2b016e",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:35:07.302623",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Prompt Engineer** 🧠⚡\n\n**Área coberta:** Prompt Engineering & Otimização de LLMs\n\n**Problema identificado:** O ecossistema tem 24 agentes, mas nenhum especializado em otimizar os próprios prompts que alimentam todos os outros. Cada chamada de API gasta tokens — prompts mal otimizados custam dinheiro e produzem resultados inconsistentes.\n\n**O que ",
     "lesson": ""
   }
 ]

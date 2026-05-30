@@ -624,6 +624,36 @@
         "compressao"
       ],
       "priority": 7
+    },
+    "comunicador": {
+      "description": "Interpreta pedidos do utilizador, gere conversas multi-turno, traduz linguagem natural para tarefas, decide quando perguntar vs. agir",
+      "skills": [
+        "nlp_interpretation",
+        "conversation_management",
+        "disambiguation",
+        "intent_extraction",
+        "context_maintenance",
+        "ask_vs_act_decision",
+        "user_feedback",
+        "task_translation"
+      ],
+      "keywords": [
+        "comunica",
+        "interpreta",
+        "pergunta",
+        "conversa",
+        "utilizador",
+        "humano",
+        "pedido",
+        "clarifica",
+        "explica",
+        "feedback",
+        "ambiguo",
+        "traduz",
+        "intencao",
+        "contexto conversa"
+      ],
+      "priority": 2
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
