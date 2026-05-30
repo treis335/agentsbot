@@ -400,6 +400,51 @@
         "treino"
       ],
       "priority": 4
+    },
+    "designer_ux_ui": {
+      "description": "Design de interfaces, experiencia do utilizador, acessibilidade e dashboards",
+      "skills": [
+        "ui_design",
+        "ux_design",
+        "accessibility",
+        "a11y",
+        "responsive_design",
+        "design_systems",
+        "dashboard_design",
+        "prototyping",
+        "visual_design",
+        "usability_testing",
+        "wcag_compliance",
+        "color_theory",
+        "typography"
+      ],
+      "keywords": [
+        "design",
+        "interface",
+        "ui",
+        "ux",
+        "dashboard",
+        "visual",
+        "layout",
+        "estilo",
+        "cor",
+        "tipografia",
+        "acessibilidade",
+        "responsivo",
+        "mobile",
+        "utilizador",
+        "experiencia",
+        "frontend",
+        "css",
+        "html",
+        "tema",
+        "modo escuro",
+        "wcag",
+        "usabilidade",
+        "intuitivo",
+        "aparencia"
+      ],
+      "priority": 7
     }
   }
 }
