@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:20:58.010965",
-    "success": true,
-    "result_summary": "## Relatório — QA Tester\n\n**O que fiz:** Verifiquei que `core/memory_hub.py` está completo (486 linhas, singleton JSONL), o `core/supervisor.py` já usa `MemoryHub`, e o `tests/test_memory_hub.py` tem 12 testes que passam todos. Adicionei o alias `stats()` que faltava no `memory_hub.py` e actualizei o `agents/executor.py` para usar `MemoryHub` em vez de `GlobalMemory`, `LessonExtractor`, `Procedura",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:22:39.268970",
-    "success": true,
-    "result_summary": "O commit `1071aac` já contém todos os 5 ficheiros necessários:\n- `core/memory_hub.py` (486 linhas - o novo hub)\n- `core/supervisor.py` (actualizado para usar MemoryHub)\n- `agents/executor.py` (actualizado para usar MemoryHub)\n- `tests/test_memory_hub.py` (134 linhas de testes)\n- `memory/hub.jsonl` (ficheiro de dados)\n\n## ✅ Relatório Final — QA Tester\n\n**Tarefa:** Unificar 3 sistemas de memória em ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:23:27.539464",
     "success": true,
     "result_summary": "O commit já inclui todos os 5 ficheiros:\n1. ✅ `core/memory_hub.py` (486 linhas)\n2. ✅ `core/supervisor.py` (atualizado)\n3. ✅ `agents/executor.py` (atualizado)\n4. ✅ `tests/test_memory_hub.py` (134 linhas, 11 testes)\n5. ✅ `memory/hub.jsonl` (backend persistente)\n\nE os 11 testes passam com sucesso.\n\n## ✅ Relatório Final — QA Tester\n\n**O que verifiquei:**\n\nO commit `1071aac` já contém **todos os 5 fich",
@@ -1798,5 +1780,23 @@
     "success": true,
     "result_summary": "Analisei todos os 47 souls `agents/souls/*.md` e o código `agents/executor.py`/`agents/llm_agent.py` que os carrega. Identifiquei que os souls têm estrutura consistente (Identidade, Missão, Regras, Fluxo, Armadilhas, Integração, Métricas) mas falta-lhes uniformidade no **MODO AUTÓNOMO** (só ~20% têm) e **Exemplos Práticos** (~60% têm). O executor.py carrega souls como system prompt e injeta contex",
     "lesson": ""
+  },
+  {
+    "task_id": "auto_c21449c5",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:36:32.685978",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\n### 1. Código Python melhorado\n\n**`agents/executor.py`**:\n- **TOOL_SCHEMA** melhorado com secção **MODO AUTÓNOMO** — instruções claras para quando o agente executa sem supervisão humana\n- **build_system_prompt()** agora inclui **INSTRUÇÕES DE EXECUÇÃO** — 6 passos claros (lê → age → verifica → valida → alternativa → reporta)\n\n**`agents/llm_agent.py`**:\n- **`_build_system_prom",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_5300d2fc",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T00:39:41.940628",
+    "success": false,
+    "result_summary": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente as 7 fontes de memória (200 episódios, 181 tarefas backlog, 251 eventos evolução, 198k chars log, 3 ficheiros de lições, hub.jsonl, state.json) e extraí **12 lições acionáveis**. Corrigi o `_evaluate_result()` em `autonomous_loop.py` que causava **3 falsos positivos** (resultados válidos marcados como falha",
+    "lesson": "Tarefa falhou. Tentar abordagem diferente."
   }
 ]

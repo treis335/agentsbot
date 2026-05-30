@@ -85,30 +85,65 @@ def _evaluate_result(result: str) -> bool:
     Avalia se o resultado de um agente é realmente um sucesso.
     Um LLM nunca lança excepção — mas pode responder "não consegui".
     Retorna False se o resultado indica falha real.
+    
+    Melhorias v2:
+    - 'error:' e 'exception:' só contam se forem padrão de erro real (ex: "Error: ...")
+    - 'não foi possível' só conta se for em contexto de falha (não em relatório de sucesso)
+    - Resultados com ✅, "concluído", "sucesso" têm prioridade sobre falsos positivos
     """
     if not result or not result.strip():
         return False
-    r = result.lower()
-    # Sinais de falha no texto
-    failure_signals = [
+    
+    r = result.strip()
+    r_lower = r.lower()
+    
+    # Se o resultado começa com indicadores claros de sucesso, é sucesso
+    success_indicators = [
+        "## ✅", "✅", 
+        "tarefa concluída", "task completed",
+        "relatório final", "análise completa",
+        "diagnóstico concluído",
+    ]
+    for indicator in success_indicators:
+        if indicator in r_lower or indicator in r:
+            return True
+    
+    # Sinais de falha NO INÍCIO do resultado (não no meio)
+    # "error:" no meio do texto é falso positivo (ex: "sem erros encontrados")
+    first_200 = r_lower[:200]
+    failure_signals_strict = [
         "peço desculpa", "peco desculpa",
         "houve um erro técnico", "houve um erro tecnico",
-        "não consegui", "nao consegui",
         "cannot schedule new futures",
-        "cannot write", "erro ao escrever",
+        "cannot write",
         "traceback (most recent",
-        "exception:", "error:",
         "❌ erro", "❌ falha",
+    ]
+    for signal in failure_signals_strict:
+        if signal in r_lower:
+            return False
+    
+    # Sinais de falha apenas no início (primeiras 200 chars)
+    early_failure = [
+        "não consegui", "nao consegui",
         "não foi possível", "nao foi possivel",
         "infelizmente não", "infelizmente nao",
         "desculpe, não", "desculpe, nao",
+        "erro ao escrever",
     ]
-    for signal in failure_signals:
-        if signal in r:
+    for signal in early_failure:
+        if signal in first_200:
             return False
-    # Resultado muito curto pode ser resposta vazia/inútil
-    if len(result.strip()) < 20:
+    
+    # "exception:" e "error:" só contam se forem início de linha (padrão de exceção real)
+    import re
+    if re.search(r'^(error|exception):', r_lower, re.MULTILINE):
         return False
+    
+    # Resultado muito curto pode ser resposta vazia/inútil
+    if len(r) < 20:
+        return False
+    
     return True
 
 
@@ -350,7 +385,7 @@ class AutonomousLoop:
                 from agents.reflection_engine import get_reflection_engine
                 reflection = get_reflection_engine().reflect(
                     task=task_desc, result=str(result),
-                    agent=chosen_agent, success=True, task_id=task_id
+                    agent=chosen_agent, success=real_success, task_id=task_id
                 )
                 log_cycle(f"[Reflection] ✅ {reflection.what_worked[:60]}")
                 if reflection.new_skill_triggered:

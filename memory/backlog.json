@@ -2039,10 +2039,34 @@
     "id": "auto_c21449c5",
     "title": "Revê o código dos agentes e melhora os system prompts para s",
     "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T00:34:30.390930",
     "source": "fallback",
-    "started_at": "2026-05-31T00:34:40.404478"
+    "started_at": "2026-05-31T00:34:40.404478",
+    "completed_at": "2026-05-31T00:36:32.702345",
+    "result": "## Resumo do que fiz\n\n### 1. Código Python melhorado\n\n**`agents/executor.py`**:\n- **TOOL_SCHEMA** melhorado com secção **MODO AUTÓNOMO** — instruções claras para quando o agente executa sem supervisão humana\n- **build_system_prompt()** agora inclui **INSTRUÇÕES DE EXECUÇÃO** — 6 passos claros (lê → age → verifica → valida → alternativa → reporta)\n\n**`agents/llm_agent.py`**:\n- **`_build_system_prompt()`** agora inclui:\n  - **## FERRAMENTAS DISPONÍVEIS** — lista completa de tools que o agente pode"
+  },
+  {
+    "id": "auto_5300d2fc",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:36:42.869531",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:36:52.882712",
+    "completed_at": "2026-05-31T00:39:41.959470",
+    "result": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente as 7 fontes de memória (200 episódios, 181 tarefas backlog, 251 eventos evolução, 198k chars log, 3 ficheiros de lições, hub.jsonl, state.json) e extraí **12 lições acionáveis**. Corrigi o `_evaluate_result()` em `autonomous_loop.py` que causava **3 falsos positivos** (resultados válidos marcados como falha porque \"error:\" no meio do texto ativava o gatilho) e corrigi o `success=True` hardcoded na reflect"
+  },
+  {
+    "id": "auto_131912b9",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T00:39:51.981649",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:40:01.994631"
   }
 ]

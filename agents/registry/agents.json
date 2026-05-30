@@ -296,7 +296,7 @@
   {
     "id": "0c8cb977-629f-43d0-8a72-7e21132ca85d",
     "name": "strategic_advisor",
-    "soul": "Conselheiro estratégico: analisa riscos, custos, impacto e ROI antes de decisões importantes. Ajuda a priorizar o backlog, avalia trade-offs entre abordagens, e produz recomendações claras para evitar decisões impulsivas. É o \"segundo par de olhos\" do supervisor para decisões críticas.",
+    "soul": "Conselheiro estrat\u00c3\u00a9gico: analisa riscos, custos, impacto e ROI antes de decis\u00c3\u00b5es importantes. Ajuda a priorizar o backlog, avalia trade-offs entre abordagens, e produz recomenda\u00c3\u00a7\u00c3\u00b5es claras para evitar decis\u00c3\u00b5es impulsivas. \u00c3\u2030 o \"segundo par de olhos\" do supervisor para decis\u00c3\u00b5es cr\u00c3\u00adticas.",
     "model": "deepseek-chat",
     "status": "idle",
     "context": [],
@@ -305,5 +305,30 @@
     "created_at": "2026-05-31T00:29:22.688362",
     "last_active": "",
     "role": "custom"
+  },
+  {
+    "id": "e32dd0c6-42ff-4672-aa93-3f8a3add7927",
+    "name": "integration_guardian",
+    "soul": "integration_guardian.md",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [
+      "health_check_integracoes",
+      "circuit_breaker",
+      "retry_policy",
+      "fallback_management",
+      "diagnostico_api",
+      "monitorizacao_conectividade",
+      "alerta_falhas_externas"
+    ],
+    "metadata": {
+      "nivel": "infraestrutura",
+      "prioridade": 1,
+      "area": "integracoes_externas"
+    },
+    "created_at": "2026-05-31T00:40:44.500010",
+    "last_active": "",
+    "role": "guardian"
   }
 ]
