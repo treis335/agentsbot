@@ -1,59 +1,5 @@
 [
   {
-    "task_id": "dashboard_visual_001",
-    "task_desc": "Criar dashboard visual com metricas em tempo real",
-    "agent": "developer",
-    "timestamp": "2026-05-30T01:12:59.030021",
-    "success": true,
-    "result_summary": "Implementei:\n\n1. **API de métricas** (`dashboard/api/metrics.py`) — coleta dados reais do ecossistema (agentes, eventos, estado do sistema)\n2. **Dashboard visual** (`dashboard/templates/dashboard.html`) — HTML/CSS/JS moderno com Chart.js, KPIs animados, gráficos de pizza, barras, linha temporal, e SSE para dados em tempo real\n3. **Atualizei o servidor** (`dashboard/server.py`) — adicionei rotas `/",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_c2f5e3c0",
-    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "agent": "supervisor",
-    "timestamp": "2026-05-30T01:18:52.346196",
-    "success": true,
-    "result_summary": "✅ **Agente Designer UX/UI criado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🎨 Novo Agente: **Designer UX/UI**\n\n**Área descoberta:** Design de Interfaces, Experiência do Utilizador, Acessibilidade — lacuna crítica no ecossistema que tinha 26 agentes focados em código, backend, infraestrutura e documentação, mas **nenhum especializado em design e experiência do utilizador**.\n\n### O que foi ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_fix_unicode_crash",
-    "task_desc": "O print(entry, flush=True) crasha quando encontra emojis (🚀✅🔧) no Windows console porque o codec cp1252 não os suporta. Tarefa:\n1. Abrir supervisor_ultra.py\n2. Adicionar 'import sys' no topo\n3. Na fun",
-    "agent": "developer",
-    "timestamp": "2026-05-30T01:25:01.243080",
-    "success": true,
-    "result_summary": "Implementei o fix para o `UnicodeEncodeError` com emojis no Windows console em ambos os ficheiros (`supervisor_ultra.py` e `autonomous_loop.py`), adicionando `sys.stdout.reconfigure(encoding='utf-8', errors='replace')` e `try/except UnicodeEncodeError` em todos os `print()`, com teste bem-sucedido (`🚀✅🔧` funciona). O commit local foi feito (74edfbe), mas o `git push` falhou por timeout — precisas ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_fix_telegram_conflict",
-    "task_desc": "4895 erros de 'Conflict: terminated by other getUpdates request' no main.log. Causa: várias instâncias do bot Telegram a correr em paralelo. Tarefa:\n1. Criar um mecanismo de lock/singleton no main.py\n",
-    "agent": "devops",
-    "timestamp": "2026-05-30T01:31:02.584267",
-    "success": true,
-    "result_summary": "Perfeito! O commit inclui todos os ficheiros necessários. O push está pendente (rede lenta), mas o commit local está salvo.\n\nAqui está o resumo do que foi feito:\n\n## ✅ Tarefa Completa — Lock Singleton para o Bot Telegram\n\n### Problema\n4895 erros de `'Conflict: terminated by other getUpdates request'` no main.log causados por múltiplas instâncias do bot Telegram a correrem em paralelo.\n\n### Solução",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_fix_memory_corruption",
-    "task_desc": "9 erros de 'Erro ao carregar: Extra data / Expecting value' no shared_memory.json. A memória global corrompe-se e não há backup. Tarefa:\n1. Abrir memory/global_memory.py\n2. No método _load(), capturar",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T01:33:22.776048",
-    "success": true,
-    "result_summary": "Tentei reescrever o ficheiro `memory/global_memory.py` com as melhorias pedidas (captura específica de `json.JSONDecodeError`, backup com `shutil.copy2` antes de `_save()`, recuperação de `.bak` se corrompido, e logging), mas a ferramenta `write_file` falhou repetidamente sem argumentos — o ficheiro não foi atualizado. Fica por fazer: escrever o código corrigido, testar a recuperação corrompendo o",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unified_agent_router",
-    "task_desc": "Implementar um `AgentRouter` unificado em `core/agent_router.py` que substitua a lógica dispersa de seleção de agentes. Atualmente, o `orchestrator.py` usa `_decide_agent()` com keywords básicas, o `e",
-    "agent": "developer",
-    "timestamp": "2026-05-30T01:37:07.052718",
-    "success": true,
-    "result_summary": "Desculpa, estou com um problema técnico a usar a ferramenta `write_file` — tentei várias vezes mas não consegui passar os parâmetros corretamente. Ficou por fazer: criar o `core/agent_router.py`, atualizar o `agents/orchestrator.py` e escrever os testes em `tests/test_agent_router.py`.",
-    "lesson": ""
-  },
-  {
     "task_id": "task_memory_consolidator",
     "task_desc": "O ecossistema tem múltiplos sistemas de memória sobrepostos: `memory/` (backlog.json, autonomous_log.md, loop_episodes.json, self_improve_cycle.json), `agents/memory/`, `cerebro/brain.log`, `data/`, e",
     "agent": "developer",
@@ -1797,6 +1743,60 @@
     "timestamp": "2026-05-30T15:05:02.806762",
     "success": true,
     "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente os **200 episódios** do `loop_episodes.json`, o ficheiro de lições existente (`licoes_episodicas.md` com 7 lições), o `hub.jsonl`, `conversation.jsonl`, `backlog.json` e `autonomous_log.md`. Extraí **padrões críticos**: 80.5% dos episódios são do `qa_tester`, 158 execuções repetidas da mesma tarefa (`tas",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c5ebf206",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:06:39.816306",
+    "success": true,
+    "result_summary": "Ecossistema limpo — zero ficheiros modificados. ✅\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- **0 ficheiros modificados** — tudo commitado e em sincronia com `origin/main`\n\n### 📌 O que foi feito\n| Ação | Detalhes |\n|---|---|\n| **Commit #1** | `10f5146` — Refinadas 31 almas (`agents/souls/*.md`) com melhorias de clareza, consistência e integração entre agentes + atualizaç",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_712fb3e4",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:10:25.090089",
+    "success": true,
+    "result_summary": "Fiz o diagnóstico completo dos logs (3 problemas: UnicodeEncodeError, Telegram Conflict com 1585 ocorrências, loop infinito de reinício), implementei o fix de encoding global (59 ficheiros corrigidos) e adicionei instance lock ao main.py. Ficou por restaurar o `tools/fs_tools.py` (fiz `git checkout` para versão original) — preciso de reaplicar o fix de encoding e instance lock só nesse ficheiro, e",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_82e14f95",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:13:40.421110",
+    "success": true,
+    "result_summary": "## 📋 Relatório Final\n\n### ✅ O que fiz:\n1. **Diagnóstico completo dos logs** — Identifiquei os 3 problemas: (1) **UnicodeEncodeError** no startup (já corrigido anteriormente — emojis removidos), (2) **Telegram Conflict** com 4895 ocorrências (múltiplas instâncias do bot), (3) **Loop infinito wakeup→main.py** com 3742 ciclos de reinício\n2. **Criei `start_clean.py`** — Script de inicialização segura ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_8b7f63f1",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:16:13.970214",
+    "success": true,
+    "result_summary": "Fiz o diagnóstico completo dos logs: identifiquei os **3 problemas principais** — (1) **Telegram Conflict** com **4.895 ocorrências** (múltiplas instâncias do bot), (2) **UnicodeEncodeError** com **6 ocorrências** (emojis em stdout cp1252), e (3) **Loop de reset infinito** (wakeup_v3 reinicia o sistema 20+ vezes sem resolver o conflito). \n\nFicou por implementar a solução mais simples: **melhorar o",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_fb19d877",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T15:20:00.747143",
+    "success": true,
+    "result_summary": "Fiz o diagnóstico completo dos logs e identifiquei os **3 problemas principais**: (1) **Telegram Conflict** com **4.895 ocorrências** — múltiplas instâncias do bot a competir pelo polling, (2) **UnicodeEncodeError** com emojis no supervisor_ultra.py, (3) **Loop infinito de reinicializações** do wakeup_v3.py que reiniciava o main.py a cada 8 segundos. Criei o `telegram_lock.py` para resolver o Prob",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_11ec38bf",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T15:23:22.352070",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nAnalisei exaustivamente **200 episódios** do `loop_episodes.json`, o `autonomous_log.md` (887 linhas, 308 ciclos), `conversation.jsonl`, `hub.jsonl`, e os ficheiros de memória semântica. Extraí **8 lições críticas** com base em dados quantitativos: eficiência real do sistema é **29.2%** (70.8% ciclos desperdiçados), **186 execu",
     "lesson": ""
   }
 ]

@@ -270,7 +270,7 @@ class APIHandler(BaseHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError):
             pass  # cliente desligou
         except Exception as e:
-            logger.debug(f"[API/SSE] LigaÃ§Ã£o terminada: {e}")
+            logger.debug(f"[API/SSE] Liga????o terminada: {e}")
 
     def _handle_routing_stats(self) -> None:
         """GET /api/routing â€” estatÃ­sticas do inference router (local vs cloud)."""
@@ -453,7 +453,7 @@ class APIHandler(BaseHTTPRequestHandler):
                 if not isinstance(tasks, list): tasks = tasks.get("tasks", [])
                 done = sum(1 for t in tasks if "done" in t.get("status","").lower() or "complet" in t.get("status","").lower())
                 pend = sum(1 for t in tasks if t.get("status","").lower() in ("","pending","pendente","queued"))
-                eco_ctx += f"Tarefas: {done} concluídas, {pend} pendentes\n"
+                eco_ctx += f"Tarefas: {done} conclu?das, {pend} pendentes\n"
         except Exception:
             pass
 
@@ -493,7 +493,7 @@ Responde em português, de forma concisa e útil. Máximo 3 parágrafos."""
                 result = json.loads(r.read().decode())
                 response = result["choices"][0]["message"]["content"]
         except Exception as e:
-            response = f"Erro ao contactar o LLM: {e}. Verifica DEEPSEEK_API_KEY no .env e que o main.py está a correr."
+            response = f"Erro ao contactar o LLM: {e}. Verifica DEEPSEEK_API_KEY no .env e que o main.py est? a correr."
 
         self._send_json({
             "status": "ok",

@@ -30,9 +30,9 @@ def main():
         f"feat: restaurar supervisor.md + sistema de checkpoint\n\n"
         f"- Restaurado agents/souls/supervisor.md (ficheiro estava truncado)\n"
         f"- Adicionado checkpoint_system.py com IterationManager e AntiLoopGuard\n"
-        f"- Sistema de checkpoint automático a cada 5 iterações\n"
+        f"- Sistema de checkpoint autom?tico a cada 5 itera??es\n"
         f"- Anti-loop handler com registo de erros em memory/errors.md\n"
-        f"- Resume automático de tarefas interrompidas\n\n"
+        f"- Resume autom?tico de tarefas interrompidas\n\n"
         f"Data: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
     )
 
@@ -41,7 +41,7 @@ def main():
     code, out = run("git status")
     print(out)
     if "nothing to commit" in out:
-        print("\n[OK] Nada para commitar. Repositório já está atualizado.")
+        print("\n[OK] Nada para commitar. Reposit?rio j? est? atualizado.")
         sys.exit(0)
 
     # -- 2. Adicionar ficheiros -------------------------------------------------
@@ -73,29 +73,29 @@ def main():
         print(f"  2. Resolver conflitos")
         print(f"  3. git push origin main")
         sys.exit(1)
-    print("[OK] Pull com rebase concluído.")
+    print("[OK] Pull com rebase conclu?do.")
 
     # -- 5. Push ----------------------------------------------------------------
     section("5/5 — Git Push")
     code, out = run("git push origin main")
     if code != 0:
         print(f"[X] Erro no push:\n{out}")
-        print("\nPossíveis causas:")
-        print("  - Sem autenticação Git configurada")
+        print("\nPoss?veis causas:")
+        print("  - Sem autentica??o Git configurada")
         print("  - Branch protegida")
-        print("  - Sem permissões no repositório")
+        print("  - Sem permiss?es no reposit?rio")
         sys.exit(1)
-    print("[OK] Push concluído com sucesso!")
+    print("[OK] Push conclu?do com sucesso!")
     print(out)
 
     # -- Sumário ----------------------------------------------------------------
     section("[OK] DEPLOY CONCLUÍDO")
-    print(f"  Repositório: https://github.com/treis335/agentsbot")
+    print(f"  Reposit?rio: https://github.com/treis335/agentsbot")
     print(f"  Branch: main")
     print(f"  Hora: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"\n  Ficheiros deployados:")
-    print(f"    • agents/souls/supervisor.md  (restaurado)")
-    print(f"    • checkpoint_system.py         (novo)")
+    print(f"    ? agents/souls/supervisor.md  (restaurado)")
+    print(f"    ? checkpoint_system.py         (novo)")
 
 
 if __name__ == "__main__":

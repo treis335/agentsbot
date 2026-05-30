@@ -69,17 +69,17 @@ def agent_think(agent_name: str, topic: str, context: str = "") -> str:
     })
 
     system = (
-        f"És o agente {agent_name} do ecossistema agentsbot.\n"
+        f"?s o agente {agent_name} do ecossistema agentsbot.\n"
         f"O teu papel: {persona['role']}\n"
-        f"A tua pergunta característica: {persona['asks']}\n\n"
+        f"A tua pergunta caracter?stica: {persona['asks']}\n\n"
         "Responde de forma CONCISA (2-4 frases). Sê específico e concreto. "
         "Não repitas o que outros disseram. Adiciona valor único com a tua perspectiva."
     )
 
-    user_content = f"Tópico em discussão: {topic}"
+    user_content = f"T?pico em discuss?o: {topic}"
     if context:
-        user_content += f"\n\nO que já foi dito:\n{context}"
-    user_content += f"\n\nQual é a tua contribuição como {agent_name}?"
+        user_content += f"\n\nO que j? foi dito:\n{context}"
+    user_content += f"\n\nQual ? a tua contribui??o como {agent_name}?"
 
     try:
         return _call_llm_simple(
@@ -91,7 +91,7 @@ def agent_think(agent_name: str, topic: str, context: str = "") -> str:
         )
     except Exception as e:
         logger.error(f"[OrganicMind] {agent_name} falhou: {e}")
-        return f"[{agent_name} indisponível: {e}]"
+        return f"[{agent_name} indispon?vel: {e}]"
 
 
 def collective_debate(topic: str, agents: list = None, rounds: int = 1) -> dict:
@@ -110,7 +110,7 @@ def collective_debate(topic: str, agents: list = None, rounds: int = 1) -> dict:
     contributions = []
     context_so_far = ""
 
-    logger.info(f"[OrganicMind] Debate: '{topic}' — {len(agents)} agentes")
+    logger.info(f"[OrganicMind] Debate: '{topic}' ? {len(agents)} agentes")
 
     for agent_name in agents:
         if agent_name == "Supervisor":
@@ -147,18 +147,18 @@ def _supervisor_synthesize(topic: str, debate: str) -> str:
         return _call_llm_simple(
             [
                 {"role": "system", "content": system},
-                {"role": "user", "content": f"Tópico: {topic}\n\nDebate:\n{debate}\n\nSíntese e decisão:"},
+                {"role": "user", "content": f"T?pico: {topic}\n\nDebate:\n{debate}\n\nS?ntese e decis?o:"},
             ],
             max_tokens=250
         )
     except Exception as e:
-        return f"Síntese indisponível: {e}"
+        return f"S?ntese indispon?vel: {e}"
 
 
 def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
     """Extrai tarefas concretas do debate para o backlog."""
     prompt = (
-        f"Com base neste debate sobre '{topic}' e síntese:\n{synthesis}\n\n"
+        f"Com base neste debate sobre '{topic}' e s?ntese:\n{synthesis}\n\n"
         "Gera 1-2 tarefas CONCRETAS e IMPLEMENTÁVEIS para o backlog.\n"
         "Responde APENAS em JSON válido:\n"
         '[{"title": "título curto", "description": "o que fazer exactamente", '
@@ -172,7 +172,7 @@ def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
         raw = raw.replace("```json", "").replace("```", "").strip()
         return json.loads(raw)
     except Exception as e:
-        logger.warning(f"[OrganicMind] Extracção de tarefas falhou: {e}")
+        logger.warning(f"[OrganicMind] Extrac??o de tarefas falhou: {e}")
         return []
 
 
@@ -214,9 +214,9 @@ def generate_topics_from_context() -> list:
 
     prompt = (
         "És o Supervisor do ecossistema agentsbot.\n"
-        f"Tarefas concluídas recentemente: {done}\n"
+        f"Tarefas conclu?das recentemente: {done}\n"
         f"Tarefas falhadas: {[t['title'] for t in failed[:3]]}\n"
-        f"Últimos tópicos debatidos: {recent_topics}\n\n"
+        f"?ltimos t?picos debatidos: {recent_topics}\n\n"
         "Propõe 3 tópicos NOVOS e relevantes para a equipa debater agora.\n"
         "Foca em: melhorias concretas, problemas a resolver, ou novas capacidades.\n"
         "Responde APENAS em JSON: [\"tópico 1\", \"tópico 2\", \"tópico 3\"]"
@@ -225,10 +225,10 @@ def generate_topics_from_context() -> list:
         raw = _call_llm_simple([{"role": "user", "content": prompt}], max_tokens=200)
         raw = raw.replace("```json", "").replace("```", "").strip()
         topics = json.loads(raw)
-        logger.info(f"[OrganicMind] Tópicos gerados: {topics}")
+        logger.info(f"[OrganicMind] T?picos gerados: {topics}")
         return topics
     except Exception as e:
-        logger.warning(f"[OrganicMind] Geração de tópicos falhou: {e}")
+        logger.warning(f"[OrganicMind] Gera??o de t?picos falhou: {e}")
         return [
             "Como melhorar a fiabilidade do sistema?",
             "Que nova capacidade traria mais valor?",

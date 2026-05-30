@@ -44,7 +44,7 @@ class AutoOptimizer:
         """Analisa um ficheiro Python e encontra ineficiências"""
         path = Path(filepath)
         if not path.exists():
-            return [{"error": f"Ficheiro não encontrado: {filepath}"}]
+            return [{"error": f"Ficheiro n?o encontrado: {filepath}"}]
         
         code = path.read_text()
         issues = []
@@ -72,7 +72,7 @@ class AutoOptimizer:
                 issues.append({
                     "type": "unused_import",
                     "items": list(unused_imports),
-                    "suggestion": f"Remover imports não usados: {', '.join(unused_imports)}"
+                    "suggestion": f"Remover imports n?o usados: {', '.join(unused_imports)}"
                 })
         except SyntaxError:
             issues.append({"type": "syntax_error", "suggestion": "Ficheiro tem erros de sintaxe"})
@@ -157,7 +157,7 @@ class AutoOptimizer:
         }
         
         print(f"\n{'='*60}")
-        print(f"  [DADOS] RELATÓRIO FINAL")
+        print(f"  [DADOS] RELAT?RIO FINAL")
         print(f"  Ficheiros: {files_scanned}")
         print(f"  Issues: {total_issues}")
         for issue_type, count in summary.items():
@@ -183,9 +183,9 @@ class AutoOptimizer:
             elif issue.get('type') == 'missing_docstrings':
                 suggestions.append("[LIVRO] Adicionar docstrings às classes")
             elif issue.get('type') == 'long_function':
-                suggestions.append(f"[CORT]  Função com {issue['lines']} linhas - refatorar")
+                suggestions.append(f"[CORT]  Fun??o com {issue['lines']} linhas - refatorar")
         
-        return "\n".join([f"  • {s}" for s in suggestions])
+        return "\n".join([f"  ? {s}" for s in suggestions])
 
 # CLI
 if __name__ == "__main__":
@@ -208,6 +208,6 @@ if __name__ == "__main__":
                 print(opt.suggest_optimization(sys.argv[2]))
     else:
         # Modo autónomo
-        print("\n  [IA] Modo Autónomo - A escanear projeto...")
+        print("\n  [IA] Modo Aut?nomo - A escanear projeto...")
         report = opt.scan_project()
-        print(f"\n  [ALVO] {report['total_issues']} oportunidades de otimização encontradas!")
+        print(f"\n  [ALVO] {report['total_issues']} oportunidades de otimiza??o encontradas!")

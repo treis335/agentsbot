@@ -49,7 +49,7 @@ class TestCognitiveCycle:
             assert "status" in result
             assert result["status"] == "ok"
         except Exception as e:
-            pytest.fail(f"run_cycle() lançou exceção: {e}")
+            pytest.fail(f"run_cycle() lan?ou exce??o: {e}")
     
     def test_anti_loop_deteta_acoes_identicas(self, cycle):
         """Testar que o anti-loop deteta ações idênticas e ativa o mecanismo."""
@@ -67,7 +67,7 @@ class TestCognitiveCycle:
                 break
         
         assert loop_detected, (
-            f"Anti-loop não detetou {MAX_IDENTICAL_ACTIONS + 2} ações idênticas"
+            f"Anti-loop n?o detetou {MAX_IDENTICAL_ACTIONS + 2} a??es id?nticas"
         )
     
     def test_anti_loop_trava_no_inicio_do_ciclo_seguinte(self, cycle):

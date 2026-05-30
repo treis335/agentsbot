@@ -185,15 +185,15 @@ if __name__ == "__main__":
             level = sys.argv[2] if len(sys.argv) > 2 else "medium"
             c = b.create_challenge(level)
             print(f"\n  [TROF] NOVO DESAFIO: {c['title']}")
-            print(f"     Nível: {c['level']} | Pontos: {c['points']}")
+            print(f"     N?vel: {c['level']} | Pontos: {c['points']}")
         elif cmd == "stats":
             stats = b.get_stats()
-            print(f"\n  [DADOS] ESTATÍSTICAS DO BRAINSTORMER")
+            print(f"\n  [DADOS] ESTAT?STICAS DO BRAINSTORMER")
             for k, v in stats.items():
                 print(f"     {k}: {v}")
     else:
         # Modo autónomo - gera ideias automaticamente
-        print("\n  [IA] Modo Autónomo Ativado!")
+        print("\n  [IA] Modo Aut?nomo Ativado!")
         for theme in b.themes[:3]:
             b.brainstorm_session(theme)
             print()

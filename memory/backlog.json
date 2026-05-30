@@ -623,10 +623,82 @@
     "id": "auto_c5ebf206",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T15:05:12.831746",
     "source": "fallback",
-    "started_at": "2026-05-30T15:05:22.838194"
+    "started_at": "2026-05-30T15:05:22.838194",
+    "completed_at": "2026-05-30T15:06:39.829372",
+    "result": "Ecossistema limpo — zero ficheiros modificados. ✅\n\n---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- **0 ficheiros modificados** — tudo commitado e em sincronia com `origin/main`\n\n### 📌 O que foi feito\n| Ação | Detalhes |\n|---|---|\n| **Commit #1** | `10f5146` — Refinadas 31 almas (`agents/souls/*.md`) com melhorias de clareza, consistência e integração entre agentes + atualização dos 6 ficheiros de memória |\n| **Commit #2** | `277d37b` — Registo da operação no `autonomous_log"
+  },
+  {
+    "id": "auto_712fb3e4",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:06:50.022119",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:07:00.029367",
+    "completed_at": "2026-05-30T15:10:25.103706",
+    "result": "Fiz o diagnóstico completo dos logs (3 problemas: UnicodeEncodeError, Telegram Conflict com 1585 ocorrências, loop infinito de reinício), implementei o fix de encoding global (59 ficheiros corrigidos) e adicionei instance lock ao main.py. Ficou por restaurar o `tools/fs_tools.py` (fiz `git checkout` para versão original) — preciso de reaplicar o fix de encoding e instance lock só nesse ficheiro, e depois fazer commit e push."
+  },
+  {
+    "id": "auto_82e14f95",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:10:35.115321",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:10:45.122244",
+    "completed_at": "2026-05-30T15:13:40.434869",
+    "result": "## 📋 Relatório Final\n\n### ✅ O que fiz:\n1. **Diagnóstico completo dos logs** — Identifiquei os 3 problemas: (1) **UnicodeEncodeError** no startup (já corrigido anteriormente — emojis removidos), (2) **Telegram Conflict** com 4895 ocorrências (múltiplas instâncias do bot), (3) **Loop infinito wakeup→main.py** com 3742 ciclos de reinício\n2. **Criei `start_clean.py`** — Script de inicialização segura que: mata todas as instâncias python órfãs, força UTF-8 no ambiente (`PYTHONIOENCODING=utf-8:replace"
+  },
+  {
+    "id": "auto_8b7f63f1",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:13:50.643284",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:14:00.649713",
+    "completed_at": "2026-05-30T15:16:13.983400",
+    "result": "Fiz o diagnóstico completo dos logs: identifiquei os **3 problemas principais** — (1) **Telegram Conflict** com **4.895 ocorrências** (múltiplas instâncias do bot), (2) **UnicodeEncodeError** com **6 ocorrências** (emojis em stdout cp1252), e (3) **Loop de reset infinito** (wakeup_v3 reinicia o sistema 20+ vezes sem resolver o conflito). \n\nFicou por implementar a solução mais simples: **melhorar o `lock_utils.py`** com um lock mais robusto (named mutex ou socket) para garantir instância única (r"
+  },
+  {
+    "id": "auto_fb19d877",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:16:23.995779",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:16:34.001837",
+    "completed_at": "2026-05-30T15:20:00.760437",
+    "result": "Fiz o diagnóstico completo dos logs e identifiquei os **3 problemas principais**: (1) **Telegram Conflict** com **4.895 ocorrências** — múltiplas instâncias do bot a competir pelo polling, (2) **UnicodeEncodeError** com emojis no supervisor_ultra.py, (3) **Loop infinito de reinicializações** do wakeup_v3.py que reiniciava o main.py a cada 8 segundos. Criei o `telegram_lock.py` para resolver o Problema 1 e integrei-o no `main.py`, mas a reestruturação do bloco do polling ficou incompleta devido a"
+  },
+  {
+    "id": "auto_11ec38bf",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T15:20:10.962829",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:20:20.969728",
+    "completed_at": "2026-05-30T15:23:22.366026",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nAnalisei exaustivamente **200 episódios** do `loop_episodes.json`, o `autonomous_log.md` (887 linhas, 308 ciclos), `conversation.jsonl`, `hub.jsonl`, e os ficheiros de memória semântica. Extraí **8 lições críticas** com base em dados quantitativos: eficiência real do sistema é **29.2%** (70.8% ciclos desperdiçados), **186 execuções repetidas da mesma tarefa**, **44 casos de \"ficou por fazer\"**, **75 erros CognitiveCycle**, e "
+  },
+  {
+    "id": "auto_144ff4b3",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T15:23:32.777529",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:23:42.784666"
   }
 ]

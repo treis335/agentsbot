@@ -57,12 +57,12 @@ class Ecosystem:
         ideas = [
             f"[IDEA] Criar um sistema de auto-aprendizagem baseado em {topic}",
             f"[FIX] Desenvolver uma ferramenta de {topic} com agentes colaborativos",
-            f"[START] Implementar {topic} como serviço no ecossistema",
+            f"[START] Implementar {topic} como servi?o no ecossistema",
             f"[DADOS] Dashboard interativo para monitorizar {topic} em tempo real",
             f"[MAO] Conectar {topic} com agentes externos para troca de conhecimento",
             f"[MENTE] Treinar agentes especializados em {topic}",
             f"[RAPIDO] Otimizar {topic} com machine learning",
-            f"[MUNDO] Expandir {topic} para múltiplos idiomas e contextos",
+            f"[MUNDO] Expandir {topic} para m?ltiplos idiomas e contextos",
         ]
         idea = random.choice(ideas)
         self._log_innovation(f"[IDEA] Brainstorm: {idea}")
@@ -82,7 +82,7 @@ class Ecosystem:
         """Tenta aprender uma nova skill"""
         skill = self.skills_manager.discover_new_skill()
         if skill:
-            self._log_innovation(f"[LIVRO] Nova skill aprendida: {skill.name} (nível {skill.level})")
+            self._log_innovation(f"[LIVRO] Nova skill aprendida: {skill.name} (n?vel {skill.level})")
             self._save_memory()
             return {"name": skill.name, "category": skill.category, "level": skill.level}
         return None
@@ -140,7 +140,7 @@ class AutoEvolver:
         # 1. Tentar aprender nova skill
         skill = self.ecosystem.learn_new_skill()
         if skill:
-            actions.append(f"[LIVRO] Aprendi {skill['name']} (nível {skill['level']})")
+            actions.append(f"[LIVRO] Aprendi {skill['name']} (n?vel {skill['level']})")
         
         # 2. Gerar brainstorm
         topics = ["IA", "automação", "dashboards", "agentes", "skills", "inovação"]
@@ -153,9 +153,9 @@ class AutoEvolver:
         if rooms:
             room = random.choice(rooms)
             agent = random.choice(self.ecosystem.agents_online) if self.ecosystem.agents_online else "Supervisor"
-            msg = f"[CHAT] Discussão automática: Como podemos melhorar {topic}?"
+            msg = f"[CHAT] Discuss?o autom?tica: Como podemos melhorar {topic}?"
             self.ecosystem.discuss_in_room(room, agent, msg)
-            actions.append(f"[CHAT] Discussão iniciada em {room}")
+            actions.append(f"[CHAT] Discuss?o iniciada em {room}")
         
         # 4. Usar skills existentes
         skills = self.ecosystem.skills_manager.list_skills()
@@ -163,9 +163,9 @@ class AutoEvolver:
             skill = random.choice(skills)
             leveled_up = self.ecosystem.skills_manager.use_skill(skill.name)
             if leveled_up:
-                actions.append(f"[UP] {skill.name} subiu para nível {skill.level}!")
+                actions.append(f"[UP] {skill.name} subiu para n?vel {skill.level}!")
         
         # 5. Registrar inovação
-        self.ecosystem._log_innovation(f"[LOOP] Ciclo de evolução #{self.evolution_cycles} concluído")
+        self.ecosystem._log_innovation(f"[LOOP] Ciclo de evolu??o #{self.evolution_cycles} conclu?do")
         
         return actions

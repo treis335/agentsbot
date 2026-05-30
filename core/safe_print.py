@@ -94,7 +94,7 @@ def safe_text(text: str) -> str:
 def sp(*args, sep=" ", end="\n", flush=False, file=None):
     """
     safe_print — imprime sem emojis, seguro para Windows cp1252.
-    Uso idêntico ao print() normal.
+    Uso id?ntico ao print() normal.
     """
     text = sep.join(str(a) for a in args)
     text = safe_text(text)

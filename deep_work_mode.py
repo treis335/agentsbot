@@ -91,7 +91,7 @@ MODO DEEP WORK ATIVADO - REGRAS:
         with open(DEEP_WORK_FILE, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=2, ensure_ascii=False)
         log("[START] DEEP WORK MODE ATIVADO!")
-        log(f"   Estratégias ativas: {len(config['strategies'])}")
+        log(f"   Estrat?gias ativas: {len(config['strategies'])}")
         log(f"   Economia estimada: {config['total_economy']}")
         return True
     except Exception as e:
@@ -155,7 +155,7 @@ def log_deep_work_action(action, result, economy="1x"):
         with open(DEEP_WORK_LOG, "w", encoding="utf-8") as f:
             json.dump(logs, f, indent=2, ensure_ascii=False)
     except Exception as e:
-        log(f"Erro ao registar ação: {e}")
+        log(f"Erro ao registar a??o: {e}")
 
 def get_strategies_summary():
     """Resumo das estratégias disponíveis"""
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     print(get_strategies_summary())
     print("\nA ativar Deep Work Mode...")
     activate_deep_work()
-    print("\nInstruções atuais:")
+    print("\nInstru??es atuais:")
     print(get_deep_work_instructions())
     print("\nA desativar...")
     deactivate_deep_work()

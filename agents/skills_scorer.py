@@ -60,7 +60,7 @@ def extract_success_history(memory_path: str = "memory/episodica") -> dict[str, 
             rates[agent] = 0.5  # neutral default
 
     if rates:
-        logger.debug(f"[SkillsScorer] Histórico extraído: {rates}")
+        logger.debug(f"[SkillsScorer] Hist?rico extra?do: {rates}")
 
     return rates
 

@@ -162,7 +162,7 @@ class StateMachine:
         """Carrega workflow de YAML. Ex: StateMachine.from_yaml('dev_cycle')"""
         path = cls.TEMPLATES_DIR / f"{workflow_name}.yaml"
         if not path.exists():
-            raise FileNotFoundError(f"Workflow não encontrado: {path}")
+            raise FileNotFoundError(f"Workflow n?o encontrado: {path}")
 
         raw = yaml.safe_load(path.read_text(encoding="utf-8"))
 
@@ -220,10 +220,10 @@ class StateMachine:
         """
         run = self._load_run(run_id)
         if not run:
-            raise ValueError(f"Run não encontrada: {run_id}")
+            raise ValueError(f"Run n?o encontrada: {run_id}")
 
         if run.state in (RunState.COMPLETED, RunState.FAILED):
-            logger.warning(f"[StateMachine] Run {run_id} já terminou ({run.state})")
+            logger.warning(f"[StateMachine] Run {run_id} j? terminou ({run.state})")
             return run
 
         run.state = RunState.RUNNING
@@ -231,7 +231,7 @@ class StateMachine:
 
         if step_id not in self.definition.steps:
             run.state = RunState.FAILED
-            run.error = f"Step inválido: {step_id}"
+            run.error = f"Step inv?lido: {step_id}"
             self._save_run(run)
             return run
 
@@ -243,11 +243,11 @@ class StateMachine:
             try:
                 should_run = bool(eval(step_def.condition, {"ctx": run.context}))  # noqa: S307
             except Exception as e:
-                logger.warning(f"[StateMachine] Condição inválida em {step_id}: {e}")
+                logger.warning(f"[StateMachine] Condi??o inv?lida em {step_id}: {e}")
                 should_run = True
 
             if not should_run:
-                logger.info(f"[StateMachine] Passo {step_id} ignorado (condição falsa)")
+                logger.info(f"[StateMachine] Passo {step_id} ignorado (condi??o falsa)")
                 step_run.state = StepState.SKIPPED
                 run = self._advance(run, step_id, success=True)
                 self._save_run(run)
@@ -267,7 +267,7 @@ class StateMachine:
                 success = True
             else:
                 # Modo simulação (sem executor real)
-                result = f"[sim] Passo '{step_def.name}' concluído"
+                result = f"[sim] Passo '{step_def.name}' conclu?do"
                 success = True
         except Exception as e:
             result = str(e)
@@ -320,7 +320,7 @@ class StateMachine:
                 logger.info(f"[StateMachine] {step_id} -> {transition} (directo)")
             else:
                 run.state = RunState.FAILED
-                run.error = f"Transição inválida: {transition}"
+                run.error = f"Transi??o inv?lida: {transition}"
 
         return run
 
@@ -375,7 +375,7 @@ class StateMachine:
         """Retorna resumo legível de uma run."""
         run = self._load_run(run_id)
         if not run:
-            return f"Run {run_id} não encontrada"
+            return f"Run {run_id} n?o encontrada"
 
         lines = [
             f"Run: {run.run_id}  |  Workflow: {run.workflow_name}  |  Estado: {run.state}",

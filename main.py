@@ -17,9 +17,52 @@ Uso:
 import asyncio
 import json
 import logging
+import os
 import sys
 import threading
 from pathlib import Path
+
+# ============================================================
+# FIX: Instance Lock + UTF-8 encoding
+# ============================================================
+_INSTANCE_LOCK_FILE = Path(__file__).parent / ".instance.lock"
+
+def _check_instance_lock():
+    if _INSTANCE_LOCK_FILE.exists():
+        try:
+            pid = int(_INSTANCE_LOCK_FILE.read_text().strip())
+            if os.name == "nt":
+                import ctypes
+                kernel32 = ctypes.windll.kernel32
+                handle = kernel32.OpenProcess(0x0400, False, pid)
+                if handle:
+                    kernel32.CloseHandle(handle)
+                    print(f"[LOCK] Outra instancia (PID {pid}) ja ativa. A sair.")
+                    sys.exit(0)
+            else:
+                try:
+                    os.kill(pid, 0)
+                    print(f"[LOCK] Outra instancia (PID {pid}) ja ativa. A sair.")
+                    sys.exit(0)
+                except OSError:
+                    pass
+        except (ValueError, OSError):
+            pass
+    _INSTANCE_LOCK_FILE.write_text(str(os.getpid()))
+
+# Forcar UTF-8 no stdout/stderr para evitar UnicodeEncodeError
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+if hasattr(sys.stderr, "reconfigure"):
+    try:
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+_check_instance_lock()
 
 # --- Configuração ---------------------------------------------------------
 from core.config import Config
@@ -86,7 +129,7 @@ def init_telegram():
     global telegram_application
 
     if not config.TELEGRAM_BOT_TOKEN or "placeholder" in config.TELEGRAM_BOT_TOKEN:
-        logger.warning("[Telegram] Token não configurado. Bot desativado.")
+        logger.warning("[Telegram] Token n?o configurado. Bot desativado.")
         return None
 
     try:
@@ -147,7 +190,7 @@ async def main():
     no_api       = "--no-api" in args
 
     logger.info("=" * 60)
-    logger.info("  CORREOTO v2.0 - ECOSSISTEMA AUTÓNOMO DE AGENTES IA")
+    logger.info("  CORREOTO v2.0 - ECOSSISTEMA AUT?NOMO DE AGENTES IA")
     logger.info(f"  Repo: {config.GITHUB_REPO}")
     logger.info(f"  Path: {config.REPO_LOCAL_PATH}")
     logger.info("=" * 60)
@@ -167,7 +210,7 @@ async def main():
             logger.info(f"[Bus] {replayed} evento(s) reenviado(s) do WAL")
         compact_old_logs()  # limpar logs antigos (>7 dias)
     except Exception as e:
-        logger.warning(f"[Bus] Replay falhou (não crítico): {e}")
+        logger.warning(f"[Bus] Replay falhou (n?o cr?tico): {e}")
 
     await orchestrator.start()
     # Iniciar watchdog de auto-reboot
@@ -199,17 +242,21 @@ async def main():
         name="autonomous-loop",
     )
     loop_thread.start()
-    logger.info("[AutonomousLoop] Loop autónomo iniciado em background.")
+    logger.info("[AutonomousLoop] Loop aut?nomo iniciado em background.")
     # -------------------------------------------------------------------------
 
     # Bot Telegram
     if not no_telegram:
         app = init_telegram()
         if app:
-            logger.info("[Telegram] Bot a correr...")
-            await app.initialize()
-            await app.start()
-            await app.updater.start_polling()
+            # Lock Telegram: garantir que apenas uma instancia faz polling
+            if not acquire_telegram_lock():
+                logger.warning("[Telegram] Outra instancia ja ativa. A ignorar polling.")
+            else:
+                logger.info("[Telegram] Bot a correr...")
+                await app.initialize()
+                await app.start()
+                await app.updater.start_polling()
             logger.info("[Telegram] Bot online. A aguardar mensagens...")
             # Dar o bot ao loop para enviar relatórios Telegram
             auto_loop.telegram_bot = app.bot
@@ -224,7 +271,7 @@ async def main():
                     notifier = get_notifier()
                     notifier.set_bot(app.bot, int(owner_id))
                     await notifier.system_started()
-                    logger.info("[Notifier] Notificações proactivas activas")
+                    logger.info("[Notifier] Notifica??es proactivas activas")
             except Exception as e:
                 logger.warning(f"[Notifier] Falhou ao iniciar: {e}")
             while True:
@@ -235,13 +282,14 @@ async def main():
             while True:
                 await asyncio.sleep(60)
     else:
-        logger.info("[Main] Modo sem Telegram. A manter serviços...")
+        logger.info("[Main] Modo sem Telegram. A manter servi?os...")
         set_auto_loop(auto_loop)
         while True:
             await asyncio.sleep(60)
 if __name__ == "__main__":
     # --- Lock Singleton ------------------------------------------------
     from lock_utils import acquire_lock, release_lock
+    from telegram_lock import acquire_telegram_lock, release_telegram_lock
     if not acquire_lock():
         sys.exit("Outra instância já está a correr. A encerrar.")
     # -------------------------------------------------------------------
@@ -252,4 +300,5 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"[Main] Erro fatal: {e}", exc_info=True)
     finally:
+        release_telegram_lock()
         release_lock()

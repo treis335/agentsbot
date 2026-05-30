@@ -182,19 +182,19 @@ async def auto_evolve_loop():
     while True:
         # Evolui skills
         skill_evo = evolve.evolve_skills()
-        print(f"[SOBE] Skill evoluída: {skill_evo['skill']} -> {skill_evo['new_value']}")
+        print(f"[SOBE] Skill evolu?da: {skill_evo['skill']} -> {skill_evo['new_value']}")
         
         # Evolui agentes
         agent_evo = evolve.evolve_agents()
         if agent_evo["type"] == "new_agent":
             print(f"[NEW] Novo agente: {agent_evo['agent']['name']} ({agent_evo['agent']['role']})")
         elif agent_evo["type"] == "level_up":
-            print(f"[UP] Level up: {agent_evo['agent']} -> nível {agent_evo['new_level']}")
+            print(f"[UP] Level up: {agent_evo['agent']} -> n?vel {agent_evo['new_level']}")
         
         # Mostra resumo a cada 5 iterações
         if evolve.evolution["steps"] % 5 == 0:
             summary = evolve.get_evolution_summary()
-            print(f"\n[DADOS] **Resumo da Evolução:**")
+            print(f"\n[DADOS] **Resumo da Evolu??o:**")
             print(f"   [LOOP] Passos: {summary['total_steps']}")
             print(f"   [IA] Agentes: {summary['agents_list']}")
             print(f"   [TROF] Top skill: {summary['top_skill']} ({evolve.skills[summary['top_skill']]})")

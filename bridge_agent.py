@@ -89,7 +89,7 @@ class BridgeAgent:
                 self.server.close()
     
     def processar_comando(self, conn, addr):
-        self.log(f"Conexão de {addr}")
+        self.log(f"Conex?o de {addr}")
         try:
             data = conn.recv(65536).decode("utf-8")
             comando = json.loads(data)
@@ -106,7 +106,7 @@ class BridgeAgent:
             elif acao == "escrever":
                 resultado = self.escrever_ficheiro(comando["path"], comando["conteudo"])
             else:
-                resultado = {"erro": f"Ação desconhecida: {acao}"}
+                resultado = {"erro": f"A??o desconhecida: {acao}"}
             
             conn.send(json.dumps(resultado).encode("utf-8"))
         except Exception as e:
@@ -115,7 +115,7 @@ class BridgeAgent:
             conn.close()
     
     def start(self):
-        self.log("[FOGO] BridgeAgent 24/7 — Pronto para comandos do Supervisor")
+        self.log("[FOGO] BridgeAgent 24/7 ? Pronto para comandos do Supervisor")
         self.iniciar_servidor()
 
 if __name__ == "__main__":

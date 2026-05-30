@@ -80,7 +80,7 @@ class ToolResultVerifier:
             if result_lower.startswith(prefix):
                 recoverable = self._is_recoverable(tool_name, result_lower)
                 return self._fail(
-                    f"Resultado começa com indicador de erro: '{prefix}'",
+                    f"Resultado come?a com indicador de erro: '{prefix}'",
                     recoverable=recoverable,
                 )
 
@@ -90,7 +90,7 @@ class ToolResultVerifier:
             if re.search(pattern, result_str, re.IGNORECASE):
                 recoverable = self._is_recoverable(tool_name, result_lower)
                 return self._fail(
-                    f"Padrão de falha detetado em '{tool_name}': '{pattern}'",
+                    f"Padr?o de falha detetado em '{tool_name}': '{pattern}'",
                     recoverable=recoverable,
                 )
 
@@ -112,7 +112,7 @@ class ToolResultVerifier:
             match = re.search(r"[Rr]eturncode:\s*(-?\d+)", result_str)
             if match and match.group(1) != "0":
                 return self._fail(
-                    f"Shell retornou código {match.group(1)}",
+                    f"Shell retornou c?digo {match.group(1)}",
                     recoverable=True,
                 )
 
@@ -130,7 +130,7 @@ class ToolResultVerifier:
         }
 
     def _fail(self, reason: str, recoverable: bool = True) -> dict:
-        logger.debug(f"[Verifier] Falhou: {reason} (recuperável={recoverable})")
+        logger.debug(f"[Verifier] Falhou: {reason} (recuper?vel={recoverable})")
         return {
             "ok":          False,
             "confidence":  0.1,

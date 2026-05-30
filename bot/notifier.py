@@ -114,7 +114,7 @@ class Notifier:
             return
         short_result = str(result)[:200].replace("*", "").replace("`", "")
         msg = (
-            f"[OK] *Tarefa concluída*\n\n"
+            f"[OK] *Tarefa conclu?da*\n\n"
             f"[LISTA] {title[:80]}\n"
             f"[IA] Agente: `{agent}`\n"
             f"[HORA] {datetime.now().strftime('%H:%M')}\n\n"
@@ -143,7 +143,7 @@ class Notifier:
         if not self._on_improve or patches == 0:
             return
         lines = [f"[DNA] *Auto-melhoria aplicada!*\n"]
-        lines.append(f"• {patches} patch(es) ao código")
+        lines.append(f"? {patches} patch(es) ao c?digo")
         for d in details[:4]:
             lines.append(f"  [OK] {d[:70]}")
         if commit:
@@ -162,10 +162,10 @@ class Notifier:
         msg = (
             f"[START] *CORREOTO iniciado!*\n\n"
             f"[IA] {n_agents} agentes prontos\n"
-            f"[LOOP] Loop autónomo activo\n"
+            f"[LOOP] Loop aut?nomo activo\n"
             f"[DNA] Self-improve a cada 10 ciclos\n"
             f"[HORA] {datetime.now().strftime('%H:%M:%S')}\n\n"
-            f"_O ecossistema está a trabalhar. Podes deixar correr._"
+            f"_O ecossistema est? a trabalhar. Podes deixar correr._"
         )
         await self.send(msg)
 
@@ -216,14 +216,14 @@ class Notifier:
             pass
 
         msg = (
-            f"[DADOS] *Resumo Diário — {date.today().strftime('%d/%m/%Y')}*\n\n"
-            f"[OK] Tarefas concluídas: {stats['tasks_done']}\n"
+            f"[DADOS] *Resumo Di?rio ? {date.today().strftime('%d/%m/%Y')}*\n\n"
+            f"[OK] Tarefas conclu?das: {stats['tasks_done']}\n"
             f"[X] Tarefas falhadas: {stats['tasks_failed']}\n"
             f"[DNA] Melhorias aplicadas: {stats['improvements']}\n"
             f"[SOBE] Taxa de sucesso: {success_rate}%\n"
             f"[TIME] Pendentes: {pending}\n"
             f"[TROF] Agente mais activo: `{top}`\n\n"
-            f"_O sistema continuou a trabalhar de forma autónoma._"
+            f"_O sistema continuou a trabalhar de forma aut?noma._"
         )
         await self.send(msg)
         # Reset diário

@@ -131,7 +131,7 @@ class RetryPolicy:
 
     def format_retry_log(self, state: RetryState) -> str:
         """Formata um resumo legível do histórico de retries."""
-        lines = [f"[RetryPolicy] '{state.tool_name}' — {state.attempt} tentativa(s)"]
+        lines = [f"[RetryPolicy] '{state.tool_name}' ? {state.attempt} tentativa(s)"]
         for h in state.history:
             lines.append(f"  Tentativa {h['attempt']}: {h['error'] or h['result'][:80]}")
         return "\n".join(lines)

@@ -58,7 +58,7 @@ async def run_python_sandboxed(
     elif is_firejail_available():
         return await _run_firejail_python(code, profile, actual_timeout)
     else:
-        logger.warning("[Sandbox] Docker e firejail indisponíveis — usando subprocess restrito")
+        logger.warning("[Sandbox] Docker e firejail indispon?veis ? usando subprocess restrito")
         return await _run_restricted_subprocess_python(code, actual_timeout)
 
 
@@ -79,7 +79,7 @@ async def run_shell_sandboxed(
     elif is_firejail_available():
         return await _run_firejail_shell(command, profile, actual_timeout)
     else:
-        logger.warning("[Sandbox] Docker e firejail indisponíveis — usando subprocess restrito")
+        logger.warning("[Sandbox] Docker e firejail indispon?veis ? usando subprocess restrito")
         return await _run_restricted_subprocess_shell(command, actual_timeout)
 
 
@@ -182,7 +182,7 @@ async def _run_docker(
             return {
                 "success": False,
                 "stdout": "",
-                "stderr": f"Timeout após {timeout}s",
+                "stderr": f"Timeout ap?s {timeout}s",
                 "returncode": -1,
                 "sandbox_type": "docker",
                 "profile": profile.name,
@@ -204,7 +204,7 @@ async def _ensure_image():
 
     # Construir imagem
     if not DOCKERFILE_PATH.exists():
-        raise RuntimeError(f"Dockerfile não encontrado: {DOCKERFILE_PATH}")
+        raise RuntimeError(f"Dockerfile n?o encontrado: {DOCKERFILE_PATH}")
 
     logger.info(f"[Sandbox] A construir imagem {SANDBOX_IMAGE}...")
     proc = await asyncio.create_subprocess_exec(
@@ -216,7 +216,7 @@ async def _ensure_image():
     stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=300)
     if proc.returncode != 0:
         raise RuntimeError(f"Falha ao construir imagem: {stderr.decode()[:500]}")
-    logger.info(f"[Sandbox] Imagem {SANDBOX_IMAGE} construída com sucesso")
+    logger.info(f"[Sandbox] Imagem {SANDBOX_IMAGE} constru?da com sucesso")
 
 
 # ----------------------------------------------
@@ -260,7 +260,7 @@ async def _run_firejail_python(code: str, profile: SandboxProfile, timeout: int)
             "duration_s": duration,
         }
     except asyncio.TimeoutError:
-        return {"success": False, "stdout": "", "stderr": f"Timeout após {timeout}s",
+        return {"success": False, "stdout": "", "stderr": f"Timeout ap?s {timeout}s",
                 "returncode": -1, "sandbox_type": "firejail", "profile": profile.name, "duration_s": timeout}
     finally:
         Path(fname).unlink(missing_ok=True)
@@ -289,7 +289,7 @@ async def _run_firejail_shell(command: str, profile: SandboxProfile, timeout: in
             "duration_s": duration,
         }
     except asyncio.TimeoutError:
-        return {"success": False, "stdout": "", "stderr": f"Timeout após {timeout}s",
+        return {"success": False, "stdout": "", "stderr": f"Timeout ap?s {timeout}s",
                 "returncode": -1, "sandbox_type": "firejail", "profile": profile.name, "duration_s": timeout}
 
 
@@ -337,7 +337,7 @@ async def _run_restricted_subprocess_python(code: str, timeout: int) -> dict:
             "duration_s": duration,
         }
     except asyncio.TimeoutError:
-        return {"success": False, "stdout": "", "stderr": f"Timeout após {timeout}s",
+        return {"success": False, "stdout": "", "stderr": f"Timeout ap?s {timeout}s",
                 "returncode": -1, "sandbox_type": "subprocess_restricted", "profile": "fallback", "duration_s": timeout}
     finally:
         Path(fname).unlink(missing_ok=True)
@@ -381,6 +381,6 @@ async def _run_restricted_subprocess_shell(command: str, timeout: int) -> dict:
             "duration_s": duration,
         }
     except asyncio.TimeoutError:
-        return {"success": False, "stdout": "", "stderr": f"Timeout após {timeout}s",
+        return {"success": False, "stdout": "", "stderr": f"Timeout ap?s {timeout}s",
                 "returncode": -1, "sandbox_type": "subprocess_restricted",
                 "profile": "fallback", "duration_s": timeout}

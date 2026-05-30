@@ -27,7 +27,7 @@ class AutoOrchestrator:
         self.evolution_log = []
         self.cycle_count = 0
         
-        print("[START] **Orquestrador Automático Iniciado!**")
+        print("[START] **Orquestrador Autom?tico Iniciado!**")
         print("=" * 60)
     
     def register_agent(self, name, agent_type, module_path):
@@ -82,7 +82,7 @@ class AutoOrchestrator:
         print(f"   [IA] Agentes: {status['agents']}")
         print(f"   [ENG] Sistemas: {status['systems']}")
         print(f"   [LOOP] Ciclos: {status['cycles']}")
-        print(f"   [SOBE] Evolução: {status['evolution_steps']} passos")
+        print(f"   [SOBE] Evolu??o: {status['evolution_steps']} passos")
         
         return status
     
@@ -138,10 +138,10 @@ async def main():
         # A cada 5 ciclos, mostra resumo
         if cycle_count % 5 == 0:
             print("\n" + "=" * 60)
-            print(f"[DADOS] **RESUMO APÓS {cycle_count} CICLOS**")
+            print(f"[DADOS] **RESUMO AP?S {cycle_count} CICLOS**")
             print(f"   [IA] Agentes: {len(orchestrator.agents)}")
             print(f"   [ENG] Sistemas: {len(orchestrator.systems)}")
-            print(f"   [SOBE] Passos de evolução: {len(orchestrator.evolution_log)}")
+            print(f"   [SOBE] Passos de evolu??o: {len(orchestrator.evolution_log)}")
             print("=" * 60)
         
         # Aguarda 30 segundos entre ciclos

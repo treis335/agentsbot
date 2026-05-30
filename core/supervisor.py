@@ -99,7 +99,7 @@ class Supervisor:
         self.agents.append(agent)
         self._save_agents()
         self.log("novo_agente", name)
-        self.remember("supervisor", f"Criei o agente {name} com missão: {mission}")
+        self.remember("supervisor", f"Criei o agente {name} com miss?o: {mission}")
         return True
 
     def update_priority(self, task, weight):

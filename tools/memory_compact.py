@@ -99,11 +99,11 @@ def compact_agent_memory(agent_file: Path, dry_run: bool = False) -> dict:
             json.dumps(kept, indent=2, ensure_ascii=False),
             encoding="utf-8",
         )
-        print(f"  [OK] {agent_file.stem}: {original_count} -> {len(kept)} episódios (-{removed})")
+        print(f"  [OK] {agent_file.stem}: {original_count} -> {len(kept)} epis?dios (-{removed})")
     elif dry_run:
         print(f"  [BUSCA] [DRY] {agent_file.stem}: {original_count} -> {len(kept)} (-{removed})")
     else:
-        print(f"  [SKIP]  {agent_file.stem}: nada para compactar ({original_count} episódios)")
+        print(f"  [SKIP]  {agent_file.stem}: nada para compactar ({original_count} epis?dios)")
 
     return result
 
@@ -118,29 +118,29 @@ def main():
     episodic_dir = Config.MEMORY_DIR / "episodica"
 
     if not episodic_dir.exists():
-        print(f"[X] Directório não existe: {episodic_dir}")
+        print(f"[X] Direct?rio n?o existe: {episodic_dir}")
         sys.exit(1)
 
     # Extrair lições primeiro se pedido
     if args.extract_lessons:
-        print("\n[LIVRO] A extrair lições dos logs episódicos...")
+        print("\n[LIVRO] A extrair li??es dos logs epis?dicos...")
         extractor = LessonExtractor()
         result = extractor.run()
-        print(f"  [OK] {result['extracted']} lições extraídas -> {result['saved_to']}\n")
+        print(f"  [OK] {result['extracted']} li??es extra?das -> {result['saved_to']}\n")
 
-    print(f"\n[COMP]  A compactar memórias episódicas{' (DRY RUN)' if args.dry_run else ''}...\n")
+    print(f"\n[COMP]  A compactar mem?rias epis?dicas{' (DRY RUN)' if args.dry_run else ''}...\n")
 
     # Seleccionar ficheiros
     if args.agent:
         files = list(episodic_dir.glob(f"{args.agent}.json"))
         if not files:
-            print(f"[X] Agente não encontrado: {args.agent}")
+            print(f"[X] Agente n?o encontrado: {args.agent}")
             sys.exit(1)
     else:
         files = list(episodic_dir.glob("*.json"))
 
     if not files:
-        print("Nenhum ficheiro de memória encontrado.")
+        print("Nenhum ficheiro de mem?ria encontrado.")
         sys.exit(0)
 
     total_removed = 0
@@ -151,11 +151,11 @@ def main():
         total_removed += result.get("removed", 0)
         total_original += result.get("original", 0)
 
-    print(f"\n[DADOS] Total: {total_original} episódios -> removidos {total_removed} "
+    print(f"\n[DADOS] Total: {total_original} epis?dios -> removidos {total_removed} "
           f"({round(total_removed/total_original*100, 1) if total_original else 0}%)")
 
     if args.dry_run:
-        print("   (DRY RUN — nenhum ficheiro alterado)")
+        print("   (DRY RUN ? nenhum ficheiro alterado)")
 
 
 if __name__ == "__main__":

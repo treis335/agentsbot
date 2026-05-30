@@ -114,7 +114,7 @@ class AgentManager:
         self._save()
 
     async def _agent_loop(self, agent: Agent, chat_id: int, send_fn: Callable):
-        await send_fn(chat_id=chat_id, text=f"[VERDE] **{agent.name}** iniciado em modo autónomo.", parse_mode="Markdown")
+        await send_fn(chat_id=chat_id, text=f"[VERDE] **{agent.name}** iniciado em modo aut?nomo.", parse_mode="Markdown")
         while not agent._stop.is_set():
             try:
                 await send_fn(chat_id=chat_id, text=f"[ENG] **{agent.name}** a executar ciclo...", parse_mode="Markdown")

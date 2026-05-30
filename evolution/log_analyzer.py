@@ -112,9 +112,9 @@ class LogAnalyzer:
         report["suggestions"] = self._generate_suggestions(report)
 
         logger.info(
-            f"[LogAnalyzer] Análise concluída: "
-            f"{report['totals']['total_episodes']} episódios, "
-            f"{len(report['suggestions'])} sugestões"
+            f"[LogAnalyzer] An?lise conclu?da: "
+            f"{report['totals']['total_episodes']} epis?dios, "
+            f"{len(report['suggestions'])} sugest?es"
         )
         return report
 
@@ -252,7 +252,7 @@ class LogAnalyzer:
                 "type": "high_failure_rate",
                 "priority": "high",
                 "description": (
-                    f"Taxa de falha de {totals['failure_rate']*100:.0f}% está elevada. "
+                    f"Taxa de falha de {totals['failure_rate']*100:.0f}% est? elevada. "
                     "Considerar aumentar timeout ou melhorar tratamento de erros."
                 ),
                 "action": "review_error_handling",
@@ -271,7 +271,7 @@ class LogAnalyzer:
                 }
                 suggestion_text = action_map.get(
                     p["pattern"],
-                    f"Padrão '{p['pattern']}' aparece {p['count']}x — investigar causa raiz"
+                    f"Padr?o '{p['pattern']}' aparece {p['count']}x ? investigar causa raiz"
                 )
                 suggestions.append({
                     "type": "recurring_error",
@@ -303,7 +303,7 @@ class LogAnalyzer:
                 "priority": "low",
                 "description": (
                     f"Tarefa '{spot['title']}' retentada {spot['retry_count']}x. "
-                    f"Último erro: {spot['last_error'][:80]}"
+                    f"?ltimo erro: {spot['last_error'][:80]}"
                 ),
                 "action": "investigate_task",
             })

@@ -67,7 +67,7 @@ class PatchGenerator:
                 self._save_patch(patch)
                 return patch
 
-        logger.warning(f"[PatchGenerator] Não foi possível gerar patch para: {proposal['title']}")
+        logger.warning(f"[PatchGenerator] N?o foi poss?vel gerar patch para: {proposal['title']}")
         return None
 
     def _generate_local(self, proposal: dict) -> Optional[dict]:
@@ -143,7 +143,7 @@ class PatchGenerator:
 
         fpath = self.repo_root / target_file
         if not fpath.exists():
-            logger.warning(f"[PatchGenerator] Ficheiro não encontrado: {fpath}")
+            logger.warning(f"[PatchGenerator] Ficheiro n?o encontrado: {fpath}")
             return None
 
         # Ler apenas as primeiras 150 linhas para não gastar tokens
@@ -160,7 +160,7 @@ class PatchGenerator:
                 base_url=Config.DEEPSEEK_BASE_URL,
             )
 
-            prompt = f"""Gera um patch Python mínimo para este ficheiro com base na proposta de melhoria.
+            prompt = f"""Gera um patch Python m?nimo para este ficheiro com base na proposta de melhoria.
 
 FICHEIRO ({target_file}, primeiras 150 linhas):
 ```python

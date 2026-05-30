@@ -40,7 +40,7 @@ class CapabilityRegistry:
             agents = self._data.get("agents", {})
             logger.info(f"[CapabilityRegistry] Carregado: {len(agents)} agentes registados")
         except FileNotFoundError:
-            logger.warning(f"[CapabilityRegistry] {self._path} não encontrado — usando defaults")
+            logger.warning(f"[CapabilityRegistry] {self._path} n?o encontrado ? usando defaults")
             self._data = {"agents": {}}
         except json.JSONDecodeError as e:
             logger.error(f"[CapabilityRegistry] Erro JSON: {e}")
@@ -121,7 +121,7 @@ class CapabilityRegistry:
             scores = {k: v for k, v in scores.items() if k in available_agents}
 
         if not scores:
-            logger.warning(f"[CapabilityRegistry] Nenhum agente disponível — fallback: {fallback}")
+            logger.warning(f"[CapabilityRegistry] Nenhum agente dispon?vel ? fallback: {fallback}")
             return fallback
 
         # Escolher o agente com maior score
@@ -135,7 +135,7 @@ class CapabilityRegistry:
 
         # Se o melhor score for 0 ou negativo, usar fallback
         if best_score <= 0:
-            logger.info(f"[CapabilityRegistry] Score insuficiente ({best_score}) — fallback: {fallback}")
+            logger.info(f"[CapabilityRegistry] Score insuficiente ({best_score}) ? fallback: {fallback}")
             return fallback
 
         return best_agent

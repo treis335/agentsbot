@@ -124,7 +124,7 @@ class ReasoningEngine:
         reasoning_record["steps"].append({
             "step": 3,
             "action": "Gerar e avaliar hipóteses",
-            "detail": f"Melhor hipótese: {evaluated[0]['type']} (score: {evaluated[0]['final_score']})"
+            "detail": f"Melhor hip?tese: {evaluated[0]['type']} (score: {evaluated[0]['final_score']})"
         })
         
         # Passo 3: Raciocínio dedutivo
@@ -159,20 +159,20 @@ class ReasoningEngine:
         best = hypotheses[0]
         
         if best["type"] == "decomposicao":
-            return f"O problema '{problem}' deve ser decomposto em partes menores para facilitar a resolução."
+            return f"O problema '{problem}' deve ser decomposto em partes menores para facilitar a resolu??o."
         elif best["type"] == "direta":
-            return f"Solução direta para '{problem}' é a abordagem mais confiante."
+            return f"Solu??o direta para '{problem}' ? a abordagem mais confiante."
         elif best["type"] == "analogia":
-            return f"Usar conhecimento prévio similar para resolver '{problem}'."
+            return f"Usar conhecimento pr?vio similar para resolver '{problem}'."
         else:
-            return f"Pesquisar soluções existentes para '{problem}'."
+            return f"Pesquisar solu??es existentes para '{problem}'."
     
     def _suggest_action(self, approach, problem):
         """Sugere uma ação com base na abordagem escolhida."""
         suggestions = {
             "decomposicao": f"Dividir '{problem}' em 3-5 subproblemas e resolver cada um",
-            "direta": f"Aplicar solução conhecida para '{problem}'",
-            "analogia": f"Encontrar problemas similares já resolvidos",
+            "direta": f"Aplicar solu??o conhecida para '{problem}'",
+            "analogia": f"Encontrar problemas similares j? resolvidos",
             "pesquisa": f"Pesquisar na base de conhecimento por '{problem}'"
         }
         return suggestions.get(approach, f"Analisar '{problem}' mais profundamente")

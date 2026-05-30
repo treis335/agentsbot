@@ -38,7 +38,7 @@ class SelfVerifier:
     def verify(self, conclusion, context=None):
         """Verifica uma conclusão e devolve validação."""
         self.cycle += 1
-        log.info(f"Ciclo {self.cycle}: Verificando conclusão...")
+        log.info(f"Ciclo {self.cycle}: Verificando conclus?o...")
         
         verification = {
             "conclusion": conclusion,
@@ -101,7 +101,7 @@ class SelfVerifier:
         contradictions = ["mas por outro lado não", "no entanto é falso", "contradiz"]
         for c in contradictions:
             if c in text.lower():
-                return {"result": False, "score": 0.5, "reason": f"Possível contradição: '{c}'"}
+                return {"result": False, "score": 0.5, "reason": f"Poss?vel contradi??o: '{c}'"}
         
         return {"result": True, "score": 1.0, "reason": ""}
     

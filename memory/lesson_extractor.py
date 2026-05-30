@@ -75,7 +75,7 @@ class LessonExtractor:
 
         # Lição genérica se há erro mas sem padrão
         if result and len(result) > 10:
-            return f"[{action}] Falhou com: {result[:80]} — investigar causa"
+            return f"[{action}] Falhou com: {result[:80]} ? investigar causa"
 
         return None
 
@@ -87,7 +87,7 @@ class LessonExtractor:
             Lista de lições estruturadas
         """
         if not self.episodic_dir.exists():
-            logger.warning("[LessonExtractor] Directório episódico não existe")
+            logger.warning("[LessonExtractor] Direct?rio epis?dico n?o existe")
             return []
 
         all_lessons = []
@@ -116,7 +116,7 @@ class LessonExtractor:
                     "source": "episodic_extraction",
                 })
 
-        logger.info(f"[LessonExtractor] Extraídas {len(all_lessons)} lições únicas de {self.episodic_dir}")
+        logger.info(f"[LessonExtractor] Extra?das {len(all_lessons)} li??es ?nicas de {self.episodic_dir}")
         return all_lessons
 
     def save_lessons(self, lessons: list[dict]) -> Path:
@@ -140,7 +140,7 @@ class LessonExtractor:
             json.dumps(combined, indent=2, ensure_ascii=False),
             encoding="utf-8",
         )
-        logger.info(f"[LessonExtractor] {len(new_lessons)} novas lições guardadas ({len(combined)} total)")
+        logger.info(f"[LessonExtractor] {len(new_lessons)} novas li??es guardadas ({len(combined)} total)")
         return self.lessons_file
 
     def get_lessons_for_agent(self, agent_id: str, limit: int = 5) -> list[str]:

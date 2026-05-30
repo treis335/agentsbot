@@ -117,30 +117,30 @@ def run_all_challenges():
     log("=" * 60)
     
     # Desafio 1
-    log("\n[PIN] FASE 1/3: Cérebro Quântico")
+    log("\n[PIN] FASE 1/3: C?rebro Qu?ntico")
     c1 = challenge_1_ml_engine()
-    log(f"{'[OK]' if c1 else '[X]'} Desafio #1 {'concluído' if c1 else 'falhou'}")
+    log(f"{'[OK]' if c1 else '[X]'} Desafio #1 {'conclu?do' if c1 else 'falhou'}")
     
     # Desafio 2
-    log("\n[PIN] FASE 2/3: Evolução Genética")
+    log("\n[PIN] FASE 2/3: Evolu??o Gen?tica")
     c2 = challenge_2_genetic_evolution()
-    log(f"{'[OK]' if c2 else '[X]'} Desafio #2 {'concluído' if c2 else 'falhou'}")
+    log(f"{'[OK]' if c2 else '[X]'} Desafio #2 {'conclu?do' if c2 else 'falhou'}")
     
     # Desafio 3
-    log("\n[PIN] FASE 3/3: Oráculo de Mercado")
+    log("\n[PIN] FASE 3/3: Or?culo de Mercado")
     c3 = challenge_3_market_oracle()
-    log(f"{'[OK]' if c3 else '[X]'} Desafio #3 {'concluído' if c3 else 'falhou'}")
+    log(f"{'[OK]' if c3 else '[X]'} Desafio #3 {'conclu?do' if c3 else 'falhou'}")
     
     # Relatório final
     log("\n" + "=" * 60)
-    log("[DADOS] RELATÓRIO FINAL DOS DESAFIOS")
+    log("[DADOS] RELAT?RIO FINAL DOS DESAFIOS")
     log("=" * 60)
-    log(f"[OK] Desafio #1 - ML Engine: {'CONCLUÍDO' if c1 else 'FALHOU'}")
-    log(f"[OK] Desafio #2 - Evolução Genética: {'CONCLUÍDO' if c2 else 'FALHOU'}")
-    log(f"[OK] Desafio #3 - Oráculo de Mercado: {'CONCLUÍDO' if c3 else 'FALHOU'}")
+    log(f"[OK] Desafio #1 - ML Engine: {'CONCLU?DO' if c1 else 'FALHOU'}")
+    log(f"[OK] Desafio #2 - Evolu??o Gen?tica: {'CONCLU?DO' if c2 else 'FALHOU'}")
+    log(f"[OK] Desafio #3 - Or?culo de Mercado: {'CONCLU?DO' if c3 else 'FALHOU'}")
     
     total = sum([c1, c2, c3])
-    log(f"\n[SOBE] Progresso: {total}/3 desafios concluídos")
+    log(f"\n[SOBE] Progresso: {total}/3 desafios conclu?dos")
     
     return all([c1, c2, c3])
 

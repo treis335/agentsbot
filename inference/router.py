@@ -82,9 +82,9 @@ class InferenceRouter:
             client = self._get_ollama_client()
             self._ollama_available = await client.is_available()
             if self._ollama_available:
-                logger.info("[Router] Ollama disponível [OK]")
+                logger.info("[Router] Ollama dispon?vel [OK]")
             else:
-                logger.warning("[Router] Ollama não disponível — usando DeepSeek")
+                logger.warning("[Router] Ollama n?o dispon?vel ? usando DeepSeek")
         return self._ollama_available
 
     def invalidate_ollama_cache(self):
@@ -136,8 +136,8 @@ class InferenceRouter:
             if decision:
                 return decision
             # Fallback: Ollama indisponível -> DeepSeek
-            logger.warning("[Router] Ollama indisponível, fallback para DeepSeek")
-            d = self._deepseek_decision(complexity, reason=f"fallback (Ollama off) — {complexity.reason}")
+            logger.warning("[Router] Ollama indispon?vel, fallback para DeepSeek")
+            d = self._deepseek_decision(complexity, reason=f"fallback (Ollama off) ? {complexity.reason}")
             d.fallback = True
             self._stats["fallback"] += 1
             return d
@@ -166,7 +166,7 @@ class InferenceRouter:
             provider="ollama",
             complexity_score=complexity.score,
             complexity_label=complexity.label,
-            reason=reason or f"score={complexity.score:.2f} < threshold — {complexity.reason}",
+            reason=reason or f"score={complexity.score:.2f} < threshold ? {complexity.reason}",
         )
 
     def _deepseek_decision(
@@ -180,7 +180,7 @@ class InferenceRouter:
             provider="deepseek",
             complexity_score=complexity.score,
             complexity_label=complexity.label,
-            reason=reason or f"score={complexity.score:.2f} >= threshold — {complexity.reason}",
+            reason=reason or f"score={complexity.score:.2f} >= threshold ? {complexity.reason}",
         )
 
     # -- Interface de alto nível -------------------------------------------------

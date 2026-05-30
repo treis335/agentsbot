@@ -84,7 +84,7 @@ class FailureMemory:
         """Infere causa provável do erro (heurísticas locais)."""
         causes = {
             "permission_error": "Ficheiro ou directório sem permissões de escrita/leitura",
-            "file_not_found": f"Caminho não existe: verificar paths em '{action}'",
+            "file_not_found": f"Caminho n?o existe: verificar paths em '{action}'",
             "syntax_error": "Erro de sintaxe Python no código gerado",
             "import_error": "Módulo não instalado ou caminho errado",
             "timeout": "Operação demorou demasiado — timeout configurado demasiado curto",
@@ -185,7 +185,7 @@ class FailureMemory:
             resolved_marker = "[OK] Resolvido" if f["resolved"] else "[X] Não resolvido"
             lines.append(f"- [{f['error_type']}] em `{f['action']}`: {f['cause']}")
             if f["solution"]:
-                lines.append(f"  Solução: {f['solution']}")
+                lines.append(f"  Solu??o: {f['solution']}")
             lines.append(f"  ({resolved_marker}, {f['timestamp'][:10]})")
         return "\n".join(lines)
 

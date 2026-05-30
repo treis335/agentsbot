@@ -193,7 +193,7 @@ async def add_page(site_name: str, page_name: str, content: str = "") -> str:
     site_dir = repo_dir / "sites" / slug
 
     if not site_dir.exists():
-        return f"Site '{site_name}' não encontrado em sites/{slug}/"
+        return f"Site '{site_name}' n?o encontrado em sites/{slug}/"
 
     filename = f"{page_name.lower().replace(' ', '-')}.html"
     html = f"""<!DOCTYPE html>
@@ -212,7 +212,7 @@ async def add_page(site_name: str, page_name: str, content: str = "") -> str:
 </body>
 </html>"""
     (site_dir / filename).write_text(html, encoding="utf-8")
-    return f"[OK] Página `{filename}` adicionada a `sites/{slug}/`"
+    return f"[OK] P?gina `{filename}` adicionada a `sites/{slug}/`"
 
 
 # -- Schemas para o executor ---------------------------------------------------

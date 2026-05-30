@@ -52,7 +52,7 @@ def get_checksum(filepath):
 
 def verificar_integridade():
     """Verifica integridade de todos os ficheiros críticos."""
-    log("[BUSCA] A verificar integridade dos ficheiros críticos...")
+    log("[BUSCA] A verificar integridade dos ficheiros cr?ticos...")
     problemas = []
     
     for rel_path, config in FICHEIROS_CRITICOS.items():
@@ -63,7 +63,7 @@ def verificar_integridade():
         
         content = full_path.read_text(encoding="utf-8")
         if len(content) < config["min_chars"]:
-            problemas.append(f"[!] {rel_path}: TRUNCADO ({len(content)} chars, mínimo {config['min_chars']})")
+            problemas.append(f"[!] {rel_path}: TRUNCADO ({len(content)} chars, m?nimo {config['min_chars']})")
         else:
             log(f"[OK] {rel_path}: OK ({len(content)} chars)")
     
@@ -91,7 +91,7 @@ def auto_repair(problemas):
             
             # Se for o supervisor.md, recriar
             if "supervisor.md" in nome_ficheiro:
-                reparados.append(f"[!] {nome_ficheiro}: Backup não encontrado, precisa de recriação manual")
+                reparados.append(f"[!] {nome_ficheiro}: Backup n?o encontrado, precisa de recria??o manual")
     
     return reparados
 
@@ -120,7 +120,7 @@ def check_current_branch():
 
 def evolve_system():
     """Decide o que evoluir no sistema."""
-    log("[MENTE] A analisar oportunidades de evolução...")
+    log("[MENTE] A analisar oportunidades de evolu??o...")
     
     branch = check_current_branch()
     log(f"[LOC] Branch atual: {branch}")
@@ -147,9 +147,9 @@ def evolve_system():
     if melhorias:
         log("[IDEA] Oportunidades de melhoria encontradas:")
         for m in melhorias:
-            log(f"   • {m}")
+            log(f"   ? {m}")
     else:
-        log("[OK] Sistema parece estável e completo")
+        log("[OK] Sistema parece est?vel e completo")
     
     return melhorias
 
@@ -175,7 +175,7 @@ def main():
     
     # 4. Fazer commit se houver mudanças
     if problemas or melhorias:
-        git_auto_commit(f"auto-update: reparação e evolução - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+        git_auto_commit(f"auto-update: repara??o e evolu??o - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     
     # 5. Guardar checksums
     checksums = {}
@@ -187,7 +187,7 @@ def main():
     with open(INTEGRITY_FILE, "w") as f:
         json.dump(checksums, f, indent=2)
     
-    log("[OK] Auto-update concluído com sucesso!")
+    log("[OK] Auto-update conclu?do com sucesso!")
     return 0
 
 if __name__ == "__main__":

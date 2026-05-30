@@ -50,7 +50,7 @@ def load_state():
             with open(SMART_PACE_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 state.update(data)
-                log(f"Estado carregado: {state['iteration_count']} iterações")
+                log(f"Estado carregado: {state['iteration_count']} itera??es")
     except Exception as e:
         log(f"Erro ao carregar estado: {e}")
 
@@ -73,20 +73,20 @@ def increment_iteration():
         state["slow_mode"] = True
         state["pace_factor"] = 3.0
         state["tasks_per_iteration"] = 5
-        log(f"[!] DEEP WORK MODE ATIVADO! ({count} iterações)")
+        log(f"[!] DEEP WORK MODE ATIVADO! ({count} itera??es)")
         log(f"   -> Pace factor: {state['pace_factor']}x")
-        log(f"   -> Tarefas por iteração: {state['tasks_per_iteration']}")
+        log(f"   -> Tarefas por itera??o: {state['tasks_per_iteration']}")
     elif count >= MAX_ITERATIONS_BEFORE_SLOW:
         state["slow_mode"] = True
         state["pace_factor"] = 2.0
         state["tasks_per_iteration"] = 3
-        log(f"[!] SLOW MODE ATIVADO! ({count} iterações)")
+        log(f"[!] SLOW MODE ATIVADO! ({count} itera??es)")
         log(f"   -> Pace factor: {state['pace_factor']}x")
     
     # Se estiver muito perto do limite, avisa
     if count >= MAX_ITERATIONS_HARD_LIMIT - 5:
         log(f"[ALARME] PERTO DO LIMITE! ({count}/{MAX_ITERATIONS_HARD_LIMIT})")
-        log(f"   -> A preparar reset automático...")
+        log(f"   -> A preparar reset autom?tico...")
     
     save_state()
     return count
@@ -156,12 +156,12 @@ def log_iteration(action, details=""):
         with open(ITERATION_LOG, "w", encoding="utf-8") as f:
             json.dump(logs, f, indent=2, ensure_ascii=False)
     except Exception as e:
-        log(f"Erro ao registar iteração: {e}")
+        log(f"Erro ao registar itera??o: {e}")
 
 # --- Inicialização --------------------------------------------------------
 load_state()
 log(f"Smart Pace System iniciado!")
-log(f"  -> Iterações atuais: {state['iteration_count']}")
+log(f"  -> Itera??es atuais: {state['iteration_count']}")
 log(f"  -> Modo: {'DEEP WORK' if state['deep_work_mode'] else ('SLOW' if state['slow_mode'] else 'NORMAL')}")
 log(f"  -> Pace factor: {state['pace_factor']}x")
 
@@ -169,10 +169,10 @@ if __name__ == "__main__":
     # Teste rápido
     print("\n=== SMART PACE SYSTEM - TEST ===")
     print(json.dumps(get_status(), indent=2, ensure_ascii=False))
-    print("\nA simular iterações...")
+    print("\nA simular itera??es...")
     for i in range(5):
         increment_iteration()
-        print(f"  Iteração {state['iteration_count']}: delay={get_pace_delay():.1f}s, tasks={get_tasks_per_iteration()}")
+        print(f"  Itera??o {state['iteration_count']}: delay={get_pace_delay():.1f}s, tasks={get_tasks_per_iteration()}")
         time.sleep(0.1)
     print("\nStatus final:")
     print(json.dumps(get_status(), indent=2, ensure_ascii=False))

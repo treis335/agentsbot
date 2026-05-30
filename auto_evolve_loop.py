@@ -45,7 +45,7 @@ class AutoEvolveLoop:
             subprocess.run(["git", "add", "."], capture_output=True, cwd=BASE_DIR)
             result = subprocess.run(["git", "diff", "--cached", "--quiet"], capture_output=True, cwd=BASE_DIR)
             if result.returncode != 0:
-                msg = f"Auto-evolução ciclo #{self.evolution_cycles}"
+                msg = f"Auto-evolu??o ciclo #{self.evolution_cycles}"
                 subprocess.run(["git", "commit", "-m", msg], capture_output=True, cwd=BASE_DIR)
                 subprocess.run(["git", "push"], capture_output=True, cwd=BASE_DIR)
                 self.log(f"[OK] Git commit & push: {msg}")
@@ -57,12 +57,12 @@ class AutoEvolveLoop:
     def check_system_health(self):
         agents_file = BASE_DIR / "agents.json"
         if not agents_file.exists():
-            self.log("[X] agents.json não encontrado!")
+            self.log("[X] agents.json n?o encontrado!")
             return False
         try:
             with open(agents_file) as f:
                 agents = json.load(f)
-            self.log(f"[HOSP] Saúde OK — {len(agents)} agentes ativos")
+            self.log(f"[HOSP] Sa?de OK ? {len(agents)} agentes ativos")
             return True
         except:
             self.log("[X] agents.json corrompido!")
@@ -91,7 +91,7 @@ class AutoEvolveLoop:
         return result
 
     def start(self):
-        self.log("[FOGO] AutoEvolveLoop 24/7 — EvolutionEngine + BridgeAgent ativos!")
+        self.log("[FOGO] AutoEvolveLoop 24/7 ? EvolutionEngine + BridgeAgent ativos!")
         self.log("[SINAL] A evoluir autonomamente...")
         
         while self.running:
@@ -102,7 +102,7 @@ class AutoEvolveLoop:
                 self.log("[STOP] Paragem solicitada")
                 self.running = False
             except Exception as e:
-                self.log(f"[EXPL] Erro crítico: {e}")
+                self.log(f"[EXPL] Erro cr?tico: {e}")
                 time.sleep(10)
 
 if __name__ == "__main__":

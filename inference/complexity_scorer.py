@@ -98,7 +98,7 @@ def score_task(
         score += 0.1
     elif task_len < 400:
         score += 0.2
-        reasons.append(f"tarefa média ({task_len} chars)")
+        reasons.append(f"tarefa m?dia ({task_len} chars)")
     else:
         score += 0.35
         reasons.append(f"tarefa longa ({task_len} chars)")

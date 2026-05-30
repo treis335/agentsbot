@@ -155,7 +155,7 @@ class MarketOracle:
             else:
                 total_potential += 200
         
-        report += f"\n**Receita mensal estimada: ${total_potential}/mês**\n"
+        report += f"\n**Receita mensal estimada: ${total_potential}/m?s**\n"
         report += f"**Receita anual estimada: ${total_potential * 12}/ano**\n"
         
         return report

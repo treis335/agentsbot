@@ -79,7 +79,7 @@ def _load_conversation_history(user_id: int) -> list:
         if hist_file.exists():
             return json.loads(hist_file.read_text(encoding="utf-8"))
     except Exception as e:
-        logger.debug(f"[handlers] Erro ao carregar histórico: {e}")
+        logger.debug(f"[handlers] Erro ao carregar hist?rico: {e}")
     return []
 
 
@@ -95,7 +95,7 @@ def _save_conversation_history(user_id: int, history: list) -> None:
             encoding="utf-8",
         )
     except Exception as e:
-        logger.warning(f"[handlers] Erro ao guardar histórico: {e}")
+        logger.warning(f"[handlers] Erro ao guardar hist?rico: {e}")
 
 
 def _register_global_memory(agent: str, msg: str) -> None:
@@ -121,17 +121,17 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ok     = health.get("status") == "ok"
     n      = agents.get("total", "?")
     msg    = (
-        f"{'[OK]' if ok else '[X]'} Correoto v2.0 — a correr localmente\n\n"
+        f"{'[OK]' if ok else '[X]'} Correoto v2.0 ? a correr localmente\n\n"
         f"{n} agentes carregados\n"
-        f"Escreve qualquer coisa — o Supervisor age com ferramentas reais.\n\n"
-        f"/agents — listar agentes\n"
-        f"/run <agente> <tarefa> — executar agente\n"
-        f"/tasks — ver tarefas\n"
-        f"/metrics — métricas\n"
-        f"/memory — ver memória\n"
-        f"/git — estado git\n"
-        f"/clear_memory — limpar conversa\n"
-        f"/help — ajuda"
+        f"Escreve qualquer coisa ? o Supervisor age com ferramentas reais.\n\n"
+        f"/agents ? listar agentes\n"
+        f"/run <agente> <tarefa> ? executar agente\n"
+        f"/tasks ? ver tarefas\n"
+        f"/metrics ? m?tricas\n"
+        f"/memory ? ver mem?ria\n"
+        f"/git ? estado git\n"
+        f"/clear_memory ? limpar conversa\n"
+        f"/help ? ajuda"
     )
     await _send(update, msg)
 
@@ -166,7 +166,7 @@ async def cmd_agents(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lines = [f"Agentes ({len(agents)}):"]
     for a in agents:
         e = emoji.get(a.get("status", ""), "[?]")
-        lines.append(f"{e} {a['name']} — {a.get('role', 'agente')}")
+        lines.append(f"{e} {a['name']} ? {a.get('role', 'agente')}")
     await _send(update, "\n".join(lines))
 
 
@@ -185,7 +185,7 @@ async def cmd_run_agent(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not agent_cfg:
         nomes = ", ".join(a["name"] for a in all_agents[:10])
-        await _send(update, f"Agente '{agent_name}' não encontrado.\nDisponíveis: {nomes}")
+        await _send(update, f"Agente '{agent_name}' n?o encontrado.\nDispon?veis: {nomes}")
         return
 
     await _send(update, f"[RAPIDO] {agent_name} a trabalhar...")
@@ -206,7 +206,7 @@ async def cmd_run_agent(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         output = f"{agent_name}:\n\n{resposta}"
         if tool_msgs:
-            output += f"\n\n— {len(tool_msgs)} operações realizadas —"
+            output += f"\n\n? {len(tool_msgs)} opera??es realizadas ?"
 
         _register_global_memory(agent_name, f"Executou: {task[:80]}")
         await _send(update, output)
@@ -241,7 +241,7 @@ async def cmd_metrics(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tc  = result.get("tool_calls", {})
     tok = result.get("token_usage", {})
     msg = (
-        f"Métricas:\n\n"
+        f"M?tricas:\n\n"
         f"Tool calls: {tc.get('total', 0)}\n"
         f"Tokens usados: {tok.get('total', 0)}\n"
         f"Taxa de sucesso: {result.get('success_rate', 100)}%\n"
@@ -264,11 +264,11 @@ async def cmd_memory(update: Update, context: ContextTypes.DEFAULT_TYPE):
             for d in decisions[-5:]:
                 lines.append(f"  [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:70]}")
         if knowledge:
-            lines.append(f"\nConhecimento acumulado: {len(knowledge)} tópicos")
-        lines.append(f"\nMétricas: {metrics}")
+            lines.append(f"\nConhecimento acumulado: {len(knowledge)} t?picos")
+        lines.append(f"\nM?tricas: {metrics}")
         await _send(update, "\n".join(lines))
     except Exception as e:
-        await _send(update, f"Erro ao ler memória: {e}")
+        await _send(update, f"Erro ao ler mem?ria: {e}")
 
 
 async def cmd_clear_memory(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -315,7 +315,7 @@ async def cmd_del_agent(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not args:
         await _send(update, "Uso: /del_agent <nome>")
         return
-    await _send(update, f"Agente {args[0]} marcado para remoção.")
+    await _send(update, f"Agente {args[0]} marcado para remo??o.")
 
 async def cmd_git_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await cmd_git(update, context)
@@ -434,7 +434,7 @@ async def cmd_auto_backlog(update, context):
         for i, t in enumerate(pending[:10], 1):
             lines.append(f"{i}. [{t['priority']}[ESTRELA]] {t['title']}")
         if done:
-            lines.append(f"\n[OK] Concluídas: {len(done)}")
+            lines.append(f"\n[OK] Conclu?das: {len(done)}")
         msg = "\n".join(lines)
     await _send(update, msg)
 
@@ -450,6 +450,6 @@ async def cmd_auto_task(update, context):
     description = parts[1].strip() if len(parts) > 1 else title
     if _auto_loop:
         task = _auto_loop.add_priority_task(title, description)
-        await _send(update, f"[OK] Tarefa urgente adicionada!\n[PIN] {title}\nSerá executada no próximo ciclo.")
+        await _send(update, f"[OK] Tarefa urgente adicionada!\n[PIN] {title}\nSer? executada no pr?ximo ciclo.")
     else:
         await _send(update, "[!] Loop autónomo não iniciado.")

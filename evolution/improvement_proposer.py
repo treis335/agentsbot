@@ -167,7 +167,7 @@ class ImprovementProposer:
                 "suggestions": [s["description"] for s in complex_suggestions[:3]],
             }
 
-            prompt = f"""Analisa este relatório de performance de um sistema de agentes AI e propõe UMA melhoria concreta de código:
+            prompt = f"""Analisa este relat?rio de performance de um sistema de agentes AI e prop?e UMA melhoria concreta de c?digo:
 
 {json.dumps(report_summary, indent=2, ensure_ascii=False)}
 
@@ -209,7 +209,7 @@ Responde APENAS com JSON válido (sem markdown), exactamente neste formato:
             }
 
         except json.JSONDecodeError as e:
-            logger.warning(f"[ImprovementProposer] LLM retornou JSON inválido: {e}")
+            logger.warning(f"[ImprovementProposer] LLM retornou JSON inv?lido: {e}")
         except Exception as e:
             logger.error(f"[ImprovementProposer] Erro na chamada LLM: {e}")
 

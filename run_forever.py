@@ -68,7 +68,7 @@ def check_restart_flag():
         try:
             content = restart_flag.read_text(encoding="utf-8").strip()
             if content == "restart_requested":
-                log("[LOOP] Pedido de reinício detetado!")
+                log("[LOOP] Pedido de rein?cio detetado!")
                 restart_flag.unlink(missing_ok=True)
                 return True
         except:
@@ -81,7 +81,7 @@ def verify_integrity():
     for ficheiro in FICHEIROS_CRITICOS:
         path = BASE / ficheiro
         if not path.exists():
-            issues.append(f"[X] {ficheiro} - NÃO EXISTE")
+            issues.append(f"[X] {ficheiro} - N?O EXISTE")
         elif path.stat().st_size < 100:
             issues.append(f"[!] {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
     return issues
@@ -96,7 +96,7 @@ def launch_component(component):
     
     while running:
         try:
-            log(f"[START] A lançar {name}...")
+            log(f"[START] A lan?ar {name}...")
             proc = subprocess.Popen(
                 [sys.executable, script],
                 stdout=subprocess.PIPE,
@@ -105,26 +105,26 @@ def launch_component(component):
                 cwd=BASE
             )
             processes[name] = proc
-            log(f"[OK] {name} lançado (PID: {proc.pid})")
+            log(f"[OK] {name} lan?ado (PID: {proc.pid})")
             
             # Aguarda o processo terminar
             stdout, stderr = proc.communicate()
             
             if proc.returncode != 0:
-                log(f"[!] {name} terminou com código {proc.returncode}")
+                log(f"[!] {name} terminou com c?digo {proc.returncode}")
                 if stderr:
                     log(f"   Erro: {stderr[-500:]}")
             
             # Se for crítico, reinicia imediatamente
             if component["critical"]:
-                log(f"[LOOP] A reiniciar {name} (componente crítico)...")
+                log(f"[LOOP] A reiniciar {name} (componente cr?tico)...")
                 time.sleep(1)
             else:
-                log(f"[PAUSE] {name} não é crítico, a aguardar...")
+                log(f"[PAUSE] {name} n?o ? cr?tico, a aguardar...")
                 time.sleep(10)
                 
         except Exception as e:
-            log(f"[X] Erro ao lançar {name}: {e}")
+            log(f"[X] Erro ao lan?ar {name}: {e}")
             time.sleep(5)
 
 def update_heartbeat():
@@ -147,7 +147,7 @@ def auto_evolve_cycle():
     cycles = 0
     while running:
         cycles += 1
-        log(f"[LOOP] Ciclo de auto-evolução #{cycles}")
+        log(f"[LOOP] Ciclo de auto-evolu??o #{cycles}")
         
         # Verificar integridade
         issues = verify_integrity()
@@ -158,7 +158,7 @@ def auto_evolve_cycle():
         
         # Verificar restart flag
         if check_restart_flag():
-            log("[LOOP] A preparar reinício do sistema...")
+            log("[LOOP] A preparar rein?cio do sistema...")
             time.sleep(2)
             # O reinício será tratado pelo supervisor
         
@@ -166,14 +166,14 @@ def auto_evolve_cycle():
         update_heartbeat()
         
         # Aguardar 5 minutos entre ciclos
-        log("[TIME] A aguardar 5 min até próximo ciclo...")
+        log("[TIME] A aguardar 5 min at? pr?ximo ciclo...")
         time.sleep(300)
 
 def main():
     log("=" * 60)
     log("[START] CORREOTO ECOSYSTEM v7.0 - INICIADO")
-    log(f"[PASTA] Diretório: {BASE}")
-    log(f"[ALARM] Início: {datetime.now().isoformat()}")
+    log(f"[PASTA] Diret?rio: {BASE}")
+    log(f"[ALARM] In?cio: {datetime.now().isoformat()}")
     log("=" * 60)
     
     # Verificar integridade inicial
@@ -195,7 +195,7 @@ def main():
         log(f"[LISTA] {component['name']} agendado (delay: {component['delay']}s)")
     
     # Ciclo de auto-evolução
-    log("\n[LOOP] A iniciar ciclo de auto-evolução...")
+    log("\n[LOOP] A iniciar ciclo de auto-evolu??o...")
     auto_evolve_cycle()
 
 if __name__ == "__main__":

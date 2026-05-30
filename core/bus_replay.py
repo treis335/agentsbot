@@ -71,7 +71,7 @@ async def replay_pending_events(
         batch = pending[:remaining]
         logger.info(
             f"[BusReplay] {log_path.name}: {len(pending)} evento(s) pendente(s) "
-            f"— replay de {len(batch)}"
+            f"? replay de {len(batch)}"
         )
 
         for event in batch:
@@ -86,7 +86,7 @@ async def replay_pending_events(
     if total_replayed > 0:
         logger.info(f"[BusReplay] [OK] {total_replayed} evento(s) reenviado(s)")
     else:
-        logger.info("[BusReplay] Sem eventos pendentes — sistema limpo.")
+        logger.info("[BusReplay] Sem eventos pendentes ? sistema limpo.")
 
     return total_replayed
 

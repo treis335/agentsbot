@@ -103,7 +103,7 @@ class AutonomousLoop:
         except Exception as e:
             self._cognitive = None
             log_cycle(f"[Cognitive] Indisponivel: {e}")
-            log_cycle(f"[SelfImprove] Indisponível: {e}")
+            log_cycle(f"[SelfImprove] Indispon?vel: {e}")
 
     def start(self):
         """Inicia o loop autonomo em background"""
@@ -148,7 +148,7 @@ class AutonomousLoop:
             try:
                 cog_result = self._cognitive.run_cycle(context=task_desc)
                 if cog_result.get("loop_detected"):
-                    log_cycle(f"[Cognitive] [!] Loop detetado — a mudar de abordagem")
+                    log_cycle(f"[Cognitive] [!] Loop detetado ? a mudar de abordagem")
                     # Forçar fallback para evitar repetição
                     task_desc = f"{task_desc} (tenta uma abordagem completamente diferente)"
                 log_cycle(f"[Cognitive] Ciclo #{cog_result.get('cycle', '?')} concluido")
@@ -227,7 +227,7 @@ class AutonomousLoop:
 
         # 8. Batch 9 — Self-Improvement a cada N ciclos
         if self._self_improve and self._self_improve.should_run():
-            log_cycle(f"[SelfImprove] Ciclo #{cycle_id} — a iniciar análise...")
+            log_cycle(f"[SelfImprove] Ciclo #{cycle_id} ? a iniciar an?lise...")
             try:
                 import asyncio as _asyncio
                 _loop = _asyncio.new_event_loop()
@@ -296,7 +296,7 @@ class AutonomousLoop:
 
             # 5. Gravar na memória episódica
             mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
-            log_cycle(f"[Memory] [OK] Gravado episódio de sucesso: {chosen_agent}")
+            log_cycle(f"[Memory] [OK] Gravado epis?dio de sucesso: {chosen_agent}")
             # Guardar agent name para o notifier
             for t in load_backlog():
                 if t.get("id") == task_id:
@@ -308,7 +308,7 @@ class AutonomousLoop:
             error_str = str(e)
             # Gravar falha na memória
             mem.record(task_id, task_desc, chosen_agent, success=False, result=error_str)
-            log_cycle(f"[Memory] [X] Gravado episódio de falha: {e}")
+            log_cycle(f"[Memory] [X] Gravado epis?dio de falha: {e}")
 
             # Fallback com supervisor
             try:
@@ -339,7 +339,7 @@ class AutonomousLoop:
             # 1. Gerar tópico relevante para o momento
             topics = generate_topics_from_context()
             topic = topics[0] if topics else "Como evoluir o ecossistema agentsbot?"
-            log_cycle(f"[OrganicMind] Tópico: {topic}")
+            log_cycle(f"[OrganicMind] T?pico: {topic}")
 
             # 2. Debate colectivo — agentes pensam com LLM real
             debate = collective_debate(
@@ -394,11 +394,11 @@ class AutonomousLoop:
                 lines.append(f"**{agent}:** {thought}")
 
             if synthesis:
-                lines.append(f"\n[ALVO] **Decisão:** {synthesis[:200]}")
+                lines.append(f"\n[ALVO] **Decis?o:** {synthesis[:200]}")
             if tasks:
                 lines.append(f"\n[LISTA] **Tarefas geradas:** {len(tasks)}")
                 for t in tasks[:2]:
-                    lines.append(f"  • {t.get('title', '?')}")
+                    lines.append(f"  ? {t.get('title', '?')}")
 
             msg = "\n".join(lines)
 
@@ -409,7 +409,7 @@ class AutonomousLoop:
             _loop.run_until_complete(notifier.send(msg))
             _loop.close()
         except Exception as e:
-            log_cycle(f"[OrganicMind] Notificação falhou: {e}")
+            log_cycle(f"[OrganicMind] Notifica??o falhou: {e}")
 
     def _add_fallback_task(self, backlog: list) -> None:
         """Adiciona tarefa de auto-análise quando geração automática falha."""

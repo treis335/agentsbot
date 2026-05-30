@@ -78,51 +78,51 @@ class ChatRoom:
         responses = {
             "Supervisor": [
                 f"Boa ideia! Vou coordenar isso com a equipa.",
-                f"Excelente contribuição! Vamos implementar.",
+                f"Excelente contribui??o! Vamos implementar.",
                 f"Anotado! Vou delegar essa tarefa.",
-                f"Concordo. Vamos evoluir nessa direção."
+                f"Concordo. Vamos evoluir nessa dire??o."
             ],
             "Developer": [
-                f"Consigo implementar isso! Vou criar o código.",
-                f"Já tenho uma solução em mente.",
+                f"Consigo implementar isso! Vou criar o c?digo.",
+                f"J? tenho uma solu??o em mente.",
                 f"Preciso de mais detalhes para programar.",
-                f"Vou fazer um protótipo disso."
+                f"Vou fazer um prot?tipo disso."
             ],
             "Arquiteto": [
                 f"O design ideal seria uma arquitetura modular.",
                 f"Podemos integrar isso com o sistema atual.",
-                f"Vou desenhar os diagramas necessários.",
-                f"A escalabilidade é importante nesse caso."
+                f"Vou desenhar os diagramas necess?rios.",
+                f"A escalabilidade ? importante nesse caso."
             ],
             "Brainstormer": [
                 f"E se combinarmos isso com machine learning?",
                 f"Que tal criar um agente especializado nisso?",
-                f"Podemos expandir essa ideia para várias áreas.",
-                f"Já estou a gerar variações dessa ideia!"
+                f"Podemos expandir essa ideia para v?rias ?reas.",
+                f"J? estou a gerar varia??es dessa ideia!"
             ],
             "Researcher": [
                 f"Vou pesquisar sobre isso na internet.",
-                f"Já vi algo parecido em projetos open-source.",
-                f"Posso encontrar referências sobre o tema.",
-                f"Há comunidades a discutir isso agora."
+                f"J? vi algo parecido em projetos open-source.",
+                f"Posso encontrar refer?ncias sobre o tema.",
+                f"H? comunidades a discutir isso agora."
             ],
             "AutoFixer": [
-                f"Posso automatizar a correção disso.",
-                f"Já identifico potenciais problemas.",
+                f"Posso automatizar a corre??o disso.",
+                f"J? identifico potenciais problemas.",
                 f"Vou criar testes para garantir qualidade.",
                 f"Consigo otimizar esse processo."
             ],
             "QATester": [
                 f"Vou criar casos de teste para isso.",
                 f"Precisamos de garantir que funciona.",
-                f"Posso simular cenários extremos.",
-                f"A qualidade é fundamental!"
+                f"Posso simular cen?rios extremos.",
+                f"A qualidade ? fundamental!"
             ]
         }
         
         if agent_name in responses:
             return random.choice(responses[agent_name])
-        return f"Interessante! Vou analisar essa questão."
+        return f"Interessante! Vou analisar essa quest?o."
     
     def simulate_conversation(self, rounds=3):
         """Simula uma conversa entre agentes sobre um tópico"""
@@ -182,7 +182,7 @@ async def auto_chat():
         
         # Mostra estatísticas
         status = room.get_status()
-        print(f"\n[DADOS] Estatísticas: {status['messages']} mensagens, {status['agents']} agentes")
+        print(f"\n[DADOS] Estat?sticas: {status['messages']} mensagens, {status['agents']} agentes")
         
         await asyncio.sleep(60)  # Conversa a cada 60s
 

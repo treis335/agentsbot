@@ -113,7 +113,7 @@ class ChatCompletions:
                         raise RuntimeError(f"Ollama HTTP {resp.status}: {text[:200]}")
                     data = await resp.json()
         except aiohttp.ClientConnectorError as e:
-            raise RuntimeError(f"Ollama não está acessível em {self.base_url}: {e}")
+            raise RuntimeError(f"Ollama n?o est? acess?vel em {self.base_url}: {e}")
 
         content = data.get("message", {}).get("content", "")
         role = data.get("message", {}).get("role", "assistant")

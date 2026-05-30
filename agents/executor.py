@@ -106,8 +106,8 @@ class AgentExecutor:
                 logger.warning(f"[{self.agent_name}] Erro ao ler agents.json: {e}")
 
         # 3) Fallback
-        logger.warning(f"[{self.agent_name}] Soul não encontrado, usando fallback")
-        return f"És um agente chamado {self.agent_name}. Ages de forma autónoma e eficiente."
+        logger.warning(f"[{self.agent_name}] Soul n?o encontrado, usando fallback")
+        return f"?s um agente chamado {self.agent_name}. Ages de forma aut?noma e eficiente."
 
     def _build_memory_context(self) -> str:
         """Constrói o contexto de memória para injetar no system prompt."""
@@ -142,7 +142,7 @@ class AgentExecutor:
             if decisions:
                 lines.append("\n### Decisões da Equipa (memória global)")
                 for d in decisions:
-                    lines.append(f"• [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
+                    lines.append(f"? [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
 
             knowledge = self.memory.get_knowledge(limit=5)
             if knowledge:
@@ -150,9 +150,9 @@ class AgentExecutor:
                 for k in knowledge:
                     topic = k['data'].get('topic', 'general')
                     content_val = k['data'].get('content', '')[:80]
-                    lines.append(f"• {topic}: {content_val}")
+                    lines.append(f"? {topic}: {content_val}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
+            logger.debug(f"[{self.agent_name}] Mem?ria global indispon?vel: {e}")
 
                 # Lições aprendidas (Batch 4)
         try:
@@ -163,7 +163,7 @@ class AgentExecutor:
                 for lesson in lessons:
                     lines.append(f"[RAPIDO] {lesson}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
+            logger.debug(f"[{self.agent_name}] Li??es indispon?veis: {e}")
 
         return "\n".join(lines)
 
@@ -312,14 +312,14 @@ class AgentExecutor:
                 )
 
             if finish == "stop" or not msg.tool_calls:
-                logger.info(f"[{self.agent_name}] Concluído em {iteration + 1} iteração(ões)")
+                logger.info(f"[{self.agent_name}] Conclu?do em {iteration + 1} itera??o(?es)")
                 # Registar conclusão na memória episódica
                 self.memory.record(
                     action  = "task_complete",
                     args    = {"task": task[:100]},
                     result  = (msg.content or "Concluído")[:200],
                     success = True,
-                    context = f"Iteração {iteration + 1}",
+                    context = f"Itera??o {iteration + 1}",
                 )
                 # Registar na memória global (via MemoryHub)
                 try:
@@ -361,18 +361,18 @@ class AgentExecutor:
 
                     if check["ok"]:
                         verified_ok = True
-                        logger.debug(f"[{self.agent_name}] Verificação OK: {name}")
+                        logger.debug(f"[{self.agent_name}] Verifica??o OK: {name}")
                         break
 
                     # Falhou verificação
                     logger.warning(
-                        f"[{self.agent_name}] Verificação falhou: {name} — {check['reason']}"
+                        f"[{self.agent_name}] Verifica??o falhou: {name} ? {check['reason']}"
                     )
 
                     if not check["recoverable"] or not retry_state.can_retry:
                         logger.warning(
                             f"[{self.agent_name}] Sem retry para {name} "
-                            f"(recuperável={check['recoverable']}, tentativas={retry_state.attempt})"
+                            f"(recuper?vel={check['recoverable']}, tentativas={retry_state.attempt})"
                         )
                         break
 
@@ -411,7 +411,7 @@ class AgentExecutor:
                     args    = args,
                     result  = str(result)[:200],
                     success = success,
-                    context = f"Tarefa: {task[:80]}, Iteração {iteration + 1}",
+                    context = f"Tarefa: {task[:80]}, Itera??o {iteration + 1}",
                     lesson  = lesson,
                 )
 
@@ -424,5 +424,5 @@ class AgentExecutor:
                     "content":     str(result)[:2000],
                 })
 
-        logger.warning(f"[{self.agent_name}] Limite de {max_iterations} iterações atingido")
+        logger.warning(f"[{self.agent_name}] Limite de {max_iterations} itera??es atingido")
         return "Limite de iterações atingido.", messages

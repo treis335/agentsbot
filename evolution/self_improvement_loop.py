@@ -59,8 +59,8 @@ class ImprovementResult:
             return f"[X] Self-improve falhou: {self.error}"
         if self.patches_applied == 0:
             return (
-                f"[BUSCA] Self-improve: {self.patterns_found} padrões encontrados, "
-                f"sem patches aplicáveis neste ciclo."
+                f"[BUSCA] Self-improve: {self.patterns_found} padr?es encontrados, "
+                f"sem patches aplic?veis neste ciclo."
             )
         return (
             f"[DNA] Auto-melhoria: {self.patches_applied} patch(es) aplicado(s) "
@@ -75,9 +75,9 @@ class ImprovementResult:
         lines = [
             "[DNA] *Auto-melhoria aplicada!*",
             "",
-            f"• Padrões detectados: {self.patterns_found}",
-            f"• Propostas geradas: {self.proposals_generated}",
-            f"• Patches aplicados: {self.patches_applied}",
+            f"? Padr?es detectados: {self.patterns_found}",
+            f"? Propostas geradas: {self.proposals_generated}",
+            f"? Patches aplicados: {self.patches_applied}",
             "",
         ]
         for d in self.details[:5]:
@@ -135,7 +135,7 @@ class SelfImprovementLoop:
         Retorna ImprovementResult com o que foi feito.
         """
         result = ImprovementResult()
-        logger.info("[SelfImprove] -- Início do ciclo de auto-melhoria --")
+        logger.info("[SelfImprove] -- In?cio do ciclo de auto-melhoria --")
 
         try:
             # 1. Análise de logs (local, sem API)
@@ -188,10 +188,10 @@ class SelfImprovementLoop:
             report = analyzer.analyze()
             patterns = len(report.get("top_errors", [])) + len(report.get("failing_agents", []))
             result.patterns_found = patterns
-            logger.info(f"[SelfImprove] Análise: {patterns} padrões encontrados")
+            logger.info(f"[SelfImprove] An?lise: {patterns} padr?es encontrados")
             return report
         except Exception as e:
-            logger.warning(f"[SelfImprove] Análise falhou: {e}")
+            logger.warning(f"[SelfImprove] An?lise falhou: {e}")
             # Fallback: relatório mínimo baseado em ficheiros simples
             return self._minimal_report()
 
@@ -240,7 +240,7 @@ class SelfImprovementLoop:
             logger.info(f"[SelfImprove] {len(patches)} patch(es) gerado(s)")
             return patches
         except Exception as e:
-            logger.warning(f"[SelfImprove] Geração de patches falhou: {e}")
+            logger.warning(f"[SelfImprove] Gera??o de patches falhou: {e}")
             return []
 
     async def _validate_patches(self, patches: list[dict], result: ImprovementResult) -> list[dict]:
@@ -253,13 +253,13 @@ class SelfImprovementLoop:
                 ok, reason = validator.validate(patch)
                 if ok:
                     valid.append(patch)
-                    logger.info(f"[SelfImprove] Patch válido: {patch.get('description','?')[:60]}")
+                    logger.info(f"[SelfImprove] Patch v?lido: {patch.get('description','?')[:60]}")
                 else:
                     logger.warning(f"[SelfImprove] Patch rejeitado: {reason}")
             result.patches_validated = len(valid)
             return valid
         except Exception as e:
-            logger.warning(f"[SelfImprove] Validação falhou: {e}")
+            logger.warning(f"[SelfImprove] Valida??o falhou: {e}")
             return []
 
     async def _apply_patches(self, patches: list[dict], result: ImprovementResult) -> int:
@@ -271,7 +271,7 @@ class SelfImprovementLoop:
             try:
                 target = repo_root / patch["target_file"]
                 if not target.exists():
-                    logger.warning(f"[SelfImprove] Ficheiro não encontrado: {patch['target_file']}")
+                    logger.warning(f"[SelfImprove] Ficheiro n?o encontrado: {patch['target_file']}")
                     continue
 
                 content = target.read_text(encoding="utf-8")
@@ -280,7 +280,7 @@ class SelfImprovementLoop:
                 if patch_type == "replace":
                     search = patch.get("search_str", "")
                     if not search or search not in content:
-                        logger.warning(f"[SelfImprove] search_str não encontrado em {patch['target_file']}")
+                        logger.warning(f"[SelfImprove] search_str n?o encontrado em {patch['target_file']}")
                         continue
                     new_content = content.replace(search, patch["replacement"], 1)
                 elif patch_type == "append":
@@ -312,7 +312,7 @@ class SelfImprovementLoop:
             repo = str(Config.REPO_LOCAL_PATH)
 
             msg_lines = [
-                f"self-improve: {result.patches_applied} melhoria(s) automática(s)",
+                f"self-improve: {result.patches_applied} melhoria(s) autom?tica(s)",
                 "",
             ] + [f"- {d}" for d in result.details]
 
@@ -346,7 +346,7 @@ class SelfImprovementLoop:
 
             entry = (
                 f"\n## {result.timestamp[:16].replace('T', ' ')} "
-                f"— {result.patches_applied} patch(es)\n\n"
+                f"? {result.patches_applied} patch(es)\n\n"
             )
             for d in result.details:
                 entry += f"- {d}\n"
@@ -370,4 +370,4 @@ class SelfImprovementLoop:
                 commit=result.commit_hash,
             )
         except Exception as e:
-            logger.warning(f"[SelfImprove] Notificação falhou: {e}")
+            logger.warning(f"[SelfImprove] Notifica??o falhou: {e}")

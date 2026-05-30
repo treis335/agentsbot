@@ -67,9 +67,9 @@ class ChainOfThought:
         strategies = [
             f"1. Analisar requisitos de: {problem}",
             f"2. Identificar componentes de: {problem}",
-            f"3. Definir dependências entre componentes",
+            f"3. Definir depend?ncias entre componentes",
             f"4. Resolver cada componente individualmente",
-            f"5. Integrar soluções parciais"
+            f"5. Integrar solu??es parciais"
         ]
         
         return strategies
@@ -165,23 +165,23 @@ class ChainOfThought:
     def _reason_subproblem(self, subproblem, index):
         """Raciocina sobre um subproblema específico."""
         templates = [
-            f"Para {subproblem.lower()}, a abordagem recomendada é analisar primeiro os requisitos.",
-            f"Solução para {subproblem}: implementar de forma iterativa e testar cada componente.",
-            f"Subproblema {index}: {subproblem} - A melhor prática é começar pelo mais simples.",
-            f"Resolver '{subproblem}' requer atenção aos detalhes e validação contínua."
+            f"Para {subproblem.lower()}, a abordagem recomendada ? analisar primeiro os requisitos.",
+            f"Solu??o para {subproblem}: implementar de forma iterativa e testar cada componente.",
+            f"Subproblema {index}: {subproblem} - A melhor pr?tica ? come?ar pelo mais simples.",
+            f"Resolver '{subproblem}' requer aten??o aos detalhes e valida??o cont?nua."
         ]
         return random.choice(templates)
     
     def _synthesize(self, solutions, problem):
         """Sintetiza soluções parciais numa solução completa."""
         if not solutions:
-            return f"Não foi possível gerar solução para: {problem}"
+            return f"N?o foi poss?vel gerar solu??o para: {problem}"
         
-        synthesis = f"Solução para '{problem}':\n"
+        synthesis = f"Solu??o para '{problem}':\n"
         for i, sol in enumerate(solutions):
             synthesis += f"\n{i+1}. {sol}"
         
-        synthesis += f"\n\nConclusão: A solução integrada resolve {problem} através de {len(solutions)} passos."
+        synthesis += f"\n\nConclus?o: A solu??o integrada resolve {problem} atrav?s de {len(solutions)} passos."
         return synthesis
     
     def get_recent_thoughts(self, n=3):

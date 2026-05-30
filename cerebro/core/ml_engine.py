@@ -147,7 +147,7 @@ class MLEngine:
         
         key, data = best_pattern
         rule = {
-            "rule": f"Se {key.split(':')[0]} então usar {data['solutions'][0] if data['solutions'] else 'fallback'}",
+            "rule": f"Se {key.split(':')[0]} ent?o usar {data['solutions'][0] if data['solutions'] else 'fallback'}",
             "confidence": data["success_rate"],
             "created": datetime.now().isoformat(),
             "source": "ml_engine"

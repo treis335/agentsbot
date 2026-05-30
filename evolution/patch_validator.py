@@ -55,14 +55,14 @@ class PatchValidator:
         # Check 1: ficheiro existe
         fpath = self.repo_root / target
         if not fpath.exists():
-            errors.append(f"Ficheiro não encontrado: {target}")
+            errors.append(f"Ficheiro n?o encontrado: {target}")
             return {"valid": False, "errors": errors, "warnings": warnings}
 
         content = fpath.read_text(encoding="utf-8")
 
         # Check 2: search_str existe no ficheiro
         if search_str and search_str not in content:
-            errors.append(f"search_str não encontrado em {target}: '{search_str[:60]}'")
+            errors.append(f"search_str n?o encontrado em {target}: '{search_str[:60]}'")
             return {"valid": False, "errors": errors, "warnings": warnings}
 
         # Check 3: sintaxe do código resultante
@@ -74,7 +74,7 @@ class PatchValidator:
         if target.endswith(".py"):
             syntax_ok, syntax_err = self._check_syntax(new_content)
             if not syntax_ok:
-                errors.append(f"Sintaxe inválida após patch: {syntax_err}")
+                errors.append(f"Sintaxe inv?lida ap?s patch: {syntax_err}")
                 return {"valid": False, "errors": errors, "warnings": warnings}
 
         # Check 4: o replacement não é vazio quando era suposto ter código
@@ -90,9 +90,9 @@ class PatchValidator:
         ]
         for pattern in critical_patterns:
             if pattern in search_str and pattern not in replacement:
-                warnings.append(f"Patch remove definição crítica: '{pattern}'")
+                warnings.append(f"Patch remove defini??o cr?tica: '{pattern}'")
 
-        logger.info(f"[PatchValidator] Patch para {target}: {'VÁLIDO' if not errors else 'INVÁLIDO'}")
+        logger.info(f"[PatchValidator] Patch para {target}: {'V?LIDO' if not errors else 'INV?LIDO'}")
         return {
             "valid": len(errors) == 0,
             "errors": errors,
@@ -131,7 +131,7 @@ class PatchValidator:
 
         fpath = self.repo_root / target
         if not fpath.exists():
-            return {"success": False, "message": f"Ficheiro não encontrado: {target}", "backup_path": ""}
+            return {"success": False, "message": f"Ficheiro n?o encontrado: {target}", "backup_path": ""}
 
         content = fpath.read_text(encoding="utf-8")
 
@@ -173,7 +173,7 @@ class PatchValidator:
         """Restaura ficheiro a partir do backup."""
         bp = Path(backup_path)
         if not bp.exists():
-            logger.error(f"[PatchValidator] Backup não encontrado: {backup_path}")
+            logger.error(f"[PatchValidator] Backup n?o encontrado: {backup_path}")
             return False
         fpath = self.repo_root / target_file
         fpath.write_text(bp.read_text(encoding="utf-8"), encoding="utf-8")

@@ -115,7 +115,7 @@ class LoopMemory:
         r = result.lower()
         if "modulenotfounderror" in r or "importerror" in r:
             mod = re.search(r"no module named '([^']+)'", r)
-            return f"Módulo não instalado: {mod.group(1) if mod else 'desconhecido'}. Usar pip install primeiro."
+            return f"M?dulo n?o instalado: {mod.group(1) if mod else 'desconhecido'}. Usar pip install primeiro."
         if "filenotfounderror" in r:
             return "Ficheiro não encontrado. Verificar caminho antes de ler."
         if "permissionerror" in r:
@@ -128,7 +128,7 @@ class LoopMemory:
             # Tentar extrair a última linha do traceback
             lines = result.strip().splitlines()
             last = next((l for l in reversed(lines) if l.strip()), "")
-            return f"Excepção: {last[:100]}"
+            return f"Excep??o: {last[:100]}"
         if "returncode: 1" in r or "returncode: 2" in r:
             return "Comando shell falhou. Verificar sintaxe e permissões."
         return "Tarefa falhou. Tentar abordagem diferente."
@@ -156,7 +156,7 @@ class LoopMemory:
                 ts = e["timestamp"][:16].replace("T", " ")
                 lines.append(f"- {icon} [{ts}] agente={e['agent']}: {e['result_summary'][:120]}")
                 if e.get("lesson"):
-                    lines.append(f"  [!] Lição: {e['lesson']}")
+                    lines.append(f"  [!] Li??o: {e['lesson']}")
 
         # 2. Lições de falhas com palavras em comum
         lessons = self._relevant_lessons(task_desc, limit=3)

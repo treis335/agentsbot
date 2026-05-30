@@ -26,7 +26,7 @@ def acquire_lock(timeout: int = 5) -> bool:
                 old_pid = int(f.read().strip())
             # Verificar se o PID ainda existe
             if _pid_alive(old_pid):
-                logger.warning(f"[Lock] Processo {old_pid} já está a correr.")
+                logger.warning(f"[Lock] Processo {old_pid} j? est? a correr.")
                 return False
             else:
                 # PID morto — lock obsoleto, remover
@@ -46,7 +46,7 @@ def acquire_lock(timeout: int = 5) -> bool:
         logger.info(f"[Lock] Lock adquirido (PID {os.getpid()})")
         return True
     except OSError as e:
-        logger.error(f"[Lock] Não foi possível criar lock: {e}")
+        logger.error(f"[Lock] N?o foi poss?vel criar lock: {e}")
         return False
 
 

@@ -265,7 +265,7 @@ def load_history(user_id: int) -> list:
             data = json.loads(path.read_text(encoding="utf-8"))
             return data[-30:]
     except Exception as e:
-        logger.debug(f"[LLMAgent] Erro ao carregar histórico {user_id}: {e}")
+        logger.debug(f"[LLMAgent] Erro ao carregar hist?rico {user_id}: {e}")
     return []
 
 
@@ -279,7 +279,7 @@ def save_history(user_id: int, history: list) -> None:
             encoding="utf-8"
         )
     except Exception as e:
-        logger.warning(f"[LLMAgent] Erro ao guardar histórico {user_id}: {e}")
+        logger.warning(f"[LLMAgent] Erro ao guardar hist?rico {user_id}: {e}")
 
 
 def clear_history(user_id: int) -> None:
@@ -344,13 +344,13 @@ class LLMAgent:
         soul = self._load_soul()
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
         runtime = (
-            f"\n\n## CONTEXTO DE EXECUÇÃO\n"
+            f"\n\n## CONTEXTO DE EXECU??O\n"
             f"- Agente: {self.agent_name}\n"
             f"- Data/hora: {now}\n"
             f"- Sistema: {platform.system()} Linux servidor\n"
             f"- Projecto: {Config.REPO_LOCAL_PATH}\n"
-            f"- Shell: bash (ls, cat, python3, git — nunca CMD Windows)\n"
-            f"- O utilizador está no Windows/PC — TU estás no servidor Linux\n"
+            f"- Shell: bash (ls, cat, python3, git ? nunca CMD Windows)\n"
+            f"- O utilizador est? no Windows/PC ? TU est?s no servidor Linux\n"
         )
         return soul + runtime
 
@@ -433,9 +433,9 @@ class LLMAgent:
                 self._update_history(history, user_message, reply, user_id)
                 return reply
             except Exception as e:
-                logger.error(f"[LLMAgent] Erro API iteração {iteration}: {e}")
+                logger.error(f"[LLMAgent] Erro API itera??o {iteration}: {e}")
                 if iteration == 0:
-                    return f"[X] Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a ligação à internet."
+                    return f"[X] Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a liga??o ? internet."
                 # Se falhou após já ter feito algo, retorna o que temos
                 break
 
@@ -449,7 +449,7 @@ class LLMAgent:
                 
                 # Adicionar resumo das ferramentas usadas
                 if tools_used:
-                    summary = f"\n\n[FIX] *Operações realizadas:* {', '.join(tools_used)}"
+                    summary = f"\n\n[FIX] *Opera??es realizadas:* {', '.join(tools_used)}"
                     reply += summary
 
                 self._update_history(history, user_message, msg.get("content", reply), user_id)
@@ -484,7 +484,7 @@ class LLMAgent:
                 })
 
         # Atingiu o limite de iterações — pedir resumo SEM ferramentas
-        logger.warning(f"[LLMAgent] Limite de iterações atingido para user {user_id}")
+        logger.warning(f"[LLMAgent] Limite de itera??es atingido para user {user_id}")
         messages.append({
             "role": "user",
             "content": (
@@ -499,9 +499,9 @@ class LLMAgent:
             )
             reply = final_resp["choices"][0]["message"].get("content", "")
             if not reply:
-                reply = f"Concluí: {', '.join(set(tools_used))}."
+                reply = f"Conclu?: {', '.join(set(tools_used))}."
         except Exception:
-            reply = f"Operações realizadas: {', '.join(set(tools_used))}."
+            reply = f"Opera??es realizadas: {', '.join(set(tools_used))}."
 
         # Guardar histórico com a resposta final (não o estado incompleto)
         self._update_history(history, user_message, reply, user_id)

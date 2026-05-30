@@ -29,7 +29,7 @@ TOOL_SCHEMA_REMINDER = """
 |------------------|--------------------------------------------------|------------------------------------------------------|
 | write_file       | path (str), content (str)                        | write_file(path="src/main.py", content="print(1)")   |
 | read_file        | path (str)                                       | read_file(path="src/main.py")                        |
-| run_python       | code (str)                                       | run_python(code="print('olá')")                      |
+| run_python       | code (str)                                       | run_python(code="print('ol?')")                      |
 | run_shell        | command (str)                                    | run_shell(command="ls -la")                          |
 | create_agent     | name (str), mission (str)                        | create_agent(name="Tester", mission="Faz testes")    |
 | web_search       | query (str)                                      | web_search(query="python asyncio tutorial")          |
@@ -107,7 +107,7 @@ def _validate_args(tool_name: str, args: dict) -> tuple[bool, str | None]:
         examples = {
             "write_file":      'write_file(path="ficheiro.py", content="# código aqui")',
             "read_file":       'read_file(path="ficheiro.py")',
-            "run_python":      'run_python(code="print(\'olá\')")',
+            "run_python":      'run_python(code="print(\'ol?\')")',
             "run_shell":       'run_shell(command="ls -la")',
             "create_agent":    'create_agent(name="Nome", mission="Missão detalhada")',
             "web_search":      'web_search(query="o que pesquisar")',
@@ -115,7 +115,7 @@ def _validate_args(tool_name: str, args: dict) -> tuple[bool, str | None]:
         }
         ex = examples.get(tool_name, f"{tool_name}({', '.join(f'{f}=...' for f in required)})")
         msg = (
-            f"[X] {tool_name}: campos obrigatórios em falta: {missing}.\n"
+            f"[X] {tool_name}: campos obrigat?rios em falta: {missing}.\n"
             f"   Recebido: {json.dumps(args, ensure_ascii=False)}\n"
             f"   Exemplo correcto: {ex}\n"
             f"   Corrige a chamada e tenta novamente com os argumentos correctos."
@@ -163,7 +163,7 @@ async def run_agent_task(
 
         if finish_reason == "stop" or not msg.tool_calls:
             final_text = msg.content or "[OK] Tarefa concluída."
-            logger.info(f"[Executor] Concluída em {iteration + 1} iteração(ões).")
+            logger.info(f"[Executor] Conclu?da em {iteration + 1} itera??o(?es).")
             return final_text, messages
 
         for tool_call in msg.tool_calls:
@@ -190,7 +190,7 @@ async def run_agent_task(
                     break
 
                 logger.warning(
-                    f"[Executor] Tool inválida '{func_name}' (tentativa {retry+1}): {func_args}"
+                    f"[Executor] Tool inv?lida '{func_name}' (tentativa {retry+1}): {func_args}"
                 )
                 if on_tool_call:
                     await on_tool_call(func_name, func_args, error_msg)
@@ -235,8 +235,8 @@ async def run_agent_task(
 
             if not is_valid:
                 final_error = (
-                    f"[X] '{func_name}' falhou após {MAX_RETRIES_PER_TOOL} tentativas. "
-                    f"Argumentos inválidos: {json.dumps(func_args, ensure_ascii=False)}"
+                    f"[X] '{func_name}' falhou ap?s {MAX_RETRIES_PER_TOOL} tentativas. "
+                    f"Argumentos inv?lidos: {json.dumps(func_args, ensure_ascii=False)}"
                 )
                 logger.error(f"[Executor] {final_error}")
                 if on_tool_call:

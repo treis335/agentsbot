@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 STOPWORDS = {
     "a","o","e","de","do","da","em","um","uma","que","com","por","para",
     "se","não","na","no","as","os","mais","mas","foi","ao","isso","este",
-    "esta","já","como","the","is","in","of","to","and","for","with","that",
+    "esta","j?","como","the","is","in","of","to","and","for","with","that",
     "this","it","was","are","be","has","have","from","or","an","at","by",
     "we","can","will","do","if","on","but","not","as","so","all","been",
     "seu","sua","suas","seus","ele","ela","eles","elas","me","te","nos",
@@ -114,7 +114,7 @@ class SemanticIndex:
         self._compute_idf()
         self._built = True
         self._save_index()
-        logger.info(f"[SemanticIndex] Construído: {len(self._docs)} documentos")
+        logger.info(f"[SemanticIndex] Constru?do: {len(self._docs)} documentos")
         return len(self._docs)
 
     def _collect_episodes(self):
@@ -147,7 +147,7 @@ class SemanticIndex:
                     }
                 })
         except Exception as e:
-            logger.warning(f"[SemanticIndex] Erro episódios: {e}")
+            logger.warning(f"[SemanticIndex] Erro epis?dios: {e}")
 
     def _collect_debates(self):
         """Indexa debates do organic_mind."""
@@ -201,7 +201,7 @@ class SemanticIndex:
                     }
                 })
         except Exception as e:
-            logger.debug(f"[SemanticIndex] Lições: {e}")
+            logger.debug(f"[SemanticIndex] Li??es: {e}")
 
     def _collect_decisions(self):
         """Indexa decisões arquitecturais da memória semântica."""
@@ -223,7 +223,7 @@ class SemanticIndex:
                     }
                 })
         except Exception as e:
-            logger.debug(f"[SemanticIndex] Decisões: {e}")
+            logger.debug(f"[SemanticIndex] Decis?es: {e}")
 
     def _compute_idf(self):
         """Calcula IDF para todos os termos do corpus."""
@@ -249,7 +249,7 @@ class SemanticIndex:
                 encoding="utf-8"
             )
         except Exception as e:
-            logger.warning(f"[SemanticIndex] Erro ao guardar índice: {e}")
+            logger.warning(f"[SemanticIndex] Erro ao guardar ?ndice: {e}")
 
     # -- Search -----------------------------------------------------------------
 
@@ -326,15 +326,15 @@ class SemanticIndex:
                     f"{status} [{m.get('agent','?')}] {m.get('task_desc','')[:100]}"
                 )
                 if m.get("lesson"):
-                    lines.append(f"   -> Lição: {m['lesson']}")
+                    lines.append(f"   -> Li??o: {m['lesson']}")
             elif t == "lesson":
-                lines.append(f"[LIVRO] Lição: {m.get('lesson','')[:120]}")
+                lines.append(f"[LIVRO] Li??o: {m.get('lesson','')[:120]}")
             elif t == "debate":
                 lines.append(
                     f"[CHAT] Debate '{m.get('topic','')[:60]}': {m.get('synthesis','')[:100]}"
                 )
             elif t == "decision":
-                lines.append(f"[OBRA] Decisão: {m.get('decision','')[:120]}")
+                lines.append(f"[OBRA] Decis?o: {m.get('decision','')[:120]}")
 
         return "\n".join(lines) + "\n"
 

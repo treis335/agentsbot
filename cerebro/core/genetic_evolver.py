@@ -161,9 +161,9 @@ class GeneticEvolver:
         if not self.population["agents"]:
             return "Nenhum agente registado para evolução."
         
-        report = f"[DNA] **RELATÓRIO DE EVOLUÇÃO GENÉTICA**\n"
-        report += f"Geração: {self.population['generation']}\n"
-        report += f"População: {len(self.population['agents'])} agentes\n"
+        report = f"[DNA] **RELAT?RIO DE EVOLU??O GEN?TICA**\n"
+        report += f"Gera??o: {self.population['generation']}\n"
+        report += f"Popula??o: {len(self.population['agents'])} agentes\n"
         report += f"Best Fitness: {self.population['best_fitness']:.2f}\n\n"
         
         report += "| Agente | Fitness | Mutações | Geração |\n"

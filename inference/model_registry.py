@@ -121,10 +121,10 @@ class ModelRegistry:
                         any(a.startswith(name.split(":")[0]) for a in available_set)
                     )
 
-            logger.info(f"[ModelRegistry] Ollama: {len(available)} modelo(s) disponível(is)")
+            logger.info(f"[ModelRegistry] Ollama: {len(available)} modelo(s) dispon?vel(is)")
             return available
         except Exception as e:
-            logger.warning(f"[ModelRegistry] Ollama não disponível: {e}")
+            logger.warning(f"[ModelRegistry] Ollama n?o dispon?vel: {e}")
             # Marcar todos os modelos Ollama como indisponíveis
             for info in self._models.values():
                 if info.provider == ModelProvider.OLLAMA:

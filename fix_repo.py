@@ -83,9 +83,9 @@ def fix_shadow_folders(root: Path) -> int:
                     ok(f"Removida pasta-sombra: {shadow_dir.relative_to(root)}/")
                     removed += 1
                 except Exception as e:
-                    err(f"Não foi possível remover {shadow_dir.name}/: {e}")
+                    err(f"N?o foi poss?vel remover {shadow_dir.name}/: {e}")
             else:
-                warn(f"Pasta {shadow_dir.relative_to(root)}/ tem conteúdo — ignorada (verifica manualmente)")
+                warn(f"Pasta {shadow_dir.relative_to(root)}/ tem conte?do ? ignorada (verifica manualmente)")
 
     if removed == 0:
         ok("Nenhuma pasta-sombra encontrada")
@@ -141,7 +141,7 @@ def fix_agents_json(root: Path) -> dict:
         with open(agents_file, "r", encoding="utf-8") as f:
             raw = json.load(f)
     except json.JSONDecodeError as e:
-        err(f"agents.json tem JSON inválido: {e}")
+        err(f"agents.json tem JSON inv?lido: {e}")
         return {"total": 0, "removed": 0, "kept": 0}
 
     # Suporta tanto lista direta como {"agents": [...]}
@@ -161,11 +161,11 @@ def fix_agents_json(root: Path) -> dict:
     for agent in agents:
         name = agent.get("name", "").strip().lower()
         if not name:
-            warn(f"Agente sem nome encontrado — ID: {agent.get('id', 'desconhecido')}")
+            warn(f"Agente sem nome encontrado ? ID: {agent.get('id', 'desconhecido')}")
             continue
         if name in seen:
             duplicates_found.append(name)
-            warn(f"Duplicado: '{agent.get('name')}' — substituído pela versão mais recente")
+            warn(f"Duplicado: '{agent.get('name')}' ? substitu?do pela vers?o mais recente")
         seen[name] = agent
 
     unique_agents = list(seen.values())
@@ -176,7 +176,7 @@ def fix_agents_json(root: Path) -> dict:
     for agent in unique_agents:
         missing = required_fields - set(agent.keys())
         if missing:
-            warn(f"Agente '{agent.get('name', '?')}' sem campos: {missing} — a adicionar defaults")
+            warn(f"Agente '{agent.get('name', '?')}' sem campos: {missing} ? a adicionar defaults")
             if "status" not in agent: agent["status"] = "idle"
             if "model" not in agent:  agent["model"]  = "deepseek-chat"
             if "context" not in agent: agent["context"] = []
@@ -241,15 +241,15 @@ def verify_imports(root: Path):
     for mod in modules_to_test:
         mod_file = root / f"{mod}.py"
         if not mod_file.exists():
-            warn(f"{mod}.py não encontrado — a saltar")
+            warn(f"{mod}.py n?o encontrado ? a saltar")
             continue
         try:
             spec = importlib.util.spec_from_file_location(mod, mod_file)
             m = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(m)
-            ok(f"import {mod} — OK")
+            ok(f"import {mod} ? OK")
         except Exception as e:
-            err(f"import {mod} — FALHOU: {e}")
+            err(f"import {mod} ? FALHOU: {e}")
             all_ok = False
 
     return all_ok
@@ -258,9 +258,9 @@ def verify_imports(root: Path):
 # -- RELATÓRIO FINAL -----------------------------------------------------------
 def print_summary(root, shadows, caches, agents_stats, imports_ok):
     print(f"\n{BOLD}{'=' * 50}{RESET}")
-    print(f"{BOLD}  RELATÓRIO FINAL{RESET}")
+    print(f"{BOLD}  RELAT?RIO FINAL{RESET}")
     print(f"{BOLD}{'=' * 50}{RESET}")
-    print(f"  Repositório  : {root}")
+    print(f"  Reposit?rio  : {root}")
     print(f"  Pastas-sombra: {GREEN}{shadows} removida(s){RESET}")
     print(f"  __pycache__  : {GREEN}{caches} removido(s){RESET}")
     if agents_stats['total'] > 0:
@@ -269,20 +269,20 @@ def print_summary(root, shadows, caches, agents_stats, imports_ok):
     print(f"{BOLD}{'=' * 50}{RESET}")
 
     if shadows > 0 or agents_stats['removed'] > 0:
-        print(f"\n{GREEN}{BOLD}  Correções aplicadas com sucesso!{RESET}")
+        print(f"\n{GREEN}{BOLD}  Corre??es aplicadas com sucesso!{RESET}")
         print(f"  Testa agora com: {BOLD}python nexus.py status{RESET}\n")
     else:
-        print(f"\n{GREEN}  Repositório já estava limpo!{RESET}\n")
+        print(f"\n{GREEN}  Reposit?rio j? estava limpo!{RESET}\n")
 
 
 # -- MAIN ---------------------------------------------------------------------
 def main():
     print(f"\n{BOLD}{'=' * 50}")
-    print("  fix_repo.py — Correção automática agentsbot")
+    print("  fix_repo.py ? Corre??o autom?tica agentsbot")
     print(f"{'=' * 50}{RESET}")
 
     root = find_repo_root()
-    info(f"Repositório detetado em: {root}")
+    info(f"Reposit?rio detetado em: {root}")
 
     if not any((root / f).exists() for f in ["agents.json", "nexus_core.py"]):
         err("Não parece ser o repositório agentsbot. Corre o script dentro da pasta do projeto.")

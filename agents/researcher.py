@@ -48,9 +48,9 @@ class ResearcherAgent:
         """Pesquisa na internet (simulado - usa search_github)"""
         # Simula pesquisa web
         results = [
-            {"source": "github", "content": f"Repositório sobre {query}"},
-            {"source": "docs", "content": f"Documentação sobre {query}"},
-            {"source": "community", "content": f"Discussão sobre {query}"}
+            {"source": "github", "content": f"Reposit?rio sobre {query}"},
+            {"source": "docs", "content": f"Documenta??o sobre {query}"},
+            {"source": "community", "content": f"Discuss?o sobre {query}"}
         ]
         
         knowledge_entry = {
@@ -169,7 +169,7 @@ async def auto_research():
         
         # Sintetiza conhecimento
         synthesis = agent.synthesize_knowledge()
-        print(f"[LIVRO] Síntese: {len(synthesis)} tópicos")
+        print(f"[LIVRO] S?ntese: {len(synthesis)} t?picos")
         
         # Mostra skills
         print(f"[SOBE] Skills: {agent.skills}")
