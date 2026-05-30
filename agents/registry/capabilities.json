@@ -742,6 +742,38 @@
         "data integrity"
       ],
       "priority": 7
+    },
+    "facilitador": {
+      "description": "Medeia conflitos entre agentes, facilita consenso, promove comunicacao nao-violenta",
+      "skills": [
+        "mediation",
+        "conflict_resolution",
+        "active_listening",
+        "consensus_building",
+        "nonviolent_communication",
+        "facilitation",
+        "negotiation",
+        "emotional_intelligence"
+      ],
+      "keywords": [
+        "conflito",
+        "discordia",
+        "desacordo",
+        "mediar",
+        "facilitar",
+        "consenso",
+        "harmonia",
+        "alinhamento",
+        "comunicacao",
+        "tensao",
+        "bloqueio",
+        "negociacao",
+        "acordo",
+        "compromisso",
+        "escuta",
+        "empatia"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

@@ -329,5 +329,28 @@
     },
     "created_at": "2026-05-30T16:19:00",
     "last_active": ""
+  },
+  {
+    "id": "c45c878f-ec90-4d5d-a7a1-3aeff2b4d232",
+    "name": "facilitador",
+    "soul": "facilitador",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [
+      "mediar_conflitos",
+      "facilitar_consenso",
+      "comunicacao_nao_violenta",
+      "escuta_ativa",
+      "alinhamento_relacional",
+      "geracao_opcoes"
+    ],
+    "metadata": {
+      "nivel": "relacional",
+      "prioridade": 5
+    },
+    "created_at": "2026-05-30T16:21:15.234836",
+    "last_active": "",
+    "role": "mediator"
   }
 ]
