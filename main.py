@@ -293,12 +293,13 @@ async def main():
         logger.info("[Main] Sistema activo. Ctrl+C para sair.")
         while True:
             await asyncio.sleep(60)
-    # --- Lock Singleton ------------------------------------------------
+    # (fim da função main)
+# ── Entry point ──────────────────────────────────────────────────────────────
+if __name__ == "__main__":
     from lock_utils import acquire_lock, release_lock
     from telegram_lock import acquire_telegram_lock, release_telegram_lock
     if not acquire_lock():
-        sys.exit("Outra instância já está a correr. A encerrar.")
-    # -------------------------------------------------------------------
+        sys.exit("Outra instancia ja esta a correr. A encerrar.")
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
@@ -306,5 +307,11 @@ async def main():
     except Exception as e:
         logger.error(f"[Main] Erro fatal: {e}", exc_info=True)
     finally:
-        release_telegram_lock()
-        release_lock()
+        try:
+            release_telegram_lock()
+        except Exception:
+            pass
+        try:
+            release_lock()
+        except Exception:
+            pass
