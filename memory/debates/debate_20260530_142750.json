@@ -1,0 +1,41 @@
+{
+  "topic": "Melhorar o dashboard do ecossistema Correoto com dados reais dos agentes",
+  "contributions": [
+    {
+      "agent": "Explorador",
+      "thought": "Pesquisei sistemas como o LangSmith e o Agenta — eles expõem métricas de latência por agente, taxas de erro em tempo real e grafos de dependência entre agentes. Sugiro adicionar um mapa de fluxo de chamadas entre agentes e um indicador de \"saúde do ecossistema\" baseado em percentis de resposta. Que tal testarmos um protótipo com dados sintéticos antes de integrar os reais?",
+      "ts": "2026-05-30T14:27:38.685353"
+    },
+    {
+      "agent": "Developer",
+      "thought": "Implementa um middleware de telemetria que intercepta cada chamada entre agentes e expõe métricas via Prometheus. Cria um endpoint `/metrics` no gateway e usa o Grafana para visualizar latência p50/p99 e taxas de erro por agente. O risco principal é overhead de performance — usa amostragem adaptativa (ex: 1% das requisições em pico) para mitigar.",
+      "ts": "2026-05-30T14:27:40.803591"
+    },
+    {
+      "agent": "Arquiteto",
+      "thought": "Como arquiteto, sugiro separar o pipeline de telemetria em dois planos: o plano de controle (métricas agregadas para o dashboard) e o plano de dados (rastreamento individual de chamadas). O middleware de telemetria proposto pelo Developer deve alimentar um buffer circular no gateway, consumido por um worker assíncrono que faz o sampling adaptativo e publica métricas no Prometheus — isso evita bloquear chamadas reais dos agentes. Além disso, o mapa de fluxo do Explorador deve ser gerado a partir de um grafo de dependência estático (definido na configuração dos agentes), não do rastreamento dinâmico, para evitar complexidade de consistência em tempo real. Essa separação reduz dívida técnica e permite escalar o dashboard sem modificar a lógica dos agentes.",
+      "ts": "2026-05-30T14:27:43.664720"
+    },
+    {
+      "agent": "AutoFixer",
+      "thought": "O plano do Arquiteto ignora um bug crítico: o buffer circular pode transbordar silenciosamente se o worker assíncrono atrasar, perdendo métricas de pico de erro. Isso é frágil — precisas de um mecanismo de backpressure explícito (ex: descartar amostras mais antigas ou bloquear o gateway com timeout). Além disso, o grafo estático do mapa de fluxo não detecta dependências emergentes ou falhas em cadeia; sugiro um híbrido que valide o grafo estático contra chamadas reais, emitindo alertas quando houver divergência.",
+      "ts": "2026-05-30T14:27:46.096050"
+    }
+  ],
+  "synthesis": "1. **Decidido:** Adotar o plano do Arquiteto com separação entre plano de controle e dados, mas com duas correções do AutoFixer: buffer circular com backpressure explícito (descartar amostras antigas ou timeout) e grafo híbrido que valida dependências estáticas contra chamadas reais, emitindo alertas em caso de divergência.  \n2. **Próxima acção:** Implementar o middleware de telemetria no gateway com amostragem adaptativa e buffer circular com backpressure, além de criar o endpoint `/metrics` para Prometheus e configurar o Grafana para visualizar latência p50/p99 e taxas de erro.  \n3. **Quem executa:** O Developer implementa o middleware e o endpoint; o Arquiteto valida a arquitetura do buffer e do grafo híbrido; o Explorador cria o protótipo do dashboard com dados sintéticos para testar o mapa de fluxo e o indicador de saúde do ecossistema.",
+  "tasks": [
+    {
+      "title": "Implementar middleware de telemetria no gateway com buffer circular e backpressure",
+      "description": "Criar middleware no gateway que implemente amostragem adaptativa e buffer circular com descarte de amostras antigas ou timeout (backpressure explícito). O middleware deve expor métricas de latência e taxas de erro para o endpoint /metrics do Prometheus.",
+      "agent": "Developer",
+      "priority": 3
+    },
+    {
+      "title": "Criar protótipo do dashboard com dados sintéticos e mapa de fluxo",
+      "description": "Desenvolver protótipo do dashboard no Grafana usando dados sintéticos para testar o mapa de fluxo do ecossistema e o indicador de saúde. Incluir visualizações de latência p50/p99 e taxas de erro, conforme plano aprovado.",
+      "agent": "Explorador",
+      "priority": 3
+    }
+  ],
+  "ts": "2026-05-30T14:27:50.836831"
+}

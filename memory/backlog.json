@@ -467,10 +467,22 @@
     "id": "auto_903a8146",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T14:23:11.065880",
     "source": "fallback",
-    "started_at": "2026-05-30T14:23:21.071448"
+    "started_at": "2026-05-30T14:23:21.071448",
+    "completed_at": "2026-05-30T14:26:34.655522",
+    "result": "## 📋 Relatório Final\n\n### ✅ O que fiz:\n1. **Diagnostiquei os 3 problemas principais** dos logs: (1) **UnicodeEncodeError** — 55 ficheiros .py com caracteres não-cp1252 a crashar todo o sistema, (2) **Loop infinito de 140+ resets** causado pelo crash em cascata, (3) **9 sistemas de recovery concorrentes** a competir entre si.\n2. **Implementei a correção mais simples e de maior impacto**: removi/substituí **6602 caracteres problemáticos** (→, ⏳, ▶, emojis, variation selectors) em **55 ficheiros .p"
+  },
+  {
+    "id": "auto_95fff54c",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T14:26:49.678360",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:26:59.683715"
   }
 ]

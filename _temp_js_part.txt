@@ -1,0 +1,44 @@
+<script>
+const API = '';  // mesmo host — usa proxy do dashboard
+let currentTab = 'logs';
+let cachedData = {};
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const titles = {logs:'Logs do Sistema', agents:'Agentes Ativos', tasks:'Tarefas'};
+  document.getElementById('tabTitle').textContent = titles[tab];
+  renderTab();
+}
+
+function renderTab() {
+  const el = document.getElementById('mainContent');
+  if (currentTab === 'logs') renderLogs(el);
+  else if (currentTab === 'agents') renderAgents(el);
+  else renderTasks(el);
+}
+
+function renderLogs(el) {
+  const logs = cachedData.logs || [];
+  if (!logs.length) { el.innerHTML = '<div class="empty-state">Sem logs. Inicia o main.py para ver actividade.</div>'; return; }
+  el.innerHTML = [...logs].reverse().map(l => {
+    const cls = l.level === 'error' ? 'log-error' : l.level === 'warning' ? 'log-warning' : l.level === 'success' ? 'log-success' : l.level === 'agent' ? 'log-agent' : 'log-info';
+    return `<div class="log-line ${cls}"><span class="log-time">${(l.time||'').slice(11,19)}</span><span class="log-text">${escHtml(l.message)}</span></div>`;
+  }).join('');
+}
+
+function renderAgents(el) {
+  const agents = cachedData.agent_names || [];
+  if (!agents.length) { el.innerHTML = '<div class="empty-state">Sem agentes carregados.</div>'; return; }
+  const colors = ['#3fb950','#58a6ff','#d29922','#a371f7','#f78166'];
+  el.innerHTML = agents.map((a,i) => {
+    const color = colors[i % colors.length];
+    return `<div class="agent-row"><div class="agent-dot" style="background:${color}"></div><span class="agent-name">${escHtml(String(a.name||a))}</span><span class="agent-role">${escHtml(String(a.role||'agent'))}</span></div>`;
+  }).join('');
+}
+
+function renderTasks(el) {
+  const tasks = cachedData.tasks || [];
+  if (!tasks.length) { el.

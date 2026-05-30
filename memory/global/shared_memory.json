@@ -1739,6 +1739,18 @@
       "decision": "Telegram: tas ai?",
       "context": "Telegram",
       "timestamp": "2026-05-30T13:37:11.280254"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: ?",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:26:36.872511"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: A",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:28:32.738840"
     }
   ],
   "discoveries": [],
