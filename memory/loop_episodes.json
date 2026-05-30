@@ -1402,5 +1402,14 @@
     "success": true,
     "result_summary": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ Checklist de verificação\n\n| # | Requisito | Estado |\n|---|-----------|--------|\n| 1 | `core/memory_hub.py` com MemoryHub (store_chat, store_episode, store_knowledge, get_context) | ✅ Completo (486 linhas, 11 métodos) |\n| 2 | Usa `memory/hub.jsonl` como backend único | ✅ Implementado |\n| 3 | `cor",
     "lesson": ""
+  },
+  {
+    "task_id": "task_unify_memory_systems",
+    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T12:51:02.041320",
+    "success": true,
+    "result_summary": "Os 11 testes passam — o erro no final é apenas o encoding do terminal Windows (cp1252 não suporta ✅), não dos testes.\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que foi feito\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** — `MemoryHub` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` | ✅ Já exist",
+    "lesson": ""
   }
 ]
