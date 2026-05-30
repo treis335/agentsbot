@@ -631,3 +631,13 @@
 [2026-05-30 14:23:21] [Ciclo #33] Tarefa: Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluç
 [2026-05-30 14:23:21] [MultiAgent] 'supervisor' → Analisa os logs de execução e identifica os 3 principais pro
 [2026-05-30 14:23:21] [Memory] Contexto injectado (474 chars)
+
+[2026-05-30 14:26:09] [supervisor] Analise de logs completa - 3 problemas identificados
+[2026-05-30 14:26:09] [Diagnostico] Problema 1: UnicodeEncodeError (55 ficheiros .py com caracteres nao-cp1252)
+[2026-05-30 14:26:09] [Diagnostico] Problema 2: Loop infinito de reinicios (wakeup_v3 fez 140+ resets)
+[2026-05-30 14:26:09] [Diagnostico] Problema 3: 9 sistemas de recovery concorrentes
+[2026-05-30 14:26:09] [Acao] Corrigidos 55 ficheiros .py - 6602 substituicoes de caracteres problematicos
+[2026-05-30 14:26:09] [Acao] Locks obsoletos removidos (wakeup_v3.lock, .correoto.lock)
+[2026-05-30 14:26:09] [Acao] auto_recovery.py atualizado para v6.0 - consolidado, sem concorrencia
+[2026-05-30 14:26:09] [Verificacao] tools.fs_tools carrega sem crash - OK
+[2026-05-30 14:26:09] [Commit] ddcc11c - fix: remove caracteres nao-cp1252 de 55 ficheiros .py

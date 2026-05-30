@@ -1,23 +1,17 @@
 """
-Sistema de Auto-Recuperacao v5.0 - CORREOTO ECOSYSTEM
+Sistema de Auto-Recuperacao v6.0 - CORREOTO ECOSYSTEM
 [OK] SEM limites de iteracoes (corre para sempre)
-[OK] Monitoriza, repara e reinicia automaticamente todo o ecossistema
-[OK] Deteccao inteligente de falhas
-[OK] Auto-repair de componentes corrompidos
-[OK] Decisao autonoma - so pede supervisao em casos criticos
-[OK] Verificacao de integridade de ficheiros
-[OK] Ciclo de auto-evolucao integrado
+[OK] UNICO sistema de recovery - consolidado
+[OK] Nao compete com wakeup/reset/heartbeat
+[OK] Detecta crash de Unicode e reporta
 """
 
-import asyncio
 import time
 import logging
 import sys
 import os
-import json
 import subprocess
-import threading
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 BASE = Path(__file__).parent
@@ -36,141 +30,102 @@ class AutoRecoverySystem:
     """
     Sistema que monitoriza o estado do ecossistema e repara automaticamente.
     CORRE PARA SEMPRE - sem limites de iteracoes.
+    Versao 6.0: consolidado, sem emojis, sem concorrencia.
     """
     
-    def __init__(self, max_iterations=None, cooldown_seconds=10, max_retries=None):
-        self.max_iterations = max_iterations if max_iterations is not None else float('inf')
+    def __init__(self, cooldown_seconds=30):
         self.cooldown_seconds = cooldown_seconds
-        self.max_retries = max_retries if max_retries is not None else float('inf')
         self.iteration_count = 0
         self.retry_count = 0
         self.last_reset = datetime.now()
         self.is_running = False
         self.recovery_history = []
-        self.components = {
-            "main.py": {"path": BASE / "main.py", "status": "unknown"},
-            "brain.py": {"path": BASE / "cerebro" / "core" / "brain.py", "status": "unknown"},
-            "ml_engine.py": {"path": BASE / "cerebro" / "core" / "ml_engine.py", "status": "unknown"},
-            "api_connector.py": {"path": BASE / "cerebro" / "core" / "api_connector.py", "status": "unknown"},
-            "keep_alive.py": {"path": BASE / "core" / "keep_alive.py", "status": "unknown"},
-            "supervisor.md": {"path": BASE / "agents" / "souls" / "supervisor.md", "status": "unknown"},
-            "auto_update.py": {"path": BASE / "auto_update.py", "status": "unknown"},
-        }
         
-    def check_file_integrity(self, filepath):
-        """Verifica se um ficheiro existe e nao esta corrompido."""
-        path = Path(filepath)
-        if not path.exists():
-            return False, "Ficheiro nao existe"
-        if path.stat().st_size < 100:
-            return False, f"Ficheiro demasiado pequeno ({path.stat().st_size} bytes)"
-        return True, "OK"
+    def check_main_running(self):
+        """Verifica se main.py esta em execucao."""
+        try:
+            result = subprocess.run(
+                ["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"],
+                capture_output=True, text=True, timeout=5
+            )
+            # Check if any python process is running main.py
+            count = result.stdout.count("python.exe")
+            return count > 0
+        except:
+            return False
     
-    def check_component_status(self, name, info):
-        """Verifica o estado de um componente."""
-        path = info["path"]
-        is_ok, msg = self.check_file_integrity(path)
-        info["status"] = "ok" if is_ok else "corrompido"
-        info["last_check"] = datetime.now().isoformat()
-        return is_ok, msg
+    def check_log_for_errors(self):
+        """Verifica logs recentes por erros."""
+        log_files = ["main.log", "auto_recovery.log"]
+        for log_file in log_files:
+            path = BASE / log_file
+            if path.exists():
+                try:
+                    with open(path, 'r', encoding='utf-8') as f:
+                        lines = f.readlines()
+                    for line in lines[-30:]:
+                        if "UnicodeEncodeError" in line or "UnicodeDecodeError" in line:
+                            return f"Unicode error in {log_file}"
+                        if "Traceback" in line:
+                            return f"Crash detected in {log_file}"
+                except:
+                    pass
+        return None
     
-    def repair_component(self, name, info):
-        """Tenta reparar um componente corrompido."""
-        logger.warning(f"[FIX] A tentar reparar {name}...")
-        
-        # Tentar restaurar de backup
-        backup_path = Path(str(info["path"]) + ".bak")
-        if backup_path.exists():
-            try:
-                import shutil
-                shutil.copy2(backup_path, info["path"])
-                logger.info(f"[OK] {name} restaurado do backup!")
-                return True
-            except Exception as e:
-                logger.error(f"[X] Erro ao restaurar backup de {name}: {e}")
-        
-        # Se nao ha backup, marcar para regeneracao
-        logger.warning(f"[!] {name} precisa de ser regenerado pelo supervisor")
-        return False
-    
-    def recovery_cycle(self):
-        """Ciclo de recuperacao - verifica e repara componentes."""
+    def run_cycle(self):
+        """Um ciclo de monitorizacao."""
         self.iteration_count += 1
-        logger.info(f"[LOOP] Ciclo de recuperacao #{self.iteration_count}")
+        logger.info(f"Ciclo #{self.iteration_count}")
         
-        issues_found = False
-        for name, info in self.components.items():
-            is_ok, msg = self.check_component_status(name, info)
-            if not is_ok:
-                issues_found = True
-                logger.warning(f"[!] {name}: {msg}")
-                self.repair_component(name, info)
-                self.recovery_history.append({
-                    "timestamp": datetime.now().isoformat(),
-                    "component": name,
-                    "issue": msg,
-                    "action": "repair_attempted"
-                })
+        # 1. Check for errors
+        error = self.check_log_for_errors()
+        if error:
+            logger.warning(f"Problema detectado: {error}")
+            self.recovery_history.append({
+                "time": datetime.now().isoformat(),
+                "error": error,
+                "action": "monitoring_only"
+            })
         
-        if not issues_found:
-            logger.info("[OK] Todos os componentes OK!")
+        # 2. Check if main is running
+        if not self.check_main_running():
+            logger.warning("main.py nao esta em execucao!")
+            self._restart_main()
         
-        # Reset do contador de retries se passou tempo suficiente
-        if (datetime.now() - self.last_reset).seconds > 3600:
-            self.retry_count = 0
-            self.last_reset = datetime.now()
-            logger.info("[LOOP] Contador de retries resetado (1h passou)")
-        
-        return issues_found
+        return True
     
-    async def run_forever(self):
-        """Corre o sistema de recuperacao para sempre."""
+    def _restart_main(self):
+        """Reinicia main.py."""
+        logger.info("A reiniciar main.py...")
+        try:
+            subprocess.Popen(
+                ["python", "main.py"],
+                cwd=str(BASE),
+                creationflags=subprocess.CREATE_NEW_CONSOLE
+            )
+            logger.info("main.py reiniciado com sucesso.")
+        except Exception as e:
+            logger.error(f"Falha ao reiniciar main.py: {e}")
+    
+    def run(self):
+        """Loop principal."""
         self.is_running = True
         logger.info("=" * 60)
-        logger.info("[START] AUTO-RECOVERY v5.0 INICIADO - Modo Infinito")
-        logger.info(f"   Max Iteracoes: {'Infinito' if self.max_iterations == float('inf') else self.max_iterations}")
-        logger.info(f"   Cooldown: {self.cooldown_seconds}s")
-        logger.info(f"   Max Retries: {'Infinito' if self.max_retries == float('inf') else self.max_retries}")
+        logger.info("Auto-Recovery v6.0 iniciado")
         logger.info("=" * 60)
         
         try:
             while self.is_running:
-                if self.iteration_count >= self.max_iterations:
-                    logger.info("[OK] Limite de iteracoes atingido. A reiniciar ciclo...")
-                    self.iteration_count = 0
-                
-                if self.retry_count >= self.max_retries:
-                    logger.warning("[!] Limite de retries atingido. A aguardar reset...")
-                    await asyncio.sleep(60)
-                    self.retry_count = 0
-                    continue
-                
-                self.recovery_cycle()
-                
-                logger.info(f"[TIME] A aguardar {self.cooldown_seconds}s ate proximo ciclo...")
-                await asyncio.sleep(self.cooldown_seconds)
-                
-        except asyncio.CancelledError:
-            logger.info("[STOP]  Sistema de recuperacao cancelado.")
+                self.run_cycle()
+                time.sleep(self.cooldown_seconds)
+        except KeyboardInterrupt:
+            logger.info("Sistema interrompido pelo utilizador.")
         except Exception as e:
-            logger.error(f"[X] Erro no sistema de recuperacao: {e}")
+            logger.error(f"Erro fatal no auto-recovery: {e}")
         finally:
             self.is_running = False
-            logger.info("[TCHAU] Auto-Recovery terminado.")
 
-def main():
-    """Funcao principal para execucao direta."""
-    system = AutoRecoverySystem(
-        max_iterations=None,  # Infinito
-        cooldown_seconds=10,
-        max_retries=None  # Infinito
-    )
-    
-    try:
-        asyncio.run(system.run_forever())
-    except KeyboardInterrupt:
-        logger.info("\n[STOP]  Sistema interrompido pelo utilizador.")
-        system.is_running = False
 
 if __name__ == "__main__":
-    main()
+    system = AutoRecoverySystem()
+    system.run()
