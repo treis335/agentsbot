@@ -3,6 +3,7 @@ autonomous_loop.py
 Motor de autonomia do ecossistema — ciclo autónomo, watchdog, cognição.
 """
 
+import asyncio
 import json
 import os
 import sys
