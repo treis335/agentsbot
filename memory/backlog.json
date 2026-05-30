@@ -1377,10 +1377,58 @@
     "id": "auto_2f65d59a",
     "title": "Revê o código dos agentes e melhora os system prompts para s",
     "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T19:02:39.900129",
     "source": "fallback",
-    "started_at": "2026-05-30T19:02:49.912971"
+    "started_at": "2026-05-30T19:02:49.912971",
+    "completed_at": "2026-05-30T19:08:01.255652",
+    "result": "## Resumo do que fiz\n\n**Revisei e melhorei os system prompts de 5 souls críticos do ecossistema**, completando ficheiros que estavam truncados e normalizando a estrutura.\n\n### O que foi feito:\n\n| Soul | Problema | Correção |\n|---|---|---|\n| **auto_optimizer.md** | Truncado (cortava a meio de \"Pesq...\") | Completei Fluxo (passos 3-5), Armadilhas, Integração, Métricas, MODO AUTÓNOMO |\n| **developer.md** | Truncado (cortava no meio do exemplo) | Completei exemplo, Armadilhas, Integração, Métricas, "
+  },
+  {
+    "id": "auto_6c8d0f09",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:08:11.445022",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:08:21.454826",
+    "completed_at": "2026-05-30T19:12:13.866355",
+    "result": "## ✅ Tarefa Concluída\n\n**O que fiz:** Analisei 15 ficheiros de log (main.log, supervisor_ultra.log, wakeup_v3.log, etc.) e identifiquei os 3 problemas críticos: **1)** UnicodeEncodeError com emojis no Windows CP1252 (3352 stack traces em 8.2MB de log), **2)** Erro de sintaxe no Telegram (f-string mal formatada, referência à linha 460), **3)** Loop infinito de reset (150 ciclos em cadeia: main.py falha → wakeup reinicia → falha de novo). Criei o script `fix_encoding_all.py` com monkey-patch do pr"
+  },
+  {
+    "id": "auto_a9a2d474",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:12:23.884281",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:12:33.894741",
+    "completed_at": "2026-05-30T19:15:47.251329",
+    "result": "## ✅ Relatório Final — Análise de Memória Episódica\n\n**O que fiz:** Analisei exaustivamente **200 episódios** do `loop_episodes.json`, **100 episódios do supervisor**, **2 do gestor_memória**, **56 eventos** de 4 dias, **1 entrada do MemoryHub**, e **2 ficheiros de lições** — descobri que **53% dos episódios (106/200)** são a mesma tarefa repetida (`task_unify_memory_systems` pelo qa_tester), **0% têm lições preenchidas**, o **MemoryHub tem apenas 1 entrada** (deveria ter centenas), e **nenhuma "
+  },
+  {
+    "id": "auto_9e6d7a06",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:15:57.464810",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:16:07.478057",
+    "completed_at": "2026-05-30T19:19:18.480915",
+    "result": "## Resumo\n\n**O que fiz:** Analisei todos os 39 souls do ecossistema, identifiquei que todos já seguem o padrão completo (Identidade, Missão, Contexto, Ferramentas, Regras, Fluxo, Armadilhas, Integração, Métricas, MODO AUTÓNOMO) e melhorei o **supervisor.md** — o soul mais crítico — com MODO AUTÓNOMO mais detalhado e processo obrigatório em 7 passos.\n\n**O que ficou por fazer:** Melhorar os restantes 38 souls com o mesmo padrão refinado (developer, auto_optimizer, auto_fixer, prompt_engineer, code"
+  },
+  {
+    "id": "auto_6479bdca",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T19:19:28.496964",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:19:38.506933"
   }
 ]

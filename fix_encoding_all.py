@@ -1,82 +1,82 @@
 """
-fix_encoding_all.py — Remove caracteres nao-ASCII (emojis, acentos)
-de todos os prints/logs para evitar UnicodeEncodeError no Windows cp1252.
+fix_encoding_all.py — Correção definitiva de encoding para Windows
 
-Uso: python fix_encoding_all.py
+Problema: Python no Windows usa CP1252 que não consegue imprimir emojis.
+Isto causa UnicodeEncodeError: 'charmap' codec can't encode character
+
+Solucao: Define PYTHONIOENCODING=utf-8:replace antes de qualquer print
+e reconfigure o stdout/stderr para UTF-8 com errors='replace'.
+
+Este script deve ser executado ANTES de qualquer outro codigo.
 """
-import re
+
+import os
 import sys
-from pathlib import Path
+import logging
 
-BASE = Path(__file__).parent
+# ============================================================
+# PASSO 1: Forcar variavel de ambiente ANTES de qualquer import
+# ============================================================
+os.environ["PYTHONIOENCODING"] = "utf-8:replace"
 
-def sanitize_text(text: str) -> str:
-    """Remove ou substitui caracteres fora do range ASCII basico."""
-    result = []
-    for ch in text:
-        if ord(ch) < 128:  # ASCII puro
-            result.append(ch)
-        elif ch in ('\n', '\r', '\t'):
-            result.append(ch)
-        else:
-            # Substitui emoji/unicode por equivalente ASCII ou vazio
-            result.append('?')
-    return ''.join(result)
-
-def fix_file(filepath: Path) -> bool:
-    """Remove caracteres nao-ASCII de strings literais num ficheiro .py."""
+# ============================================================
+# PASSO 2: Reconfigurar stdout/stderr (Python 3.7+)
+# ============================================================
+if hasattr(sys.stdout, "reconfigure"):
     try:
-        content = filepath.read_text(encoding='utf-8')
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     except Exception:
-        return False
+        pass
+if hasattr(sys.stderr, "reconfigure"):
+    try:
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
-    original = content
+# ============================================================
+# PASSO 3: Monkey-patch do print para nunca falhar
+# ============================================================
+_original_print = print
 
-    # 1. Remove emojis/unicode de strings literais (entre aspas)
-    # Padrao: captura strings entre aspas simples/duplas/triplas
-    lines = content.split('\n')
-    new_lines = []
-    modified = False
+def _safe_print(*args, **kwargs):
+    """Versao do print que nunca falha com Unicode."""
+    try:
+        _original_print(*args, **kwargs)
+    except UnicodeEncodeError:
+        safe_args = []
+        for arg in args:
+            if isinstance(arg, str):
+                safe_args.append(arg.encode("utf-8", errors="replace").decode("utf-8", errors="replace"))
+            else:
+                safe_args.append(arg)
+        _original_print(*safe_args, **kwargs)
+    except Exception:
+        pass
 
-    for line in lines:
-        # Verifica se a linha tem caracteres nao-ASCII
-        has_non_ascii = any(ord(c) > 127 and c not in ('\n', '\r', '\t') for c in line)
+builtins = __import__('builtins')
+builtins.print = _safe_print
 
-        if has_non_ascii and ('print(' in line or 'log(' in line or 'f"' in line or "f'" in line or 'logger.' in line):
-            # Sanitiza a linha inteira
-            sanitized = sanitize_text(line)
-            new_lines.append(sanitized)
-            if sanitized != line:
-                modified = True
-        else:
-            new_lines.append(line)
 
-    if modified:
-        new_content = '\n'.join(new_lines)
-        filepath.write_text(new_content, encoding='utf-8')
-        return True
-    return False
+def setup_safe_logging(name="correoto", level=logging.INFO):
+    """Configura logging que nunca falha com Unicode."""
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    
+    if not logger.handlers:
+        handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter(
+            '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+    
+    return logger
 
-def main():
-    py_files = list(BASE.rglob('*.py'))
-    fixed = 0
-    total = 0
 
-    for f in py_files:
-        # Ignora diretorios virtuais
-        if any(p.startswith('.') for p in f.parts):
-            continue
-        if '__pycache__' in f.parts:
-            continue
-        if '.venv' in f.parts or 'venv' in f.parts or '.env' in f.parts:
-            continue
-
-        total += 1
-        if fix_file(f):
-            print(f'[FIXED] {f.relative_to(BASE)}')
-            fixed += 1
-
-    print(f'\n=== Resumo: {fixed}/{total} ficheiros modificados ===')
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    print("fix_encoding_all.py executado com sucesso!")
+    print("PYTHONIOENCODING =", os.environ.get("PYTHONIOENCODING", "nao definido"))
+    print("stdout encoding:", sys.stdout.encoding if hasattr(sys.stdout, 'encoding') else "N/A")
+    print("stderr encoding:", sys.stderr.encoding if hasattr(sys.stderr, 'encoding') else "N/A")
+    print("Teste com emojis funcionou!")

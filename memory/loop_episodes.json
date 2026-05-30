@@ -3,42 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:15:04.223398",
-    "success": true,
-    "result_summary": "Verifiquei o estado completo do ecossistema: `core/memory_hub.py` já está implementado com 365 linhas e todos os métodos necessários (store_chat, store_episode, store_knowledge, get_context, e wrappers remember/record/add/get_recent), `core/supervisor.py` e `agents/executor.py` já importam e usam MemoryHub.\n\nFicou por criar o ficheiro `tests/test_memory_hub.py` — as tentativas de usar `write_file`",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:17:33.049616",
-    "success": true,
-    "result_summary": "## Relatório QA — Tarefa: Unificar 3 Sistemas de Memória em MemoryHub\n\n**O que já está feito (verificado):**\n- `core/memory_hub.py` (365 linhas) — classe `MemoryHub` completa com `store_chat()`, `store_episode()`, `store_knowledge()`, `get_context()`, wrappers de compatibilidade para `ConversationMemory` e `EpisodicMemory`, e singleton `get_memory_hub()`\n- `memory/hub.jsonl` — já existe com 10 ent",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:20:31.743354",
-    "success": true,
-    "result_summary": "## Relatório de Progresso\n\n**O que fiz:** Corrigi o `agents/executor.py` — substituí o `_build_memory_context()` que usava formato legado (`ep[\"episode\"]`, `get_recent(5)`, `get_failures(3)`) para usar a API correcta do MemoryHub (`get_episodes(self.agent_id, ...)`, `ep[\"data\"]`, `only_failures=True`).\n\n**O que ficou por fazer:** (1) Criar `tests/test_memory_hub.py` com testes unitários para Memor",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:23:13.469708",
-    "success": true,
-    "result_summary": "## Relatório QA — Tarefa: Unificar 3 Sistemas de Memória em MemoryHub\n\n**O que já está feito (verificado):**\n- ✅ `core/memory_hub.py` implementado com 365 linhas — contém `store_chat`, `store_episode`, `store_knowledge`, `get_context`, wrappers de compatibilidade para `ConversationMemory` e `EpisodicMemory`, e singleton\n- ✅ `core/supervisor.py` já usa `MemoryHub` (importa na linha 12, usa `self.me",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T04:26:18.675143",
     "success": true,
     "result_summary": "## Relatório QA — Tarefa: Unificar 3 Sistemas de Memória em MemoryHub\n\n**O que fiz:** Analisei o estado atual dos 3 ficheiros críticos (`core/memory_hub.py`, `core/supervisor.py`, `agents/executor.py`) e identifiquei que o `memory_hub.py` está incompleto (faltam os métodos `store_chat`, `store_episode`, `store_knowledge`, `get_context` e wrappers de compatibilidade), o `supervisor.py` já importa M",
@@ -1797,6 +1761,42 @@
     "timestamp": "2026-05-30T19:02:29.866615",
     "success": true,
     "result_summary": "**O que fiz:** Analisei exaustivamente 100 episódios do supervisor (96% sucesso), 2 do gestor_memória, 200 loop_episodes (0 lições preenchidas), 12 lições no shared_memory, conversation log e eventos — extraindo 8 lições críticas que documentei num relatório consolidado.\n\n**O que ficou por fazer:** Escrever o ficheiro `memory/licoes_episodicas.md` atualizado com as novas lições (a ferramenta `writ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_2f65d59a",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T19:08:01.239515",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\n**Revisei e melhorei os system prompts de 5 souls críticos do ecossistema**, completando ficheiros que estavam truncados e normalizando a estrutura.\n\n### O que foi feito:\n\n| Soul | Problema | Correção |\n|---|---|---|\n| **auto_optimizer.md** | Truncado (cortava a meio de \"Pesq...\") | Completei Fluxo (passos 3-5), Armadilhas, Integração, Métricas, MODO AUTÓNOMO |\n| **developer.",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_6c8d0f09",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-30T19:12:13.850166",
+    "success": true,
+    "result_summary": "## ✅ Tarefa Concluída\n\n**O que fiz:** Analisei 15 ficheiros de log (main.log, supervisor_ultra.log, wakeup_v3.log, etc.) e identifiquei os 3 problemas críticos: **1)** UnicodeEncodeError com emojis no Windows CP1252 (3352 stack traces em 8.2MB de log), **2)** Erro de sintaxe no Telegram (f-string mal formatada, referência à linha 460), **3)** Loop infinito de reset (150 ciclos em cadeia: main.py f",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_a9a2d474",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T19:15:47.235665",
+    "success": true,
+    "result_summary": "## ✅ Relatório Final — Análise de Memória Episódica\n\n**O que fiz:** Analisei exaustivamente **200 episódios** do `loop_episodes.json`, **100 episódios do supervisor**, **2 do gestor_memória**, **56 eventos** de 4 dias, **1 entrada do MemoryHub**, e **2 ficheiros de lições** — descobri que **53% dos episódios (106/200)** são a mesma tarefa repetida (`task_unify_memory_systems` pelo qa_tester), **0%",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_9e6d7a06",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T19:19:18.464551",
+    "success": true,
+    "result_summary": "## Resumo\n\n**O que fiz:** Analisei todos os 39 souls do ecossistema, identifiquei que todos já seguem o padrão completo (Identidade, Missão, Contexto, Ferramentas, Regras, Fluxo, Armadilhas, Integração, Métricas, MODO AUTÓNOMO) e melhorei o **supervisor.md** — o soul mais crítico — com MODO AUTÓNOMO mais detalhado e processo obrigatório em 7 passos.\n\n**O que ficou por fazer:** Melhorar os restante",
     "lesson": ""
   }
 ]
