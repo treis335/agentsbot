@@ -13,5 +13,6 @@
     "core/auto_reboot.py"
   ],
   "agents_updated": 17,
-  "backlog_tasks": 15
+  "backlog_tasks": 15,
+  "k": "v"
 }

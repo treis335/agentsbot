@@ -136,9 +136,9 @@ class AgentExecutor:
                 result = d.get("result", "")[:60]
                 lines.append(f"[FAIL] {action}({d.get('args', {})}) -> {result}")
 
-        # Memória global partilhada (via MemoryHub)
+        # Memória global partilhada
         try:
-            decisions = self.memory.get_decisions(5)
+                        decisions = self.memory.get_decisions(5)
             if decisions:
                 lines.append("\n### Decisões da Equipa (memória global)")
                 for d in decisions:
@@ -154,15 +154,14 @@ class AgentExecutor:
 
                 # Lições aprendidas (Batch 4)
         try:
-        # Lições aprendidas (via MemoryHub)
-        try:
-            lessons = self.memory.get_lessons(self.agent_id, limit=4)
+                        lessons = self.memory.get_lessons(self.agent_id, limit=4)
             if lessons:
                 lines.append("\n### Lições Aprendidas (evita estes erros)")
                 for lesson in lessons:
                     lines.append(f"  {lesson}")
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
+
         return "\n".join(lines)
 
     def build_system_prompt(self, task: str) -> str:
@@ -189,13 +188,13 @@ class AgentExecutor:
         # Procedimentos HOW-TO relevantes (Batch 4)
         proc_ctx = ""
         try:
-        # Procedimentos HOW-TO relevantes (via MemoryHub)
-        proc_ctx = ""
-        try:
-            relevant_procs = self.memory.get_procedural(task, limit=2)
+                        relevant_procs = self.memory.get_procedural(task, limit=2)
             if relevant_procs:
                 proc_ctx = "\n" + "\n".join(relevant_procs)
         except Exception as e:
+            logger.debug(f"[{self.agent_name}] Procedimentos indisponíveis: {e}")
+
+        # Falhas similares (Batch 4)
         failure_ctx = ""
         try:
             from memory.failure_memory import FailureMemory
@@ -319,15 +318,13 @@ class AgentExecutor:
                 )
                 # Registar na memória global
                 try:
-                # Registar na memória global (via MemoryHub)
-                try:
-                    self.memory.add_decision(
+                                        self.memory.add_decision(
                         agent    = self.agent_name,
                         decision = f"Completou: {task[:80]}",
                         context  = (msg.content or "")[:200],
                     )
                 except Exception:
-                    pass
+
                 return msg.content or "Tarefa concluída.", messages
 
             # Executar tool calls (com verificação e retry automático)

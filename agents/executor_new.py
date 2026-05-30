@@ -136,38 +136,38 @@ class AgentExecutor:
                 result = d.get("result", "")[:60]
                 lines.append(f"[FAIL] {action}({d.get('args', {})}) -> {result}")
 
-                # Memória global partilhada (via MemoryHub)
+        # Memoria partilhada via MemoryHub (unificado)
         try:
-            decisions = self.memory.get_knowledge(topic="decision", limit=5)
+            # Decisoes da equipa
+            decisions = self.memory.get_decisions(limit=5)
             if decisions:
-                lines.append("\n### Decisões da Equipa (memória global)")
+                lines.append("\n### Decisoes da Equipa (memoria global)")
                 for d in decisions:
-                    data = d.get("data", {})
-                    lines.append(f"• {data.get('content', '')[:100]}")
-        except Exception as e:
-            logger.debug(f"[{self.agent_name}] Decisões globais indisponíveis: {e}")
+                    agent = d.get("agent", "desconhecido")
+                    decision = d.get("decision", "")[:80]
+                    ts = d.get("timestamp", "")[:16]
+                    lines.append(f"  [{ts}] {agent}: {decision}")
 
-        # Conhecimento partilhado (via MemoryHub)
-        try:
+            # Conhecimento partilhado
             knowledge = self.memory.get_knowledge(limit=5)
             if knowledge:
                 lines.append("\n### Conhecimento Partilhado")
                 for k in knowledge:
-                    data = k.get("data", {})
-                    if data.get("topic") != "decision" and data.get("topic") != "procedural":
-                        lines.append(f"• {data.get('topic', '?')}: {data.get('content', '')[:80]}")
+                    d = k["data"]
+                    lines.append(f"  {d['topic']}: {d['content'][:80]}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Conhecimento global indisponível: {e}")
+            logger.debug(f"[{self.agent_name}] Memoria partilhada indisponivel: {e}")
 
-        # Lições aprendidas (via MemoryHub)
+        # Licoes aprendidas via MemoryHub
         try:
             lessons = self.memory.get_lessons(self.agent_id, limit=4)
             if lessons:
-                lines.append("\n### Lições Aprendidas (evita estes erros)")
+                lines.append("\n### Licoes Aprendidas (evita estes erros)")
                 for lesson in lessons:
-                    lines.append(f"• {lesson}")
+                    lines.append(f"  {lesson}")
         except Exception as e:
-            logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
+            logger.debug(f"[{self.agent_name}] Licoes indisponiveis: {e}")
+
         return "\n".join(lines)
 
     def build_system_prompt(self, task: str) -> str:
@@ -324,10 +324,9 @@ class AgentExecutor:
                     success = True,
                     context = f"Iteração {iteration + 1}",
                 )
-                # Registar na memória global
+                # Registar na memoria global via MemoryHub
                 try:
-                    from memory.global_memory import GlobalMemory
-                    GlobalMemory().add_decision(
+                    self.memory.add_decision(
                         agent    = self.agent_name,
                         decision = f"Completou: {task[:80]}",
                         context  = (msg.content or "")[:200],
