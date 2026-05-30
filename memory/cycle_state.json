@@ -1,9 +1,9 @@
 {
-  "total_cycles": 20,
+  "total_cycles": 30,
   "current_phase": "pensar",
   "last_action_key": "analyze",
-  "identical_action_count": 1,
-  "last_learn_time": 1780162466.6462665,
+  "identical_action_count": 2,
+  "last_learn_time": 1780163330.9476247,
   "errors": [],
   "insights": [
     {
@@ -50,6 +50,26 @@
       "timestamp": "2026-05-30T18:34:26.646253",
       "observation": "ciclo_20_completo",
       "cycle": 20
+    },
+    {
+      "timestamp": "2026-05-30T18:35:18.307203",
+      "observation": "loop_detetado",
+      "cycle": 22
+    },
+    {
+      "timestamp": "2026-05-30T18:42:54.795231",
+      "observation": "loop_detetado",
+      "cycle": 25
+    },
+    {
+      "timestamp": "2026-05-30T18:45:55.085597",
+      "observation": "loop_detetado",
+      "cycle": 28
+    },
+    {
+      "timestamp": "2026-05-30T18:48:50.947610",
+      "observation": "ciclo_30_completo",
+      "cycle": 30
     }
   ]
 }

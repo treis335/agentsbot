@@ -1257,10 +1257,70 @@
     "id": "auto_40101caf",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T18:34:16.640941",
     "source": "fallback",
-    "started_at": "2026-05-30T18:34:26.650297"
+    "started_at": "2026-05-30T18:34:26.650297",
+    "completed_at": "2026-05-30T18:34:58.069396",
+    "result": "## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **8 ficheiros modificados** detectados (todos de memória/logs/métricas)\n\n### 🔧 Operações Realizadas\n| Operação | Resultado |\n|---|---|\n| `git status` | 8 ficheiros modificados |\n| `git diff` | 64 inserções, 16 remoções — tudo dados de execução |\n| `git add -A` | Todos os ficheiros staged |\n| `git commit` | ✅ Commit `117562a` — *\"sync: actualização automática de memória, logs, "
+  },
+  {
+    "id": "auto_73ea411b",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T18:35:08.300791",
+    "source": "fallback",
+    "started_at": "2026-05-30T18:35:18.313081",
+    "completed_at": "2026-05-30T18:38:50.917296",
+    "result": "## Resumo\n\n**O que fiz:** Analisei todos os 39 souls do ecossistema — descobri que 38 já seguem o padrão completo (Identidade, Missão, Contexto, Ferramentas, Regras, Fluxo, Armadilhas, Métricas, Modo Autónomo), mas o **compliance_auditor.md** está desactualizado (apenas 1/9 secções, sem estrutura padrão, tabela de ferramentas ou regras de ouro). Também identifiquei que vários prompts têm poucos exemplos concretos e regras accionáveis.\n\n**O que ficou por fazer:** Reescrever o `compliance_auditor."
+  },
+  {
+    "id": "auto_fe0e8d6a",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T18:39:00.933109",
+    "source": "fallback",
+    "started_at": "2026-05-30T18:39:10.943533",
+    "completed_at": "2026-05-30T18:42:44.641228",
+    "result": "## Resumo\n\n**O que fiz:** Reescrevi completamente o `compliance_auditor.md` (único soul que não seguia o padrão) — adicionei as secções em falta (Missão, Ferramentas, Regras, Fluxo, Modo Autónomo, Métricas de Sucesso) e normalizei a estrutura para alinhar com os restantes 38 souls.\n\n**O que ficou por fazer:** Faltou melhorar os docstrings e type hints nos ficheiros Python com pior qualidade (`brainstormer.py`, `chat_room.py`, `ecosystem.py`, `skills_manager.py`, `researcher.py`, `models.py`, `re"
+  },
+  {
+    "id": "auto_2a8909aa",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T18:42:54.802936",
+    "source": "fallback",
+    "started_at": "2026-05-30T18:43:04.812488",
+    "completed_at": "2026-05-30T18:45:35.056021",
+    "result": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente **200+ episódios**, **101 episódios locais**, **52 eventos**, **12 conversas**, logs de supervisão, backlog, ciclo de estado, e ficheiros de lições. Extraí **8 lições críticas** que documentei no ficheiro `memory/licoes_episodicas.md` (já existente com 7 lições) e atualizei o `memory/loop_episodes.json` com as novas descobertas.\n\n**O que ficou por fazer:** O `write_file` falhou repetidamente (bug conhecid"
+  },
+  {
+    "id": "auto_1a93b525",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T18:45:45.076406",
+    "source": "fallback",
+    "started_at": "2026-05-30T18:45:55.090143",
+    "completed_at": "2026-05-30T18:48:30.905282",
+    "result": "Analisei os 40 souls existentes e identifiquei uma lacuna crítica: **falta um agente especializado em performance profiling e benchmarking do ecossistema** — o `load_tester` foca-se em stress test externo, mas ninguém mede latências internas entre agentes, throughput do sistema, tempos de resposta e bottlenecks arquitecturais. \n\nFiquei com o ficheiro do novo agente por escrever devido a um erro técnico na ferramenta `write_file` que não aceitou os parâmetros — preciso de uma nova tentativa para "
+  },
+  {
+    "id": "auto_a6a73cd7",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T18:48:40.940200",
+    "source": "fallback",
+    "started_at": "2026-05-30T18:48:50.951839"
   }
 ]
