@@ -157,6 +157,39 @@ TOOLS = [
     {
         "type": "function",
         "function": {
+            "name": "create_website",
+            "description": "Cria um site completo (HTML/CSS/JS) com múltiplas páginas. Usa para criar landing pages, portfolios, sites de produto, blogs.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name":        {"type": "string", "description": "Nome do site"},
+                    "description": {"type": "string", "description": "O que o site faz / propósito"},
+                    "pages":       {"type": "array", "items": {"type": "string"}, "description": "Páginas a criar, ex: ['index', 'sobre', 'contacto']"},
+                    "style":       {"type": "string", "enum": ["modern", "minimal", "dark"], "description": "Estilo visual"},
+                },
+                "required": ["name", "description"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "add_page",
+            "description": "Adiciona uma nova página HTML a um site existente.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "site_name": {"type": "string", "description": "Nome do site"},
+                    "page_name": {"type": "string", "description": "Nome da nova página"},
+                    "content":   {"type": "string", "description": "HTML do conteúdo (opcional)"},
+                },
+                "required": ["site_name", "page_name"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "github_api",
             "description": "Chama a GitHub API directamente. Permite criar repos, activar Pages, criar issues, fazer qualquer operação GitHub. Usa quando precisas de criar repos, configurar settings, etc.",
             "parameters": {
@@ -244,6 +277,23 @@ async def execute_tool(name: str, args: dict) -> str:
                 method=args.get("method", "GET"),
                 endpoint=args.get("endpoint", ""),
                 body=args.get("body"),
+            )
+
+        elif name == "create_website":
+            from tools.web_tools import create_website as _create_website
+            return await _create_website(
+                name=args.get("name", "meu-site"),
+                description=args.get("description", ""),
+                pages=args.get("pages", ["index"]),
+                style=args.get("style", "modern"),
+            )
+
+        elif name == "add_page":
+            from tools.web_tools import add_page as _add_page
+            return await _add_page(
+                site_name=args.get("site_name", ""),
+                page_name=args.get("page_name", ""),
+                content=args.get("content", ""),
             )
 
         else:
@@ -384,6 +434,41 @@ async def _run_shell(command: str, timeout: int = 60) -> str:
 
 async def _git_commit_push(message: str) -> str:
     _ensure_repo()
+
+    # ── Validar sintaxe Python antes de commitar ──────────────────────────
+    import ast as _ast
+    syntax_errors = []
+    try:
+        staged_proc = await asyncio.create_subprocess_exec(
+            "git", "diff", "--cached", "--name-only",
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            cwd=str(REPO_DIR)
+        )
+        staged_out, _ = await asyncio.wait_for(staged_proc.communicate(), timeout=10)
+        staged_files = [f for f in staged_out.decode(errors="replace").strip().split("\n") if f.endswith(".py") and f.strip()]
+
+        for rel_path in staged_files:
+            full = REPO_DIR / rel_path
+            if not full.exists():
+                continue
+            try:
+                _ast.parse(full.read_text(encoding="utf-8", errors="ignore"))
+            except SyntaxError as e:
+                syntax_errors.append(f"{rel_path}: linha {e.lineno} — {e.msg}")
+    except Exception:
+        pass  # falha silenciosa — não bloquear por erro de verificação
+
+    if syntax_errors:
+        # Reverter git add e recusar commit
+        await asyncio.create_subprocess_exec("git", "reset", "HEAD", cwd=str(REPO_DIR),
+                                              stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
+        return (
+            "❌ COMMIT BLOQUEADO — erros de sintaxe Python encontrados:\n" +
+            "\n".join(syntax_errors) +
+            "\n\nCorrige os erros e tenta de novo."
+        )
+    # ─────────────────────────────────────────────────────────────────────
+
     cmds = [
         ["git", "add", "-A"],
         ["git", "commit", "-m", message],

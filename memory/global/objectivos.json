@@ -1,0 +1,33 @@
+{
+  "missao": "Construir negócios reais e autónomos que gerem valor",
+  "objectivos_activos": [
+    {
+      "id": "obj_1",
+      "titulo": "Ecossistema de agentes estável e autónomo",
+      "descricao": "O sistema deve correr sem intervenção humana, corrigir os próprios erros e evoluir continuamente",
+      "progresso": 60,
+      "tarefas_relacionadas": ["sintaxe guard", "retry automático", "auto-reboot"]
+    },
+    {
+      "id": "obj_2",
+      "titulo": "Capacidade de criar sites e produtos web",
+      "descricao": "Agentes devem conseguir criar, publicar e actualizar sites completos autonomamente",
+      "progresso": 20,
+      "tarefas_relacionadas": ["create_website tool", "github pages deploy", "SEO básico"]
+    },
+    {
+      "id": "obj_3",
+      "titulo": "Dashboard funcional com chat integrado",
+      "descricao": "Interface web para monitorizar e comunicar com os agentes sem precisar do Telegram",
+      "progresso": 50,
+      "tarefas_relacionadas": ["live.html", "api/chat endpoint", "dados reais"]
+    }
+  ],
+  "proximos_objectivos": [
+    "Integrar API de pagamentos (Stripe/PayPal) para negócios",
+    "Sistema de publicação automática em redes sociais",
+    "Agente de análise de mercado e oportunidades",
+    "Criação automática de conteúdo (artigos, posts)"
+  ],
+  "ultima_actualizacao": "2026-05-29"
+}
