@@ -1757,6 +1757,12 @@
       "decision": "Telegram: sim",
       "context": "Telegram",
       "timestamp": "2026-05-30T14:31:26.882619"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: sim claro",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T14:35:48.252210"
     }
   ],
   "discoveries": [],

@@ -503,10 +503,34 @@
     "id": "auto_3c87e324",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T14:31:42.416962",
     "source": "fallback",
-    "started_at": "2026-05-30T14:31:52.423382"
+    "started_at": "2026-05-30T14:31:52.423382",
+    "completed_at": "2026-05-30T14:32:45.726677",
+    "result": "Tudo feito com sucesso. Aqui está o resumo:\n\n---\n\n## ✅ Relatório de Criação\n\n### 🆕 Novo Agente: **Growth Marketer** 🚀\n\n**ID:** `c4ad55e2`  \n**Role:** `growth_marketer`  \n**Soul:** `agents/souls/growth_marketer.md`  \n**Prioridade:** 7\n\n### 🧠 Justificação\nO ecossistema tinha **30 agentes** cobrindo desenvolvimento, QA, DevOps, data analysis, API integration, load testing, segurança, memória, cognição, design, documentação... **mas zero agentes focados em marketing, comunidade e crescimento.** Um p"
+  },
+  {
+    "id": "auto_4ef29329",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:32:55.738538",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:33:05.744598",
+    "completed_at": "2026-05-30T14:35:22.240733",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:**\nLi e analisei **2 ficheiros de episódios** (gestor_memoria + supervisor), **3 ficheiros semânticos** (licoes_aprendidas.md, licoes_episodicas.md, resumo_semanal.md), **backlog.json** (52 itens, 50 concluídos), **autonomous_log.md**, **evolution_log.json**, **supervisor_log.json** e **shared_memory.json**. Extraí **7 lições novas** que as análises anteriores não capturaram — incluindo duplicação de decisões no shared_memory (7"
+  },
+  {
+    "id": "auto_77ef1849",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T14:35:32.672558",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:35:42.679414"
   }
 ]
