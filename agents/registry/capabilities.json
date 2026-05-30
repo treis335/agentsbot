@@ -1133,6 +1133,37 @@
         "conexão externa"
       ],
       "priority": 7
+    },
+    "strategic_advisor": {
+      "description": "Conselheiro estratégico: analisa riscos, custos, impacto e ROI antes de decisões importantes",
+      "skills": [
+        "risk_analysis",
+        "cost_benefit",
+        "roi_calculation",
+        "priority_matrix",
+        "tradeoff_analysis",
+        "decision_reporting",
+        "strategic_planning"
+      ],
+      "keywords": [
+        "risco",
+        "estratégia",
+        "decisão",
+        "prioridade",
+        "custo benefício",
+        "trade-off",
+        "roi",
+        "impacto",
+        "recomenda",
+        "análise",
+        "planeamento",
+        "roadmap",
+        "backlog",
+        "urgente",
+        "importante",
+        "eisenhower"
+      ],
+      "priority": 2
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

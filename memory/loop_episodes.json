@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:12:47.567130",
-    "success": true,
-    "result_summary": "O commit já foi feito com sucesso! Tudo está completo:\n\n1. ✅ **`core/memory_hub.py`** (486 linhas) — MemoryHub com `store_chat`, `store_episode`, `store_knowledge`, `get_context`, mais wrappers de compatibilidade (`remember`, `summary`, `last_human_message`, `last_supervisor_message`, `count_human_messages`, `set_agent_id`, `get_episodes`, `record`, `clear`, `stats`)\n2. ✅ **`memory/hub.jsonl`** — ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:13:52.242631",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — Tarefa Completa\n\nA tarefa já estava **completa do commit anterior** (`1071aac feat: unifica 3 sistemas de memoria em MemoryHub`). Confirmei que:\n\n### O que está feito:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** (486 linhas) | ✅ MemoryHub com `store_chat`, `store_episode`, `store_knowledge`, `get_context` |\n| **2. Backend único JSONL** (`memory/hub.jso",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:15:07.460888",
     "success": true,
     "result_summary": "---\n\n## ✅ Relatório Final — Tarefa Completa\n\nA tarefa já estava **completa no commit anterior** (`1071aac feat: unifica 3 sistemas de memoria em MemoryHub`). Fiz apenas uma limpeza de ficheiros temporários.\n\n### O que foi verificado/feito:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** (486 linhas) | ✅ Criado com `MemoryHub` (singleton, JSONL) |\n| **2. `memory/hub.jsonl`** | ✅ ",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-30T23:38:53.932959",
     "success": true,
     "result_summary": "Analisei todos os 46 souls e identifiquei que 36 precisam de secção de Exemplos adicionada, e 1 (`api_tester.md`) está muito incompleto. No entanto, encontrei um bug na ferramenta `write_file` que impede escrever ficheiros com conteúdo longo — recebo erro \"ERRO: A ferramenta 'write_file' foi chamada sem argumentos\" mesmo fornecendo `path` e `content`.\n\nFicou por fazer: aplicar as melhorias reais a",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_6de015b5",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:23:30.910051",
+    "success": true,
+    "result_summary": "## Resumo\n\n**O que fiz:**\nAnalisei todos os 47 souls `agents/souls/*.md`, identifiquei o estado estrutural de cada um (secções presentes/ausentes, qualidade do MODO AUTÓNOMO), e melhorei completamente o `api_tester.md` — adicionei Fluxo de Execução, Armadilhas Comuns, Integração com o Sistema, Métricas de Sucesso e um MODO AUTÓNOMO específico com passos concretos. O `test.md` (1 palavra) é residua",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_b85f809a",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T00:28:22.368513",
+    "success": true,
+    "result_summary": "## Resumo\n\n**O que fiz:**\nAnalisei todos os 47 souls (`agents/souls/*.md`), identifiquei que apenas o `test.md` estava vazio (corrigi-o com um soul completo de 3.8KB), e verifiquei que os restantes 46 já têm todas as secções obrigatórias. Detectei que 27 souls têm o Modo Autónomo genérico (\"Executa a tarefa completamente...\") em vez de instruções específicas para cada agente.\n\n**O que ficou por fa",
     "lesson": ""
   }
 ]
