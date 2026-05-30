@@ -124,5 +124,14 @@
     "success": true,
     "result_summary": "Criei o ficheiro `core/memory_hub.py` com a classe `MemoryHub` que unifica os 3 sistemas de memória (ConversationMemory, Brain, GlobalMemory) num único ponto central, usando `memory/global/` como diretório único. Falta atualizar `core/__init__.py`, `core/supervisor.py` e criar `tests/test_memory_hub.py` — posso continuar agora se quiseres.",
     "lesson": ""
+  },
+  {
+    "task_id": "task_agent_executor_import_fix",
+    "task_desc": "O ficheiro `agents/executor.py` (linhas ~25-30) importa módulos que podem não existir no sistema atual:\n- `from tools import TOOLS, execute_tool` — não existe módulo `tools`\n- `from memory.episodica i",
+    "agent": "qa_tester",
+    "timestamp": "2026-05-30T01:56:27.971314",
+    "success": true,
+    "result_summary": "Push não conseguiu completar (timeout de rede). Mas o commit local foi feito com sucesso. Vou resumir o que foi feito.\n\n---\n\n## ✅ Resumo da Tarefa\n\n### 1. Análise dos imports quebrados\nLi o ficheiro `agents/executor.py` e identifiquei estes imports:\n\n| Import | Módulo | Status |\n|--------|--------|--------|\n| `from tools import TOOLS, execute_tool` | `tools/__init__.py` → `tools/fs_tools.py` | ✅ J",
+    "lesson": ""
   }
 ]

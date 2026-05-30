@@ -240,9 +240,21 @@
     "title": "Corrigir imports quebrados no AgentExecutor e criar testes de integração",
     "desc": "O ficheiro `agents/executor.py` (linhas ~25-30) importa módulos que podem não existir no sistema atual:\n- `from tools import TOOLS, execute_tool` — não existe módulo `tools`\n- `from memory.episodica import EpisodicMemory` — não existe `memory.episodica`\n- `from security.auditor import AuditLogger` — não existe `security/auditor.py`\n- `from monitoring.metrics import MetricsCollector` — não existe `monitoring/metrics.py`\n\nIsto faz com que `from agents.executor import AgentExecutor` lance ImportError.\n\nTarefa:\n1. Ler `agents/executor.py` e identificar TODOS os imports quebrados\n2. Criar stubs funcionais mínimos para cada módulo em falta:\n   - `tools/__init__.py` com TOOLS e execute_tool\n   - `memory/episodica.py` com EpisodicMemory\n   - `security/auditor.py` com AuditLogger\n   - `monitoring/metrics.py` com MetricsCollector\n3. Testar que `from agents.executor import AgentExecutor` funciona\n4. Criar `tests/test_executor_imports.py` que valida todos os imports\n5. Fazer commit: \"fix: corrige imports quebrados no AgentExecutor + stubs\"",
     "priority": 7,
-    "status": "running",
+    "status": "completed",
     "created_at": "2026-05-30T01:46:46.875885",
     "source": "auto_generated",
-    "started_at": "2026-05-30T01:53:04.597678"
+    "started_at": "2026-05-30T01:53:04.597678",
+    "completed_at": "2026-05-30T01:56:27.972662",
+    "result": "Push não conseguiu completar (timeout de rede). Mas o commit local foi feito com sucesso. Vou resumir o que foi feito.\n\n---\n\n## ✅ Resumo da Tarefa\n\n### 1. Análise dos imports quebrados\nLi o ficheiro `agents/executor.py` e identifiquei estes imports:\n\n| Import | Módulo | Status |\n|--------|--------|--------|\n| `from tools import TOOLS, execute_tool` | `tools/__init__.py` → `tools/fs_tools.py` | ✅ Já existia |\n| `from memory.episodica import EpisodicMemory` | `memory/episodica.py` | ✅ Já existia |"
+  },
+  {
+    "id": "auto_0f055de4",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T01:57:21.110046",
+    "source": "fallback",
+    "started_at": "2026-05-30T01:57:31.123456"
   }
 ]
