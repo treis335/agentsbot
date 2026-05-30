@@ -27,7 +27,7 @@ class AutoOrchestrator:
         self.evolution_log = []
         self.cycle_count = 0
         
-        print("🚀 **Orquestrador Automático Iniciado!**")
+        print("[START] **Orquestrador Automático Iniciado!**")
         print("=" * 60)
     
     def register_agent(self, name, agent_type, module_path):
@@ -39,7 +39,7 @@ class AutoOrchestrator:
             "last_active": datetime.now().isoformat(),
             "cycles": 0
         }
-        print(f"✅ Agente registado: {name} ({agent_type})")
+        print(f"[OK] Agente registado: {name} ({agent_type})")
     
     def register_system(self, name, description):
         """Regista um sistema no orquestrador"""
@@ -48,20 +48,20 @@ class AutoOrchestrator:
             "status": "active",
             "created_at": datetime.now().isoformat()
         }
-        print(f"✅ Sistema registado: {name}")
+        print(f"[OK] Sistema registado: {name}")
     
     async def run_cycle(self):
         """Executa um ciclo completo de orquestração"""
         self.cycle_count += 1
-        print(f"\n🔄 **Ciclo #{self.cycle_count}**")
+        print(f"\n[LOOP] **Ciclo #{self.cycle_count}**")
         print("-" * 40)
         
         # 1. Verifica estado dos agentes
-        print("📡 A verificar agentes...")
+        print("[SINAL] A verificar agentes...")
         for name, info in self.agents.items():
             info["cycles"] += 1
             info["last_active"] = datetime.now().isoformat()
-            print(f"   ✅ {name}: ativo ({info['cycles']} ciclos)")
+            print(f"   [OK] {name}: ativo ({info['cycles']} ciclos)")
         
         # 2. Gera relatório de evolução
         evolution_entry = {
@@ -78,11 +78,11 @@ class AutoOrchestrator:
         status = self.get_status()
         self._save_json(self.status_file, status)
         
-        print(f"\n📊 **Status atual:**")
-        print(f"   🤖 Agentes: {status['agents']}")
-        print(f"   ⚙️ Sistemas: {status['systems']}")
-        print(f"   🔄 Ciclos: {status['cycles']}")
-        print(f"   📈 Evolução: {status['evolution_steps']} passos")
+        print(f"\n[DADOS] **Status atual:**")
+        print(f"   [IA] Agentes: {status['agents']}")
+        print(f"   [ENG]️ Sistemas: {status['systems']}")
+        print(f"   [LOOP] Ciclos: {status['cycles']}")
+        print(f"   [SOBE] Evolução: {status['evolution_steps']} passos")
         
         return status
     
@@ -126,7 +126,7 @@ async def main():
     orchestrator.register_agent("QATester", "testador", "agents/souls/qa_tester.md")
     
     print("\n" + "=" * 60)
-    print("🎯 **SISTEMA COMPLETO - A TRABALHAR AUTONOMAMENTE!**")
+    print("[ALVO] **SISTEMA COMPLETO - A TRABALHAR AUTONOMAMENTE!**")
     print("=" * 60)
     
     # Loop principal
@@ -138,10 +138,10 @@ async def main():
         # A cada 5 ciclos, mostra resumo
         if cycle_count % 5 == 0:
             print("\n" + "=" * 60)
-            print(f"📊 **RESUMO APÓS {cycle_count} CICLOS**")
-            print(f"   🤖 Agentes: {len(orchestrator.agents)}")
-            print(f"   ⚙️ Sistemas: {len(orchestrator.systems)}")
-            print(f"   📈 Passos de evolução: {len(orchestrator.evolution_log)}")
+            print(f"[DADOS] **RESUMO APÓS {cycle_count} CICLOS**")
+            print(f"   [IA] Agentes: {len(orchestrator.agents)}")
+            print(f"   [ENG]️ Sistemas: {len(orchestrator.systems)}")
+            print(f"   [SOBE] Passos de evolução: {len(orchestrator.evolution_log)}")
             print("=" * 60)
         
         # Aguarda 30 segundos entre ciclos
@@ -152,10 +152,10 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("\n\n🛑 **Orquestrador parado pelo utilizador**")
+        print("\n\n[PARAR] **Orquestrador parado pelo utilizador**")
     except Exception as e:
-        print(f"\n❌ **Erro:** {e}")
-        print("🔄 A reiniciar em 3 segundos...")
+        print(f"\n[X] **Erro:** {e}")
+        print("[LOOP] A reiniciar em 3 segundos...")
         import time
         time.sleep(3)
         asyncio.run(main())

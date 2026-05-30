@@ -13,7 +13,7 @@ try:
     
     s.send(json.dumps(comando).encode())
     resposta = s.recv(4096).decode()
-    print(f'✅ Resposta: {resposta}')
+    print(f'[OK] Resposta: {resposta}')
     s.close()
 except Exception as e:
-    print(f'❌ Erro: {e}')
+    print(f'[X] Erro: {e}')

@@ -127,7 +127,7 @@ class ChatRoom:
     def simulate_conversation(self, rounds=3):
         """Simula uma conversa entre agentes sobre um tópico"""
         topic = random.choice(self.topics)
-        print(f"\n💬 **Nova conversa sobre: {topic}**")
+        print(f"\n[CHAT] **Nova conversa sobre: {topic}**")
         print("=" * 60)
         
         # Escolhe agentes para participar
@@ -147,7 +147,7 @@ class ChatRoom:
                     else:
                         continue
                 
-                print(f"🤖 **{agent}** ({self.agents[agent]['role']}): {msg['message']}")
+                print(f"[IA] **{agent}** ({self.agents[agent]['role']}): {msg['message']}")
                 print(f"   └─ {msg['timestamp']}")
         
         print("=" * 60)
@@ -173,8 +173,8 @@ async def auto_chat():
     """Loop principal de conversa autónoma"""
     room = ChatRoom()
     
-    print(f"💬 {room.name} iniciada!")
-    print(f"👥 Agentes: {', '.join(room.agents.keys())}")
+    print(f"[CHAT] {room.name} iniciada!")
+    print(f"[GRUPO] Agentes: {', '.join(room.agents.keys())}")
     
     while True:
         # Simula conversa
@@ -182,7 +182,7 @@ async def auto_chat():
         
         # Mostra estatísticas
         status = room.get_status()
-        print(f"\n📊 Estatísticas: {status['messages']} mensagens, {status['agents']} agentes")
+        print(f"\n[DADOS] Estatísticas: {status['messages']} mensagens, {status['agents']} agentes")
         
         await asyncio.sleep(60)  # Conversa a cada 60s
 

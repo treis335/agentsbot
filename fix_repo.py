@@ -22,9 +22,9 @@ BLUE   = "\033[94m"
 BOLD   = "\033[1m"
 RESET  = "\033[0m"
 
-def ok(msg):   print(f"  {GREEN}✓{RESET} {msg}")
-def err(msg):  print(f"  {RED}✗{RESET} {msg}")
-def warn(msg): print(f"  {YELLOW}⚠{RESET} {msg}")
+def ok(msg):   print(f"  {GREEN}[OK]{RESET} {msg}")
+def err(msg):  print(f"  {RED}[ERR]{RESET} {msg}")
+def warn(msg): print(f"  {YELLOW}[!]{RESET} {msg}")
 def info(msg): print(f"  {BLUE}→{RESET} {msg}")
 def header(msg): print(f"\n{BOLD}{msg}{RESET}")
 

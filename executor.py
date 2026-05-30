@@ -115,7 +115,7 @@ def _validate_args(tool_name: str, args: dict) -> tuple[bool, str | None]:
         }
         ex = examples.get(tool_name, f"{tool_name}({', '.join(f'{f}=...' for f in required)})")
         msg = (
-            f"❌ {tool_name}: campos obrigatórios em falta: {missing}.\n"
+            f"[X] {tool_name}: campos obrigatórios em falta: {missing}.\n"
             f"   Recebido: {json.dumps(args, ensure_ascii=False)}\n"
             f"   Exemplo correcto: {ex}\n"
             f"   Corrige a chamada e tenta novamente com os argumentos correctos."
@@ -162,7 +162,7 @@ async def run_agent_task(
         messages.append(msg.model_dump(exclude_none=True))
 
         if finish_reason == "stop" or not msg.tool_calls:
-            final_text = msg.content or "✅ Tarefa concluída."
+            final_text = msg.content or "[OK] Tarefa concluída."
             logger.info(f"[Executor] Concluída em {iteration + 1} iteração(ões).")
             return final_text, messages
 
@@ -235,7 +235,7 @@ async def run_agent_task(
 
             if not is_valid:
                 final_error = (
-                    f"❌ '{func_name}' falhou após {MAX_RETRIES_PER_TOOL} tentativas. "
+                    f"[X] '{func_name}' falhou após {MAX_RETRIES_PER_TOOL} tentativas. "
                     f"Argumentos inválidos: {json.dumps(func_args, ensure_ascii=False)}"
                 )
                 logger.error(f"[Executor] {final_error}")
@@ -261,4 +261,4 @@ async def run_agent_task(
                 "content": str(result),
             })
 
-    return "⚠️ Limite de iterações atingido.", messages
+    return "[!]️ Limite de iterações atingido.", messages

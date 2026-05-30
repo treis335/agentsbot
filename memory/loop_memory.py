@@ -152,11 +152,11 @@ class LoopMemory:
         if same:
             lines.append("## Tentativas anteriores desta tarefa")
             for e in same[-3:]:
-                icon = "✅" if e["success"] else "❌"
+                icon = "[OK]" if e["success"] else "[X]"
                 ts = e["timestamp"][:16].replace("T", " ")
                 lines.append(f"- {icon} [{ts}] agente={e['agent']}: {e['result_summary'][:120]}")
                 if e.get("lesson"):
-                    lines.append(f"  ⚠️ Lição: {e['lesson']}")
+                    lines.append(f"  [!]️ Lição: {e['lesson']}")
 
         # 2. Lições de falhas com palavras em comum
         lessons = self._relevant_lessons(task_desc, limit=3)

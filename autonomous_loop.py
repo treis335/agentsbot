@@ -92,14 +92,14 @@ class AutonomousLoop:
         try:
             from evolution.self_improvement_loop import SelfImprovementLoop
             self._self_improve = SelfImprovementLoop(telegram_bot=telegram_bot)
-            log_cycle("[SelfImprove] Loop de auto-melhoria iniciado ✓")
+            log_cycle("[SelfImprove] Loop de auto-melhoria iniciado [OK]")
         except Exception as e:
             self._self_improve = None
 
         # CognitiveCycle — Pensar -> Agir -> Observar -> Aprender -> Evoluir
         try:
             self._cognitive = CognitiveCycle()
-            log_cycle("[Cognitive] Ciclo cognitivo iniciado ✓")
+            log_cycle("[Cognitive] Ciclo cognitivo iniciado [OK]")
         except Exception as e:
             self._cognitive = None
             log_cycle(f"[Cognitive] Indisponivel: {e}")
@@ -148,7 +148,7 @@ class AutonomousLoop:
             try:
                 cog_result = self._cognitive.run_cycle(context=task_desc)
                 if cog_result.get("loop_detected"):
-                    log_cycle(f"[Cognitive] ⚠️ Loop detetado — a mudar de abordagem")
+                    log_cycle(f"[Cognitive] [!]️ Loop detetado — a mudar de abordagem")
                     # Forçar fallback para evitar repetição
                     task_desc = f"{task_desc} (tenta uma abordagem completamente diferente)"
                 log_cycle(f"[Cognitive] Ciclo #{cog_result.get('cycle', '?')} concluido")
@@ -202,7 +202,7 @@ class AutonomousLoop:
                 t["result"] = str(result_text)[:500]
                 break
         save_backlog(backlog)
-        log_cycle(f"[Ciclo #{cycle_id}] {'✅' if success else '❌'} {task_desc[:60]} → {status}")
+        log_cycle(f"[Ciclo #{cycle_id}] {'[OK]' if success else '[X]'} {task_desc[:60]} → {status}")
 
         # 7b. Notificações proactivas
         try:
@@ -296,7 +296,7 @@ class AutonomousLoop:
 
             # 5. Gravar na memória episódica
             mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
-            log_cycle(f"[Memory] ✅ Gravado episódio de sucesso: {chosen_agent}")
+            log_cycle(f"[Memory] [OK] Gravado episódio de sucesso: {chosen_agent}")
             # Guardar agent name para o notifier
             for t in load_backlog():
                 if t.get("id") == task_id:
@@ -308,7 +308,7 @@ class AutonomousLoop:
             error_str = str(e)
             # Gravar falha na memória
             mem.record(task_id, task_desc, chosen_agent, success=False, result=error_str)
-            log_cycle(f"[Memory] ❌ Gravado episódio de falha: {e}")
+            log_cycle(f"[Memory] [X] Gravado episódio de falha: {e}")
 
             # Fallback com supervisor
             try:
@@ -387,16 +387,16 @@ class AutonomousLoop:
             topic = debate.get("topic", "")
             tasks = debate.get("tasks", [])
 
-            lines = [f"🧠 **Debate colectivo**", f"📌 *{topic}*", ""]
+            lines = [f"[MENTE] **Debate colectivo**", f"[PIN] *{topic}*", ""]
             for c in contributions[:4]:
                 agent = c["agent"]
                 thought = c["thought"][:120]
                 lines.append(f"**{agent}:** {thought}")
 
             if synthesis:
-                lines.append(f"\n🎯 **Decisão:** {synthesis[:200]}")
+                lines.append(f"\n[ALVO] **Decisão:** {synthesis[:200]}")
             if tasks:
-                lines.append(f"\n📋 **Tarefas geradas:** {len(tasks)}")
+                lines.append(f"\n[LISTA] **Tarefas geradas:** {len(tasks)}")
                 for t in tasks[:2]:
                     lines.append(f"  • {t.get('title', '?')}")
 

@@ -304,7 +304,7 @@ class StateMachine:
         if transition == "end" or (transition == "next" and not self._next_step(step_id)):
             run.state = RunState.COMPLETED
             run.current_step_id = ""
-            logger.info(f"[StateMachine] Run {run.run_id} COMPLETADA ✓")
+            logger.info(f"[StateMachine] Run {run.run_id} COMPLETADA [OK]")
         elif transition == "fail":
             run.state = RunState.FAILED
             run.error = f"Passo {step_id} falhou e on_failure=fail"
@@ -385,9 +385,9 @@ class StateMachine:
             step_run = run.steps.get(step_id, StepRun(step_id=step_id))
             icon = {
                 StepState.PENDING: "⏳",
-                StepState.RUNNING: "🔄",
-                StepState.COMPLETED: "✅",
-                StepState.FAILED: "❌",
+                StepState.RUNNING: "[LOOP]",
+                StepState.COMPLETED: "[OK]",
+                StepState.FAILED: "[X]",
                 StepState.SKIPPED: "⏭️",
             }.get(step_run.state, "?")
             lines.append(f"  {icon} {step_def.name} [{step_run.state}]")

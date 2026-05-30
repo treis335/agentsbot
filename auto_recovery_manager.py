@@ -1,10 +1,10 @@
 """
 auto_recovery_manager.py v3.0 - GESTOR DE AUTO-RECUPERACAO
-✅ Corre para sempre - modo infinito
-✅ Monitoriza e repara todos os componentes
-✅ Decisao autonoma
-✅ Verificacao de integridade de ficheiros criticos
-✅ Ciclo de auto-evolucao
+[OK] Corre para sempre - modo infinito
+[OK] Monitoriza e repara todos os componentes
+[OK] Decisao autonoma
+[OK] Verificacao de integridade de ficheiros criticos
+[OK] Ciclo de auto-evolucao
 """
 
 import sys
@@ -53,25 +53,25 @@ def run_auto_recovery():
     """Executa o modulo de auto-recuperacao."""
     try:
         import auto_recovery
-        logger.info("✅ Modulo auto_recovery importado com sucesso")
+        logger.info("[OK] Modulo auto_recovery importado com sucesso")
         return True
     except Exception as e:
-        logger.warning(f"⚠️ Erro ao importar auto_recovery: {e}")
+        logger.warning(f"[!]️ Erro ao importar auto_recovery: {e}")
         return False
 
 def run_auto_update():
     """Executa o modulo de auto-update."""
     try:
         import auto_update
-        logger.info("✅ Modulo auto_update importado com sucesso")
+        logger.info("[OK] Modulo auto_update importado com sucesso")
         return True
     except Exception as e:
-        logger.warning(f"⚠️ Erro ao importar auto_update: {e}")
+        logger.warning(f"[!]️ Erro ao importar auto_update: {e}")
         return False
 
 def main():
     logger.info("=" * 60)
-    logger.info("🚀 GESTOR DE AUTO-RECUPERACAO v3.0 INICIADO")
+    logger.info("[START] GESTOR DE AUTO-RECUPERACAO v3.0 INICIADO")
     logger.info("Modo: INFINITO - A correr para sempre")
     logger.info("=" * 60)
     
@@ -82,7 +82,7 @@ def main():
         while True:
             iteration += 1
             uptime = time.time() - start_time
-            logger.info(f"🔄 Iteracao {iteration} (uptime: {uptime:.0f}s)")
+            logger.info(f"[LOOP] Iteracao {iteration} (uptime: {uptime:.0f}s)")
             
             # Verificar ficheiros essenciais
             issues = []
@@ -90,27 +90,27 @@ def main():
                 is_ok, msg = check_file_integrity(f)
                 if not is_ok:
                     issues.append(f"{f}: {msg}")
-                    logger.warning(f"⚠️ {f}: {msg}")
+                    logger.warning(f"[!]️ {f}: {msg}")
             
             if issues:
-                logger.warning(f"⚠️ {len(issues)} problema(s) detetado(s)")
+                logger.warning(f"[!]️ {len(issues)} problema(s) detetado(s)")
             else:
-                logger.info("✅ Todos os ficheiros OK!")
+                logger.info("[OK] Todos os ficheiros OK!")
             
             # Verificar modulos
             run_auto_recovery()
             run_auto_update()
             
             # Log de estado
-            logger.info(f"📊 Gestor ativo - iteracao {iteration}")
+            logger.info(f"[DADOS] Gestor ativo - iteracao {iteration}")
             
             time.sleep(30)
             
     except KeyboardInterrupt:
         logger.info("⏹️ Shutdown recebido. A encerrar...")
     except Exception as e:
-        logger.error(f"❌ Erro fatal: {e}")
-        logger.info("🔄 A reiniciar automaticamente...")
+        logger.error(f"[X] Erro fatal: {e}")
+        logger.info("[LOOP] A reiniciar automaticamente...")
         time.sleep(2)
         main()  # Reinicia
 

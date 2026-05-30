@@ -176,13 +176,13 @@ async def auto_evolve_loop():
     """Loop principal de auto-evolução"""
     evolve = AutoEvolve()
     
-    print("🧬 **Auto-Evolve iniciado!**")
-    print(f"📊 Skills: {len(evolve.skills)} | Agentes: {len(evolve.agents)}")
+    print("[DNA] **Auto-Evolve iniciado!**")
+    print(f"[DADOS] Skills: {len(evolve.skills)} | Agentes: {len(evolve.agents)}")
     
     while True:
         # Evolui skills
         skill_evo = evolve.evolve_skills()
-        print(f"📈 Skill evoluída: {skill_evo['skill']} → {skill_evo['new_value']}")
+        print(f"[SOBE] Skill evoluída: {skill_evo['skill']} → {skill_evo['new_value']}")
         
         # Evolui agentes
         agent_evo = evolve.evolve_agents()
@@ -194,11 +194,11 @@ async def auto_evolve_loop():
         # Mostra resumo a cada 5 iterações
         if evolve.evolution["steps"] % 5 == 0:
             summary = evolve.get_evolution_summary()
-            print(f"\n📊 **Resumo da Evolução:**")
-            print(f"   🔄 Passos: {summary['total_steps']}")
-            print(f"   🤖 Agentes: {summary['agents_list']}")
-            print(f"   🏆 Top skill: {summary['top_skill']} ({evolve.skills[summary['top_skill']]})")
-            print(f"   🥇 Top agente: {summary['top_agent']}")
+            print(f"\n[DADOS] **Resumo da Evolução:**")
+            print(f"   [LOOP] Passos: {summary['total_steps']}")
+            print(f"   [IA] Agentes: {summary['agents_list']}")
+            print(f"   [TROF] Top skill: {summary['top_skill']} ({evolve.skills[summary['top_skill']]})")
+            print(f"   [OURO] Top agente: {summary['top_agent']}")
         
         await asyncio.sleep(20)  # Evolui a cada 20s
 

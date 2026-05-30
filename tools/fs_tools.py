@@ -343,7 +343,7 @@ def _write_file(path: str, content: str) -> str:
     full.parent.mkdir(parents=True, exist_ok=True)
     full.write_text(content, encoding="utf-8")
     logger.info(f"[write_file] Escrito: {full}")
-    return f"✅ Ficheiro escrito: {path} ({len(content)} chars)"
+    return f"[OK] Ficheiro escrito: {path} ({len(content)} chars)"
 
 
 def _list_files(subdir: str = "") -> str:
@@ -414,7 +414,7 @@ async def _run_shell(command: str, timeout: int = 60) -> str:
 
     # Execução directa (sandbox desactivado ou Docker não disponível)
     if not is_safe_command(command):
-        return "❌ Comando bloqueado por razões de segurança."
+        return "[X] Comando bloqueado por razões de segurança."
     _ensure_repo()
     try:
         proc = await asyncio.create_subprocess_shell(
@@ -463,7 +463,7 @@ async def _git_commit_push(message: str) -> str:
         await asyncio.create_subprocess_exec("git", "reset", "HEAD", cwd=str(REPO_DIR),
                                               stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
         return (
-            "❌ COMMIT BLOQUEADO — erros de sintaxe Python encontrados:\n" +
+            "[X] COMMIT BLOQUEADO — erros de sintaxe Python encontrados:\n" +
             "\n".join(syntax_errors) +
             "\n\nCorrige os erros e tenta de novo."
         )
@@ -487,7 +487,7 @@ async def _git_commit_push(message: str) -> str:
         err = stderr.decode(errors="replace").strip()
         output.append(f"$ {' '.join(cmd)}\n{out or err}")
         if proc.returncode != 0 and "nothing to commit" not in (out + err):
-            output.append(f"⚠️ Returncode: {proc.returncode}")
+            output.append(f"[!]️ Returncode: {proc.returncode}")
             break
     return "\n".join(output)
 
@@ -532,7 +532,7 @@ def _create_agent(name: str, mission: str, model: str = "deepseek-chat") -> str:
     }
     agents.append(new_agent)
     AGENTS_FILE.write_text(json.dumps(agents, indent=2, ensure_ascii=False), encoding="utf-8")
-    return f"✅ Agente '{name}' criado com ID {new_agent['id'][:8]}."
+    return f"[OK] Agente '{name}' criado com ID {new_agent['id'][:8]}."
 
 def is_safe_command(command: str) -> bool:
     """
@@ -565,9 +565,9 @@ def _github_api(method: str, endpoint: str, body: dict = None) -> str:
     Permite criar repos, activar Pages, criar issues, etc.
     """
     if not GITHUB_TOKEN:
-        return "❌ GITHUB_TOKEN não configurado no .env"
+        return "[X] GITHUB_TOKEN não configurado no .env"
     if not endpoint:
-        return "❌ endpoint obrigatório (ex: /user/repos)"
+        return "[X] endpoint obrigatório (ex: /user/repos)"
 
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
@@ -593,13 +593,13 @@ def _github_api(method: str, endpoint: str, body: dict = None) -> str:
             # Sucesso — retornar info útil
             if isinstance(data, dict):
                 useful = {k: data[k] for k in ("html_url", "full_name", "name", "message", "url") if k in data}
-                return f"✅ {method} {endpoint} → {resp.status_code}\n{useful or data}"
-            return f"✅ {method} {endpoint} → {resp.status_code}\n{str(data)[:500]}"
+                return f"[OK] {method} {endpoint} → {resp.status_code}\n{useful or data}"
+            return f"[OK] {method} {endpoint} → {resp.status_code}\n{str(data)[:500]}"
         else:
             msg = data.get("message", str(data)) if isinstance(data, dict) else str(data)
-            return f"❌ GitHub API {resp.status_code}: {msg}"
+            return f"[X] GitHub API {resp.status_code}: {msg}"
     except Exception as e:
-        return f"❌ Erro ao chamar GitHub API: {e}"
+        return f"[X] Erro ao chamar GitHub API: {e}"
 
 
 def _search_github(query: str, search_type: str = "code") -> str:

@@ -182,7 +182,7 @@ class FailureMemory:
             return ""
         lines = ["### Falhas Similares (aprende com estes erros)\n"]
         for f in failures:
-            resolved_marker = "✅ Resolvido" if f["resolved"] else "❌ Não resolvido"
+            resolved_marker = "[OK] Resolvido" if f["resolved"] else "[X] Não resolvido"
             lines.append(f"- [{f['error_type']}] em `{f['action']}`: {f['cause']}")
             if f["solution"]:
                 lines.append(f"  Solução: {f['solution']}")

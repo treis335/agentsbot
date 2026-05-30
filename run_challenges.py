@@ -24,7 +24,7 @@ def log(msg):
 
 def challenge_1_ml_engine():
     """Desafio 1: Testar e evoluir o ML Engine."""
-    log("🧠 DESAFIO #1: A testar ML Engine...")
+    log("[MENTE] DESAFIO #1: A testar ML Engine...")
     
     ml = get_ml_engine()
     
@@ -47,13 +47,13 @@ def challenge_1_ml_engine():
         log(f"  Nova regra gerada: {rule['rule']}")
     
     stats = ml.get_stats()
-    log(f"  📊 ML Engine Stats: {stats}")
+    log(f"  [DADOS] ML Engine Stats: {stats}")
     
     return True
 
 def challenge_2_genetic_evolution():
     """Desafio 2: Evolução genética dos agentes."""
-    log("🧬 DESAFIO #2: A evoluir agentes geneticamente...")
+    log("[DNA] DESAFIO #2: A evoluir agentes geneticamente...")
     
     evolver = get_genetic_evolver()
     
@@ -85,13 +85,13 @@ def challenge_2_genetic_evolution():
         log(f"  Sobreviventes: {[s['name'] for s in survivors]}")
     
     report = evolver.get_evolution_report()
-    log(f"  📊 {report}")
+    log(f"  [DADOS] {report}")
     
     return True
 
 def challenge_3_market_oracle():
     """Desafio 3: Oráculo de mercado."""
-    log("💰 DESAFIO #3: A escanear oportunidades de mercado...")
+    log("[DIN] DESAFIO #3: A escanear oportunidades de mercado...")
     
     oracle = get_market_oracle()
     
@@ -102,45 +102,45 @@ def challenge_3_market_oracle():
     # Sugerir próximo negócio
     suggestion = oracle.suggest_next_business()
     if suggestion:
-        log(f"  🎯 Melhor oportunidade: {suggestion['name']} (score: {suggestion['score']})")
+        log(f"  [ALVO] Melhor oportunidade: {suggestion['name']} (score: {suggestion['score']})")
     
     # Relatório de receita
     report = oracle.get_revenue_report()
-    log(f"  📊 {report}")
+    log(f"  [DADOS] {report}")
     
     return True
 
 def run_all_challenges():
     """Executa todos os desafios em sequência."""
     log("=" * 60)
-    log("🚀 INICIANDO DESAFIOS DA EQUIPA")
+    log("[START] INICIANDO DESAFIOS DA EQUIPA")
     log("=" * 60)
     
     # Desafio 1
-    log("\n📌 FASE 1/3: Cérebro Quântico")
+    log("\n[PIN] FASE 1/3: Cérebro Quântico")
     c1 = challenge_1_ml_engine()
-    log(f"{'✅' if c1 else '❌'} Desafio #1 {'concluído' if c1 else 'falhou'}")
+    log(f"{'[OK]' if c1 else '[X]'} Desafio #1 {'concluído' if c1 else 'falhou'}")
     
     # Desafio 2
-    log("\n📌 FASE 2/3: Evolução Genética")
+    log("\n[PIN] FASE 2/3: Evolução Genética")
     c2 = challenge_2_genetic_evolution()
-    log(f"{'✅' if c2 else '❌'} Desafio #2 {'concluído' if c2 else 'falhou'}")
+    log(f"{'[OK]' if c2 else '[X]'} Desafio #2 {'concluído' if c2 else 'falhou'}")
     
     # Desafio 3
-    log("\n📌 FASE 3/3: Oráculo de Mercado")
+    log("\n[PIN] FASE 3/3: Oráculo de Mercado")
     c3 = challenge_3_market_oracle()
-    log(f"{'✅' if c3 else '❌'} Desafio #3 {'concluído' if c3 else 'falhou'}")
+    log(f"{'[OK]' if c3 else '[X]'} Desafio #3 {'concluído' if c3 else 'falhou'}")
     
     # Relatório final
     log("\n" + "=" * 60)
-    log("📊 RELATÓRIO FINAL DOS DESAFIOS")
+    log("[DADOS] RELATÓRIO FINAL DOS DESAFIOS")
     log("=" * 60)
-    log(f"✅ Desafio #1 - ML Engine: {'CONCLUÍDO' if c1 else 'FALHOU'}")
-    log(f"✅ Desafio #2 - Evolução Genética: {'CONCLUÍDO' if c2 else 'FALHOU'}")
-    log(f"✅ Desafio #3 - Oráculo de Mercado: {'CONCLUÍDO' if c3 else 'FALHOU'}")
+    log(f"[OK] Desafio #1 - ML Engine: {'CONCLUÍDO' if c1 else 'FALHOU'}")
+    log(f"[OK] Desafio #2 - Evolução Genética: {'CONCLUÍDO' if c2 else 'FALHOU'}")
+    log(f"[OK] Desafio #3 - Oráculo de Mercado: {'CONCLUÍDO' if c3 else 'FALHOU'}")
     
     total = sum([c1, c2, c3])
-    log(f"\n📈 Progresso: {total}/3 desafios concluídos")
+    log(f"\n[SOBE] Progresso: {total}/3 desafios concluídos")
     
     return all([c1, c2, c3])
 

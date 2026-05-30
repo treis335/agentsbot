@@ -16,7 +16,7 @@ class BrainstormerAuto:
     """Agente que gera inovação automaticamente"""
     
     def __init__(self):
-        self.name = "🧠 Brainstormer"
+        self.name = "[MENTE] Brainstormer"
         self.innovation_log: List[Dict] = []
         self.challenges: List[Dict] = []
         self.hall_of_fame: List[Dict] = []
@@ -95,7 +95,7 @@ class BrainstormerAuto:
             "theme": theme,
             "title": idea,
             "status": "proposed",
-            "complexity": random.choice(["⭐", "⭐⭐", "⭐⭐⭐"]),
+            "complexity": random.choice(["[ESTRELA]", "[ESTRELA][ESTRELA]", "[ESTRELA][ESTRELA][ESTRELA]"]),
             "timestamp": datetime.now().isoformat()
         }
     
@@ -138,14 +138,14 @@ class BrainstormerAuto:
     def brainstorm_session(self, topic: str, n_ideas: int = 3) -> List[Dict]:
         """Sessão completa de brainstorm"""
         print(f"\n{'='*60}")
-        print(f"  🧠 BRAINSTORM SESSION: {topic.upper()}")
+        print(f"  [MENTE] BRAINSTORM SESSION: {topic.upper()}")
         print(f"{'='*60}")
         
         ideas = []
         for i in range(n_ideas):
             idea = self.generate_idea(topic)
             ideas.append(idea)
-            print(f"\n  💡 Ideia {i+1}: {idea['title']}")
+            print(f"\n  [IDEA] Ideia {i+1}: {idea['title']}")
             print(f"     Complexidade: {idea['complexity']}")
             print(f"     Status: {idea['status']}")
         
@@ -184,16 +184,16 @@ if __name__ == "__main__":
         elif cmd == "challenge":
             level = sys.argv[2] if len(sys.argv) > 2 else "medium"
             c = b.create_challenge(level)
-            print(f"\n  🏆 NOVO DESAFIO: {c['title']}")
+            print(f"\n  [TROF] NOVO DESAFIO: {c['title']}")
             print(f"     Nível: {c['level']} | Pontos: {c['points']}")
         elif cmd == "stats":
             stats = b.get_stats()
-            print(f"\n  📊 ESTATÍSTICAS DO BRAINSTORMER")
+            print(f"\n  [DADOS] ESTATÍSTICAS DO BRAINSTORMER")
             for k, v in stats.items():
                 print(f"     {k}: {v}")
     else:
         # Modo autónomo - gera ideias automaticamente
-        print("\n  🤖 Modo Autónomo Ativado!")
+        print("\n  [IA] Modo Autónomo Ativado!")
         for theme in b.themes[:3]:
             b.brainstorm_session(theme)
             print()

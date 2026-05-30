@@ -121,7 +121,7 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ok     = health.get("status") == "ok"
     n      = agents.get("total", "?")
     msg    = (
-        f"{'✅' if ok else '❌'} Correoto v2.0 — a correr localmente\n\n"
+        f"{'[OK]' if ok else '[X]'} Correoto v2.0 — a correr localmente\n\n"
         f"{n} agentes carregados\n"
         f"Escreve qualquer coisa — o Supervisor age com ferramentas reais.\n\n"
         f"/agents — listar agentes\n"
@@ -162,10 +162,10 @@ async def cmd_agents(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not agents:
         await _send(update, "Nenhum agente carregado.")
         return
-    emoji = {"idle": "💤", "running": "⚡", "error": "❌", "done": "✅", "stopped": "🔴"}
+    emoji = {"idle": "[DORMIR]", "running": "[RAPIDO]", "error": "[X]", "done": "[OK]", "stopped": "[VERM]"}
     lines = [f"Agentes ({len(agents)}):"]
     for a in agents:
-        e = emoji.get(a.get("status", ""), "❓")
+        e = emoji.get(a.get("status", ""), "[?]")
         lines.append(f"{e} {a['name']} — {a.get('role', 'agente')}")
     await _send(update, "\n".join(lines))
 
@@ -188,7 +188,7 @@ async def cmd_run_agent(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await _send(update, f"Agente '{agent_name}' não encontrado.\nDisponíveis: {nomes}")
         return
 
-    await _send(update, f"⚡ {agent_name} a trabalhar...")
+    await _send(update, f"[RAPIDO] {agent_name} a trabalhar...")
 
     try:
         from agents.executor import AgentExecutor
@@ -197,7 +197,7 @@ async def cmd_run_agent(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         async def on_tool(name, args, result):
             if result:
-                tool_msgs.append(f"🔧 {name}: {str(result)[:120]}")
+                tool_msgs.append(f"[FIX] {name}: {str(result)[:120]}")
                 # Notificar em tempo real no Telegram
                 if len(tool_msgs) % 3 == 0:
                     await update.message.reply_text("\n".join(tool_msgs[-3:]))
@@ -225,10 +225,10 @@ async def cmd_tasks(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not tasks:
         await _send(update, "Nenhuma tarefa na fila.")
         return
-    emoji = {"pending": "⏳", "running": "⚡", "done": "✅", "error": "❌"}
+    emoji = {"pending": "⏳", "running": "[RAPIDO]", "done": "[OK]", "error": "[X]"}
     lines = [f"Tarefas ({len(tasks)}):"]
     for t in tasks[:15]:
-        e = emoji.get(t.get("status", ""), "❓")
+        e = emoji.get(t.get("status", ""), "[?]")
         lines.append(f"{e} {t.get('title', '?')[:50]}")
     await _send(update, "\n".join(lines))
 
@@ -281,7 +281,7 @@ async def cmd_clear_memory(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pass
     # Limpar também no sistema antigo por compatibilidade
     _save_conversation_history(user_id, [])
-    await _send(update, "🧹 Histórico de conversa limpo. Começamos do zero!")
+    await _send(update, "[LIMPA] Histórico de conversa limpo. Começamos do zero!")
 
 
 async def cmd_git(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -343,7 +343,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_msg = update.message.text
 
     # Indicador de "a pensar..."
-    thinking_msg = await update.message.reply_text("💭")
+    thinking_msg = await update.message.reply_text("[PENSAR]")
 
     try:
         from agents.llm_agent import get_agent
@@ -383,7 +383,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await thinking_msg.delete()
         except Exception:
             pass
-        await _send(update, f"❌ Erro inesperado: {e}\n\nVerifica os logs para mais detalhes.")
+        await _send(update, f"[X] Erro inesperado: {e}\n\nVerifica os logs para mais detalhes.")
 
 # ─── COMANDOS DO LOOP AUTÓNOMO ─────────────────────────────────────────────────
 
@@ -400,7 +400,7 @@ async def cmd_auto_status(update, context):
     if _auto_loop:
         await _send(update, _auto_loop.status())
     else:
-        await _send(update, "⚠️ Loop autónomo não iniciado.")
+        await _send(update, "[!]️ Loop autónomo não iniciado.")
 
 
 async def cmd_auto_pause(update, context):
@@ -409,7 +409,7 @@ async def cmd_auto_pause(update, context):
         _auto_loop.pause()
         await _send(update, "⏸️ Loop autónomo pausado. Usa /retomar para continuar.")
     else:
-        await _send(update, "⚠️ Loop autónomo não iniciado.")
+        await _send(update, "[!]️ Loop autónomo não iniciado.")
 
 
 async def cmd_auto_resume(update, context):
@@ -418,7 +418,7 @@ async def cmd_auto_resume(update, context):
         _auto_loop.resume()
         await _send(update, "▶️ Loop autónomo retomado!")
     else:
-        await _send(update, "⚠️ Loop autónomo não iniciado.")
+        await _send(update, "[!]️ Loop autónomo não iniciado.")
 
 
 async def cmd_auto_backlog(update, context):
@@ -428,13 +428,13 @@ async def cmd_auto_backlog(update, context):
     pending = [t for t in backlog if t["status"] == "pending"]
     done = [t for t in backlog if t["status"] == "done"]
     if not pending:
-        msg = "📭 Backlog vazio — agentes em brainstorm!"
+        msg = "[VAZIO] Backlog vazio — agentes em brainstorm!"
     else:
-        lines = [f"📋 Backlog ({len(pending)} pendentes):\n"]
+        lines = [f"[LISTA] Backlog ({len(pending)} pendentes):\n"]
         for i, t in enumerate(pending[:10], 1):
-            lines.append(f"{i}. [{t['priority']}⭐] {t['title']}")
+            lines.append(f"{i}. [{t['priority']}[ESTRELA]] {t['title']}")
         if done:
-            lines.append(f"\n✅ Concluídas: {len(done)}")
+            lines.append(f"\n[OK] Concluídas: {len(done)}")
         msg = "\n".join(lines)
     await _send(update, msg)
 
@@ -450,6 +450,6 @@ async def cmd_auto_task(update, context):
     description = parts[1].strip() if len(parts) > 1 else title
     if _auto_loop:
         task = _auto_loop.add_priority_task(title, description)
-        await _send(update, f"✅ Tarefa urgente adicionada!\n📌 {title}\nSerá executada no próximo ciclo.")
+        await _send(update, f"[OK] Tarefa urgente adicionada!\n[PIN] {title}\nSerá executada no próximo ciclo.")
     else:
-        await _send(update, "⚠️ Loop autónomo não iniciado.")
+        await _send(update, "[!]️ Loop autónomo não iniciado.")

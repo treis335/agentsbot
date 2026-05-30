@@ -50,7 +50,7 @@ def save_checkpoint(task: str, step: int, state: dict, next_action: str,
     with open(CHECKPOINT_FILE, "w", encoding="utf-8") as f:
         json.dump(checkpoint, f, ensure_ascii=False, indent=2)
 
-    print(f"💾 Checkpoint guardado — tarefa: '{task}' | passo: {step}")
+    print(f"[SALVAR] Checkpoint guardado — tarefa: '{task}' | passo: {step}")
     return checkpoint
 
 
@@ -67,7 +67,7 @@ def load_checkpoint() -> dict | None:
     with open(CHECKPOINT_FILE, "r", encoding="utf-8") as f:
         checkpoint = json.load(f)
 
-    print(f"📂 Checkpoint encontrado:")
+    print(f"[PASTA] Checkpoint encontrado:")
     print(f"   Tarefa:      {checkpoint['task']}")
     print(f"   Passo:       {checkpoint['step']}")
     print(f"   Próxima ação: {checkpoint['next_action']}")
@@ -81,7 +81,7 @@ def clear_checkpoint():
     """Remove o checkpoint após tarefa concluída com sucesso."""
     if CHECKPOINT_FILE.exists():
         CHECKPOINT_FILE.unlink()
-        print("✅ Checkpoint limpo — tarefa concluída.")
+        print("[OK] Checkpoint limpo — tarefa concluída.")
 
 
 # ─── GESTOR DE ITERAÇÕES ───────────────────────────────────────────────────────
@@ -110,7 +110,7 @@ class IterationManager:
         self._start_time = time.time()
 
         ensure_memory_dir()
-        print(f"🚀 IterationManager iniciado — tarefa: '{task}'")
+        print(f"[START] IterationManager iniciado — tarefa: '{task}'")
         print(f"   Max iterações: {max_iterations} | Checkpoint cada: {checkpoint_every}")
 
     def tick(self, next_action: str = "", state_update: dict = None) -> bool:
@@ -140,7 +140,7 @@ class IterationManager:
                 files_modified=self.files_modified,
             )
             elapsed = round(time.time() - self._start_time, 1)
-            print(f"\n⚠️  Limite de {self.max_iterations} iterações atingido após {elapsed}s.")
+            print(f"\n[!]️  Limite de {self.max_iterations} iterações atingido após {elapsed}s.")
             print(f"   Checkpoint guardado. Para retomar, executar novamente o script.")
             return False
 
@@ -164,7 +164,7 @@ class IterationManager:
     def done(self):
         """Chamar quando a tarefa termina com sucesso."""
         elapsed = round(time.time() - self._start_time, 1)
-        print(f"\n✅ Tarefa '{self.task}' concluída em {self.current_step} passos ({elapsed}s).")
+        print(f"\n[OK] Tarefa '{self.task}' concluída em {self.current_step} passos ({elapsed}s).")
         clear_checkpoint()
         _update_current_task("Concluída", self.task)
 
@@ -198,13 +198,13 @@ class AntiLoopGuard:
 
         if count > self.max_retries:
             self._log_error(action_key, count, context)
-            print(f"\n🚨 ANTI-LOOP: '{action_key}' falhou {count}x. A parar.")
+            print(f"\n[ALARME] ANTI-LOOP: '{action_key}' falhou {count}x. A parar.")
             print(f"   Erro registado em {self._errors_file}")
             print(f"   Contexto: {context}")
             return False
 
         if count > 1:
-            print(f"⚠️  Tentativa {count}/{self.max_retries} para '{action_key}'")
+            print(f"[!]️  Tentativa {count}/{self.max_retries} para '{action_key}'")
 
         return True
 

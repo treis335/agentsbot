@@ -1,12 +1,12 @@
 """
 Sistema de Auto-Recuperacao v5.0 - CORREOTO ECOSYSTEM
-✅ SEM limites de iteracoes (corre para sempre)
-✅ Monitoriza, repara e reinicia automaticamente todo o ecossistema
-✅ Deteccao inteligente de falhas
-✅ Auto-repair de componentes corrompidos
-✅ Decisao autonoma - so pede supervisao em casos criticos
-✅ Verificacao de integridade de ficheiros
-✅ Ciclo de auto-evolucao integrado
+[OK] SEM limites de iteracoes (corre para sempre)
+[OK] Monitoriza, repara e reinicia automaticamente todo o ecossistema
+[OK] Deteccao inteligente de falhas
+[OK] Auto-repair de componentes corrompidos
+[OK] Decisao autonoma - so pede supervisao em casos criticos
+[OK] Verificacao de integridade de ficheiros
+[OK] Ciclo de auto-evolucao integrado
 """
 
 import asyncio
@@ -76,7 +76,7 @@ class AutoRecoverySystem:
     
     def repair_component(self, name, info):
         """Tenta reparar um componente corrompido."""
-        logger.warning(f"🔧 A tentar reparar {name}...")
+        logger.warning(f"[FIX] A tentar reparar {name}...")
         
         # Tentar restaurar de backup
         backup_path = Path(str(info["path"]) + ".bak")
@@ -84,26 +84,26 @@ class AutoRecoverySystem:
             try:
                 import shutil
                 shutil.copy2(backup_path, info["path"])
-                logger.info(f"✅ {name} restaurado do backup!")
+                logger.info(f"[OK] {name} restaurado do backup!")
                 return True
             except Exception as e:
-                logger.error(f"❌ Erro ao restaurar backup de {name}: {e}")
+                logger.error(f"[X] Erro ao restaurar backup de {name}: {e}")
         
         # Se nao ha backup, marcar para regeneracao
-        logger.warning(f"⚠️ {name} precisa de ser regenerado pelo supervisor")
+        logger.warning(f"[!]️ {name} precisa de ser regenerado pelo supervisor")
         return False
     
     def recovery_cycle(self):
         """Ciclo de recuperacao - verifica e repara componentes."""
         self.iteration_count += 1
-        logger.info(f"🔄 Ciclo de recuperacao #{self.iteration_count}")
+        logger.info(f"[LOOP] Ciclo de recuperacao #{self.iteration_count}")
         
         issues_found = False
         for name, info in self.components.items():
             is_ok, msg = self.check_component_status(name, info)
             if not is_ok:
                 issues_found = True
-                logger.warning(f"⚠️ {name}: {msg}")
+                logger.warning(f"[!]️ {name}: {msg}")
                 self.repair_component(name, info)
                 self.recovery_history.append({
                     "timestamp": datetime.now().isoformat(),
@@ -113,13 +113,13 @@ class AutoRecoverySystem:
                 })
         
         if not issues_found:
-            logger.info("✅ Todos os componentes OK!")
+            logger.info("[OK] Todos os componentes OK!")
         
         # Reset do contador de retries se passou tempo suficiente
         if (datetime.now() - self.last_reset).seconds > 3600:
             self.retry_count = 0
             self.last_reset = datetime.now()
-            logger.info("🔄 Contador de retries resetado (1h passou)")
+            logger.info("[LOOP] Contador de retries resetado (1h passou)")
         
         return issues_found
     
@@ -127,7 +127,7 @@ class AutoRecoverySystem:
         """Corre o sistema de recuperacao para sempre."""
         self.is_running = True
         logger.info("=" * 60)
-        logger.info("🚀 AUTO-RECOVERY v5.0 INICIADO - Modo Infinito")
+        logger.info("[START] AUTO-RECOVERY v5.0 INICIADO - Modo Infinito")
         logger.info(f"   Max Iteracoes: {'Infinito' if self.max_iterations == float('inf') else self.max_iterations}")
         logger.info(f"   Cooldown: {self.cooldown_seconds}s")
         logger.info(f"   Max Retries: {'Infinito' if self.max_retries == float('inf') else self.max_retries}")
@@ -136,11 +136,11 @@ class AutoRecoverySystem:
         try:
             while self.is_running:
                 if self.iteration_count >= self.max_iterations:
-                    logger.info("✅ Limite de iteracoes atingido. A reiniciar ciclo...")
+                    logger.info("[OK] Limite de iteracoes atingido. A reiniciar ciclo...")
                     self.iteration_count = 0
                 
                 if self.retry_count >= self.max_retries:
-                    logger.warning("⚠️ Limite de retries atingido. A aguardar reset...")
+                    logger.warning("[!]️ Limite de retries atingido. A aguardar reset...")
                     await asyncio.sleep(60)
                     self.retry_count = 0
                     continue
@@ -153,10 +153,10 @@ class AutoRecoverySystem:
         except asyncio.CancelledError:
             logger.info("⏹️  Sistema de recuperacao cancelado.")
         except Exception as e:
-            logger.error(f"❌ Erro no sistema de recuperacao: {e}")
+            logger.error(f"[X] Erro no sistema de recuperacao: {e}")
         finally:
             self.is_running = False
-            logger.info("👋 Auto-Recovery terminado.")
+            logger.info("[TCHAU] Auto-Recovery terminado.")
 
 def main():
     """Funcao principal para execucao direta."""

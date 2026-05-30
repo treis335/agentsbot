@@ -323,10 +323,34 @@
     "id": "auto_d95baeb2",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T13:49:11.629148",
     "source": "fallback",
-    "started_at": "2026-05-30T13:49:21.634950"
+    "started_at": "2026-05-30T13:49:21.634950",
+    "completed_at": "2026-05-30T13:51:39.089431",
+    "result": "✅ **Agente API Integrator criado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🆕 Novo Agente: **API Integrator**\n\n| Item | Detalhe |\n|------|---------|\n| **ID** | `api_integrator-001` |\n| **Soul** | `agents/souls/api_integrator.md` |\n| **Diretório** | `agents/connectors/` |\n| **Registado em** | `agents/registry/agents.json` + `capabilities.json` |\n| **Prioridade** | 7 (alta) |\n| **Skills** | REST clients, OAuth2, rate limiting, webhooks, cache, retry policy |\n\n### 🎯 Lacuna que cobre\nO ecos"
+  },
+  {
+    "id": "auto_6fdb1dbe",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T13:51:49.495401",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:51:59.501639",
+    "completed_at": "2026-05-30T13:56:10.147251",
+    "result": "Fiz a revisão e melhoria completa de todos os 27 souls do ecossistema, padronizando-os com: formato consistente (Identidade, Responsabilidades, Ferramentas, Fluxo de Execução, Interação, Indicadores de Sucesso), tabelas de ferramentas reais, checklists accionáveis, e métricas de sucesso claras. Ficou por fazer: criar um soul para o `api_integrator.md` (que não existia originalmente e criei agora) e verificar se o `brainstormer_auto.md` (que também não existia) precisa de ajustes — ambos já foram"
+  },
+  {
+    "id": "auto_8bb05a3f",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T13:56:20.173218",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:56:30.178890"
   }
 ]

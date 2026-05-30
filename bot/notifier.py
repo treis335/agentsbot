@@ -9,8 +9,8 @@ ficam em fila e são enviadas quando o bot ligar.
 
 Uso em qualquer módulo:
     from bot.notifier import notify
-    await notify("✅ Tarefa completada: implementei o módulo X")
-    notify_sync("🔧 A correr auto-melhoria...")  # versão síncrona
+    await notify("[OK] Tarefa completada: implementei o módulo X")
+    notify_sync("[FIX] A correr auto-melhoria...")  # versão síncrona
 
 Tipos de notificação configuráveis no .env:
     NOTIFY_ON_TASK_COMPLETE=true   (default: true)
@@ -114,10 +114,10 @@ class Notifier:
             return
         short_result = str(result)[:200].replace("*", "").replace("`", "")
         msg = (
-            f"✅ *Tarefa concluída*\n\n"
-            f"📋 {title[:80]}\n"
-            f"🤖 Agente: `{agent}`\n"
-            f"🕐 {datetime.now().strftime('%H:%M')}\n\n"
+            f"[OK] *Tarefa concluída*\n\n"
+            f"[LISTA] {title[:80]}\n"
+            f"[IA] Agente: `{agent}`\n"
+            f"[HORA] {datetime.now().strftime('%H:%M')}\n\n"
             f"_{short_result}_"
         )
         await self.send(msg)
@@ -129,11 +129,11 @@ class Notifier:
             return
         short_err = str(error)[:150].replace("*", "").replace("`", "")
         msg = (
-            f"❌ *Tarefa falhou*\n\n"
-            f"📋 {title[:80]}\n"
-            f"🤖 Agente: `{agent}`\n"
-            f"⚠️ Erro: `{short_err}`\n"
-            f"🕐 {datetime.now().strftime('%H:%M')}"
+            f"[X] *Tarefa falhou*\n\n"
+            f"[LISTA] {title[:80]}\n"
+            f"[IA] Agente: `{agent}`\n"
+            f"[!]️ Erro: `{short_err}`\n"
+            f"[HORA] {datetime.now().strftime('%H:%M')}"
         )
         await self.send(msg)
 
@@ -142,12 +142,12 @@ class Notifier:
         self._daily_stats["improvements"] += patches
         if not self._on_improve or patches == 0:
             return
-        lines = [f"🧬 *Auto-melhoria aplicada!*\n"]
+        lines = [f"[DNA] *Auto-melhoria aplicada!*\n"]
         lines.append(f"• {patches} patch(es) ao código")
         for d in details[:4]:
-            lines.append(f"  ✅ {d[:70]}")
+            lines.append(f"  [OK] {d[:70]}")
         if commit:
-            lines.append(f"\n📦 Commit: `{commit[:8]}`")
+            lines.append(f"\n[PACOTE] Commit: `{commit[:8]}`")
         await self.send("\n".join(lines))
 
     async def system_started(self) -> None:
@@ -160,11 +160,11 @@ class Notifier:
         except Exception:
             n_agents = "?"
         msg = (
-            f"🚀 *CORREOTO iniciado!*\n\n"
-            f"🤖 {n_agents} agentes prontos\n"
-            f"🔄 Loop autónomo activo\n"
-            f"🧬 Self-improve a cada 10 ciclos\n"
-            f"🕐 {datetime.now().strftime('%H:%M:%S')}\n\n"
+            f"[START] *CORREOTO iniciado!*\n\n"
+            f"[IA] {n_agents} agentes prontos\n"
+            f"[LOOP] Loop autónomo activo\n"
+            f"[DNA] Self-improve a cada 10 ciclos\n"
+            f"[HORA] {datetime.now().strftime('%H:%M:%S')}\n\n"
             f"_O ecossistema está a trabalhar. Podes deixar correr._"
         )
         await self.send(msg)
@@ -216,13 +216,13 @@ class Notifier:
             pass
 
         msg = (
-            f"📊 *Resumo Diário — {date.today().strftime('%d/%m/%Y')}*\n\n"
-            f"✅ Tarefas concluídas: {stats['tasks_done']}\n"
-            f"❌ Tarefas falhadas: {stats['tasks_failed']}\n"
-            f"🧬 Melhorias aplicadas: {stats['improvements']}\n"
-            f"📈 Taxa de sucesso: {success_rate}%\n"
+            f"[DADOS] *Resumo Diário — {date.today().strftime('%d/%m/%Y')}*\n\n"
+            f"[OK] Tarefas concluídas: {stats['tasks_done']}\n"
+            f"[X] Tarefas falhadas: {stats['tasks_failed']}\n"
+            f"[DNA] Melhorias aplicadas: {stats['improvements']}\n"
+            f"[SOBE] Taxa de sucesso: {success_rate}%\n"
             f"⏳ Pendentes: {pending}\n"
-            f"🏆 Agente mais activo: `{top}`\n\n"
+            f"[TROF] Agente mais activo: `{top}`\n\n"
             f"_O sistema continuou a trabalhar de forma autónoma._"
         )
         await self.send(msg)

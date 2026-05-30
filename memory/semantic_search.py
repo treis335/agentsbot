@@ -321,20 +321,20 @@ class SemanticIndex:
             score = r["score"]
 
             if t == "episode":
-                status = "✅" if m.get("success") else "❌"
+                status = "[OK]" if m.get("success") else "[X]"
                 lines.append(
                     f"{status} [{m.get('agent','?')}] {m.get('task_desc','')[:100]}"
                 )
                 if m.get("lesson"):
                     lines.append(f"   → Lição: {m['lesson']}")
             elif t == "lesson":
-                lines.append(f"📚 Lição: {m.get('lesson','')[:120]}")
+                lines.append(f"[LIVRO] Lição: {m.get('lesson','')[:120]}")
             elif t == "debate":
                 lines.append(
-                    f"💬 Debate '{m.get('topic','')[:60]}': {m.get('synthesis','')[:100]}"
+                    f"[CHAT] Debate '{m.get('topic','')[:60]}': {m.get('synthesis','')[:100]}"
                 )
             elif t == "decision":
-                lines.append(f"🏗️ Decisão: {m.get('decision','')[:120]}")
+                lines.append(f"[OBRA]️ Decisão: {m.get('decision','')[:120]}")
 
         return "\n".join(lines) + "\n"
 

@@ -115,7 +115,7 @@ class BridgeAgent:
             conn.close()
     
     def start(self):
-        self.log("🔥 BridgeAgent 24/7 — Pronto para comandos do Supervisor")
+        self.log("[FOGO] BridgeAgent 24/7 — Pronto para comandos do Supervisor")
         self.iniciar_servidor()
 
 if __name__ == "__main__":

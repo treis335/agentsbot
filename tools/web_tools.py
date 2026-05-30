@@ -117,8 +117,8 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
         <h2>Sobre</h2>
         <p>{description}</p>
         <div class="grid">
-            <div class="card"><h3>✨ Moderno</h3><p>Design limpo e profissional.</p></div>
-            <div class="card"><h3>🚀 Rápido</h3><p>Optimizado para performance.</p></div>
+            <div class="card"><h3>[ESTRELA] Moderno</h3><p>Design limpo e profissional.</p></div>
+            <div class="card"><h3>[START] Rápido</h3><p>Optimizado para performance.</p></div>
             <div class="card"><h3>📱 Responsivo</h3><p>Funciona em todos os dispositivos.</p></div>
         </div>
     </div>"""
@@ -176,7 +176,7 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
 
     rel_path = site_dir.relative_to(repo_dir)
     result = (
-        f"✅ Site '{name}' criado em `{rel_path}/`\n"
+        f"[OK] Site '{name}' criado em `{rel_path}/`\n"
         f"Ficheiros: {', '.join(created + ['style.css', 'README.md'])}\n"
         f"Estilo: {style}\n"
         f"Para publicar: git commit + push, depois activar GitHub Pages."
@@ -212,7 +212,7 @@ async def add_page(site_name: str, page_name: str, content: str = "") -> str:
 </body>
 </html>"""
     (site_dir / filename).write_text(html, encoding="utf-8")
-    return f"✅ Página `{filename}` adicionada a `sites/{slug}/`"
+    return f"[OK] Página `{filename}` adicionada a `sites/{slug}/`"
 
 
 # ── Schemas para o executor ───────────────────────────────────────────────────

@@ -56,14 +56,14 @@ class ImprovementResult:
     @property
     def summary(self) -> str:
         if self.error:
-            return f"❌ Self-improve falhou: {self.error}"
+            return f"[X] Self-improve falhou: {self.error}"
         if self.patches_applied == 0:
             return (
-                f"🔍 Self-improve: {self.patterns_found} padrões encontrados, "
+                f"[BUSCA] Self-improve: {self.patterns_found} padrões encontrados, "
                 f"sem patches aplicáveis neste ciclo."
             )
         return (
-            f"🧬 Auto-melhoria: {self.patches_applied} patch(es) aplicado(s) "
+            f"[DNA] Auto-melhoria: {self.patches_applied} patch(es) aplicado(s) "
             f"de {self.proposals_generated} proposta(s). "
             f"{'Commit: ' + self.commit_hash[:8] if self.committed else 'Sem commit.'}"
         )
@@ -73,7 +73,7 @@ class ImprovementResult:
         if self.patches_applied == 0:
             return None  # Não notificar se não houve mudanças
         lines = [
-            "🧬 *Auto-melhoria aplicada!*",
+            "[DNA] *Auto-melhoria aplicada!*",
             "",
             f"• Padrões detectados: {self.patterns_found}",
             f"• Propostas geradas: {self.proposals_generated}",
@@ -81,7 +81,7 @@ class ImprovementResult:
             "",
         ]
         for d in self.details[:5]:
-            lines.append(f"  ✅ {d}")
+            lines.append(f"  [OK] {d}")
         if self.committed:
             lines.append(f"\nCommit: `{self.commit_hash[:8]}`")
         return "\n".join(lines)
@@ -297,7 +297,7 @@ class SelfImprovementLoop:
                 applied += 1
                 desc = patch.get("description", patch["target_file"])[:70]
                 result.details.append(desc)
-                logger.info(f"[SelfImprove] ✅ Aplicado: {desc}")
+                logger.info(f"[SelfImprove] [OK] Aplicado: {desc}")
 
             except Exception as e:
                 logger.error(f"[SelfImprove] Erro ao aplicar patch: {e}")

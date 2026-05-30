@@ -29,7 +29,7 @@ def parse_result(sandbox_output: dict) -> str:
     lines = []
 
     # Header de sandbox
-    icon = "✅" if success else "❌"
+    icon = "[OK]" if success else "[X]"
     lines.append(f"{icon} [Sandbox:{sandbox_type}/{profile}] rc={returncode} ({duration}s)")
 
     if stdout:
@@ -89,7 +89,7 @@ def format_sandbox_summary(results: list[dict]) -> str:
     avg_duration = sum(r.get("duration_s", 0) for r in results) / total
 
     lines = [
-        f"📊 Sandbox Summary: {success}/{total} OK | avg {avg_duration:.1f}s",
+        f"[DADOS] Sandbox Summary: {success}/{total} OK | avg {avg_duration:.1f}s",
     ]
 
     sandbox_types = set(r.get("sandbox_type", "?") for r in results)
@@ -97,7 +97,7 @@ def format_sandbox_summary(results: list[dict]) -> str:
 
     failed = [r for r in results if not r.get("success")]
     if failed:
-        lines.append(f"   ❌ {len(failed)} falhas:")
+        lines.append(f"   [X] {len(failed)} falhas:")
         for f in failed[:3]:
             err = f.get("stderr", "")[:80]
             lines.append(f"      rc={f.get('returncode')} | {err}")

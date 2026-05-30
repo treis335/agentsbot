@@ -390,7 +390,7 @@ class APIHandler(BaseHTTPRequestHandler):
                         level = "error"
                     elif any(w in ll for w in ("warn","aviso")):
                         level = "warning"
-                    elif any(w in ll for w in ("success","ok","✅","conclu","done")):
+                    elif any(w in ll for w in ("success","ok","[OK]","conclu","done")):
                         level = "success"
                     elif any(w in ll for w in ("agent","agente","supervisor","developer")):
                         level = "agent"

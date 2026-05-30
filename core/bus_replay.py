@@ -84,7 +84,7 @@ async def replay_pending_events(
                 logger.error(f"[BusReplay] Erro ao replay {event.get('id', '?')}: {e}")
 
     if total_replayed > 0:
-        logger.info(f"[BusReplay] ✓ {total_replayed} evento(s) reenviado(s)")
+        logger.info(f"[BusReplay] [OK] {total_replayed} evento(s) reenviado(s)")
     else:
         logger.info("[BusReplay] Sem eventos pendentes — sistema limpo.")
 

@@ -90,7 +90,7 @@ MODO DEEP WORK ATIVADO - REGRAS:
     try:
         with open(DEEP_WORK_FILE, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=2, ensure_ascii=False)
-        log("🚀 DEEP WORK MODE ATIVADO!")
+        log("[START] DEEP WORK MODE ATIVADO!")
         log(f"   Estratégias ativas: {len(config['strategies'])}")
         log(f"   Economia estimada: {config['total_economy']}")
         return True
@@ -159,9 +159,9 @@ def log_deep_work_action(action, result, economy="1x"):
 
 def get_strategies_summary():
     """Resumo das estratégias disponíveis"""
-    lines = ["📋 ESTRATÉGIAS DE DEEP WORK DISPONÍVEIS:"]
+    lines = ["[LISTA] ESTRATÉGIAS DE DEEP WORK DISPONÍVEIS:"]
     for k, v in DEEP_WORK_STRATEGIES.items():
-        status = "✅" if v["active"] else "❌"
+        status = "[OK]" if v["active"] else "[X]"
         lines.append(f"  {status} {v['name']}: {v['description']} (economia: {v['economy']})")
     return "\n".join(lines)
 

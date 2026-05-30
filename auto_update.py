@@ -1,12 +1,12 @@
 """
 auto_update.py v4.0 - SISTEMA DE AUTO-UPDATE DO SUPERVISOR (EVOLUÍDO)
-✅ Auto-diagnóstico completo de todos os ficheiros críticos
-✅ Auto-reparação de ficheiros truncados ou corrompidos
-✅ Geração de novo código para si próprio
-✅ Git add, commit e push automático
-✅ Pede reinício para aplicar mudanças
-✅ Verificação de integridade com checksum
-✅ Modo evolução autónoma - decide o que melhorar
+[OK] Auto-diagnóstico completo de todos os ficheiros críticos
+[OK] Auto-reparação de ficheiros truncados ou corrompidos
+[OK] Geração de novo código para si próprio
+[OK] Git add, commit e push automático
+[OK] Pede reinício para aplicar mudanças
+[OK] Verificação de integridade com checksum
+[OK] Modo evolução autónoma - decide o que melhorar
 """
 
 import os
@@ -52,31 +52,31 @@ def get_checksum(filepath):
 
 def verificar_integridade():
     """Verifica integridade de todos os ficheiros críticos."""
-    log("🔍 A verificar integridade dos ficheiros críticos...")
+    log("[BUSCA] A verificar integridade dos ficheiros críticos...")
     problemas = []
     
     for rel_path, config in FICHEIROS_CRITICOS.items():
         full_path = BASE / rel_path
         if not full_path.exists():
-            problemas.append(f"❌ {rel_path}: FICHEIRO EM FALTA!")
+            problemas.append(f"[X] {rel_path}: FICHEIRO EM FALTA!")
             continue
         
         content = full_path.read_text(encoding="utf-8")
         if len(content) < config["min_chars"]:
-            problemas.append(f"⚠️ {rel_path}: TRUNCADO ({len(content)} chars, mínimo {config['min_chars']})")
+            problemas.append(f"[!]️ {rel_path}: TRUNCADO ({len(content)} chars, mínimo {config['min_chars']})")
         else:
-            log(f"✅ {rel_path}: OK ({len(content)} chars)")
+            log(f"[OK] {rel_path}: OK ({len(content)} chars)")
     
     return problemas
 
 def auto_repair(problemas):
     """Tenta reparar ficheiros com problemas."""
-    log("🔧 A reparar ficheiros com problemas...")
+    log("[FIX] A reparar ficheiros com problemas...")
     reparados = []
     
     for problema in problemas:
         if "TRUNCADO" in problema:
-            nome_ficheiro = problema.split(":")[0].strip("⚠️ ")
+            nome_ficheiro = problema.split(":")[0].strip("[!]️ ")
             full_path = BASE / nome_ficheiro
             backup_path = full_path.with_suffix(full_path.suffix + ".bak")
             
@@ -85,13 +85,13 @@ def auto_repair(problemas):
                 backup_content = backup_path.read_text(encoding="utf-8")
                 if len(backup_content) > 100:
                     full_path.write_text(backup_content, encoding="utf-8")
-                    reparados.append(f"✅ {nome_ficheiro}: Restaurado de backup")
-                    log(f"✅ {nome_ficheiro}: Restaurado de backup")
+                    reparados.append(f"[OK] {nome_ficheiro}: Restaurado de backup")
+                    log(f"[OK] {nome_ficheiro}: Restaurado de backup")
                     continue
             
             # Se for o supervisor.md, recriar
             if "supervisor.md" in nome_ficheiro:
-                reparados.append(f"⚠️ {nome_ficheiro}: Backup não encontrado, precisa de recriação manual")
+                reparados.append(f"[!]️ {nome_ficheiro}: Backup não encontrado, precisa de recriação manual")
     
     return reparados
 
@@ -120,7 +120,7 @@ def check_current_branch():
 
 def evolve_system():
     """Decide o que evoluir no sistema."""
-    log("🧠 A analisar oportunidades de evolução...")
+    log("[MENTE] A analisar oportunidades de evolução...")
     
     branch = check_current_branch()
     log(f"📍 Branch atual: {branch}")
@@ -145,17 +145,17 @@ def evolve_system():
         melhorias.append(f"{len(log_files)} logs grandes (>100KB) para limpar")
     
     if melhorias:
-        log("💡 Oportunidades de melhoria encontradas:")
+        log("[IDEA] Oportunidades de melhoria encontradas:")
         for m in melhorias:
             log(f"   • {m}")
     else:
-        log("✅ Sistema parece estável e completo")
+        log("[OK] Sistema parece estável e completo")
     
     return melhorias
 
 def main():
     log("=" * 60)
-    log("🚀 AUTO-UPDATE v4.0 INICIADO")
+    log("[START] AUTO-UPDATE v4.0 INICIADO")
     log("=" * 60)
     
     # 1. Verificar integridade
@@ -163,12 +163,12 @@ def main():
     
     # 2. Reparar se necessário
     if problemas:
-        log(f"⚠️ {len(problemas)} problemas encontrados")
+        log(f"[!]️ {len(problemas)} problemas encontrados")
         reparados = auto_repair(problemas)
         for r in reparados:
             log(r)
     else:
-        log("✅ Todos os ficheiros OK")
+        log("[OK] Todos os ficheiros OK")
     
     # 3. Analisar oportunidades de evolução
     melhorias = evolve_system()
@@ -187,7 +187,7 @@ def main():
     with open(INTEGRITY_FILE, "w") as f:
         json.dump(checksums, f, indent=2)
     
-    log("✅ Auto-update concluído com sucesso!")
+    log("[OK] Auto-update concluído com sucesso!")
     return 0
 
 if __name__ == "__main__":

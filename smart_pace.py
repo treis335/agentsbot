@@ -73,19 +73,19 @@ def increment_iteration():
         state["slow_mode"] = True
         state["pace_factor"] = 3.0
         state["tasks_per_iteration"] = 5
-        log(f"⚠️ DEEP WORK MODE ATIVADO! ({count} iterações)")
+        log(f"[!]️ DEEP WORK MODE ATIVADO! ({count} iterações)")
         log(f"   → Pace factor: {state['pace_factor']}x")
         log(f"   → Tarefas por iteração: {state['tasks_per_iteration']}")
     elif count >= MAX_ITERATIONS_BEFORE_SLOW:
         state["slow_mode"] = True
         state["pace_factor"] = 2.0
         state["tasks_per_iteration"] = 3
-        log(f"⚠️ SLOW MODE ATIVADO! ({count} iterações)")
+        log(f"[!]️ SLOW MODE ATIVADO! ({count} iterações)")
         log(f"   → Pace factor: {state['pace_factor']}x")
     
     # Se estiver muito perto do limite, avisa
     if count >= MAX_ITERATIONS_HARD_LIMIT - 5:
-        log(f"🚨 PERTO DO LIMITE! ({count}/{MAX_ITERATIONS_HARD_LIMIT})")
+        log(f"[ALARME] PERTO DO LIMITE! ({count}/{MAX_ITERATIONS_HARD_LIMIT})")
         log(f"   → A preparar reset automático...")
     
     save_state()
@@ -101,7 +101,7 @@ def reset_counter():
     state["tasks_per_iteration"] = 1
     state["last_reset"] = datetime.now().isoformat()
     save_state()
-    log(f"🔄 Contador resetado! (estava em {old_count})")
+    log(f"[LOOP] Contador resetado! (estava em {old_count})")
     return True
 
 def get_pace_delay():

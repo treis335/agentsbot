@@ -66,7 +66,7 @@ class AutoResetV2:
     def force_reset(self, reason="limite_iteracoes"):
         """Forca o reset do Supervisor"""
         self.reset_count += 1
-        self.log(f"🔄 RESET #{self.reset_count} - Motivo: {reason}")
+        self.log(f"[LOOP] RESET #{self.reset_count} - Motivo: {reason}")
         
         # 1. Mata processos antigos
         try:
@@ -89,7 +89,7 @@ class AutoResetV2:
             pass
         
         # 3. Reinicia o main.py
-        self.log("🚀 A reiniciar Supervisor...")
+        self.log("[START] A reiniciar Supervisor...")
         try:
             subprocess.Popen(
                 ["start", "cmd", "/c", "python main.py & python auto_evolve.py"],
@@ -97,14 +97,14 @@ class AutoResetV2:
                 cwd=os.path.dirname(os.path.abspath(__file__))
             )
         except Exception as e:
-            self.log(f"❌ Erro ao reiniciar: {e}")
+            self.log(f"[X] Erro ao reiniciar: {e}")
         
         self.last_activity = datetime.now()
-        self.log("✅ Supervisor reiniciado com sucesso!")
+        self.log("[OK] Supervisor reiniciado com sucesso!")
     
     def monitor_loop(self):
         """Loop principal de monitorizacao"""
-        self.log("🚀 Auto-Reset V2 iniciado! A monitorizar a cada 2s...")
+        self.log("[START] Auto-Reset V2 iniciado! A monitorizar a cada 2s...")
         
         while not self._stop.is_set():
             try:
@@ -127,19 +127,19 @@ class AutoResetV2:
                 time.sleep(CHECK_INTERVAL)
                 
             except Exception as e:
-                self.log(f"❌ Erro no monitor: {e}")
+                self.log(f"[X] Erro no monitor: {e}")
                 time.sleep(5)
     
     def start(self):
         """Inicia o monitor em background"""
         thread = threading.Thread(target=self.monitor_loop, daemon=True)
         thread.start()
-        self.log("✅ Auto-Reset V2 ativo em background!")
+        self.log("[OK] Auto-Reset V2 ativo em background!")
         return thread
     
     def stop(self):
         self._stop.set()
-        self.log("🛑 Auto-Reset V2 parado.")
+        self.log("[PARAR] Auto-Reset V2 parado.")
 
 if __name__ == "__main__":
     print("="*60)
@@ -155,4 +155,4 @@ if __name__ == "__main__":
             time.sleep(1)
     except KeyboardInterrupt:
         reset.stop()
-        print("\n👋 Auto-Reset V2 terminado.")
+        print("\n[TCHAU] Auto-Reset V2 terminado.")

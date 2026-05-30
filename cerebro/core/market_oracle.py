@@ -140,7 +140,7 @@ class MarketOracle:
     
     def get_revenue_report(self):
         """Gera relatório de receita potencial."""
-        report = "💰 **RELATÓRIO DE RECEITA POTENCIAL**\n\n"
+        report = "[DIN] **RELATÓRIO DE RECEITA POTENCIAL**\n\n"
         
         total_potential = 0
         report += "| Oportunidade | Tipo | Potencial | Modelo |\n"

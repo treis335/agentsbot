@@ -41,31 +41,31 @@ def main():
     code, out = run("git status")
     print(out)
     if "nothing to commit" in out:
-        print("\n✅ Nada para commitar. Repositório já está atualizado.")
+        print("\n[OK] Nada para commitar. Repositório já está atualizado.")
         sys.exit(0)
 
     # ── 2. Adicionar ficheiros ─────────────────────────────────────────────────
     section("2/5 — Git Add")
     code, out = run("git add .")
     if code != 0:
-        print(f"❌ Erro no git add:\n{out}")
+        print(f"[X] Erro no git add:\n{out}")
         sys.exit(1)
-    print("✅ Todos os ficheiros adicionados.")
+    print("[OK] Todos os ficheiros adicionados.")
 
     # ── 3. Commit ──────────────────────────────────────────────────────────────
     section("3/5 — Git Commit")
     code, out = run(f'git commit -m "{commit_msg}"')
     if code != 0:
-        print(f"❌ Erro no commit:\n{out}")
+        print(f"[X] Erro no commit:\n{out}")
         sys.exit(1)
-    print(f"✅ Commit criado.")
+    print(f"[OK] Commit criado.")
     print(out.split("\n")[0])  # Mostrar primeira linha do output
 
     # ── 4. Pull com rebase (evitar conflitos) ──────────────────────────────────
     section("4/5 — Git Pull --rebase")
     code, out = run("git pull origin main --rebase")
     if code != 0:
-        print(f"⚠️  Pull com rebase falhou:\n{out}")
+        print(f"[!]️  Pull com rebase falhou:\n{out}")
         print("\nTentando resolver automaticamente...")
         code2, out2 = run("git rebase --abort")
         print(f"Rebase abortado. Por favor resolver conflitos manualmente:")
@@ -73,23 +73,23 @@ def main():
         print(f"  2. Resolver conflitos")
         print(f"  3. git push origin main")
         sys.exit(1)
-    print("✅ Pull com rebase concluído.")
+    print("[OK] Pull com rebase concluído.")
 
     # ── 5. Push ────────────────────────────────────────────────────────────────
     section("5/5 — Git Push")
     code, out = run("git push origin main")
     if code != 0:
-        print(f"❌ Erro no push:\n{out}")
+        print(f"[X] Erro no push:\n{out}")
         print("\nPossíveis causas:")
         print("  - Sem autenticação Git configurada")
         print("  - Branch protegida")
         print("  - Sem permissões no repositório")
         sys.exit(1)
-    print("✅ Push concluído com sucesso!")
+    print("[OK] Push concluído com sucesso!")
     print(out)
 
     # ── Sumário ────────────────────────────────────────────────────────────────
-    section("✅ DEPLOY CONCLUÍDO")
+    section("[OK] DEPLOY CONCLUÍDO")
     print(f"  Repositório: https://github.com/treis335/agentsbot")
     print(f"  Branch: main")
     print(f"  Hora: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

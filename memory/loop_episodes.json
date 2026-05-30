@@ -1600,5 +1600,23 @@
     "success": true,
     "result_summary": "Analisei todo o ecossistema de 27 agentes/souls e identifiquei que a área mais crítica descoberta é **integração de dados e pipelines** — não existe nenhum agente especializado em buscar, processar e integrar dados de fontes externas (APIs, web scraping, ETL). Ficou por escrever o ficheiro `agents/souls/data_integrator.md` com a alma do novo agente e registá-lo no `agents/registry/agents.json` e `",
     "lesson": ""
+  },
+  {
+    "task_id": "auto_d95baeb2",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T13:51:39.076896",
+    "success": true,
+    "result_summary": "✅ **Agente API Integrator criado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🆕 Novo Agente: **API Integrator**\n\n| Item | Detalhe |\n|------|---------|\n| **ID** | `api_integrator-001` |\n| **Soul** | `agents/souls/api_integrator.md` |\n| **Diretório** | `agents/connectors/` |\n| **Registado em** | `agents/registry/agents.json` + `capabilities.json` |\n| **Prioridade** | 7 (alta) |\n| **Skills** |",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_6fdb1dbe",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T13:56:10.135119",
+    "success": true,
+    "result_summary": "Fiz a revisão e melhoria completa de todos os 27 souls do ecossistema, padronizando-os com: formato consistente (Identidade, Responsabilidades, Ferramentas, Fluxo de Execução, Interação, Indicadores de Sucesso), tabelas de ferramentas reais, checklists accionáveis, e métricas de sucesso claras. Ficou por fazer: criar um soul para o `api_integrator.md` (que não existia originalmente e criei agora) ",
+    "lesson": ""
   }
 ]

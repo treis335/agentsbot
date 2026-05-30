@@ -1,12 +1,12 @@
 """
 run_forever.py v7.0 - LANÇADOR PRINCIPAL INTELIGENTE COM AUTO-UPDATE
-✅ Corre para sempre - modo infinito
-✅ Auto-repair de todos os componentes
-✅ Heartbeat e monitorização em tempo real
-✅ Auto-update do supervisor e do sistema
-✅ Decisão autónoma - só pede supervisão em casos críticos
-✅ Verificação de integridade de ficheiros
-✅ Ciclo de auto-evolução contínuo
+[OK] Corre para sempre - modo infinito
+[OK] Auto-repair de todos os componentes
+[OK] Heartbeat e monitorização em tempo real
+[OK] Auto-update do supervisor e do sistema
+[OK] Decisão autónoma - só pede supervisão em casos críticos
+[OK] Verificação de integridade de ficheiros
+[OK] Ciclo de auto-evolução contínuo
 """
 
 import os
@@ -68,7 +68,7 @@ def check_restart_flag():
         try:
             content = restart_flag.read_text(encoding="utf-8").strip()
             if content == "restart_requested":
-                log("🔄 Pedido de reinício detetado!")
+                log("[LOOP] Pedido de reinício detetado!")
                 restart_flag.unlink(missing_ok=True)
                 return True
         except:
@@ -81,9 +81,9 @@ def verify_integrity():
     for ficheiro in FICHEIROS_CRITICOS:
         path = BASE / ficheiro
         if not path.exists():
-            issues.append(f"❌ {ficheiro} - NÃO EXISTE")
+            issues.append(f"[X] {ficheiro} - NÃO EXISTE")
         elif path.stat().st_size < 100:
-            issues.append(f"⚠️ {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
+            issues.append(f"[!]️ {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
     return issues
 
 def launch_component(component):
@@ -96,7 +96,7 @@ def launch_component(component):
     
     while running:
         try:
-            log(f"🚀 A lançar {name}...")
+            log(f"[START] A lançar {name}...")
             proc = subprocess.Popen(
                 [sys.executable, script],
                 stdout=subprocess.PIPE,
@@ -105,26 +105,26 @@ def launch_component(component):
                 cwd=BASE
             )
             processes[name] = proc
-            log(f"✅ {name} lançado (PID: {proc.pid})")
+            log(f"[OK] {name} lançado (PID: {proc.pid})")
             
             # Aguarda o processo terminar
             stdout, stderr = proc.communicate()
             
             if proc.returncode != 0:
-                log(f"⚠️ {name} terminou com código {proc.returncode}")
+                log(f"[!]️ {name} terminou com código {proc.returncode}")
                 if stderr:
                     log(f"   Erro: {stderr[-500:]}")
             
             # Se for crítico, reinicia imediatamente
             if component["critical"]:
-                log(f"🔄 A reiniciar {name} (componente crítico)...")
+                log(f"[LOOP] A reiniciar {name} (componente crítico)...")
                 time.sleep(1)
             else:
                 log(f"⏸️ {name} não é crítico, a aguardar...")
                 time.sleep(10)
                 
         except Exception as e:
-            log(f"❌ Erro ao lançar {name}: {e}")
+            log(f"[X] Erro ao lançar {name}: {e}")
             time.sleep(5)
 
 def update_heartbeat():
@@ -147,18 +147,18 @@ def auto_evolve_cycle():
     cycles = 0
     while running:
         cycles += 1
-        log(f"🔄 Ciclo de auto-evolução #{cycles}")
+        log(f"[LOOP] Ciclo de auto-evolução #{cycles}")
         
         # Verificar integridade
         issues = verify_integrity()
         if issues:
-            log("⚠️ Problemas de integridade detetados:")
+            log("[!]️ Problemas de integridade detetados:")
             for issue in issues:
                 log(f"   {issue}")
         
         # Verificar restart flag
         if check_restart_flag():
-            log("🔄 A preparar reinício do sistema...")
+            log("[LOOP] A preparar reinício do sistema...")
             time.sleep(2)
             # O reinício será tratado pelo supervisor
         
@@ -171,20 +171,20 @@ def auto_evolve_cycle():
 
 def main():
     log("=" * 60)
-    log("🚀 CORREOTO ECOSYSTEM v7.0 - INICIADO")
-    log(f"📂 Diretório: {BASE}")
+    log("[START] CORREOTO ECOSYSTEM v7.0 - INICIADO")
+    log(f"[PASTA] Diretório: {BASE}")
     log(f"⏰ Início: {datetime.now().isoformat()}")
     log("=" * 60)
     
     # Verificar integridade inicial
-    log("\n🔍 A verificar integridade dos ficheiros...")
+    log("\n[BUSCA] A verificar integridade dos ficheiros...")
     issues = verify_integrity()
     if issues:
-        log("⚠️ Problemas detetados:")
+        log("[!]️ Problemas detetados:")
         for issue in issues:
             log(f"   {issue}")
     else:
-        log("✅ Todos os ficheiros OK!")
+        log("[OK] Todos os ficheiros OK!")
     
     # Lançar componentes em threads
     threads = []
@@ -192,10 +192,10 @@ def main():
         t = threading.Thread(target=launch_component, args=(component,), daemon=True)
         t.start()
         threads.append(t)
-        log(f"📋 {component['name']} agendado (delay: {component['delay']}s)")
+        log(f"[LISTA] {component['name']} agendado (delay: {component['delay']}s)")
     
     # Ciclo de auto-evolução
-    log("\n🔄 A iniciar ciclo de auto-evolução...")
+    log("\n[LOOP] A iniciar ciclo de auto-evolução...")
     auto_evolve_cycle()
 
 if __name__ == "__main__":
@@ -205,7 +205,7 @@ if __name__ == "__main__":
         log("\n⏹️  Sistema interrompido pelo utilizador.")
         running = False
     except Exception as e:
-        log(f"\n❌ Erro fatal: {e}")
+        log(f"\n[X] Erro fatal: {e}")
         running = False
     finally:
-        log("👋 Sistema terminado.")
+        log("[TCHAU] Sistema terminado.")

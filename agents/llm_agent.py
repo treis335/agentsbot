@@ -429,13 +429,13 @@ class LLMAgent:
                 )
             except RuntimeError as e:
                 # API key não configurada — resposta de fallback
-                reply = f"⚠️ {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+                reply = f"[!]️ {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
                 self._update_history(history, user_message, reply, user_id)
                 return reply
             except Exception as e:
                 logger.error(f"[LLMAgent] Erro API iteração {iteration}: {e}")
                 if iteration == 0:
-                    return f"❌ Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a ligação à internet."
+                    return f"[X] Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a ligação à internet."
                 # Se falhou após já ter feito algo, retorna o que temos
                 break
 
@@ -449,7 +449,7 @@ class LLMAgent:
                 
                 # Adicionar resumo das ferramentas usadas
                 if tools_used:
-                    summary = f"\n\n🔧 *Operações realizadas:* {', '.join(tools_used)}"
+                    summary = f"\n\n[FIX] *Operações realizadas:* {', '.join(tools_used)}"
                     reply += summary
 
                 self._update_history(history, user_message, msg.get("content", reply), user_id)
@@ -471,7 +471,7 @@ class LLMAgent:
 
                 # Notificar utilizador sobre o que está a fazer
                 if on_progress and iteration == 0:
-                    await on_progress(f"🔧 A executar: `{tool_name}`...")
+                    await on_progress(f"[FIX] A executar: `{tool_name}`...")
 
                 logger.info(f"[LLMAgent] Tool: {tool_name}({list(tool_args.keys())})")
                 result = await _run_tool(tool_name, tool_args)

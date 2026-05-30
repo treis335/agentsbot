@@ -82,7 +82,7 @@ class InferenceRouter:
             client = self._get_ollama_client()
             self._ollama_available = await client.is_available()
             if self._ollama_available:
-                logger.info("[Router] Ollama disponível ✓")
+                logger.info("[Router] Ollama disponível [OK]")
             else:
                 logger.warning("[Router] Ollama não disponível — usando DeepSeek")
         return self._ollama_available

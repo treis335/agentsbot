@@ -161,7 +161,7 @@ class AgentExecutor:
             if lessons:
                 lines.append("\n### Lições Aprendidas (evita estes erros)")
                 for lesson in lessons:
-                    lines.append(f"⚡ {lesson}")
+                    lines.append(f"[RAPIDO] {lesson}")
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Lições indisponíveis: {e}")
 

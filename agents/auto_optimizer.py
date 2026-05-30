@@ -15,7 +15,7 @@ class AutoOptimizer:
     """Agente que otimiza código automaticamente"""
     
     def __init__(self):
-        self.name = "⚡ Auto-Optimizer"
+        self.name = "[RAPIDO] Auto-Optimizer"
         self.optimizations_applied = 0
         self.issues_found: List[Dict] = []
         self.report_path = Path("memory/optimization_report.json")
@@ -128,7 +128,7 @@ class AutoOptimizer:
     def scan_project(self, root_dir: str = ".") -> Dict:
         """Escaneia todo o projeto por ineficiências"""
         print(f"\n{'='*60}")
-        print(f"  ⚡ AUTO-OPTIMIZER - Scanning {root_dir}")
+        print(f"  [RAPIDO] AUTO-OPTIMIZER - Scanning {root_dir}")
         print(f"{'='*60}")
         
         total_issues = 0
@@ -143,9 +143,9 @@ class AutoOptimizer:
             issues = self.analyze_file(str(pyfile))
             
             if issues:
-                print(f"\n  📄 {pyfile.relative_to(root_dir)}")
+                print(f"\n  [DOC] {pyfile.relative_to(root_dir)}")
                 for issue in issues:
-                    print(f"     ⚠️  {issue.get('type', 'issue')}: {issue.get('suggestion', '')}")
+                    print(f"     [!]️  {issue.get('type', 'issue')}: {issue.get('suggestion', '')}")
                     summary[issue['type']] += 1
                     total_issues += 1
         
@@ -157,7 +157,7 @@ class AutoOptimizer:
         }
         
         print(f"\n{'='*60}")
-        print(f"  📊 RELATÓRIO FINAL")
+        print(f"  [DADOS] RELATÓRIO FINAL")
         print(f"  Ficheiros: {files_scanned}")
         print(f"  Issues: {total_issues}")
         for issue_type, count in summary.items():
@@ -170,20 +170,20 @@ class AutoOptimizer:
         """Sugere otimização específica para um ficheiro"""
         issues = self.analyze_file(filepath)
         if not issues:
-            return "✅ Nenhuma otimização necessária!"
+            return "[OK] Nenhuma otimização necessária!"
         
         suggestions = []
         for issue in issues:
             if issue.get('type') == 'unused_import':
-                suggestions.append(f"🧹 Remover imports: {', '.join(issue['items'])}")
+                suggestions.append(f"[LIMPA] Remover imports: {', '.join(issue['items'])}")
             elif issue.get('type') == 'optimization':
-                suggestions.append("⚡ Usar list comprehension em vez de loop+append")
+                suggestions.append("[RAPIDO] Usar list comprehension em vez de loop+append")
             elif issue.get('type') == 'missing_type_hints':
-                suggestions.append("📝 Adicionar type hints às funções")
+                suggestions.append("[EDIT] Adicionar type hints às funções")
             elif issue.get('type') == 'missing_docstrings':
-                suggestions.append("📚 Adicionar docstrings às classes")
+                suggestions.append("[LIVRO] Adicionar docstrings às classes")
             elif issue.get('type') == 'long_function':
-                suggestions.append(f"✂️  Função com {issue['lines']} linhas - refatorar")
+                suggestions.append(f"[CORT]️  Função com {issue['lines']} linhas - refatorar")
         
         return "\n".join([f"  • {s}" for s in suggestions])
 
@@ -202,12 +202,12 @@ if __name__ == "__main__":
             if len(sys.argv) > 2:
                 issues = opt.analyze_file(sys.argv[2])
                 for i in issues:
-                    print(f"  ⚠️  {i.get('suggestion', '')}")
+                    print(f"  [!]️  {i.get('suggestion', '')}")
         elif cmd == "suggest":
             if len(sys.argv) > 2:
                 print(opt.suggest_optimization(sys.argv[2]))
     else:
         # Modo autónomo
-        print("\n  🤖 Modo Autónomo - A escanear projeto...")
+        print("\n  [IA] Modo Autónomo - A escanear projeto...")
         report = opt.scan_project()
-        print(f"\n  🎯 {report['total_issues']} oportunidades de otimização encontradas!")
+        print(f"\n  [ALVO] {report['total_issues']} oportunidades de otimização encontradas!")

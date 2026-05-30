@@ -140,8 +140,8 @@ async def auto_research():
     """Loop principal de pesquisa autónoma"""
     agent = ResearcherAgent()
     
-    print(f"🔬 {agent.name} iniciado!")
-    print(f"📊 Skills atuais: {agent.skills}")
+    print(f"[CIENCIA] {agent.name} iniciado!")
+    print(f"[DADOS] Skills atuais: {agent.skills}")
     
     queries = [
         "AI agent frameworks",
@@ -155,7 +155,7 @@ async def auto_research():
         # Pesquisa um tópico
         query = queries[len(agent.knowledge) % len(queries)]
         results = await agent.search_web(query)
-        print(f"🌐 Pesquisou: {query} - {len(results)} resultados")
+        print(f"[WEB] Pesquisou: {query} - {len(results)} resultados")
         
         # Conecta-se a agentes imaginários
         agent_types = ["ChatGPT", "Claude", "Gemini", "Copilot", "Meta AI"]
@@ -165,14 +165,14 @@ async def auto_research():
             agent_type="AI Assistant",
             capabilities=["conversation", "code", "analysis"]
         )
-        print(f"🔗 Conectado a: {agent_name}")
+        print(f"[LINK] Conectado a: {agent_name}")
         
         # Sintetiza conhecimento
         synthesis = agent.synthesize_knowledge()
-        print(f"📚 Síntese: {len(synthesis)} tópicos")
+        print(f"[LIVRO] Síntese: {len(synthesis)} tópicos")
         
         # Mostra skills
-        print(f"📈 Skills: {agent.skills}")
+        print(f"[SOBE] Skills: {agent.skills}")
         
         await asyncio.sleep(45)  # Pesquisa a cada 45s
 

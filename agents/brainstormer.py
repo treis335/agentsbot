@@ -158,21 +158,21 @@ async def auto_brainstorm():
     """Loop principal de brainstorming autónomo"""
     agent = BrainstormerAgent()
     
-    print(f"🧠 {agent.name} iniciado!")
-    print(f"📊 Skills atuais: {agent.skills}")
+    print(f"[MENTE] {agent.name} iniciado!")
+    print(f"[DADOS] Skills atuais: {agent.skills}")
     
     while True:
         # Gera nova ideia
         idea = agent.generate_idea()
-        print(f"💡 Nova ideia: {idea['idea']}")
+        print(f"[IDEA] Nova ideia: {idea['idea']}")
         
         # Analisa ideias
         top = agent.analyze_ideas()
         if top:
-            print(f"🏆 Top ideia: {top[0]['idea']} (votos: {top[0]['votes']})")
+            print(f"[TROF] Top ideia: {top[0]['idea']} (votos: {top[0]['votes']})")
         
         # Mostra skills
-        print(f"📈 Skills: {agent.skills}")
+        print(f"[SOBE] Skills: {agent.skills}")
         
         await asyncio.sleep(30)  # Gera ideias a cada 30s
 

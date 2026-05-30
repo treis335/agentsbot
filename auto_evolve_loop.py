@@ -27,7 +27,7 @@ class AutoEvolveLoop:
             self.evolution_cycles += 1
             return result
         except Exception as e:
-            self.log(f"❌ Erro evolution_engine: {e}")
+            self.log(f"[X] Erro evolution_engine: {e}")
             return None
 
     def run_bridge_agent(self):
@@ -37,7 +37,7 @@ class AutoEvolveLoop:
             bridge.log("BridgeAgent ativado pelo loop")
             return bridge
         except Exception as e:
-            self.log(f"❌ Erro bridge_agent: {e}")
+            self.log(f"[X] Erro bridge_agent: {e}")
             return None
 
     def git_sync(self):
@@ -48,30 +48,30 @@ class AutoEvolveLoop:
                 msg = f"Auto-evolução ciclo #{self.evolution_cycles}"
                 subprocess.run(["git", "commit", "-m", msg], capture_output=True, cwd=BASE_DIR)
                 subprocess.run(["git", "push"], capture_output=True, cwd=BASE_DIR)
-                self.log(f"✅ Git commit & push: {msg}")
+                self.log(f"[OK] Git commit & push: {msg}")
                 return True
         except Exception as e:
-            self.log(f"⚠️ Git sync: {e}")
+            self.log(f"[!]️ Git sync: {e}")
         return False
 
     def check_system_health(self):
         agents_file = BASE_DIR / "agents.json"
         if not agents_file.exists():
-            self.log("❌ agents.json não encontrado!")
+            self.log("[X] agents.json não encontrado!")
             return False
         try:
             with open(agents_file) as f:
                 agents = json.load(f)
-            self.log(f"🏥 Saúde OK — {len(agents)} agentes ativos")
+            self.log(f"[HOSP] Saúde OK — {len(agents)} agentes ativos")
             return True
         except:
-            self.log("❌ agents.json corrompido!")
+            self.log("[X] agents.json corrompido!")
             return False
 
     def run_cycle(self):
         self.iteration += 1
         self.log(f"\n{'='*60}")
-        self.log(f"🚀 CICLO #{self.iteration}")
+        self.log(f"[START] CICLO #{self.iteration}")
         self.log(f"{'='*60}")
 
         self.check_system_health()
@@ -82,17 +82,17 @@ class AutoEvolveLoop:
             if result.get('novo_agente'):
                 self.log(f"   🆕 Novo agente criado: {result['novo_agente']}")
             if result.get('commit'):
-                self.log(f"   ✅ Git push feito")
+                self.log(f"   [OK] Git push feito")
 
         if self.iteration % 3 == 0:
             self.git_sync()
 
-        self.log(f"✅ Ciclo #{self.iteration} completo")
+        self.log(f"[OK] Ciclo #{self.iteration} completo")
         return result
 
     def start(self):
-        self.log("🔥 AutoEvolveLoop 24/7 — EvolutionEngine + BridgeAgent ativos!")
-        self.log("📡 A evoluir autonomamente...")
+        self.log("[FOGO] AutoEvolveLoop 24/7 — EvolutionEngine + BridgeAgent ativos!")
+        self.log("[SINAL] A evoluir autonomamente...")
         
         while self.running:
             try:
@@ -102,7 +102,7 @@ class AutoEvolveLoop:
                 self.log("⏹️ Paragem solicitada")
                 self.running = False
             except Exception as e:
-                self.log(f"💥 Erro crítico: {e}")
+                self.log(f"[EXPL] Erro crítico: {e}")
                 time.sleep(10)
 
 if __name__ == "__main__":

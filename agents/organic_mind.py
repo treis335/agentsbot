@@ -20,32 +20,32 @@ AGENT_PERSONAS = {
     "Supervisor": {
         "role": "Coordenador e visionário. Pensa em objectivos de longo prazo, delega e sintetiza.",
         "asks": "Qual é a prioridade? O que entrega mais valor ao utilizador agora?",
-        "emoji": "🧠"
+        "emoji": "[MENTE]"
     },
     "Developer": {
         "role": "Implementador. Pensa em código, arquitectura e execução técnica.",
         "asks": "Como se implementa? Que ficheiros mudar? Que pode correr mal?",
-        "emoji": "💻"
+        "emoji": "[PC]"
     },
     "Arquiteto": {
         "role": "Designer de sistemas. Pensa em modularidade, escalabilidade e padrões.",
         "asks": "Está bem estruturado? Cria dívida técnica? É sustentável?",
-        "emoji": "🏗️"
+        "emoji": "[OBRA]️"
     },
     "Explorador": {
         "role": "Curioso e investigador. Pesquisa novas abordagens e tecnologias.",
         "asks": "Existe algo melhor? O que fazem outros sistemas? Que podemos aprender?",
-        "emoji": "🔭"
+        "emoji": "[OBS]"
     },
     "AutoFixer": {
         "role": "Crítico construtivo. Identifica bugs, falhas e pontos de fragilidade.",
         "asks": "O que pode falhar? Há erros actuais a resolver? Que é frágil?",
-        "emoji": "🔧"
+        "emoji": "[FIX]"
     },
     "QATester": {
         "role": "Guardião da qualidade. Pensa em testes, validação e robustez.",
         "asks": "Está testado? Como validamos que funciona? E os edge cases?",
-        "emoji": "✅"
+        "emoji": "[OK]"
     },
 }
 
@@ -65,7 +65,7 @@ def agent_think(agent_name: str, topic: str, context: str = "") -> str:
     persona = AGENT_PERSONAS.get(agent_name, {
         "role": "Agente especializado.",
         "asks": "Como posso ajudar?",
-        "emoji": "🤖"
+        "emoji": "[IA]"
     })
 
     system = (
@@ -117,7 +117,7 @@ def collective_debate(topic: str, agents: list = None, rounds: int = 1) -> dict:
             continue  # Supervisor fala por último
         thought = agent_think(agent_name, topic, context_so_far)
         contributions.append({"agent": agent_name, "thought": thought, "ts": datetime.now().isoformat()})
-        context_so_far += f"\n{AGENT_PERSONAS.get(agent_name, {}).get('emoji', '🤖')} {agent_name}: {thought}"
+        context_so_far += f"\n{AGENT_PERSONAS.get(agent_name, {}).get('emoji', '[IA]')} {agent_name}: {thought}"
         logger.info(f"[OrganicMind] {agent_name}: {thought[:80]}...")
 
     # Supervisor sintetiza e decide

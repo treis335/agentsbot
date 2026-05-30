@@ -83,9 +83,9 @@ def load_real_data():
     
     if not activity:
         activity = [
-            {"time": time.strftime("%H:%M:%S"), "message": "✅ Sistema Correoto operacional"},
-            {"time": time.strftime("%H:%M:%S"), "message": "🤖 Agentes aguardando tarefas"},
-            {"time": time.strftime("%H:%M:%S"), "message": "💾 Memória persistente ativa"}
+            {"time": time.strftime("%H:%M:%S"), "message": "[OK] Sistema Correoto operacional"},
+            {"time": time.strftime("%H:%M:%S"), "message": "[IA] Agentes aguardando tarefas"},
+            {"time": time.strftime("%H:%M:%S"), "message": "[SALVAR] Memória persistente ativa"}
         ]
     
     data["recent_activity"] = activity[:20]

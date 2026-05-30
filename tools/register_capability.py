@@ -31,16 +31,16 @@ def main():
     registry = get_registry()
 
     if args.list:
-        print("\n📋 Agentes registados:\n")
+        print("\n[LISTA] Agentes registados:\n")
         for agent in registry.list_agents():
             skills = registry.get_agent_skills(agent)
             desc = registry.get_agent_description(agent)
-            print(f"  🤖 {agent}: {desc}")
+            print(f"  [IA] {agent}: {desc}")
             print(f"     Skills: {', '.join(skills) if skills else '(nenhuma)'}\n")
         return
 
     if args.scores:
-        print(f"\n📊 Scores para: '{args.scores}'\n")
+        print(f"\n[DADOS] Scores para: '{args.scores}'\n")
         scores = registry.score_all(args.scores)
         ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for agent, score in ranked:
@@ -50,13 +50,13 @@ def main():
 
     if args.match:
         best = registry.match(args.match)
-        print(f"\n✅ Melhor agente para '{args.match}': {best}\n")
+        print(f"\n[OK] Melhor agente para '{args.match}': {best}\n")
         return
 
     if args.agent and args.skill:
         keywords = [k.strip() for k in args.keywords.split(",")] if args.keywords else []
         registry.register_skill(args.agent, args.skill, keywords)
-        print(f"✅ Skill '{args.skill}' registada para '{args.agent}'")
+        print(f"[OK] Skill '{args.skill}' registada para '{args.agent}'")
         if keywords:
             print(f"   Keywords: {', '.join(keywords)}")
         return

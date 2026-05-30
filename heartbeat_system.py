@@ -65,7 +65,7 @@ def check_if_supervisor_stuck():
                 data = json.load(f)
             content = json.dumps(data)
             if "limite de itera" in content.lower() or "iteration limit" in content.lower():
-                log("⚠️ Limite de iteracoes detectado na memoria!")
+                log("[!]️ Limite de iteracoes detectado na memoria!")
                 return True
         
         # Metodo 2: Verificar heartbeat
@@ -75,7 +75,7 @@ def check_if_supervisor_stuck():
             hb_time = datetime.fromisoformat(hb["timestamp"])
             diff = (datetime.now() - hb_time).total_seconds()
             if diff > MAX_IDLE_SECONDS:
-                log(f"⚠️ Heartbeat parado ha {diff:.0f}s!")
+                log(f"[!]️ Heartbeat parado ha {diff:.0f}s!")
                 return True
         
         # Metodo 3: Verificar processos
@@ -87,7 +87,7 @@ def check_if_supervisor_stuck():
                 timeout=5
             )
             if 'main.py' not in result.stdout and 'supervisor_ultra' not in result.stdout:
-                log("⚠️ Nenhum processo Python do Correoto encontrado!")
+                log("[!]️ Nenhum processo Python do Correoto encontrado!")
                 return True
         except:
             pass
@@ -95,12 +95,12 @@ def check_if_supervisor_stuck():
         return False
         
     except Exception as e:
-        log(f"❌ Erro ao verificar stuck: {e}")
+        log(f"[X] Erro ao verificar stuck: {e}")
         return False
 
 def restart_supervisor():
     """Reinicia o Supervisor com Smart Pace e Deep Work"""
-    log("🔄 A reiniciar Supervisor com modo ultra eficiente...")
+    log("[LOOP] A reiniciar Supervisor com modo ultra eficiente...")
     
     # Atualiza Smart Pace
     pace_data = {
@@ -144,18 +144,18 @@ def restart_supervisor():
             [sys.executable, "supervisor_ultra.py"],
             creationflags=subprocess.CREATE_NEW_CONSOLE
         )
-        log("✅ Supervisor reiniciado com modo ultra eficiente!")
+        log("[OK] Supervisor reiniciado com modo ultra eficiente!")
     except Exception as e:
-        log(f"❌ Erro ao reiniciar: {e}")
+        log(f"[X] Erro ao reiniciar: {e}")
         # Fallback: inicia main.py diretamente
         try:
             subprocess.Popen(
                 [sys.executable, "main.py"],
                 creationflags=subprocess.CREATE_NEW_CONSOLE
             )
-            log("✅ Fallback: main.py iniciado")
+            log("[OK] Fallback: main.py iniciado")
         except Exception as e2:
-            log(f"❌ Erro no fallback: {e2}")
+            log(f"[X] Erro no fallback: {e2}")
 
 def main():
     """Loop principal do Heartbeat System"""
@@ -178,7 +178,7 @@ def main():
                 current_time = time.time()
                 if current_time - last_restart_time > 10:
                     restart_count += 1
-                    log(f"🔄 Restart #{restart_count}")
+                    log(f"[LOOP] Restart #{restart_count}")
                     restart_supervisor()
                     last_restart_time = current_time
                 else:
@@ -188,10 +188,10 @@ def main():
             time.sleep(CHECK_INTERVAL)
             
         except KeyboardInterrupt:
-            log("🛑 Heartbeat System parado pelo utilizador")
+            log("[PARAR] Heartbeat System parado pelo utilizador")
             break
         except Exception as e:
-            log(f"❌ Erro no loop principal: {e}")
+            log(f"[X] Erro no loop principal: {e}")
             time.sleep(5)
 
 if __name__ == "__main__":
