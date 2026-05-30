@@ -1791,10 +1791,34 @@
     "id": "auto_204d4ec8",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T23:13:20.171091",
     "source": "fallback",
-    "started_at": "2026-05-30T23:13:30.183686"
+    "started_at": "2026-05-30T23:13:30.183686",
+    "completed_at": "2026-05-30T23:14:56.997419",
+    "result": "---\n\n## ✅ Diagnóstico Concluído — 3 Problemas Identificados e 1 Corrigido\n\n### 📊 Análise de Logs (125.785 linhas do `main.log` + 7 outros logs)\n\n---\n\n### 🔴 Problema #1: **Telegram Conflict — 1.585 ocorrências** (CRÍTICO)\n**O quê:** `telegram.error.Conflict: terminated by other getUpdates request`\n**Padrão:** Repetido a cada ~53 linhas — o sistema reiniciava o main.py múltiplas vezes (wakeup_v3, supervisor_ultra, heartbeat), criando N instâncias do bot Telegram a competir pelo mesmo token.\n**Impa"
+  },
+  {
+    "id": "auto_fcc3cba3",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-30T23:15:07.016348",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:15:17.028632",
+    "completed_at": "2026-05-30T23:17:59.146159",
+    "result": "## ✅ Análise Completa da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente os 200 episódios da memória episódica (`loop_episodes.json`, `episodica/gestor_memoria-*.json`, `episodica/supervisor-*.json`, `licoes_episodicas.md`). Extraí 7 lições acionáveis — 3 críticas (loop de 75 execuções da mesma tarefa pelo qa_tester, 199/200 episódios sem lições, MemoryHub com 0 linhas), 2 médias (falta diversidade de tarefas, taxa de sucesso suspeita de 99.5%) e 2 oportunidades (supervisor como referê"
+  },
+  {
+    "id": "auto_d473a496",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T23:18:09.358003",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:18:19.370406"
   }
 ]

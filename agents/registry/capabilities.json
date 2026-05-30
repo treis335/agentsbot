@@ -1063,6 +1063,46 @@
         "data engineer"
       ],
       "priority": 7
+    },
+    "automation_orchestrator": {
+      "description": "Automatiza tarefas repetitivas, agenda CRON jobs, orquestra workflows e pipelines multi-agente",
+      "skills": [
+        "automation",
+        "scheduling",
+        "cron",
+        "workflow_orchestration",
+        "scripting",
+        "pipeline_automation",
+        "event_driven",
+        "task_scheduling",
+        "maintenance_automation",
+        "backup_automation",
+        "monitoring_automation",
+        "log_rotation",
+        "idempotency",
+        "fallback_planning"
+      ],
+      "keywords": [
+        "automatiza",
+        "agenda",
+        "cron",
+        "workflow",
+        "pipeline",
+        "tarefa repetitiva",
+        "recorrente",
+        "diário",
+        "semanal",
+        "backup",
+        "limpeza",
+        "manutenção",
+        "script automático",
+        "orquestra",
+        "gatilho",
+        "evento",
+        "scheduled",
+        "automation"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
