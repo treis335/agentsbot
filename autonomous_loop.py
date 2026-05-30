@@ -143,14 +143,17 @@ class AutonomousLoop:
         cycle_id = self.cycle_count
         log_cycle(f"[Ciclo #{cycle_id}] Inicio")
 
-        # 0. Ciclo Cognitivo — Pensar -> Agir -> Observar -> Aprender -> Evoluir
+        # 0. Ciclo Cognitivo - Pensar -> Agir -> Observar -> Aprender -> Evoluir
         if self._cognitive:
             try:
-                cog_result = self._cognitive.run_cycle(context=task_desc)
+                # NOTA: task_desc pode nao estar definida ainda (definida mais abaixo)
+                ctx = task_desc if "task_desc" in dir() and task_desc else "ciclo_autonomo"
+                cog_result = self._cognitive.run_cycle(context=ctx)
                 if cog_result.get("loop_detected"):
-                    log_cycle(f"[Cognitive] [!] Loop detetado ? a mudar de abordagem")
-                    # Forçar fallback para evitar repetição
-                    task_desc = f"{task_desc} (tenta uma abordagem completamente diferente)"
+                    log_cycle("[Cognitive] Loop detetado - a mudar de abordagem")
+                    # Forcar fallback para evitar repeticao
+                    if "task_desc" in dir() and task_desc:
+                        task_desc = f"{task_desc} (tenta uma abordagem completamente diferente)"
                 log_cycle(f"[Cognitive] Ciclo #{cog_result.get('cycle', '?')} concluido")
             except Exception as e:
                 log_cycle(f"[Cognitive] Erro: {e}")

@@ -224,215 +224,107 @@
     "last_active": ""
   },
   {
-    "id": "prompt-engineer-001",
-    "name": "prompt_engineer",
-    "role": "prompt_engineer",
-    "soul": "prompt_engineer",
+    "id": "1f425939-a5d9-455e-9963-8adcfc5864dc",
+    "name": "supervisor",
+    "role": "supervisor",
+    "soul": "SUPERVISOR GERAL: Coordenas a equipa, delegas tarefas, monitorizas progresso. Usas a memoria partilhada para coordenar. Quando recebes um pedido, analisas, divides em tarefas, delegas e garantes que fica feito.",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": [
-      "otimizar_prompts",
-      "reduzir_tokens",
-      "testar_variacoes",
-      "analisar_contexto",
-      "desenhar_templates",
-      "calcular_custos"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "otimizacao",
-      "prioridade": 7,
-      "especialidade": "prompt_engineering"
-    },
-    "created_at": "2026-05-30T15:33:00",
-    "last_active": ""
-  },
-  {
-    "id": "2e75c9e6-ae88-4385-ac8d-3be56ffad4d6",
-    "name": "comunicador",
-    "soul": "Sou o especialista em comunicaÃ§Ã£o humano-sistema. A minha missÃ£o Ã© interpretar pedidos ambÃ­guos do utilizador, gerir conversas multi-turno, traduzir linguagem natural para tarefas acionÃ¡veis, manter contexto de conversa, e decidir quando perguntar por clarificaÃ§Ã£o vs. quando agir autonomamente. Garanto que o ecossistema entende o que o humano realmente precisa.",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "context": [],
     "capabilities": [],
+    "context": [],
     "metadata": {},
-    "created_at": "2026-05-30T15:35:55.947174",
-    "last_active": "",
-    "role": "custom"
-  },
-  {
-    "id": "data_analyst-001",
-    "name": "data_analyst",
-    "role": "analyst",
-    "soul": "data_analyst",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "analisar_dados",
-      "visualizar",
-      "reportar",
-      "extrair_insights",
-      "calcular_kpis",
-      "detetar_anomalias"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "analise",
-      "prioridade": 6
-    },
-    "created_at": "2026-05-30T15:40:00",
+    "created_at": "2026-05-30T17:05:12.774557",
     "last_active": ""
   },
   {
-    "id": "integrador-testes-001",
-    "name": "integrador_testes",
-    "role": "integration_tester",
-    "soul": "integrador_testes",
+    "id": "25ab57ad-59a4-4ef7-abd5-aa3427380caf",
+    "name": "developer",
+    "role": "developer",
+    "soul": "DEVELOPER: Implementas codigo de qualidade, escreves testes, fazes debug. Transformas ideias em software funcional. Usas Python, escreves ficheiros, executas testes, fazes commit.",
     "model": "deepseek-chat",
     "status": "idle",
-    "capabilities": [
-      "testar_integracao",
-      "testar_e2e",
-      "detetar_regressao",
-      "simular_fluxos",
-      "testar_resiliencia",
-      "relatar_saude_sistema"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "qualidade_integracao",
-      "prioridade": 4
-    },
-    "created_at": "2026-05-30T15:42:23.644916",
-    "last_active": ""
-  },
-  {
-    "id": "database_manager-001",
-    "name": "database_manager",
-    "role": "database_administrator",
-    "soul": "database_manager",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "modelar_dados",
-      "otimizar_queries",
-      "gerir_migracoes",
-      "fazer_backup",
-      "configurar_conexoes",
-      "estrategias_cache",
-      "garantir_integridade"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "dados",
-      "prioridade": 6
-    },
-    "created_at": "2026-05-30T16:19:00",
-    "last_active": ""
-  },
-  {
-    "id": "c45c878f-ec90-4d5d-a7a1-3aeff2b4d232",
-    "name": "facilitador",
-    "soul": "facilitador",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "context": [],
-    "capabilities": [
-      "mediar_conflitos",
-      "facilitar_consenso",
-      "comunicacao_nao_violenta",
-      "escuta_ativa",
-      "alinhamento_relacional",
-      "geracao_opcoes"
-    ],
-    "metadata": {
-      "nivel": "relacional",
-      "prioridade": 5
-    },
-    "created_at": "2026-05-30T16:21:15.234836",
-    "last_active": "",
-    "role": "mediator"
-  },
-  {
-    "id": "deps-mgr-001",
-    "name": "dependency_manager",
-    "role": "dependencies",
-    "soul": "dependency_manager",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "gerir_dependencias",
-      "resolver_conflitos",
-      "auditar_seguranca",
-      "atualizar_libs",
-      "manter_requirements"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "manutencao",
-      "prioridade": 7,
-      "especialidade": "dependencias"
-    },
-    "created_at": "2026-05-30T16:23:00",
-    "last_active": ""
-  },
-  {
-    "id": "cost-controller-001",
-    "name": "cost_controller",
-    "role": "cost_optimizer",
-    "soul": "cost_controller",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "monitorizar_custos_api",
-      "analisar_eficiencia_tokens",
-      "detectar_desperdicio",
-      "otimizar_gastos",
-      "alertar_orcamento",
-      "reportar_roi_agentes"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "financeiro",
-      "prioridade": 2
-    },
-    "created_at": "2026-05-30T16:37:00",
-    "last_active": ""
-  },
-  {
-    "id": "cost-controller-001",
-    "name": "cost_controller",
-    "role": "cost_optimizer",
-    "soul": "cost_controller",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "monitorizar_custos_api",
-      "analisar_eficiencia_tokens",
-      "detectar_desperdicio",
-      "otimizar_gastos",
-      "alertar_orcamento",
-      "reportar_roi_agentes"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "financeiro",
-      "prioridade": 2
-    },
-    "created_at": "2026-05-30T16:37:00",
-    "last_active": ""
-  },
-  {
-    "id": "bea0508e-a2e6-4bdf-a936-45938624471b",
-    "name": "cost_controller",
-    "soul": "Monitorizar, analisar e otimizar todos os custos de API do ecossistema. Detetar desperdícios, sugerir mudanças de modelo, controlar orçamento e emitir alertas de threshold. Garantir que cada token gasto gera valor real.",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "context": [],
     "capabilities": [],
+    "context": [],
     "metadata": {},
-    "created_at": "2026-05-30T16:38:25.036184",
-    "last_active": "",
-    "role": "custom"
+    "created_at": "2026-05-30T17:05:12.774575",
+    "last_active": ""
+  },
+  {
+    "id": "0a0821f4-25df-4ca9-a4a6-307b68c750d7",
+    "name": "arquiteto",
+    "role": "architect",
+    "soul": "ARQUITETO: Desenhas a arquitetura do sistema, defines padroes, garantes escalabilidade. Propoes melhorias estruturais e documentas decisoes tecnicas.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T17:05:12.774587",
+    "last_active": ""
+  },
+  {
+    "id": "cd9109bd-e109-4b38-8e3e-4f9be7ff0baa",
+    "name": "qa_tester",
+    "role": "tester",
+    "soul": "QA TESTER: Garantes qualidade. Escreves testes, validas, reportas bugs. Nada passa sem a tua aprovacao.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T17:05:12.774598",
+    "last_active": ""
+  },
+  {
+    "id": "cde063b6-6eaf-4908-93a6-4d0665e49ae7",
+    "name": "explorador",
+    "role": "explorer",
+    "soul": "EXPLORADOR: Pesquisas novas tecnologias, bibliotecas, tendencias. Trazes descobertas para a equipa.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T17:05:12.774608",
+    "last_active": ""
+  },
+  {
+    "id": "c83f31c0-cd6a-49c5-9037-36f3157a41a7",
+    "name": "documentador",
+    "role": "documenter",
+    "soul": "DOCUMENTADOR: Crias e mantens documentacao clara. README, docs tecnicos, changelogs, guias.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T17:05:12.774618",
+    "last_active": ""
+  },
+  {
+    "id": "d092c28a-a8da-456d-bb69-fa5c57037375",
+    "name": "auto_fixer",
+    "role": "developer",
+    "soul": "AUTO FIXER: Detectas e corriges problemas automaticamente. Ages sem esperar por autorizacao.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T17:05:12.774632",
+    "last_active": ""
+  },
+  {
+    "id": "39eaae74-5686-46f0-871f-e0ae53216476",
+    "name": "auto_optimizer",
+    "role": "optimizer",
+    "soul": "AUTO OPTIMIZER: Otimizas tudo. Analisas codigo, estrutura, performance. Implementas melhorias sem pedir permissoes.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [],
+    "context": [],
+    "metadata": {},
+    "created_at": "2026-05-30T17:05:12.774642",
+    "last_active": ""
   }
 ]

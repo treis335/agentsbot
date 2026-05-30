@@ -1829,13 +1829,25 @@
       "decision": "Telegram: ja funcionas?",
       "context": "Telegram",
       "timestamp": "2026-05-30T15:38:28.300960"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: atualmente esta tudo sincronizado ? local e github? so para eu perceber",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T17:06:18.661988"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: pretendo que continues a fazer o que estavas a fazer",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T17:07:34.488899"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-30T13:37:05.469064",
-    "agents_count": 52,
+    "last_start": "2026-05-30T17:05:12.818737",
+    "agents_count": 19,
     "tasks_count": 0
   },
   "knowledge": [],

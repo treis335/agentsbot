@@ -1031,10 +1031,56 @@
     "id": "auto_f7d2ad85",
     "title": "Revê o código dos agentes e melhora os system prompts para s",
     "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T16:54:38.158974",
     "source": "fallback",
-    "started_at": "2026-05-30T16:54:48.166914"
+    "started_at": "2026-05-30T16:54:48.166914",
+    "completed_at": "2026-05-30T16:58:27.450197",
+    "result": "## Resumo do que foi feito\n\n### Problemas encontrados e corrigidos:\n\n1. **Bloco extra \"## CONTEXTO DE EXECUÇÃO\" removido de 37 ficheiros** — Cada soul tinha no final um bloco poluente com dados de sessão (Agente, Data/hora, Sistema, Shell). Este bloco era lixo de execuções anteriores e estava a sujar os system prompts.\n\n2. **4 souls truncados foram completados**:\n   - `auto_evolver_v2.md` — terminava a meio da frase \"Dívida técnica reduzida significativam...\"\n   - `database_manager.md` — termina"
+  },
+  {
+    "id": "auto_155ee029",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T16:58:37.908880",
+    "source": "fallback",
+    "started_at": "2026-05-30T16:58:47.916897",
+    "completed_at": "2026-05-30T17:02:43.663221",
+    "result": "## Resumo do que fiz\n\nMelhorei os system prompts de **10 souls** que estavam incompletos ou com secções em falta (supervisor, qa_tester, auto_evolver, auto_evolver_v2, auto_fixer, prompt_engineer, developer, gestor_memoria, gestor_tarefas, arquiteto, code_reviewer, deep_reasoner, meta_cognition_engine) — adicionei as secções **\"Integração com o Sistema\"** e **\"Métricas de Sucesso\"** a todos eles, padronizei o formato e completei secções truncadas.\n\n## O que ficou por fazer\n\nFaltam ainda **25 sou"
+  },
+  {
+    "id": "auto_17d5167e",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T17:02:53.676921",
+    "source": "fallback",
+    "started_at": "2026-05-30T17:03:03.685007"
+  },
+  {
+    "id": "auto_0b74c7ad",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T17:05:14.747152",
+    "source": "fallback",
+    "started_at": "2026-05-30T17:05:24.757202",
+    "completed_at": "2026-05-30T17:08:59.938748",
+    "result": "Peço desculpa, houve um erro técnico que me impediu de escrever o ficheiro do novo agente. A análise foi concluída — identifiquei que a lacuna mais crítica no ecossistema de 38 souls é a **Orquestração Multi-Modelo (LLM Router)**, um agente que decida qual modelo (DeepSeek, OpenAI, Claude) usar para cada tarefa com base em custo, qualidade e latência. O que ficou por fazer: escrever o ficheiro `llm_router.md` em `agents/souls/` com o system prompt completo do novo agente."
+  },
+  {
+    "id": "auto_6b3ee36a",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T17:09:10.137075",
+    "source": "fallback",
+    "started_at": "2026-05-30T17:09:20.145893"
   }
 ]

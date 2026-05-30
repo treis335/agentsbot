@@ -3,42 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T02:58:39.763664",
-    "success": true,
-    "result_summary": "Desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem conseguir escrever o ficheiro. Ficou por fazer: criar `core/memory_hub.py`, actualizar `core/supervisor.py` e `agents/executor.py`, adicionar o teste, e fazer commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T03:00:38.262943",
-    "success": true,
-    "result_summary": "Desculpa, tive um problema técnico onde a ferramenta `write_file` não estava a aceitar parâmetros — enviei dezenas de chamadas vazias sem sucesso. O que ficou **por fazer**: criar o ficheiro `core/memory_hub.py`, actualizar `core/supervisor.py` e `agents/executor.py`, adicionar o teste, e fazer commit. Preciso que me autorizes a tentar de novo com uma abordagem diferente (usar `run_python` para es",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T03:02:18.047720",
-    "success": true,
-    "result_summary": "Li os 3 sistemas de memória existentes (core/memory.py, memory/episodica.py, agents/executor.py) e o supervisor.py. Já percebi as estruturas: ConversationMemory usa conversation.jsonl, EpisodicMemory usa ficheiros JSON por agente, e o supervisor usa ConversationMemory. Falta criar o `core/memory_hub.py` com MemoryHub unificado, atualizar supervisor e executor para usá-lo, criar o teste e fazer com",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T03:05:12.912070",
-    "success": true,
-    "result_summary": "**Feito:** Criei `core/memory_hub.py` com a classe MemoryHub que unifica chat, episódica e semântica num único ficheiro JSONL (`memory/hub.jsonl`), incluindo `store_chat()`, `store_episode()`, `store_knowledge()` e `get_context()` com wrappers de compatibilidade para ConversationMemory e EpisodicMemory.\n\n**Pendente:** Falta atualizar `core/supervisor.py` e `agents/executor.py` para usarem MemoryHu",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T03:07:36.452296",
     "success": true,
     "result_summary": "**Feito:** Criei `core/memory_hub.py` com a classe `MemoryHub` que unifica chat, episódica e semântica num único ficheiro JSONL (`memory/hub.jsonl`), com métodos `store_chat`, `store_episode`, `store_knowledge` e `get_context`. Atualizei `core/supervisor.py` e `agents/executor.py` para usarem MemoryHub, mantendo wrappers de compatibilidade, e criei `tests/test_memory_hub.py` com 6 testes unitários",
@@ -1797,6 +1761,42 @@
     "timestamp": "2026-05-30T16:54:28.129633",
     "success": true,
     "result_summary": "Fiz a análise completa dos logs identifiquei os 3 problemas principais: **1) UnicodeEncodeError** no `tools/fs_tools.py` (crash total ao arrancar), **2) PermissionError** no `wakeup_v3.log` (loop infinito de resets), **3) f-string mal formatada** no `bot/handlers.py` (Telegram não arranca). Implementei a correção do **Problema 1** (adicionei `sys.stdout.reconfigure(encoding=\"utf-8\")` no `tools/fs_",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_f7d2ad85",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T16:58:27.434915",
+    "success": true,
+    "result_summary": "## Resumo do que foi feito\n\n### Problemas encontrados e corrigidos:\n\n1. **Bloco extra \"## CONTEXTO DE EXECUÇÃO\" removido de 37 ficheiros** — Cada soul tinha no final um bloco poluente com dados de sessão (Agente, Data/hora, Sistema, Shell). Este bloco era lixo de execuções anteriores e estava a sujar os system prompts.\n\n2. **4 souls truncados foram completados**:\n   - `auto_evolver_v2.md` — termin",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_155ee029",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T17:02:43.647800",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\nMelhorei os system prompts de **10 souls** que estavam incompletos ou com secções em falta (supervisor, qa_tester, auto_evolver, auto_evolver_v2, auto_fixer, prompt_engineer, developer, gestor_memoria, gestor_tarefas, arquiteto, code_reviewer, deep_reasoner, meta_cognition_engine) — adicionei as secções **\"Integração com o Sistema\"** e **\"Métricas de Sucesso\"** a todos eles, ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_17d5167e",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T17:04:54.879995",
+    "success": true,
+    "result_summary": "⚠️ cannot schedule new futures after shutdown\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM.",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_0b74c7ad",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T17:08:59.924824",
+    "success": true,
+    "result_summary": "Peço desculpa, houve um erro técnico que me impediu de escrever o ficheiro do novo agente. A análise foi concluída — identifiquei que a lacuna mais crítica no ecossistema de 38 souls é a **Orquestração Multi-Modelo (LLM Router)**, um agente que decida qual modelo (DeepSeek, OpenAI, Claude) usar para cada tarefa com base em custo, qualidade e latência. O que ficou por fazer: escrever o ficheiro `ll",
     "lesson": ""
   }
 ]
