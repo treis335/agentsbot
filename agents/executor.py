@@ -136,22 +136,21 @@ class AgentExecutor:
                 result = d.get("result", "")[:60]
                 lines.append(f"[FAIL] {action}({d.get('args', {})}) -> {result}")
 
-        # Memória global partilhada
+        # Memória global partilhada (via MemoryHub)
         try:
-            from memory.global_memory import GlobalMemory
-            gm = GlobalMemory()
-
-            decisions = gm.get_decisions(5)
+            decisions = self.memory.get_decisions(limit=5)
             if decisions:
                 lines.append("\n### Decisões da Equipa (memória global)")
                 for d in decisions:
                     lines.append(f"• [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
 
-            knowledge = gm.get_knowledge()
+            knowledge = self.memory.get_knowledge(limit=5)
             if knowledge:
                 lines.append("\n### Conhecimento Partilhado")
-                for k in knowledge[-5:]:
-                    lines.append(f"• {k['topic']}: {k['content'][:80]}")
+                for k in knowledge:
+                    topic = k['data'].get('topic', 'general')
+                    content_val = k['data'].get('content', '')[:80]
+                    lines.append(f"• {topic}: {content_val}")
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
 
@@ -322,10 +321,9 @@ class AgentExecutor:
                     success = True,
                     context = f"Iteração {iteration + 1}",
                 )
-                # Registar na memória global
+                # Registar na memória global (via MemoryHub)
                 try:
-                    from memory.global_memory import GlobalMemory
-                    GlobalMemory().add_decision(
+                    self.memory.add_decision(
                         agent    = self.agent_name,
                         decision = f"Completou: {task[:80]}",
                         context  = (msg.content or "")[:200],
