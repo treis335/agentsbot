@@ -276,8 +276,57 @@
     "title": "Criar Watchdog Auto-Recuperação que monitoriza e repara componentes críticos automaticamente",
     "desc": "O ecossistema tem vários pontos de falha conhecidos: (1) Push GitHub falha por timeout de rede, (2) Telegram bot crasha com 'Conflict: terminated by other getUpdates request', (3) O ciclo autónomo pode ficar preso em tarefas que nunca terminam. Falta um sistema centralizado que detecte estes problemas e os resolva automaticamente.\n\n**Tarefa:**\n1. Criar `core/watchdog.py` com uma classe `SelfHealingWatchdog` que:\n   - Corre em thread separada a cada 60 segundos\n   - **Verificação 1 — Git Sync:** Se `git status` mostra commits locais não enviados, tenta `git push` com 3 retries (com backoff de 5s, 15s, 30s). Se falhar, regista em `memory/watchdog.log` e tenta `git pull --rebase` + push\n   - **Verificação 2 — Telegram Conflict:** Verifica se `wakeup_v3.lock` existe e está stale (>5 min). Se sim, remove o lock e reinicia o bot\n   - **Verificação 3 — Ciclo Autónomo Preso:** Lê `memory/autonomous_log.md`, se a última linha tem mais de 10 minutos e o status é 'running' ou 'in_progress', marca a tarefa como 'failed' e força o próximo ciclo\n   - **Verificação 4 — Processos Zombie:** Verifica se `main.py` ou `wakeup_v3.py` estão a correr (tasklist/findstr). Se não, reinicia com `subprocess.Popen`\n   - **Verificação 5 — Memória:** Verifica se `memory/backlog.json` e `memory/event_log/` existem e não estão corrompidos (tenta `json.loads`). Se corrompido, faz backup com timestamp e recria\n2. Integrar em `main.py`: iniciar watchdog no `async def main()`\n3. Criar `tests/test_watchdog.py` com testes unitários para cada verificação\n4. Documentar em `docs/watchdog.md`\n5. Fazer commit com mensagem 'feat: adiciona SelfHealingWatchdog com 5 verificações de saúde'",
     "priority": 8,
-    "status": "pending",
+    "status": "completed",
     "created_at": "2026-05-30T02:02:08.485065",
-    "source": "auto_generated"
+    "source": "auto_generated",
+    "started_at": "2026-05-30T13:37:07.690800",
+    "completed_at": "2026-05-30T13:39:39.608325",
+    "result": "Desculpa, tive um problema técnico com a ferramenta `write_file` — não consegui passar os parâmetros corretamente. Fiz toda a análise exploratória do ecossistema (estrutura de ficheiros, estado do git, locks existentes, conteúdo do main.py, autonomous_loop.py, backlog.json, autonomous_log.md), mas **não consegui criar nenhum dos 4 ficheiros necessários** (core/watchdog.py, tests/test_watchdog.py, docs/watchdog.md, e a modificação em main.py) devido a uma falha na interface de escrita."
+  },
+  {
+    "id": "auto_a43452fe",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T13:39:49.757750",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:39:59.763737",
+    "completed_at": "2026-05-30T13:42:51.359808",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente toda a memória do ecossistema — 100 episódios, 33 tarefas do backlog, 175 ciclos do log autónomo, logs de eventos, evolução, diagnóstico e o hub de memória. Extraí **9 lições críticas** e atualizei o ficheiro `memory/semantica/licoes_aprendidas.md` com 3 novas lições detetadas: (L9) **Loop infinito de tarefas** — a mesma tarefa \"unificar 3 sistemas de memória\" repetiu-se 52 vezes consecutivas sem progr"
+  },
+  {
+    "id": "auto_a5c857a2",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T13:43:01.370960",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:43:11.375818",
+    "completed_at": "2026-05-30T13:46:18.025991",
+    "result": "Analisei todos os 27 souls do ecossistema, identifiquei 7 problemas críticos (inconsistência de formato, sobreposição de responsabilidades, falta de secções de falha, ferramentas desactualizadas, sem template standard) e criei backup completo dos originais.\n\nFicou por escrever os ficheiros melhorados — preciso de os escrever com `write_file(path, content)` com o novo template consistente para cada soul."
+  },
+  {
+    "id": "auto_34fd28dd",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T13:46:28.210156",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:46:38.215480",
+    "completed_at": "2026-05-30T13:49:01.453612",
+    "result": "Analisei todo o ecossistema de 27 agentes/souls e identifiquei que a área mais crítica descoberta é **integração de dados e pipelines** — não existe nenhum agente especializado em buscar, processar e integrar dados de fontes externas (APIs, web scraping, ETL). Ficou por escrever o ficheiro `agents/souls/data_integrator.md` com a alma do novo agente e registá-lo no `agents/registry/agents.json` e `capabilities.json` — a ferramenta `write_file` falhou repetidamente (limite de chamadas sem argument"
+  },
+  {
+    "id": "auto_d95baeb2",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T13:49:11.629148",
+    "source": "fallback",
+    "started_at": "2026-05-30T13:49:21.634950"
   }
 ]

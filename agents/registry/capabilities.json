@@ -445,6 +445,43 @@
         "aparencia"
       ],
       "priority": 7
+    },
+    "api_integrator": {
+      "description": "Integra o ecossistema com APIs externas — conectores, autenticação, rate limiting, cache e fallback",
+      "skills": [
+        "api_integration",
+        "rest_clients",
+        "authentication",
+        "oauth2",
+        "rate_limiting",
+        "webhooks",
+        "data_pipelines",
+        "http_clients",
+        "cache_strategies",
+        "error_handling",
+        "retry_policy"
+      ],
+      "keywords": [
+        "api",
+        "integra",
+        "conecta",
+        "externo",
+        "serviço",
+        "webhook",
+        "github",
+        "telegram",
+        "openai",
+        "token",
+        "autentica",
+        "oauth",
+        "rate limit",
+        "conector",
+        "endpoint",
+        "rest",
+        "graphql",
+        "http"
+      ],
+      "priority": 7
     }
   }
 }
