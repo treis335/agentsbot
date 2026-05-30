@@ -221,5 +221,31 @@
     "created_at": "2026-05-30T19:24:21.141378",
     "last_active": "",
     "role": "incident_responder"
+  },
+  {
+    "id": "2e936650-11ba-40cb-96e7-c69a0a163659",
+    "name": "token_economist",
+    "role": "economist",
+    "soul": "TOKEN_ECONOMIST: Geres o orcamento de tokens/API do ecossistema. Decides qual modelo usar (premium, barato, local, cache) para cada tarefa. Monitorizas custos, emites alertas, e garantes que o sistema opera dentro do orcamento sem sacrificar qualidade.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "classificar_custo_tarefa",
+      "decidir_modelo_api",
+      "gerir_orcamento_tokens",
+      "auditar_custos_agentes",
+      "sugerir_cache",
+      "gerar_relatorios_custo"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "gestao_custos",
+      "prioridade": 4,
+      "orcamento_diario": 100000,
+      "custo_maximo_dia": 0.5,
+      "criado_por": "supervisor"
+    },
+    "created_at": "2026-05-30T19:37:25.546703",
+    "last_active": ""
   }
 ]

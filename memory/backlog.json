@@ -1437,10 +1437,58 @@
     "id": "auto_8a181165",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T19:23:34.407619",
     "source": "fallback",
-    "started_at": "2026-05-30T19:23:44.418171"
+    "started_at": "2026-05-30T19:23:44.418171",
+    "completed_at": "2026-05-30T19:25:12.923509",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `incident_responder` 🧯🚨\n\n### Lacuna Identificada\nO ecossistema tinha **39 souls** (supervisor, developer, auto_fixer, monitor_saude, seguranca, etc.) mas **nenhum agente dedicado a resposta a incidentes em tempo real**. Quando algo falha (P0/P1), não há ninguém para:\n- Classificar a gravidade\n- Executar runbooks automaticamente\n- Coordenar agents na resolução\n- Fazer post-mortem e aprender com o erro\n\n### O que foi criado\n\n| Item | Detalhe |\n|---|---|\n| "
+  },
+  {
+    "id": "auto_98226381",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:25:23.063235",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:25:33.074114",
+    "completed_at": "2026-05-30T19:28:38.719906",
+    "result": "Peço desculpa, entrei num loop de tentativas de `write_file` sem argumentos devido a um erro de parsing do comando. O que fiz: analisei os 40 souls existentes e identifiquei que a área mais carente é a de **estratégia integrada** — falta um agente que cruze dados de performance, custos e qualidade para gerar recomendações accionáveis para o supervisor. O que ficou por fazer: criar o ficheiro `estratega.md` com a definição completa do novo agente e fazer commit/push."
+  },
+  {
+    "id": "auto_cea6eca2",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:28:48.874923",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:28:58.885448",
+    "completed_at": "2026-05-30T19:33:13.710796",
+    "result": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente o ecossistema — 125.784 linhas do main.log, 314 decisões na shared_memory, 12 lições já registadas, 131 tarefas no backlog (111 duplicadas), 3 episódios no hub.jsonl, 40 agentes disponíveis mas apenas 14 registados, e confirmei que o `store_episode()` só é chamado em testes — **nunca no fluxo real de agentes**.\n\n**Principais lições extraídas:**\n1. **CRÍTICO:** 1.587 conflitos Telegram por múltiplas instân"
+  },
+  {
+    "id": "auto_7e8443d0",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T19:33:23.728115",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:33:33.737793",
+    "completed_at": "2026-05-30T19:36:22.719861",
+    "result": "Peço desculpa, entrei num loop de tentativas de `write_file` sem argumentos devido a um erro de parsing do comando. O que ficou por fazer: **criar efetivamente o ficheiro do novo agente** (`data_engineer.md`) com o conteúdo completo da sua identidade, missão e fluxo de trabalho — a lacuna identificada é a ausência de um agente especializado em **Data Engineering & ETL Pipelines**, que é a área mais crítica não coberta pelos 41 souls existentes."
+  },
+  {
+    "id": "auto_ff6c4b9d",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T19:36:32.935102",
+    "source": "fallback",
+    "started_at": "2026-05-30T19:36:42.945892"
   }
 ]
