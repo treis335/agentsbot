@@ -80,6 +80,38 @@ def log_cycle(msg: str):
 
 
 # --- CLASSE PRINCIPAL ---------------------------------------------------------
+def _evaluate_result(result: str) -> bool:
+    """
+    Avalia se o resultado de um agente é realmente um sucesso.
+    Um LLM nunca lança excepção — mas pode responder "não consegui".
+    Retorna False se o resultado indica falha real.
+    """
+    if not result or not result.strip():
+        return False
+    r = result.lower()
+    # Sinais de falha no texto
+    failure_signals = [
+        "peço desculpa", "peco desculpa",
+        "houve um erro técnico", "houve um erro tecnico",
+        "não consegui", "nao consegui",
+        "cannot schedule new futures",
+        "cannot write", "erro ao escrever",
+        "traceback (most recent",
+        "exception:", "error:",
+        "❌ erro", "❌ falha",
+        "não foi possível", "nao foi possivel",
+        "infelizmente não", "infelizmente nao",
+        "desculpe, não", "desculpe, nao",
+    ]
+    for signal in failure_signals:
+        if signal in r:
+            return False
+    # Resultado muito curto pode ser resposta vazia/inútil
+    if len(result.strip()) < 20:
+        return False
+    return True
+
+
 class AutonomousLoop:
     def __init__(self, orchestrator=None, telegram_bot=None):
         self.orchestrator = orchestrator
@@ -308,8 +340,12 @@ class AutonomousLoop:
             )
             _loop.close()
 
-            # 5. Gravar memória episódica + reflexão + skill metrics + event log
-            mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
+            # 5. Avaliar se o resultado é realmente um sucesso (não só "sem excepção")
+            result_text = str(result)
+            real_success = _evaluate_result(result_text)
+            if not real_success:
+                log_cycle(f"[Quality] Resultado parece falha apesar de sem excepção")
+            mem.record(task_id, task_desc, chosen_agent, success=real_success, result=result_text)
             try:
                 from agents.reflection_engine import get_reflection_engine
                 reflection = get_reflection_engine().reflect(
@@ -340,12 +376,12 @@ class AutonomousLoop:
             except Exception:
                 pass
 
-            log_cycle(f"[Memory] Episodio de sucesso: {chosen_agent}")
+            log_cycle(f"[Memory] Episodio: {chosen_agent} success={real_success}")
             for t in load_backlog():
                 if t.get("id") == task_id:
                     t["_last_agent"] = chosen_agent
                     break
-            return True, result
+            return real_success, result_text
 
         except Exception as e:
             error_str = str(e)
@@ -372,8 +408,10 @@ class AutonomousLoop:
                 _loop = _asyncio.new_event_loop()
                 result = _loop.run_until_complete(agent.chat(user_id=0, user_message=task_desc))
                 _loop.close()
-                mem.record(task_id, task_desc, "supervisor", success=True, result=str(result))
-                return True, result
+                result_text = str(result)
+                real_success = _evaluate_result(result_text)
+                mem.record(task_id, task_desc, "supervisor", success=real_success, result=result_text)
+                return real_success, result_text
             except Exception as e2:
                 mem.record(task_id, task_desc, "supervisor", success=False, result=str(e2))
                 return False, str(e2)

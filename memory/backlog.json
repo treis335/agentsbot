@@ -228,10 +228,9 @@
     "title": "Unificar os 3 sistemas de memória paralelos num único MemoryHub",
     "desc": "O ecossistema tem 3 sistemas de memória que não comunicam:\n- `core/memory.py` (ConversationMemory + SystemState)\n- `cerebro/core/brain.py` (Brain com knowledge/decisions)\n- `agents/executor.py` importa `memory.episodica` (que pode nem existir)\n\nIsto causa duplicação de dados, inconsistência, e alucinação.\n\nTarefa:\n1. Criar `core/memory_hub.py` com classe `MemoryHub` que:\n   - Unifica leitura/escrita num único diretório `memory/global/`\n   - Mantém `conversation.jsonl` (histórico de conversas)\n   - Mantém `state.json` (estado do sistema)\n   - Mantém `knowledge.json` (conhecimento aprendido)\n   - Expõe método `store(domain, key, value)` e `recall(domain, key=None, limit=5)`\n2. Atualizar `core/__init__.py` para exportar MemoryHub\n3. Atualizar `core/supervisor.py` para usar MemoryHub em vez de ConversationMemory\n4. Criar `tests/test_memory_hub.py` com 3 testes (store, recall, persistência)\n5. Fazer commit: \"feat: unifica sistemas de memória em MemoryHub central\"",
     "priority": 8,
-    "status": "running",
+    "status": "pending",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T13:04:59.196809",
     "completed_at": "2026-05-30T13:04:49.181523",
     "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que verifiquei\n\nO código já estava implementado nas execuções anteriores. Fiz a verificação completa:\n\n1. **`core/memory_hub.py`** ✅ — MemoryHub completo com:\n   - `store_chat(role, content)` — conversas\n   - `store_episode(agent_id, task, result)` — memória episódica\n   - `store_knowledge(topic, content)` — memória semântica\n   - `get_context(agent_id, n=10)` — contexto formatado para LLM\n "
   },
@@ -1055,11 +1054,10 @@
     "id": "auto_17d5167e",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "running",
+    "status": "pending",
     "priority": 5,
     "created_at": "2026-05-30T17:02:53.676921",
-    "source": "fallback",
-    "started_at": "2026-05-30T17:03:03.685007"
+    "source": "fallback"
   },
   {
     "id": "auto_0b74c7ad",
@@ -1669,5 +1667,50 @@
     "priority": 5,
     "created_at": "2026-05-30T20:24:28.781674",
     "source": "fallback"
+  },
+  {
+    "id": "auto_council_integration",
+    "title": "Integrar Council no self_improvement_loop",
+    "desc": "O ficheiro evolution/council.py existe mas não está ligado ao self_improvement_loop.py. Edita evolution/self_improvement_loop.py para chamar get_council().review(patch) antes de _apply_patches(). Se o council rejeitar, não aplicar o patch e registar o motivo.",
+    "status": "pending",
+    "priority": 9,
+    "source": "seed",
+    "created_at": "2026-05-30T21:25:07.147595"
+  },
+  {
+    "id": "auto_rollback_system",
+    "title": "Implementar rollback automático de patches",
+    "desc": "Criar core/rollback.py com: 1) git_snapshot() que faz git stash antes de aplicar patch, 2) rollback() que faz git stash pop se métricas degradarem após patch, 3) Integrar no self_improvement_loop após _apply_patches(). Usar subprocess com git stash.",
+    "status": "pending",
+    "priority": 8,
+    "source": "seed",
+    "created_at": "2026-05-30T21:25:07.147644"
+  },
+  {
+    "id": "auto_benchmark_baseline",
+    "title": "Criar sistema de benchmarks/baseline",
+    "desc": "Criar evolution/benchmark.py que: 1) mede métricas actuais (taxa de sucesso do loop, tempo médio por tarefa, tokens usados), 2) grava como baseline em memory/baseline.json, 3) compara antes/depois de self-improve e reporta se melhorou ou degradou. Integrar com self_improvement_loop.",
+    "status": "pending",
+    "priority": 7,
+    "source": "seed",
+    "created_at": "2026-05-30T21:25:07.147647"
+  },
+  {
+    "id": "auto_skill_auto_generator",
+    "title": "Gerador automático de skills por padrões",
+    "desc": "Edita agents/skills_manager.py para adicionar observe_pattern(task_desc, result, success): quando a mesma sequência de acções funciona 3x, cria automaticamente uma nova skill. Usar memory/loop_episodes.json para detectar padrões. Integrar com autonomous_loop.",
+    "status": "pending",
+    "priority": 7,
+    "source": "seed",
+    "created_at": "2026-05-30T21:25:07.147650"
+  },
+  {
+    "id": "auto_core_protection",
+    "title": "Proteger ficheiros core/ de edição acidental",
+    "desc": "Criar core/integrity_monitor.py que: 1) mantém hashes SHA256 dos ficheiros core/ em memory/core_hashes.json, 2) verifica integridade ao arrancar, 3) alerta se algum ficheiro core foi modificado, 4) bloqueia patches que tentam editar core/ no council. Integrar no main.py startup.",
+    "status": "pending",
+    "priority": 6,
+    "source": "seed",
+    "created_at": "2026-05-30T21:25:07.147652"
   }
 ]

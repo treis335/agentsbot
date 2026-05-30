@@ -934,6 +934,135 @@
         "degradacao",
         "antecipar"
       ]
+    },
+    "knowledge_generator": {
+      "description": "Gera conhecimento estruturado, extrai insights e sintetiza informação",
+      "skills": [
+        "knowledge_synthesis",
+        "insight_extraction",
+        "summarization"
+      ],
+      "keywords": [
+        "conhecimento",
+        "insight",
+        "sintetiza",
+        "extrai informação",
+        "gera doc",
+        "knowledge base"
+      ],
+      "priority": 5
+    },
+    "integrador_testes": {
+      "description": "Integra testes no CI/CD, escreve testes de integração end-to-end",
+      "skills": [
+        "integration_testing",
+        "e2e_testing",
+        "ci_cd_testing"
+      ],
+      "keywords": [
+        "integração",
+        "e2e",
+        "ci cd",
+        "pipeline de testes",
+        "testes de integração"
+      ],
+      "priority": 7
+    },
+    "aprendiz": {
+      "description": "Aprende com experiências passadas e aplica lições em novas situações",
+      "skills": [
+        "learning",
+        "adaptation",
+        "pattern_application"
+      ],
+      "keywords": [
+        "aprende",
+        "aplica lição",
+        "padrão",
+        "experiência",
+        "adapta"
+      ],
+      "priority": 4
+    },
+    "meta_cognition_engine": {
+      "description": "Raciocina sobre o próprio raciocínio, melhora estratégias de pensamento",
+      "skills": [
+        "meta_reasoning",
+        "strategy_improvement",
+        "self_analysis"
+      ],
+      "keywords": [
+        "meta",
+        "raciocínio sobre",
+        "estratégia de pensamento",
+        "auto-análise",
+        "cognição"
+      ],
+      "priority": 5
+    },
+    "token_economist": {
+      "description": "Optimiza uso de tokens e custos de API, reduz desperdício",
+      "skills": [
+        "token_optimization",
+        "cost_reduction",
+        "prompt_compression"
+      ],
+      "keywords": [
+        "token",
+        "custo api",
+        "optimiza tokens",
+        "reduz custo",
+        "comprime prompt"
+      ],
+      "priority": 6
+    },
+    "documentador_auto": {
+      "description": "Gera documentação automaticamente a partir de código existente",
+      "skills": [
+        "auto_documentation",
+        "code_analysis",
+        "docstring_generation"
+      ],
+      "keywords": [
+        "auto doc",
+        "documenta código",
+        "gera docstring",
+        "documenta automaticamente"
+      ],
+      "priority": 5
+    },
+    "auto_evolver_v2": {
+      "description": "Versão evoluída do auto_evolver com capacidades de análise mais profundas",
+      "skills": [
+        "advanced_evolution",
+        "deep_analysis",
+        "system_upgrade"
+      ],
+      "keywords": [
+        "evolução avançada",
+        "upgrade profundo",
+        "melhoria sistémica"
+      ],
+      "priority": 7
+    },
+    "data_pipeline_engineer": {
+      "description": "Constrói e mantém pipelines de dados, ETL, scraping e processamento",
+      "skills": [
+        "data_pipeline",
+        "etl",
+        "scraping",
+        "data_processing"
+      ],
+      "keywords": [
+        "pipeline",
+        "etl",
+        "scraping",
+        "dados",
+        "extrai dados",
+        "processa dados",
+        "data engineer"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
