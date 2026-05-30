@@ -33,7 +33,7 @@ class Ecosystem:
         rooms = [
             ("brainstorm", "[IDEA] Brainstorming de ideias e inovação"),
             ("code-review", "[BUSCA] Revisão de código e melhoria contínua"),
-            ("architecture", "[OBRA]️ Discussão de arquitetura e design"),
+            ("architecture", "[OBRA] Discussão de arquitetura e design"),
             ("skills", "[LIVRO] Aprendizagem e desenvolvimento de skills"),
             ("general", "[WEB] Discussões gerais do ecossistema"),
         ]
@@ -163,7 +163,7 @@ class AutoEvolver:
             skill = random.choice(skills)
             leveled_up = self.ecosystem.skills_manager.use_skill(skill.name)
             if leveled_up:
-                actions.append(f"⬆️ {skill.name} subiu para nível {skill.level}!")
+                actions.append(f"[UP] {skill.name} subiu para nível {skill.level}!")
         
         # 5. Registrar inovação
         self.ecosystem._log_innovation(f"[LOOP] Ciclo de evolução #{self.evolution_cycles} concluído")

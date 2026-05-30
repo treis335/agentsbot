@@ -345,7 +345,7 @@ class AgentExecutor:
                 if on_tool_call:
                     await on_tool_call(name, args, "")
 
-                # ── Loop de execução + verificação + retry ────────────────
+                # -- Loop de execução + verificação + retry ----------------
                 retry_state = retry_policy.new_state(name)
                 result      = None
                 verified_ok = False
@@ -384,7 +384,7 @@ class AgentExecutor:
                         f" para '{name}' em {delay:.1f}s"
                     )
                     await asyncio.sleep(delay)
-                # ─────────────────────────────────────────────────────────
+                # ---------------------------------------------------------
 
                 success = verified_ok
 

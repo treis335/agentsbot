@@ -121,7 +121,7 @@ class AutoResetV2:
                 self.iteration_count += 1
                 if self.iteration_count >= MAX_ITERATIONS:
                     self.iteration_count = 0
-                    self.log(f"⏱️ Reset preventivo a cada {MAX_ITERATIONS} iteracoes")
+                    self.log(f"[STOPW] Reset preventivo a cada {MAX_ITERATIONS} iteracoes")
                     self.force_reset(reason="preventive")
                 
                 time.sleep(CHECK_INTERVAL)

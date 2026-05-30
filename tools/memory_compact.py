@@ -99,11 +99,11 @@ def compact_agent_memory(agent_file: Path, dry_run: bool = False) -> dict:
             json.dumps(kept, indent=2, ensure_ascii=False),
             encoding="utf-8",
         )
-        print(f"  [OK] {agent_file.stem}: {original_count} → {len(kept)} episódios (-{removed})")
+        print(f"  [OK] {agent_file.stem}: {original_count} -> {len(kept)} episódios (-{removed})")
     elif dry_run:
-        print(f"  [BUSCA] [DRY] {agent_file.stem}: {original_count} → {len(kept)} (-{removed})")
+        print(f"  [BUSCA] [DRY] {agent_file.stem}: {original_count} -> {len(kept)} (-{removed})")
     else:
-        print(f"  ⏭️  {agent_file.stem}: nada para compactar ({original_count} episódios)")
+        print(f"  [SKIP]  {agent_file.stem}: nada para compactar ({original_count} episódios)")
 
     return result
 
@@ -126,9 +126,9 @@ def main():
         print("\n[LIVRO] A extrair lições dos logs episódicos...")
         extractor = LessonExtractor()
         result = extractor.run()
-        print(f"  [OK] {result['extracted']} lições extraídas → {result['saved_to']}\n")
+        print(f"  [OK] {result['extracted']} lições extraídas -> {result['saved_to']}\n")
 
-    print(f"\n[COMP]️  A compactar memórias episódicas{' (DRY RUN)' if args.dry_run else ''}...\n")
+    print(f"\n[COMP]  A compactar memórias episódicas{' (DRY RUN)' if args.dry_run else ''}...\n")
 
     # Seleccionar ficheiros
     if args.agent:
@@ -151,7 +151,7 @@ def main():
         total_removed += result.get("removed", 0)
         total_original += result.get("original", 0)
 
-    print(f"\n[DADOS] Total: {total_original} episódios → removidos {total_removed} "
+    print(f"\n[DADOS] Total: {total_original} episódios -> removidos {total_removed} "
           f"({round(total_removed/total_original*100, 1) if total_original else 0}%)")
 
     if args.dry_run:

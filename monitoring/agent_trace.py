@@ -76,7 +76,7 @@ class AgentTrace:
     error: str = ""
     _start_time: float = field(default_factory=time.time, repr=False)
 
-    # ── Factory ────────────────────────────────────────────────────────────────
+    # -- Factory ----------------------------------------------------------------
 
     @classmethod
     def start(
@@ -95,7 +95,7 @@ class AgentTrace:
         logger.debug(f"[Trace] Iniciado: {trace.trace_id} agent={agent_name}")
         return trace
 
-    # ── Registo de eventos ─────────────────────────────────────────────────────
+    # -- Registo de eventos -----------------------------------------------------
 
     def add_tool_call(
         self,
@@ -141,7 +141,7 @@ class AgentTrace:
             f"success={success} tokens={total_tokens} cost=${self.cost_usd:.5f}"
         )
 
-    # ── Persistência ───────────────────────────────────────────────────────────
+    # -- Persistência -----------------------------------------------------------
 
     def to_dict(self) -> dict:
         return {
@@ -174,7 +174,7 @@ class AgentTrace:
             logger.error(f"[Trace] Erro ao guardar trace: {e}")
 
 
-# ── Leitura de traces ──────────────────────────────────────────────────────────
+# -- Leitura de traces ----------------------------------------------------------
 
 def load_traces(
     days: int = 1,

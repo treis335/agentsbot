@@ -30,7 +30,7 @@ import aiohttp
 logger = logging.getLogger(__name__)
 
 
-# ─── RESPONSE MODELS (mimetizam openai) ────────────────────────────────────────
+# --- RESPONSE MODELS (mimetizam openai) ----------------------------------------
 
 @dataclass
 class ChatMessage:

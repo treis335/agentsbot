@@ -1663,5 +1663,50 @@
     "success": true,
     "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente **8 ficheiros de log** (total ~8.5 MB, 127k+ linhas), o estado do repositório, configurações e agentes. Extraí **7 lições concretas** e guardei na memória semântica.\n\n---\n\n### 📊 Dados Analisados\n| Fonte | Tamanho | Conteúdo |\n|---|---|---|\n| `main.log` | 8.2 MB / 125k linhas | Loop de crashes + execuções",
     "lesson": ""
+  },
+  {
+    "task_id": "auto_969f581c",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T14:10:15.313082",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- **5 ficheiros modificados** (todos na pasta `memory/`)\n- **38 inserções, 4 remoções** — conteúdo válido, memórias atualizadas\n\n### 📌 O que foi committado\n| Ficheiro | Mudança |\n|---|---|\n| `memory/autonomous_log.md` | +13 linhas — novas entradas de log autónomo |\n| `memory/backlog.json` | +16/-2 — tarefas atualizadas (43 tarefas",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_99beeb4d",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "developer",
+    "timestamp": "2026-05-30T14:14:41.199788",
+    "success": true,
+    "result_summary": "Reescrevi todos os 27 souls do ecossistema com um formato padronizado que inclui: secção de **Contexto de Execução** (informando que correm num servidor Linux), **Integração com o Sistema** (como se ligam ao MemoryHub, Verifier, Retry Policy reais), e ferramentas alinhadas com as disponíveis no executor. Todos os ficheiros estão validados e à espera de `git commit` — falta apenas executar o commit",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_010ad632",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "gestor_memoria",
+    "timestamp": "2026-05-30T14:18:02.024366",
+    "success": true,
+    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente **187 episódios** do `loop_episodes.json`, 2 ficheiros de memória episódica (`gestor_memoria-*.json`, `supervisor-*.json`), o `autonomous_log.md` (592 linhas), o `backlog.json` (45 itens) e o `semantica/licoes_aprendidas.md`. Extraí **8 lições críticas** (ver abaixo) e identifiquei que **100% dos 187 epi",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_2e08b896",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T14:21:16.105317",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\nAnalisei os logs (`main.log`, `wakeup_v3.log`, `supervisor.log`, `auto_recovery.log`) e código-fonte (`tools/fs_tools.py`, `core/safe_print.py`, `bot/handlers.py`, `autonomous_loop.py`) e identifiquei os **3 problemas principais**: (1) **1587 conflitos Telegram** por múltiplas instâncias causadas pelo wakeup_v3 (150 resets em loop), (2) **UnicodeEncodeError** com emojis no Wi",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_c0aac456",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T14:23:00.841326",
+    "success": true,
+    "result_summary": "✅ **Agente `load_tester` criado e publicado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🆕 Novo Agente: **Load Tester**\n\n| Campo | Valor |\n|---|---|\n| **ID** | `load_tester-001` |\n| **Role** | `tester` |\n| **Soul** | `agents/souls/load_tester.md` |\n| **Prioridade** | 7 (alta) |\n| **Nível** | Qualidade |\n\n### 🎯 Especialidade\nTestes de carga, stress e performance — área **crítica e não cobert",
+    "lesson": ""
   }
 ]

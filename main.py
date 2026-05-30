@@ -21,7 +21,7 @@ import sys
 import threading
 from pathlib import Path
 
-# ─── Configuração ─────────────────────────────────────────────────────────
+# --- Configuração ---------------------------------------------------------
 from core.config import Config
 from core.orchestrator import Orchestrator
 from core.bus import bus
@@ -58,7 +58,7 @@ from core.auto_reboot import start_watchdog, check_and_reboot
 # API
 from api.server import start_api
 
-# ─── Logging ────────────────────────────────────────────────────────────────
+# --- Logging ----------------------------------------------------------------
 logging.basicConfig(
     level   = getattr(logging, Config.LOG_LEVEL, "INFO"),
     format  = "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -66,7 +66,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("correoto")
 
-# ─── Componentes Globais ──────────────────────────────────────────────────
+# --- Componentes Globais --------------------------------------------------
 config            = Config
 orchestrator      = Orchestrator()
 agent_manager     = AgentManager()
@@ -117,7 +117,7 @@ def init_telegram():
         app.add_handler(CommandHandler("clear_memory", cmd_clear_memory))
         app.add_handler(CommandHandler("help",         cmd_help))
         app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-        # ── Comandos do loop autónomo ──────────────────────────────────────
+        # -- Comandos do loop autónomo --------------------------------------
         from bot.handlers import (
             cmd_auto_status, cmd_auto_pause, cmd_auto_resume,
             cmd_auto_backlog, cmd_auto_task, set_auto_loop
@@ -127,7 +127,7 @@ def init_telegram():
         app.add_handler(CommandHandler("retomar",      cmd_auto_resume))
         app.add_handler(CommandHandler("backlog",      cmd_auto_backlog))
         app.add_handler(CommandHandler("tarefa",       cmd_auto_task))
-        # ──────────────────────────────────────────────────────────────────
+        # ------------------------------------------------------------------
 
 
         telegram_application = app
@@ -189,7 +189,7 @@ async def main():
         api_thread.start()
         logger.info("[API] REST API em http://localhost:8080")
 
-    # ── Iniciar o AutonomousLoop (sempre, independente do Telegram) ──────────
+    # -- Iniciar o AutonomousLoop (sempre, independente do Telegram) ----------
     _seed_initial_backlog()
     from bot.handlers import set_auto_loop
     auto_loop = AutonomousLoop(orchestrator=None, telegram_bot=None)
@@ -200,7 +200,7 @@ async def main():
     )
     loop_thread.start()
     logger.info("[AutonomousLoop] Loop autónomo iniciado em background.")
-    # ─────────────────────────────────────────────────────────────────────────
+    # -------------------------------------------------------------------------
 
     # Bot Telegram
     if not no_telegram:
@@ -240,11 +240,11 @@ async def main():
         while True:
             await asyncio.sleep(60)
 if __name__ == "__main__":
-    # ─── Lock Singleton ────────────────────────────────────────────────
+    # --- Lock Singleton ------------------------------------------------
     from lock_utils import acquire_lock, release_lock
     if not acquire_lock():
         sys.exit("Outra instância já está a correr. A encerrar.")
-    # ───────────────────────────────────────────────────────────────────
+    # -------------------------------------------------------------------
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

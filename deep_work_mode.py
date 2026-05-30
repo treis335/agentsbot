@@ -23,7 +23,7 @@ if sys.stdout.encoding != 'utf-8':
 DEEP_WORK_FILE = "deep_work.flg"
 DEEP_WORK_LOG = "deep_work_log.json"
 
-# ─── Estratégias de Deep Work ─────────────────────────────────────────────
+# --- Estratégias de Deep Work ---------------------------------------------
 
 DEEP_WORK_STRATEGIES = {
     "batch_execution": {
@@ -165,7 +165,7 @@ def get_strategies_summary():
         lines.append(f"  {status} {v['name']}: {v['description']} (economia: {v['economy']})")
     return "\n".join(lines)
 
-# ─── Inicialização ────────────────────────────────────────────────────────
+# --- Inicialização --------------------------------------------------------
 if __name__ == "__main__":
     print("\n=== DEEP WORK MODE - TEST ===")
     print(get_strategies_summary())

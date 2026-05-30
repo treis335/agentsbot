@@ -21,7 +21,7 @@ def ensure_memory_dir():
     MEMORY_DIR.mkdir(exist_ok=True)
 
 
-# ─── GUARDAR CHECKPOINT ────────────────────────────────────────────────────────
+# --- GUARDAR CHECKPOINT --------------------------------------------------------
 
 def save_checkpoint(task: str, step: int, state: dict, next_action: str,
                     files_modified: list = None):
@@ -54,7 +54,7 @@ def save_checkpoint(task: str, step: int, state: dict, next_action: str,
     return checkpoint
 
 
-# ─── CARREGAR CHECKPOINT ───────────────────────────────────────────────────────
+# --- CARREGAR CHECKPOINT -------------------------------------------------------
 
 def load_checkpoint() -> dict | None:
     """
@@ -75,7 +75,7 @@ def load_checkpoint() -> dict | None:
     return checkpoint
 
 
-# ─── LIMPAR CHECKPOINT ─────────────────────────────────────────────────────────
+# --- LIMPAR CHECKPOINT ---------------------------------------------------------
 
 def clear_checkpoint():
     """Remove o checkpoint após tarefa concluída com sucesso."""
@@ -84,7 +84,7 @@ def clear_checkpoint():
         print("[OK] Checkpoint limpo — tarefa concluída.")
 
 
-# ─── GESTOR DE ITERAÇÕES ───────────────────────────────────────────────────────
+# --- GESTOR DE ITERAÇÕES -------------------------------------------------------
 
 class IterationManager:
     """
@@ -140,7 +140,7 @@ class IterationManager:
                 files_modified=self.files_modified,
             )
             elapsed = round(time.time() - self._start_time, 1)
-            print(f"\n[!]️  Limite de {self.max_iterations} iterações atingido após {elapsed}s.")
+            print(f"\n[!]  Limite de {self.max_iterations} iterações atingido após {elapsed}s.")
             print(f"   Checkpoint guardado. Para retomar, executar novamente o script.")
             return False
 
@@ -169,7 +169,7 @@ class IterationManager:
         _update_current_task("Concluída", self.task)
 
 
-# ─── ANTI-LOOP HANDLER ─────────────────────────────────────────────────────────
+# --- ANTI-LOOP HANDLER ---------------------------------------------------------
 
 class AntiLoopGuard:
     """
@@ -204,7 +204,7 @@ class AntiLoopGuard:
             return False
 
         if count > 1:
-            print(f"[!]️  Tentativa {count}/{self.max_retries} para '{action_key}'")
+            print(f"[!]  Tentativa {count}/{self.max_retries} para '{action_key}'")
 
         return True
 
@@ -226,7 +226,7 @@ class AntiLoopGuard:
             f.write(entry)
 
 
-# ─── UTILITÁRIOS INTERNOS ──────────────────────────────────────────────────────
+# --- UTILITÁRIOS INTERNOS ------------------------------------------------------
 
 def _get_or_create_session_id() -> str:
     session_file = MEMORY_DIR / ".session_id"
@@ -249,7 +249,7 @@ def _update_current_task(status: str, description: str):
     CURRENT_TASK_FILE.write_text(content, encoding="utf-8")
 
 
-# ─── EXEMPLO DE USO ────────────────────────────────────────────────────────────
+# --- EXEMPLO DE USO ------------------------------------------------------------
 
 if __name__ == "__main__":
     # Verificar se há checkpoint para retomar
@@ -281,7 +281,7 @@ if __name__ == "__main__":
             break
 
         # Simular trabalho
-        print(f"  → Passo {mgr.current_step}: a processar item {item}")
+        print(f"  -> Passo {mgr.current_step}: a processar item {item}")
         guard.reset(action_key)
 
     else:

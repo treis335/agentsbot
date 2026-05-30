@@ -1,7 +1,7 @@
 """
 agents/capability_registry.py — Registo de capabilities por agente.
 
-Carrega capabilities.json e faz match task→agente por scoring local.
+Carrega capabilities.json e faz match task->agente por scoring local.
 Zero chamadas API — decisão puramente local.
 """
 

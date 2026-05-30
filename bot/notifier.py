@@ -64,7 +64,7 @@ class Notifier:
         if self._queue:
             asyncio.create_task(self._flush_queue())
 
-    # ── Interface pública ──────────────────────────────────────────────────────
+    # -- Interface pública ------------------------------------------------------
 
     async def send(self, text: str, parse_mode: str = "Markdown") -> bool:
         """Envia mensagem ao owner. Retorna True se enviado."""
@@ -105,7 +105,7 @@ class Notifier:
             await self.send(text, parse_mode)
             await asyncio.sleep(0.3)  # evitar rate limit
 
-    # ── Notificações específicas ───────────────────────────────────────────────
+    # -- Notificações específicas -----------------------------------------------
 
     async def task_completed(self, title: str, agent: str, result: str) -> None:
         """Notifica conclusão de tarefa (se NOTIFY_ON_TASK_COMPLETE=true)."""
@@ -132,7 +132,7 @@ class Notifier:
             f"[X] *Tarefa falhou*\n\n"
             f"[LISTA] {title[:80]}\n"
             f"[IA] Agente: `{agent}`\n"
-            f"[!]️ Erro: `{short_err}`\n"
+            f"[!] Erro: `{short_err}`\n"
             f"[HORA] {datetime.now().strftime('%H:%M')}"
         )
         await self.send(msg)
@@ -221,7 +221,7 @@ class Notifier:
             f"[X] Tarefas falhadas: {stats['tasks_failed']}\n"
             f"[DNA] Melhorias aplicadas: {stats['improvements']}\n"
             f"[SOBE] Taxa de sucesso: {success_rate}%\n"
-            f"⏳ Pendentes: {pending}\n"
+            f"[TIME] Pendentes: {pending}\n"
             f"[TROF] Agente mais activo: `{top}`\n\n"
             f"_O sistema continuou a trabalhar de forma autónoma._"
         )
@@ -230,14 +230,14 @@ class Notifier:
         self._daily_stats = {"tasks_done": 0, "tasks_failed": 0, "improvements": 0}
 
 
-# ── Helpers ────────────────────────────────────────────────────────────────────
+# -- Helpers --------------------------------------------------------------------
 
 def _env_bool(key: str, default: bool) -> bool:
     val = getattr(Config, key, str(default)).lower()
     return val in ("true", "1", "yes")
 
 
-# ── Singleton global ───────────────────────────────────────────────────────────
+# -- Singleton global -----------------------------------------------------------
 
 _notifier: Optional[Notifier] = None
 

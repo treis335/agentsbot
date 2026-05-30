@@ -56,7 +56,7 @@ def run_auto_recovery():
         logger.info("[OK] Modulo auto_recovery importado com sucesso")
         return True
     except Exception as e:
-        logger.warning(f"[!]️ Erro ao importar auto_recovery: {e}")
+        logger.warning(f"[!] Erro ao importar auto_recovery: {e}")
         return False
 
 def run_auto_update():
@@ -66,7 +66,7 @@ def run_auto_update():
         logger.info("[OK] Modulo auto_update importado com sucesso")
         return True
     except Exception as e:
-        logger.warning(f"[!]️ Erro ao importar auto_update: {e}")
+        logger.warning(f"[!] Erro ao importar auto_update: {e}")
         return False
 
 def main():
@@ -90,10 +90,10 @@ def main():
                 is_ok, msg = check_file_integrity(f)
                 if not is_ok:
                     issues.append(f"{f}: {msg}")
-                    logger.warning(f"[!]️ {f}: {msg}")
+                    logger.warning(f"[!] {f}: {msg}")
             
             if issues:
-                logger.warning(f"[!]️ {len(issues)} problema(s) detetado(s)")
+                logger.warning(f"[!] {len(issues)} problema(s) detetado(s)")
             else:
                 logger.info("[OK] Todos os ficheiros OK!")
             
@@ -107,7 +107,7 @@ def main():
             time.sleep(30)
             
     except KeyboardInterrupt:
-        logger.info("⏹️ Shutdown recebido. A encerrar...")
+        logger.info("[STOP] Shutdown recebido. A encerrar...")
     except Exception as e:
         logger.error(f"[X] Erro fatal: {e}")
         logger.info("[LOOP] A reiniciar automaticamente...")

@@ -148,7 +148,7 @@ class ChatRoom:
                         continue
                 
                 print(f"[IA] **{agent}** ({self.agents[agent]['role']}): {msg['message']}")
-                print(f"   └─ {msg['timestamp']}")
+                print(f"   +--- {msg['timestamp']}")
         
         print("=" * 60)
         return True

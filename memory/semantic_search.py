@@ -82,10 +82,10 @@ class SemanticIndex:
         self.memory_dir = Path(memory_dir)
         self.index_file = self.memory_dir / "semantic_index.json"
         self._docs: list[dict] = []       # {id, type, text, tokens, metadata}
-        self._idf: dict[str, float] = {}  # term → IDF score
+        self._idf: dict[str, float] = {}  # term -> IDF score
         self._built = False
 
-    # ── Build ──────────────────────────────────────────────────────────────────
+    # -- Build ------------------------------------------------------------------
 
     def build(self, force: bool = False) -> int:
         """
@@ -251,7 +251,7 @@ class SemanticIndex:
         except Exception as e:
             logger.warning(f"[SemanticIndex] Erro ao guardar índice: {e}")
 
-    # ── Search ─────────────────────────────────────────────────────────────────
+    # -- Search -----------------------------------------------------------------
 
     def search(
         self,
@@ -326,7 +326,7 @@ class SemanticIndex:
                     f"{status} [{m.get('agent','?')}] {m.get('task_desc','')[:100]}"
                 )
                 if m.get("lesson"):
-                    lines.append(f"   → Lição: {m['lesson']}")
+                    lines.append(f"   -> Lição: {m['lesson']}")
             elif t == "lesson":
                 lines.append(f"[LIVRO] Lição: {m.get('lesson','')[:120]}")
             elif t == "debate":
@@ -334,7 +334,7 @@ class SemanticIndex:
                     f"[CHAT] Debate '{m.get('topic','')[:60]}': {m.get('synthesis','')[:100]}"
                 )
             elif t == "decision":
-                lines.append(f"[OBRA]️ Decisão: {m.get('decision','')[:120]}")
+                lines.append(f"[OBRA] Decisão: {m.get('decision','')[:120]}")
 
         return "\n".join(lines) + "\n"
 
@@ -386,7 +386,7 @@ class SemanticIndex:
         }
 
 
-# ── Singleton ──────────────────────────────────────────────────────────────────
+# -- Singleton ------------------------------------------------------------------
 
 _index: Optional[SemanticIndex] = None
 

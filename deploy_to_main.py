@@ -1,7 +1,7 @@
 """
 deploy_to_main.py
 Script para organizar e fazer push final para a branch main.
-Executa: status → add → commit → pull rebase → push
+Executa: status -> add -> commit -> pull rebase -> push
 """
 
 import subprocess
@@ -20,9 +20,9 @@ def run(cmd: str, capture: bool = True) -> tuple[int, str]:
 
 
 def section(title: str):
-    print(f"\n{'─' * 50}")
+    print(f"\n{'-' * 50}")
     print(f"  {title}")
-    print('─' * 50)
+    print('-' * 50)
 
 
 def main():
@@ -36,7 +36,7 @@ def main():
         f"Data: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
     )
 
-    # ── 1. Status atual ────────────────────────────────────────────────────────
+    # -- 1. Status atual --------------------------------------------------------
     section("1/5 — Git Status")
     code, out = run("git status")
     print(out)
@@ -44,7 +44,7 @@ def main():
         print("\n[OK] Nada para commitar. Repositório já está atualizado.")
         sys.exit(0)
 
-    # ── 2. Adicionar ficheiros ─────────────────────────────────────────────────
+    # -- 2. Adicionar ficheiros -------------------------------------------------
     section("2/5 — Git Add")
     code, out = run("git add .")
     if code != 0:
@@ -52,7 +52,7 @@ def main():
         sys.exit(1)
     print("[OK] Todos os ficheiros adicionados.")
 
-    # ── 3. Commit ──────────────────────────────────────────────────────────────
+    # -- 3. Commit --------------------------------------------------------------
     section("3/5 — Git Commit")
     code, out = run(f'git commit -m "{commit_msg}"')
     if code != 0:
@@ -61,11 +61,11 @@ def main():
     print(f"[OK] Commit criado.")
     print(out.split("\n")[0])  # Mostrar primeira linha do output
 
-    # ── 4. Pull com rebase (evitar conflitos) ──────────────────────────────────
+    # -- 4. Pull com rebase (evitar conflitos) ----------------------------------
     section("4/5 — Git Pull --rebase")
     code, out = run("git pull origin main --rebase")
     if code != 0:
-        print(f"[!]️  Pull com rebase falhou:\n{out}")
+        print(f"[!]  Pull com rebase falhou:\n{out}")
         print("\nTentando resolver automaticamente...")
         code2, out2 = run("git rebase --abort")
         print(f"Rebase abortado. Por favor resolver conflitos manualmente:")
@@ -75,7 +75,7 @@ def main():
         sys.exit(1)
     print("[OK] Pull com rebase concluído.")
 
-    # ── 5. Push ────────────────────────────────────────────────────────────────
+    # -- 5. Push ----------------------------------------------------------------
     section("5/5 — Git Push")
     code, out = run("git push origin main")
     if code != 0:
@@ -88,7 +88,7 @@ def main():
     print("[OK] Push concluído com sucesso!")
     print(out)
 
-    # ── Sumário ────────────────────────────────────────────────────────────────
+    # -- Sumário ----------------------------------------------------------------
     section("[OK] DEPLOY CONCLUÍDO")
     print(f"  Repositório: https://github.com/treis335/agentsbot")
     print(f"  Branch: main")

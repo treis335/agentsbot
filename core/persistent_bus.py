@@ -52,7 +52,7 @@ class PersistentEventBus:
         self._log_path: Optional[Path] = None
         self._ensure_log_file()
 
-    # ── Gestão do ficheiro de log ───────────────────────────────────────────────
+    # -- Gestão do ficheiro de log -----------------------------------------------
 
     def _ensure_log_file(self) -> Path:
         """Garante que o ficheiro de log para hoje está aberto. Rota diariamente."""
@@ -90,7 +90,7 @@ class PersistentEventBus:
         except Exception as e:
             logger.error(f"[PersistentBus] Erro ao marcar processado: {e}")
 
-    # ── Interface pública (compatível com EventBus) ─────────────────────────────
+    # -- Interface pública (compatível com EventBus) -----------------------------
 
     def subscribe(self, event_type: str, handler: Callable) -> None:
         """Subscreve um handler a um tipo de evento."""

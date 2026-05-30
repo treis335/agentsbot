@@ -435,7 +435,7 @@ async def _run_shell(command: str, timeout: int = 60) -> str:
 async def _git_commit_push(message: str) -> str:
     _ensure_repo()
 
-    # ── Validar sintaxe Python antes de commitar ──────────────────────────
+    # -- Validar sintaxe Python antes de commitar --------------------------
     import ast as _ast
     syntax_errors = []
     try:
@@ -467,7 +467,7 @@ async def _git_commit_push(message: str) -> str:
             "\n".join(syntax_errors) +
             "\n\nCorrige os erros e tenta de novo."
         )
-    # ─────────────────────────────────────────────────────────────────────
+    # ---------------------------------------------------------------------
 
     cmds = [
         ["git", "add", "-A"],
@@ -487,7 +487,7 @@ async def _git_commit_push(message: str) -> str:
         err = stderr.decode(errors="replace").strip()
         output.append(f"$ {' '.join(cmd)}\n{out or err}")
         if proc.returncode != 0 and "nothing to commit" not in (out + err):
-            output.append(f"[!]️ Returncode: {proc.returncode}")
+            output.append(f"[!] Returncode: {proc.returncode}")
             break
     return "\n".join(output)
 
@@ -593,8 +593,8 @@ def _github_api(method: str, endpoint: str, body: dict = None) -> str:
             # Sucesso — retornar info útil
             if isinstance(data, dict):
                 useful = {k: data[k] for k in ("html_url", "full_name", "name", "message", "url") if k in data}
-                return f"[OK] {method} {endpoint} → {resp.status_code}\n{useful or data}"
-            return f"[OK] {method} {endpoint} → {resp.status_code}\n{str(data)[:500]}"
+                return f"[OK] {method} {endpoint} -> {resp.status_code}\n{useful or data}"
+            return f"[OK] {method} {endpoint} -> {resp.status_code}\n{str(data)[:500]}"
         else:
             msg = data.get("message", str(data)) if isinstance(data, dict) else str(data)
             return f"[X] GitHub API {resp.status_code}: {msg}"

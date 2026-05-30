@@ -63,7 +63,7 @@ def verificar_integridade():
         
         content = full_path.read_text(encoding="utf-8")
         if len(content) < config["min_chars"]:
-            problemas.append(f"[!]️ {rel_path}: TRUNCADO ({len(content)} chars, mínimo {config['min_chars']})")
+            problemas.append(f"[!] {rel_path}: TRUNCADO ({len(content)} chars, mínimo {config['min_chars']})")
         else:
             log(f"[OK] {rel_path}: OK ({len(content)} chars)")
     
@@ -76,7 +76,7 @@ def auto_repair(problemas):
     
     for problema in problemas:
         if "TRUNCADO" in problema:
-            nome_ficheiro = problema.split(":")[0].strip("[!]️ ")
+            nome_ficheiro = problema.split(":")[0].strip("[!] ")
             full_path = BASE / nome_ficheiro
             backup_path = full_path.with_suffix(full_path.suffix + ".bak")
             
@@ -91,7 +91,7 @@ def auto_repair(problemas):
             
             # Se for o supervisor.md, recriar
             if "supervisor.md" in nome_ficheiro:
-                reparados.append(f"[!]️ {nome_ficheiro}: Backup não encontrado, precisa de recriação manual")
+                reparados.append(f"[!] {nome_ficheiro}: Backup não encontrado, precisa de recriação manual")
     
     return reparados
 
@@ -123,7 +123,7 @@ def evolve_system():
     log("[MENTE] A analisar oportunidades de evolução...")
     
     branch = check_current_branch()
-    log(f"📍 Branch atual: {branch}")
+    log(f"[LOC] Branch atual: {branch}")
     
     # Verificar se há melhorias a fazer
     melhorias = []
@@ -163,7 +163,7 @@ def main():
     
     # 2. Reparar se necessário
     if problemas:
-        log(f"[!]️ {len(problemas)} problemas encontrados")
+        log(f"[!] {len(problemas)} problemas encontrados")
         reparados = auto_repair(problemas)
         for r in reparados:
             log(r)

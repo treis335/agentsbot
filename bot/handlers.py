@@ -111,9 +111,9 @@ async def _send(update: Update, text: str):
         await update.message.reply_text(text[i:i + 4000])
 
 
-# ──────────────────────────────────────────
+# ------------------------------------------
 # COMANDOS
-# ──────────────────────────────────────────
+# ------------------------------------------
 
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     health = _api("/api/health")
@@ -225,7 +225,7 @@ async def cmd_tasks(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not tasks:
         await _send(update, "Nenhuma tarefa na fila.")
         return
-    emoji = {"pending": "⏳", "running": "[RAPIDO]", "done": "[OK]", "error": "[X]"}
+    emoji = {"pending": "[TIME]", "running": "[RAPIDO]", "done": "[OK]", "error": "[X]"}
     lines = [f"Tarefas ({len(tasks)}):"]
     for t in tasks[:15]:
         e = emoji.get(t.get("status", ""), "[?]")
@@ -324,10 +324,10 @@ async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await _send(update, "Tarefas completadas limpas.")
 
 
-# ──────────────────────────────────────────
+# ------------------------------------------
 # HANDLER DE MENSAGENS LIVRES
 # Usa o Supervisor com ferramentas reais
-# ──────────────────────────────────────────
+# ------------------------------------------
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
@@ -385,7 +385,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
         await _send(update, f"[X] Erro inesperado: {e}\n\nVerifica os logs para mais detalhes.")
 
-# ─── COMANDOS DO LOOP AUTÓNOMO ─────────────────────────────────────────────────
+# --- COMANDOS DO LOOP AUTÓNOMO -------------------------------------------------
 
 # Referência global ao loop (preenchida pelo main.py)
 _auto_loop = None
@@ -400,25 +400,25 @@ async def cmd_auto_status(update, context):
     if _auto_loop:
         await _send(update, _auto_loop.status())
     else:
-        await _send(update, "[!]️ Loop autónomo não iniciado.")
+        await _send(update, "[!] Loop autónomo não iniciado.")
 
 
 async def cmd_auto_pause(update, context):
     """Pausar o loop autónomo."""
     if _auto_loop:
         _auto_loop.pause()
-        await _send(update, "⏸️ Loop autónomo pausado. Usa /retomar para continuar.")
+        await _send(update, "[PAUSE] Loop autónomo pausado. Usa /retomar para continuar.")
     else:
-        await _send(update, "[!]️ Loop autónomo não iniciado.")
+        await _send(update, "[!] Loop autónomo não iniciado.")
 
 
 async def cmd_auto_resume(update, context):
     """Retomar o loop autónomo."""
     if _auto_loop:
         _auto_loop.resume()
-        await _send(update, "▶️ Loop autónomo retomado!")
+        await _send(update, "[PLAY] Loop autónomo retomado!")
     else:
-        await _send(update, "[!]️ Loop autónomo não iniciado.")
+        await _send(update, "[!] Loop autónomo não iniciado.")
 
 
 async def cmd_auto_backlog(update, context):
@@ -452,4 +452,4 @@ async def cmd_auto_task(update, context):
         task = _auto_loop.add_priority_task(title, description)
         await _send(update, f"[OK] Tarefa urgente adicionada!\n[PIN] {title}\nSerá executada no próximo ciclo.")
     else:
-        await _send(update, "[!]️ Loop autónomo não iniciado.")
+        await _send(update, "[!] Loop autónomo não iniciado.")

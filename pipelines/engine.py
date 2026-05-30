@@ -131,7 +131,7 @@ class PipelineEngine:
             created_at=data.get("created_at", ""), updated_at=data.get("updated_at", ""),
         )
 
-    # ── State Machine (Batch 5) ─────────────────────────────────────────────────
+    # -- State Machine (Batch 5) -------------------------------------------------
 
     def run_workflow(self, workflow_name: str, context: dict,
                      executor=None) -> str:
@@ -141,7 +141,7 @@ class PipelineEngine:
         Args:
             workflow_name: nome do template YAML (dev_cycle, bug_fix, research)
             context: dict com variáveis para os task_templates (ex: {"task": "Fix login"})
-            executor: callable(step_def, run) → str  (opcional; sem ele, simula)
+            executor: callable(step_def, run) -> str  (opcional; sem ele, simula)
 
         Returns:
             run_id para acompanhar com get_workflow_run()
@@ -186,7 +186,7 @@ class PipelineEngine:
 
         final_run = sm.get_state(run_id)
         summary = sm.summary(run_id)
-        logger.info(f"[Engine] Workflow terminado: {workflow_name} run={run_id} → {final_run.state}")
+        logger.info(f"[Engine] Workflow terminado: {workflow_name} run={run_id} -> {final_run.state}")
 
         return {
             "run_id": run_id,

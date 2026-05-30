@@ -125,7 +125,7 @@ class PatchValidator:
 
         # Notas: apenas log
         if patch_type == "note":
-            msg = f"[NOTE] {patch.get('description', '')} → {target}"
+            msg = f"[NOTE] {patch.get('description', '')} -> {target}"
             logger.info(f"[PatchValidator] {msg}")
             return {"success": True, "message": msg, "backup_path": ""}
 

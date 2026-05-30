@@ -51,7 +51,7 @@ class AutoEvolveLoop:
                 self.log(f"[OK] Git commit & push: {msg}")
                 return True
         except Exception as e:
-            self.log(f"[!]️ Git sync: {e}")
+            self.log(f"[!] Git sync: {e}")
         return False
 
     def check_system_health(self):
@@ -80,7 +80,7 @@ class AutoEvolveLoop:
         if result:
             self.log(f"   Agentes: {result['agentes']} | Issues: {result['issues']}")
             if result.get('novo_agente'):
-                self.log(f"   🆕 Novo agente criado: {result['novo_agente']}")
+                self.log(f"   [NEW] Novo agente criado: {result['novo_agente']}")
             if result.get('commit'):
                 self.log(f"   [OK] Git push feito")
 
@@ -99,7 +99,7 @@ class AutoEvolveLoop:
                 self.run_cycle()
                 time.sleep(60)
             except KeyboardInterrupt:
-                self.log("⏹️ Paragem solicitada")
+                self.log("[STOP] Paragem solicitada")
                 self.running = False
             except Exception as e:
                 self.log(f"[EXPL] Erro crítico: {e}")

@@ -112,7 +112,7 @@ class MemoryHub:
         
         return result
 
-    # ─── API PÚBLICA ─────────────────────────────────────────────
+    # --- API PÚBLICA ---------------------------------------------
     
     def store_chat(self, role: str, content: str, metadata: Optional[dict] = None) -> dict:
         """Guarda uma mensagem de conversa.
@@ -210,7 +210,7 @@ class MemoryHub:
                     d = ep["data"]
                     ok = "[OK]" if d["success"] else "[FAIL]"
                     ts = ep["timestamp"][:16]
-                    lines.append(f"{ok} [{ts}] {d['task'][:80]} → {d['result'][:80]}")
+                    lines.append(f"{ok} [{ts}] {d['task'][:80]} -> {d['result'][:80]}")
         
         # Conhecimento (top 3 topics)
         knowledge = self.get_knowledge(limit=3)
@@ -227,7 +227,7 @@ class MemoryHub:
         
         return "\n".join(lines)
     
-    # ─── QUERIES ─────────────────────────────────────────────────
+    # --- QUERIES -------------------------------------------------
     
     def get_chats(self, limit: int = 10, role: Optional[str] = None) -> list[dict]:
         """Recupera mensagens de conversa."""
@@ -288,7 +288,7 @@ class MemoryHub:
             with open(self._filepath, 'w', encoding='utf-8') as f:
                 f.write("")
 
-    # ─── WRAPPERS DE COMPATIBILIDADE ─────────────────────────────
+    # --- WRAPPERS DE COMPATIBILIDADE -----------------------------
     # Estes metodos mantem a API dos sistemas antigos para nao quebrar
     # o codigo existente.
     
@@ -380,7 +380,7 @@ class MemoryHub:
         self._current_agent_id = agent_id
 
 
-# ─── Singleton ───────────────────────────────────────────────────
+# --- Singleton ---------------------------------------------------
     # --- Metodos de compatibilidade adicionais ---
 
     def learn(self, topic: str, content: str, source: str = "auto") -> dict:

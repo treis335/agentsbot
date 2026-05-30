@@ -54,7 +54,7 @@ class WakeUpSystemV2:
                         # Verifica as ultimas 20 linhas
                         for line in lines[-20:]:
                             if "Limite de iteracoes" in line or "iteration limit" in line.lower():
-                                self.log(f"[!]️ DETETADO: Limite de iteracoes em {log_file}!")
+                                self.log(f"[!] DETETADO: Limite de iteracoes em {log_file}!")
                                 return True
                 except:
                     pass
@@ -67,7 +67,7 @@ class WakeUpSystemV2:
             )
             python_count = result.stdout.count("python.exe")
             if python_count == 0:
-                self.log("[!]️ Nenhum processo python encontrado - sistema pode estar preso!")
+                self.log("[!] Nenhum processo python encontrado - sistema pode estar preso!")
                 return True
         except:
             pass
@@ -78,7 +78,7 @@ class WakeUpSystemV2:
                 mod_time = os.path.getmtime(LOG_FILE)
                 elapsed = time.time() - mod_time
                 if elapsed > 30:  # Mais de 30s sem logs
-                    self.log(f"[!]️ Sem atividade ha {elapsed:.0f}s - possivel stuck!")
+                    self.log(f"[!] Sem atividade ha {elapsed:.0f}s - possivel stuck!")
                     return True
             except:
                 pass
@@ -137,7 +137,7 @@ class WakeUpSystemV2:
             try:
                 if self.detect_stuck_fast():
                     self.stuck_detected = True
-                    self.log("[!]️ SISTEMA PRESO DETETADO! A reiniciar em 5 segundos...")
+                    self.log("[!] SISTEMA PRESO DETETADO! A reiniciar em 5 segundos...")
                     time.sleep(5)
                     self.force_restart()
                 else:
@@ -155,8 +155,8 @@ class WakeUpSystemV2:
     def start_monitoring(self):
         """Inicia a monitorizacao em thread separada"""
         self.log("[LANCAR] WakeUpSystemV2 iniciado!")
-        self.log(f"⏰ Intervalo rapido: {WAKEUP_INTERVAL_FAST}s")
-        self.log(f"⏰ Intervalo normal: {WAKEUP_INTERVAL_NORMAL}s")
+        self.log(f"[ALARM] Intervalo rapido: {WAKEUP_INTERVAL_FAST}s")
+        self.log(f"[ALARM] Intervalo normal: {WAKEUP_INTERVAL_NORMAL}s")
         
         # Thread para monitorizacao rapida
         monitor_thread = threading.Thread(target=self.monitor_loop_fast, daemon=True)
@@ -183,7 +183,7 @@ class WakeUpSystemV2:
                 if not self.stuck_detected:  # So verifica se o rapido nao detetou
                     if self.detect_stuck_fast():
                         self.stuck_detected = True
-                        self.log("[!]️ (Backup) SISTEMA PRESO DETETADO!")
+                        self.log("[!] (Backup) SISTEMA PRESO DETETADO!")
                         self.force_restart()
                 
                 self._stop_event.wait(timeout=WAKEUP_INTERVAL_NORMAL)

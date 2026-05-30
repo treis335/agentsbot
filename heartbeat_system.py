@@ -22,7 +22,7 @@ from datetime import datetime
 if sys.stdout.encoding != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# ─── Configuração ─────────────────────────────────────────────────────────
+# --- Configuração ---------------------------------------------------------
 HEARTBEAT_FILE = "heartbeat.flg"
 STOP_SIGNAL_FILE = "STOP_SIGNAL.flg"
 MEMORY_FILE = "memory/global/shared_memory.json"
@@ -65,7 +65,7 @@ def check_if_supervisor_stuck():
                 data = json.load(f)
             content = json.dumps(data)
             if "limite de itera" in content.lower() or "iteration limit" in content.lower():
-                log("[!]️ Limite de iteracoes detectado na memoria!")
+                log("[!] Limite de iteracoes detectado na memoria!")
                 return True
         
         # Metodo 2: Verificar heartbeat
@@ -75,7 +75,7 @@ def check_if_supervisor_stuck():
             hb_time = datetime.fromisoformat(hb["timestamp"])
             diff = (datetime.now() - hb_time).total_seconds()
             if diff > MAX_IDLE_SECONDS:
-                log(f"[!]️ Heartbeat parado ha {diff:.0f}s!")
+                log(f"[!] Heartbeat parado ha {diff:.0f}s!")
                 return True
         
         # Metodo 3: Verificar processos
@@ -87,7 +87,7 @@ def check_if_supervisor_stuck():
                 timeout=5
             )
             if 'main.py' not in result.stdout and 'supervisor_ultra' not in result.stdout:
-                log("[!]️ Nenhum processo Python do Correoto encontrado!")
+                log("[!] Nenhum processo Python do Correoto encontrado!")
                 return True
         except:
             pass
@@ -182,7 +182,7 @@ def main():
                     restart_supervisor()
                     last_restart_time = current_time
                 else:
-                    log("⏳ A aguardar antes de reiniciar...")
+                    log("[TIME] A aguardar antes de reiniciar...")
             
             # Pausa
             time.sleep(CHECK_INTERVAL)

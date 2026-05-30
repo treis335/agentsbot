@@ -261,4 +261,4 @@ async def run_agent_task(
                 "content": str(result),
             })
 
-    return "[!]️ Limite de iterações atingido.", messages
+    return "[!] Limite de iterações atingido.", messages

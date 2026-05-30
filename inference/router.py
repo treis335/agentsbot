@@ -5,12 +5,12 @@ Decide por cada chamada se usa o modelo cloud (DeepSeek) ou local (Ollama)
 com base no score de complexidade da tarefa.
 
 Regra principal:
-    score < ROUTING_THRESHOLD  →  Ollama (gratuito, local)
-    score >= ROUTING_THRESHOLD →  DeepSeek (pago, cloud)
+    score < ROUTING_THRESHOLD  ->  Ollama (gratuito, local)
+    score >= ROUTING_THRESHOLD ->  DeepSeek (pago, cloud)
 
 Fallback automático:
-    Ollama indisponível ou timeout → DeepSeek
-    DeepSeek com erro de quota     → Ollama (degraded mode)
+    Ollama indisponível ou timeout -> DeepSeek
+    DeepSeek com erro de quota     -> Ollama (degraded mode)
 
 Uso (no executor):
     router = InferenceRouter()
@@ -56,7 +56,7 @@ class InferenceRouter:
         self._deepseek_client = None
         self._stats = {"local": 0, "cloud": 0, "fallback": 0}
 
-    # ── Clientes ────────────────────────────────────────────────────────────────
+    # -- Clientes ----------------------------------------------------------------
 
     def _get_deepseek_client(self):
         if not self._deepseek_client:
@@ -91,7 +91,7 @@ class InferenceRouter:
         """Força re-verificação do Ollama na próxima chamada."""
         self._ollama_available = None
 
-    # ── Routing principal ───────────────────────────────────────────────────────
+    # -- Routing principal -------------------------------------------------------
 
     async def decide(
         self,
@@ -135,7 +135,7 @@ class InferenceRouter:
             decision = await self._local_decision(complexity)
             if decision:
                 return decision
-            # Fallback: Ollama indisponível → DeepSeek
+            # Fallback: Ollama indisponível -> DeepSeek
             logger.warning("[Router] Ollama indisponível, fallback para DeepSeek")
             d = self._deepseek_decision(complexity, reason=f"fallback (Ollama off) — {complexity.reason}")
             d.fallback = True
@@ -156,7 +156,7 @@ class InferenceRouter:
         model_info = registry.best_local_model(task_type)
 
         if not model_info:
-            # Sem modelos locais registados → fallback
+            # Sem modelos locais registados -> fallback
             return None
 
         self._stats["local"] += 1
@@ -183,7 +183,7 @@ class InferenceRouter:
             reason=reason or f"score={complexity.score:.2f} >= threshold — {complexity.reason}",
         )
 
-    # ── Interface de alto nível ─────────────────────────────────────────────────
+    # -- Interface de alto nível -------------------------------------------------
 
     async def get_client(self, task: str, **kwargs):
         """

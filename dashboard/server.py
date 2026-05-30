@@ -2,9 +2,9 @@
 dashboard/server.py — Servidor do dashboard web (Batch 8 upgrade).
 
 Serve:
-  /         → live.html  (feed SSE em tempo real + métricas)
-  /costs    → costs.html (custos por agente/modelo + traces)
-  /api/*    → proxy para a API REST em :8080
+  /         -> live.html  (feed SSE em tempo real + métricas)
+  /costs    -> costs.html (custos por agente/modelo + traces)
+  /api/*    -> proxy para a API REST em :8080
 """
 import json
 import logging

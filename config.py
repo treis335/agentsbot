@@ -14,9 +14,9 @@ OWNER_TELEGRAM_ID  = int(os.getenv("OWNER_TELEGRAM_ID", "0"))
 # ====================== PATHS ======================
 BASE_DIR = Path(__file__).parent.absolute()
 
-# ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
-REPO_LOCAL_PATH = str(BASE_DIR)   # ← Este é o mais importante
-# ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+# <-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-
+REPO_LOCAL_PATH = str(BASE_DIR)   # <- Este é o mais importante
+# <-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-
 
 MEMORY_DIR         = os.getenv("MEMORY_DIR", "memory")
 MASTER_MEMORY_FILE = os.path.join(MEMORY_DIR, "master_context.json")

@@ -138,7 +138,7 @@ def compact_log(log_path: Path) -> int:
 
         new_lines = len(events)
         removed = original_lines - new_lines
-        logger.info(f"[BusReplay] Compactado {log_path.name}: {original_lines} → {new_lines} linhas (-{removed})")
+        logger.info(f"[BusReplay] Compactado {log_path.name}: {original_lines} -> {new_lines} linhas (-{removed})")
         return removed
 
     except Exception as e:

@@ -47,7 +47,7 @@ class LoopMemory:
     def __init__(self):
         self._episodes: list[dict] = self._load()
 
-    # ── Persistência ───────────────────────────────────────────────────────────
+    # -- Persistência -----------------------------------------------------------
 
     def _load(self) -> list[dict]:
         try:
@@ -66,7 +66,7 @@ class LoopMemory:
             encoding="utf-8",
         )
 
-    # ── Escrita ────────────────────────────────────────────────────────────────
+    # -- Escrita ----------------------------------------------------------------
 
     def record(
         self,
@@ -133,7 +133,7 @@ class LoopMemory:
             return "Comando shell falhou. Verificar sintaxe e permissões."
         return "Tarefa falhou. Tentar abordagem diferente."
 
-    # ── Leitura / Contexto ─────────────────────────────────────────────────────
+    # -- Leitura / Contexto -----------------------------------------------------
 
     def get_context_for_task(self, task_desc: str, task_id: str = "") -> str:
         """
@@ -156,7 +156,7 @@ class LoopMemory:
                 ts = e["timestamp"][:16].replace("T", " ")
                 lines.append(f"- {icon} [{ts}] agente={e['agent']}: {e['result_summary'][:120]}")
                 if e.get("lesson"):
-                    lines.append(f"  [!]️ Lição: {e['lesson']}")
+                    lines.append(f"  [!] Lição: {e['lesson']}")
 
         # 2. Lições de falhas com palavras em comum
         lessons = self._relevant_lessons(task_desc, limit=3)
@@ -232,7 +232,7 @@ class LoopMemory:
                 break
         return lessons
 
-    # ── Estatísticas ───────────────────────────────────────────────────────────
+    # -- Estatísticas -----------------------------------------------------------
 
     def stats(self) -> dict:
         """Estatísticas da memória (para dashboard e self-improve)."""

@@ -15,7 +15,7 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-# ─── Padrões de erro por ferramenta ──────────────────────────────────────────
+# --- Padrões de erro por ferramenta ------------------------------------------
 
 # Prefixos universais de erro
 ERROR_PREFIXES = (
@@ -140,7 +140,7 @@ class ToolResultVerifier:
 
     def _is_recoverable(self, tool_name: str, result_lower: str) -> bool:
         """Decide se vale a pena fazer retry desta falha."""
-        # Erros de autenticação/permissão → não recuperável por retry simples
+        # Erros de autenticação/permissão -> não recuperável por retry simples
         non_recoverable_keywords = (
             "permission denied", "access denied", "authentication",
             "403", "401", "not found", "no such file",

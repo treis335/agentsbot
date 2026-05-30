@@ -6,12 +6,12 @@ Substitui emojis por equivalentes ASCII para evitar:
 
 Uso:
     from core.safe_print import sp
-    sp("[FIX] Tools a usar REPO_DIR: {path}")  # → "[Tools] Tools a usar REPO_DIR: ..."
+    sp("[FIX] Tools a usar REPO_DIR: {path}")  # -> "[Tools] Tools a usar REPO_DIR: ..."
 """
 import sys
 import logging
 
-# ─── Mapa de substituição de emojis → texto ASCII ─────────────────────────
+# --- Mapa de substituição de emojis -> texto ASCII -------------------------
 EMOJI_MAP = {
     # Ação / Estado
     "[OK]": "[OK]",
@@ -131,5 +131,5 @@ def configure_root_logger(level=logging.INFO):
     return root
 
 
-# ─── Atalho ────────────────────────────────────────────────────────────────
+# --- Atalho ----------------------------------------------------------------
 safe_print = sp

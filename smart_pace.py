@@ -6,7 +6,7 @@ cada iteração faz MAIS trabalho de forma mais LENTA e PROFUNDA.
 
 Como funciona:
 1. Monitoriza o número de iterações usadas
-2. Se estiver perto do limite → desacelera e faz deep work
+2. Se estiver perto do limite -> desacelera e faz deep work
 3. Cada iteração: pesquisa + analisa + executa + testa (tudo de uma vez)
 4. Modo "Deep Work" ativado automaticamente quando necessário
 """
@@ -21,7 +21,7 @@ from datetime import datetime
 if sys.stdout.encoding != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# ─── Configuração ─────────────────────────────────────────────────────────
+# --- Configuração ---------------------------------------------------------
 SMART_PACE_FILE = "smart_pace.flg"
 ITERATION_LOG = "iteration_log.json"
 MAX_ITERATIONS_BEFORE_SLOW = 15  # Começa a desacelerar após 15 iterações
@@ -73,20 +73,20 @@ def increment_iteration():
         state["slow_mode"] = True
         state["pace_factor"] = 3.0
         state["tasks_per_iteration"] = 5
-        log(f"[!]️ DEEP WORK MODE ATIVADO! ({count} iterações)")
-        log(f"   → Pace factor: {state['pace_factor']}x")
-        log(f"   → Tarefas por iteração: {state['tasks_per_iteration']}")
+        log(f"[!] DEEP WORK MODE ATIVADO! ({count} iterações)")
+        log(f"   -> Pace factor: {state['pace_factor']}x")
+        log(f"   -> Tarefas por iteração: {state['tasks_per_iteration']}")
     elif count >= MAX_ITERATIONS_BEFORE_SLOW:
         state["slow_mode"] = True
         state["pace_factor"] = 2.0
         state["tasks_per_iteration"] = 3
-        log(f"[!]️ SLOW MODE ATIVADO! ({count} iterações)")
-        log(f"   → Pace factor: {state['pace_factor']}x")
+        log(f"[!] SLOW MODE ATIVADO! ({count} iterações)")
+        log(f"   -> Pace factor: {state['pace_factor']}x")
     
     # Se estiver muito perto do limite, avisa
     if count >= MAX_ITERATIONS_HARD_LIMIT - 5:
         log(f"[ALARME] PERTO DO LIMITE! ({count}/{MAX_ITERATIONS_HARD_LIMIT})")
-        log(f"   → A preparar reset automático...")
+        log(f"   -> A preparar reset automático...")
     
     save_state()
     return count
@@ -158,12 +158,12 @@ def log_iteration(action, details=""):
     except Exception as e:
         log(f"Erro ao registar iteração: {e}")
 
-# ─── Inicialização ────────────────────────────────────────────────────────
+# --- Inicialização --------------------------------------------------------
 load_state()
 log(f"Smart Pace System iniciado!")
-log(f"  → Iterações atuais: {state['iteration_count']}")
-log(f"  → Modo: {'DEEP WORK' if state['deep_work_mode'] else ('SLOW' if state['slow_mode'] else 'NORMAL')}")
-log(f"  → Pace factor: {state['pace_factor']}x")
+log(f"  -> Iterações atuais: {state['iteration_count']}")
+log(f"  -> Modo: {'DEEP WORK' if state['deep_work_mode'] else ('SLOW' if state['slow_mode'] else 'NORMAL')}")
+log(f"  -> Pace factor: {state['pace_factor']}x")
 
 if __name__ == "__main__":
     # Teste rápido

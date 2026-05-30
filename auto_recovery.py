@@ -90,7 +90,7 @@ class AutoRecoverySystem:
                 logger.error(f"[X] Erro ao restaurar backup de {name}: {e}")
         
         # Se nao ha backup, marcar para regeneracao
-        logger.warning(f"[!]️ {name} precisa de ser regenerado pelo supervisor")
+        logger.warning(f"[!] {name} precisa de ser regenerado pelo supervisor")
         return False
     
     def recovery_cycle(self):
@@ -103,7 +103,7 @@ class AutoRecoverySystem:
             is_ok, msg = self.check_component_status(name, info)
             if not is_ok:
                 issues_found = True
-                logger.warning(f"[!]️ {name}: {msg}")
+                logger.warning(f"[!] {name}: {msg}")
                 self.repair_component(name, info)
                 self.recovery_history.append({
                     "timestamp": datetime.now().isoformat(),
@@ -140,18 +140,18 @@ class AutoRecoverySystem:
                     self.iteration_count = 0
                 
                 if self.retry_count >= self.max_retries:
-                    logger.warning("[!]️ Limite de retries atingido. A aguardar reset...")
+                    logger.warning("[!] Limite de retries atingido. A aguardar reset...")
                     await asyncio.sleep(60)
                     self.retry_count = 0
                     continue
                 
                 self.recovery_cycle()
                 
-                logger.info(f"⏳ A aguardar {self.cooldown_seconds}s ate proximo ciclo...")
+                logger.info(f"[TIME] A aguardar {self.cooldown_seconds}s ate proximo ciclo...")
                 await asyncio.sleep(self.cooldown_seconds)
                 
         except asyncio.CancelledError:
-            logger.info("⏹️  Sistema de recuperacao cancelado.")
+            logger.info("[STOP]  Sistema de recuperacao cancelado.")
         except Exception as e:
             logger.error(f"[X] Erro no sistema de recuperacao: {e}")
         finally:
@@ -169,7 +169,7 @@ def main():
     try:
         asyncio.run(system.run_forever())
     except KeyboardInterrupt:
-        logger.info("\n⏹️  Sistema interrompido pelo utilizador.")
+        logger.info("\n[STOP]  Sistema interrompido pelo utilizador.")
         system.is_running = False
 
 if __name__ == "__main__":

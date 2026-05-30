@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 from core.cognitive_cycle import CognitiveCycle
 
-# ─── CONFIGURAÇÃO ──────────────────────────────────────────────────────────────
+# --- CONFIGURAÇÃO --------------------------------------------------------------
 CYCLE_INTERVAL_SECONDS = 10
 MAX_TASKS_PER_CYCLE = 1
 MEMORY_DIR = Path("memory")
@@ -23,7 +23,7 @@ LOG_FILE = MEMORY_DIR / "autonomous_log.md"
 REBOOT_FLAG = "auto_reboot.flag"
 
 
-# ─── BACKLOG ───────────────────────────────────────────────────────────────────
+# --- BACKLOG -------------------------------------------------------------------
 def load_backlog() -> list:
     MEMORY_DIR.mkdir(exist_ok=True)
     if not BACKLOG_FILE.exists():
@@ -61,7 +61,7 @@ def _seed_initial_backlog():
             print("[Seed] Backlog inicial criado".encode('utf-8', errors='replace').decode('utf-8'))
 
 
-# ─── LOG ───────────────────────────────────────────────────────────────────────
+# --- LOG -----------------------------------------------------------------------
 def log_cycle(msg: str):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{timestamp}] {msg}"
@@ -79,7 +79,7 @@ def log_cycle(msg: str):
         f.write(line + "\n")
 
 
-# ─── CLASSE PRINCIPAL ─────────────────────────────────────────────────────────
+# --- CLASSE PRINCIPAL ---------------------------------------------------------
 class AutonomousLoop:
     def __init__(self, orchestrator=None, telegram_bot=None):
         self.orchestrator = orchestrator
@@ -148,7 +148,7 @@ class AutonomousLoop:
             try:
                 cog_result = self._cognitive.run_cycle(context=task_desc)
                 if cog_result.get("loop_detected"):
-                    log_cycle(f"[Cognitive] [!]️ Loop detetado — a mudar de abordagem")
+                    log_cycle(f"[Cognitive] [!] Loop detetado — a mudar de abordagem")
                     # Forçar fallback para evitar repetição
                     task_desc = f"{task_desc} (tenta uma abordagem completamente diferente)"
                 log_cycle(f"[Cognitive] Ciclo #{cog_result.get('cycle', '?')} concluido")
@@ -202,7 +202,7 @@ class AutonomousLoop:
                 t["result"] = str(result_text)[:500]
                 break
         save_backlog(backlog)
-        log_cycle(f"[Ciclo #{cycle_id}] {'[OK]' if success else '[X]'} {task_desc[:60]} → {status}")
+        log_cycle(f"[Ciclo #{cycle_id}] {'[OK]' if success else '[X]'} {task_desc[:60]} -> {status}")
 
         # 7b. Notificações proactivas
         try:
@@ -253,7 +253,7 @@ class AutonomousLoop:
         # 1. Escolher agente pelo capability registry
         registry = get_registry()
         chosen_agent = registry.match(task_desc, fallback="developer")
-        log_cycle(f"[MultiAgent] '{chosen_agent}' → {task_desc[:60]}")
+        log_cycle(f"[MultiAgent] '{chosen_agent}' -> {task_desc[:60]}")
 
         # 2. Obter contexto de memória episódica (tentativas anteriores)
         memory_ctx = mem.get_context_for_task(task_desc, task_id)

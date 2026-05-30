@@ -80,7 +80,7 @@ class AutoOrchestrator:
         
         print(f"\n[DADOS] **Status atual:**")
         print(f"   [IA] Agentes: {status['agents']}")
-        print(f"   [ENG]️ Sistemas: {status['systems']}")
+        print(f"   [ENG] Sistemas: {status['systems']}")
         print(f"   [LOOP] Ciclos: {status['cycles']}")
         print(f"   [SOBE] Evolução: {status['evolution_steps']} passos")
         
@@ -140,7 +140,7 @@ async def main():
             print("\n" + "=" * 60)
             print(f"[DADOS] **RESUMO APÓS {cycle_count} CICLOS**")
             print(f"   [IA] Agentes: {len(orchestrator.agents)}")
-            print(f"   [ENG]️ Sistemas: {len(orchestrator.systems)}")
+            print(f"   [ENG] Sistemas: {len(orchestrator.systems)}")
             print(f"   [SOBE] Passos de evolução: {len(orchestrator.evolution_log)}")
             print("=" * 60)
         

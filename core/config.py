@@ -70,8 +70,8 @@ class Config:
     SANDBOX_ENABLED: bool = os.getenv("SANDBOX_ENABLED", "false").lower() == "true"
     SANDBOX_TIMEOUT: int = int(os.getenv("SANDBOX_TIMEOUT", "30"))
     SANDBOX_MEMORY_MB: int = int(os.getenv("SANDBOX_MEMORY_MB", "256"))
-    # SANDBOX_ENABLED=true  → usa Docker/firejail quando disponível
-    # SANDBOX_ENABLED=false → usa subprocess restrito (fallback seguro)
+    # SANDBOX_ENABLED=true  -> usa Docker/firejail quando disponível
+    # SANDBOX_ENABLED=false -> usa subprocess restrito (fallback seguro)
 
     # --- Batch 9: Self-Improvement Loop ---
     SELF_IMPROVE_ENABLED: bool = os.getenv("SELF_IMPROVE_ENABLED", "true").lower() == "true"

@@ -9,9 +9,9 @@ Este é o cérebro do sistema. Um único agente LLM que:
 - Máximo 1-3 chamadas LLM por mensagem (não 30!)
 
 Filosofia:
-  - Chat normal → 1 chamada LLM, resposta direta
-  - Pedido de ação (criar ficheiro, git, etc.) → 1 chamada LLM com tools, executa, responde
-  - Tarefa complexa → máximo 5 iterações com feedback real ao utilizador
+  - Chat normal -> 1 chamada LLM, resposta direta
+  - Pedido de ação (criar ficheiro, git, etc.) -> 1 chamada LLM com tools, executa, responde
+  - Tarefa complexa -> máximo 5 iterações com feedback real ao utilizador
 """
 import asyncio
 import json
@@ -25,7 +25,7 @@ from typing import Optional, Callable
 
 logger = logging.getLogger(__name__)
 
-# ─── Prompt do sistema ────────────────────────────────────────────────────────
+# --- Prompt do sistema --------------------------------------------------------
 
 def _build_system_prompt() -> str:
     import os as _os
@@ -47,7 +47,7 @@ def _build_system_prompt() -> str:
             "- Tarefas pendentes: {}".format(len(pending))
         )
         if pending:
-            loop_context += " → " + ", ".join("'{}'".format(t["title"]) for t in pending[:3])
+            loop_context += " -> " + ", ".join("'{}'".format(t["title"]) for t in pending[:3])
         loop_context += "\n- Concluídas: {} | Falhadas: {}".format(len(done), len(failed))
 
         log_path = MEMORY_DIR / "autonomous_log.md"
@@ -83,8 +83,8 @@ def _build_system_prompt() -> str:
 - Se pedido algo no computador dele: "Isso tens de correr tu localmente."{loop_context}
 
 ## REGRAS
-1. Conversa normal → responde directamente, sem ferramentas
-2. Ações concretas → usa ferramentas, reporta o que fizeste
+1. Conversa normal -> responde directamente, sem ferramentas
+2. Ações concretas -> usa ferramentas, reporta o que fizeste
 3. Shell: sempre Linux/bash
 4. Nunca inventes resultados
 5. Foca-te APENAS em `{github_repo}` — não toques em outros repos sem ordem explícita
@@ -92,7 +92,7 @@ def _build_system_prompt() -> str:
 """.format(repo_path=repo_path, github_repo=github_repo, loop_context=loop_context)
 SYSTEM_PROMPT = _build_system_prompt()
 
-# ─── Schema de ferramentas (formato OpenAI/DeepSeek) ─────────────────────────
+# --- Schema de ferramentas (formato OpenAI/DeepSeek) -------------------------
 
 TOOLS_SCHEMA = [
     {
@@ -207,7 +207,7 @@ TOOLS_SCHEMA = [
     },
 ]
 
-# ─── Cliente LLM (DeepSeek com fallback) ─────────────────────────────────────
+# --- Cliente LLM (DeepSeek com fallback) -------------------------------------
 
 def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) -> dict:
     """
@@ -247,7 +247,7 @@ def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) ->
         return json.loads(r.read().decode("utf-8"))
 
 
-# ─── Memória de conversa persistente ─────────────────────────────────────────
+# --- Memória de conversa persistente -----------------------------------------
 
 def _history_path(user_id: int) -> Path:
     try:
@@ -292,7 +292,7 @@ def clear_history(user_id: int) -> None:
         pass
 
 
-# ─── Executor de ferramentas ──────────────────────────────────────────────────
+# --- Executor de ferramentas --------------------------------------------------
 
 async def _run_tool(name: str, args: dict) -> str:
     """Executa uma ferramenta e retorna o resultado como string."""
@@ -305,7 +305,7 @@ async def _run_tool(name: str, args: dict) -> str:
         return f"Erro ao executar {name}: {e}"
 
 
-# ─── Agente Principal ─────────────────────────────────────────────────────────
+# --- Agente Principal ---------------------------------------------------------
 
 class LLMAgent:
     """
@@ -429,7 +429,7 @@ class LLMAgent:
                 )
             except RuntimeError as e:
                 # API key não configurada — resposta de fallback
-                reply = f"[!]️ {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+                reply = f"[!] {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
                 self._update_history(history, user_message, reply, user_id)
                 return reply
             except Exception as e:
@@ -443,7 +443,7 @@ class LLMAgent:
             msg = choice.get("message", {})
             finish_reason = choice.get("finish_reason", "stop")
 
-            # Sem tool calls → resposta final
+            # Sem tool calls -> resposta final
             if finish_reason == "stop" or not msg.get("tool_calls"):
                 reply = msg.get("content") or "Tarefa concluída."
                 
@@ -514,7 +514,7 @@ class LLMAgent:
         save_history(user_id, history)
 
 
-# ─── Singleton global ─────────────────────────────────────────────────────────
+# --- Singleton global ---------------------------------------------------------
 
 _agent_instance: Optional[LLMAgent] = None
 

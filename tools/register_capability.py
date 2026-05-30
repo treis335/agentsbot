@@ -44,7 +44,7 @@ def main():
         scores = registry.score_all(args.scores)
         ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for agent, score in ranked:
-            bar = "█" * max(0, int(score))
+            bar = "#" * max(0, int(score))
             print(f"  {agent:20s} {score:5.1f}  {bar}")
         return
 

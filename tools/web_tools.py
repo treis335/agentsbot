@@ -119,7 +119,7 @@ footer { background:var(--surface); border-top:1px solid var(--border); padding:
         <div class="grid">
             <div class="card"><h3>[ESTRELA] Moderno</h3><p>Design limpo e profissional.</p></div>
             <div class="card"><h3>[START] Rápido</h3><p>Optimizado para performance.</p></div>
-            <div class="card"><h3>📱 Responsivo</h3><p>Funciona em todos os dispositivos.</p></div>
+            <div class="card"><h3>[PHONE] Responsivo</h3><p>Funciona em todos os dispositivos.</p></div>
         </div>
     </div>"""
         else:
@@ -215,7 +215,7 @@ async def add_page(site_name: str, page_name: str, content: str = "") -> str:
     return f"[OK] Página `{filename}` adicionada a `sites/{slug}/`"
 
 
-# ── Schemas para o executor ───────────────────────────────────────────────────
+# -- Schemas para o executor ---------------------------------------------------
 
 WEBSITE_TOOLS_SCHEMA = [
     {

@@ -117,7 +117,7 @@ class AgentManager:
         await send_fn(chat_id=chat_id, text=f"[VERDE] **{agent.name}** iniciado em modo autónomo.", parse_mode="Markdown")
         while not agent._stop.is_set():
             try:
-                await send_fn(chat_id=chat_id, text=f"[ENG]️ **{agent.name}** a executar ciclo...", parse_mode="Markdown")
+                await send_fn(chat_id=chat_id, text=f"[ENG] **{agent.name}** a executar ciclo...", parse_mode="Markdown")
                 auto_task = (
                     "Executa o teu ciclo autónomo. Analisa o repositório usando as ferramentas disponíveis, "
                     "identifica o que pode ser melhorado ou criado, faz as alterações necessárias diretamente "
@@ -125,7 +125,7 @@ class AgentManager:
                 )
                 async def notify(tool_name: str, args: dict, result: str):
                     preview = str(result)[:300]
-                    await send_fn(chat_id=chat_id, text=f"[FIX] `{tool_name}` → {preview}", parse_mode="Markdown")
+                    await send_fn(chat_id=chat_id, text=f"[FIX] `{tool_name}` -> {preview}", parse_mode="Markdown")
                 final, agent.context = await run_agent_task(
                     system_prompt=agent.system_prompt,
                     task=auto_task,
@@ -140,7 +140,7 @@ class AgentManager:
                 break
             except Exception as e:
                 logger.error(f"[{agent.name}] Erro: {e}", exc_info=True)
-                await send_fn(chat_id=chat_id, text=f"[!]️ **{agent.name}** erro: {e}")
+                await send_fn(chat_id=chat_id, text=f"[!] **{agent.name}** erro: {e}")
             try:
                 await asyncio.wait_for(agent._stop.wait(), timeout=self.interval)
                 break

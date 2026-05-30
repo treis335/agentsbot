@@ -14,7 +14,7 @@ import sys
 import importlib.util
 from pathlib import Path
 
-# ── Cores para output no terminal ────────────────────────────────────────────
+# -- Cores para output no terminal --------------------------------------------
 GREEN  = "\033[92m"
 RED    = "\033[91m"
 YELLOW = "\033[93m"
@@ -25,10 +25,10 @@ RESET  = "\033[0m"
 def ok(msg):   print(f"  {GREEN}[OK]{RESET} {msg}")
 def err(msg):  print(f"  {RED}[ERR]{RESET} {msg}")
 def warn(msg): print(f"  {YELLOW}[!]{RESET} {msg}")
-def info(msg): print(f"  {BLUE}→{RESET} {msg}")
+def info(msg): print(f"  {BLUE}->{RESET} {msg}")
 def header(msg): print(f"\n{BOLD}{msg}{RESET}")
 
-# ── Detetar raiz do repositório ───────────────────────────────────────────────
+# -- Detetar raiz do repositório -----------------------------------------------
 def find_repo_root():
     """Procura a raiz do repo a partir do diretório atual ou do script."""
     candidates = [
@@ -43,7 +43,7 @@ def find_repo_root():
     return Path.cwd()
 
 
-# ── PASSO 1: Remover pastas-sombra ───────────────────────────────────────────
+# -- PASSO 1: Remover pastas-sombra -------------------------------------------
 def fix_shadow_folders(root: Path) -> int:
     """
     Remove pastas que têm o mesmo nome que ficheiros .py no mesmo diretório.
@@ -95,7 +95,7 @@ def fix_shadow_folders(root: Path) -> int:
     return removed
 
 
-# ── PASSO 2: Limpar __pycache__ ───────────────────────────────────────────────
+# -- PASSO 2: Limpar __pycache__ -----------------------------------------------
 def clean_pycache(root: Path) -> int:
     """Remove todas as pastas __pycache__ do projeto."""
     header("PASSO 2 — Limpeza de __pycache__")
@@ -118,7 +118,7 @@ def clean_pycache(root: Path) -> int:
     return removed
 
 
-# ── PASSO 3: Deduplicar agents.json ──────────────────────────────────────────
+# -- PASSO 3: Deduplicar agents.json ------------------------------------------
 def fix_agents_json(root: Path) -> dict:
     """
     Remove agentes duplicados de agents.json.
@@ -187,7 +187,7 @@ def fix_agents_json(root: Path) -> dict:
     with open(agents_file, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    ok(f"agents.json atualizado: {total} → {len(unique_agents)} agentes")
+    ok(f"agents.json atualizado: {total} -> {len(unique_agents)} agentes")
     if removed > 0:
         ok(f"Removidos {removed} duplicado(s): {', '.join(set(duplicates_found))}")
     else:
@@ -196,7 +196,7 @@ def fix_agents_json(root: Path) -> dict:
     return {"total": total, "removed": removed, "kept": len(unique_agents)}
 
 
-# ── PASSO 4: Verificar/criar requirements.txt ────────────────────────────────
+# -- PASSO 4: Verificar/criar requirements.txt --------------------------------
 def fix_requirements(root: Path):
     """Cria requirements.txt se não existir, baseado nos imports detetados."""
     header("PASSO 4 — requirements.txt")
@@ -223,7 +223,7 @@ def fix_requirements(root: Path):
     info("Instala com: pip install -r requirements.txt")
 
 
-# ── PASSO 5: Verificar imports críticos ──────────────────────────────────────
+# -- PASSO 5: Verificar imports críticos --------------------------------------
 def verify_imports(root: Path):
     """Testa se os imports problemáticos anteriores agora funcionam."""
     header("PASSO 5 — Verificação de imports")
@@ -255,18 +255,18 @@ def verify_imports(root: Path):
     return all_ok
 
 
-# ── RELATÓRIO FINAL ───────────────────────────────────────────────────────────
+# -- RELATÓRIO FINAL -----------------------------------------------------------
 def print_summary(root, shadows, caches, agents_stats, imports_ok):
-    print(f"\n{BOLD}{'═' * 50}{RESET}")
+    print(f"\n{BOLD}{'=' * 50}{RESET}")
     print(f"{BOLD}  RELATÓRIO FINAL{RESET}")
-    print(f"{BOLD}{'═' * 50}{RESET}")
+    print(f"{BOLD}{'=' * 50}{RESET}")
     print(f"  Repositório  : {root}")
     print(f"  Pastas-sombra: {GREEN}{shadows} removida(s){RESET}")
     print(f"  __pycache__  : {GREEN}{caches} removido(s){RESET}")
     if agents_stats['total'] > 0:
-        print(f"  Agentes JSON : {agents_stats['total']} → {agents_stats['kept']} ({GREEN}-{agents_stats['removed']} duplicados{RESET})")
+        print(f"  Agentes JSON : {agents_stats['total']} -> {agents_stats['kept']} ({GREEN}-{agents_stats['removed']} duplicados{RESET})")
     print(f"  Imports      : {''+GREEN+'OK'+RESET if imports_ok else RED+'Com erros'+RESET}")
-    print(f"{BOLD}{'═' * 50}{RESET}")
+    print(f"{BOLD}{'=' * 50}{RESET}")
 
     if shadows > 0 or agents_stats['removed'] > 0:
         print(f"\n{GREEN}{BOLD}  Correções aplicadas com sucesso!{RESET}")
@@ -275,11 +275,11 @@ def print_summary(root, shadows, caches, agents_stats, imports_ok):
         print(f"\n{GREEN}  Repositório já estava limpo!{RESET}\n")
 
 
-# ── MAIN ─────────────────────────────────────────────────────────────────────
+# -- MAIN ---------------------------------------------------------------------
 def main():
-    print(f"\n{BOLD}{'═' * 50}")
+    print(f"\n{BOLD}{'=' * 50}")
     print("  fix_repo.py — Correção automática agentsbot")
-    print(f"{'═' * 50}{RESET}")
+    print(f"{'=' * 50}{RESET}")
 
     root = find_repo_root()
     info(f"Repositório detetado em: {root}")

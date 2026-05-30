@@ -9,7 +9,7 @@ import time
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-# ─── DADOS REAIS DO ECOSSISTEMA ──────────────────────────────────────────
+# --- DADOS REAIS DO ECOSSISTEMA ------------------------------------------
 # Tenta ler dados reais do sistema local
 def load_real_data():
     """Tenta carregar dados reais do ecossistema Correoto."""

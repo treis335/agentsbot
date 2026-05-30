@@ -28,7 +28,7 @@ from core.config import Config
 logger = logging.getLogger(__name__)
 
 
-# ─── ENUMS ─────────────────────────────────────────────────────────────────────
+# --- ENUMS ---------------------------------------------------------------------
 
 class StepState(str, Enum):
     PENDING   = "pending"
@@ -46,7 +46,7 @@ class RunState(str, Enum):
     PAUSED    = "paused"
 
 
-# ─── MODELOS ───────────────────────────────────────────────────────────────────
+# --- MODELOS -------------------------------------------------------------------
 
 @dataclass
 class StepDefinition:
@@ -91,7 +91,7 @@ class WorkflowRun:
     state: RunState = RunState.CREATED
     current_step_id: str = ""
     context: dict = field(default_factory=dict)
-    steps: dict[str, StepRun] = field(default_factory=dict)  # step_id → StepRun
+    steps: dict[str, StepRun] = field(default_factory=dict)  # step_id -> StepRun
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     updated_at: str = field(default_factory=lambda: datetime.now().isoformat())
     error: str = ""
@@ -125,7 +125,7 @@ class WorkflowRun:
         )
 
 
-# ─── WORKFLOW DEFINITION ───────────────────────────────────────────────────────
+# --- WORKFLOW DEFINITION -------------------------------------------------------
 
 @dataclass
 class WorkflowDefinition:
@@ -134,10 +134,10 @@ class WorkflowDefinition:
     description: str
     version: str
     initial_step: str
-    steps: dict[str, StepDefinition]  # step_id → StepDefinition
+    steps: dict[str, StepDefinition]  # step_id -> StepDefinition
 
 
-# ─── STATE MACHINE ─────────────────────────────────────────────────────────────
+# --- STATE MACHINE -------------------------------------------------------------
 
 class StateMachine:
     """
@@ -155,7 +155,7 @@ class StateMachine:
         # Hook opcional: chamado quando um passo precisa de ser executado
         self._step_executor: Optional[Callable] = None
 
-    # ── Carregamento ────────────────────────────────────────────────────────────
+    # -- Carregamento ------------------------------------------------------------
 
     @classmethod
     def from_yaml(cls, workflow_name: str) -> "StateMachine":
@@ -190,10 +190,10 @@ class StateMachine:
         return cls(definition)
 
     def set_executor(self, executor: Callable) -> None:
-        """Define o callable que executa cada passo. Assinatura: executor(step_def, run) → str"""
+        """Define o callable que executa cada passo. Assinatura: executor(step_def, run) -> str"""
         self._step_executor = executor
 
-    # ── Ciclo de vida ───────────────────────────────────────────────────────────
+    # -- Ciclo de vida -----------------------------------------------------------
 
     def start(self, context: Optional[dict] = None) -> str:
         """Cria uma nova run e retorna o run_id."""
@@ -312,12 +312,12 @@ class StateMachine:
         elif transition == "next":
             next_id = self._next_step(step_id)
             run.current_step_id = next_id
-            logger.info(f"[StateMachine] {step_id} → {next_id}")
+            logger.info(f"[StateMachine] {step_id} -> {next_id}")
         else:
             # Transição direta para step específico
             if transition in self.definition.steps:
                 run.current_step_id = transition
-                logger.info(f"[StateMachine] {step_id} → {transition} (directo)")
+                logger.info(f"[StateMachine] {step_id} -> {transition} (directo)")
             else:
                 run.state = RunState.FAILED
                 run.error = f"Transição inválida: {transition}"
@@ -335,7 +335,7 @@ class StateMachine:
             pass
         return None
 
-    # ── Persistência ────────────────────────────────────────────────────────────
+    # -- Persistência ------------------------------------------------------------
 
     def _save_run(self, run: WorkflowRun) -> None:
         path = self.RUNS_DIR / f"{run.run_id}.json"
@@ -369,7 +369,7 @@ class StateMachine:
                 pass
         return sorted(runs, key=lambda r: r["created_at"], reverse=True)
 
-    # ── Utilitários ─────────────────────────────────────────────────────────────
+    # -- Utilitários -------------------------------------------------------------
 
     def summary(self, run_id: str) -> str:
         """Retorna resumo legível de uma run."""
@@ -384,16 +384,16 @@ class StateMachine:
         for step_id, step_def in self.definition.steps.items():
             step_run = run.steps.get(step_id, StepRun(step_id=step_id))
             icon = {
-                StepState.PENDING: "⏳",
+                StepState.PENDING: "[TIME]",
                 StepState.RUNNING: "[LOOP]",
                 StepState.COMPLETED: "[OK]",
                 StepState.FAILED: "[X]",
-                StepState.SKIPPED: "⏭️",
+                StepState.SKIPPED: "[SKIP]",
             }.get(step_run.state, "?")
             lines.append(f"  {icon} {step_def.name} [{step_run.state}]")
             if step_run.result:
                 short = step_run.result[:80].replace("\n", " ")
-                lines.append(f"     → {short}")
+                lines.append(f"     -> {short}")
 
         if run.error:
             lines.append(f"\nErro: {run.error}")

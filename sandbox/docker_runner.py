@@ -83,9 +83,9 @@ async def run_shell_sandboxed(
         return await _run_restricted_subprocess_shell(command, actual_timeout)
 
 
-# ──────────────────────────────────────────────
+# ----------------------------------------------
 # Docker runner
-# ──────────────────────────────────────────────
+# ----------------------------------------------
 
 async def _run_docker(
     code_or_cmd: str,
@@ -219,9 +219,9 @@ async def _ensure_image():
     logger.info(f"[Sandbox] Imagem {SANDBOX_IMAGE} construída com sucesso")
 
 
-# ──────────────────────────────────────────────
+# ----------------------------------------------
 # Firejail runner (sem Docker)
-# ──────────────────────────────────────────────
+# ----------------------------------------------
 
 async def _run_firejail_python(code: str, profile: SandboxProfile, timeout: int) -> dict:
     """Executa Python com firejail como sandbox leve."""
@@ -293,9 +293,9 @@ async def _run_firejail_shell(command: str, profile: SandboxProfile, timeout: in
                 "returncode": -1, "sandbox_type": "firejail", "profile": profile.name, "duration_s": timeout}
 
 
-# ──────────────────────────────────────────────
+# ----------------------------------------------
 # Fallback: subprocess restrito
-# ──────────────────────────────────────────────
+# ----------------------------------------------
 
 async def _run_restricted_subprocess_python(code: str, timeout: int) -> dict:
     """

@@ -32,12 +32,12 @@ class ModelInfo:
     available: bool = True              # atualizado dinamicamente
 
 
-# ─── CATÁLOGO ESTÁTICO ─────────────────────────────────────────────────────────
+# --- CATÁLOGO ESTÁTICO ---------------------------------------------------------
 # Ollama — gratuito, local
 # DeepSeek — pago, cloud
 
 MODEL_CATALOG: dict[str, ModelInfo] = {
-    # ── Ollama ──────────────────────────────────────────────────────────────────
+    # -- Ollama ------------------------------------------------------------------
     "qwen2.5-coder:7b": ModelInfo(
         name="qwen2.5-coder:7b",
         provider=ModelProvider.OLLAMA,
@@ -70,7 +70,7 @@ MODEL_CATALOG: dict[str, ModelInfo] = {
         cost_per_1k_tokens=0.0,
         recommended_for=["general", "reasoning", "analysis"],
     ),
-    # ── DeepSeek (cloud) ────────────────────────────────────────────────────────
+    # -- DeepSeek (cloud) --------------------------------------------------------
     "deepseek-chat": ModelInfo(
         name="deepseek-chat",
         provider=ModelProvider.DEEPSEEK,

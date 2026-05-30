@@ -30,7 +30,7 @@ AGENT_PERSONAS = {
     "Arquiteto": {
         "role": "Designer de sistemas. Pensa em modularidade, escalabilidade e padrões.",
         "asks": "Está bem estruturado? Cria dívida técnica? É sustentável?",
-        "emoji": "[OBRA]️"
+        "emoji": "[OBRA]"
     },
     "Explorador": {
         "role": "Curioso e investigador. Pesquisa novas abordagens e tecnologias.",

@@ -22,7 +22,7 @@ class RetryConfig:
     max_delay_s:    float = 10.0  # máximo delay entre retries
 
 
-# ─── Configurações por ferramenta ────────────────────────────────────────────
+# --- Configurações por ferramenta --------------------------------------------
 
 RETRY_CONFIGS: dict[str, RetryConfig] = {
     "write_file":      RetryConfig(max_retries=2, base_delay_s=0.5),

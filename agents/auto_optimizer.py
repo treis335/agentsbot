@@ -145,7 +145,7 @@ class AutoOptimizer:
             if issues:
                 print(f"\n  [DOC] {pyfile.relative_to(root_dir)}")
                 for issue in issues:
-                    print(f"     [!]️  {issue.get('type', 'issue')}: {issue.get('suggestion', '')}")
+                    print(f"     [!]  {issue.get('type', 'issue')}: {issue.get('suggestion', '')}")
                     summary[issue['type']] += 1
                     total_issues += 1
         
@@ -183,7 +183,7 @@ class AutoOptimizer:
             elif issue.get('type') == 'missing_docstrings':
                 suggestions.append("[LIVRO] Adicionar docstrings às classes")
             elif issue.get('type') == 'long_function':
-                suggestions.append(f"[CORT]️  Função com {issue['lines']} linhas - refatorar")
+                suggestions.append(f"[CORT]  Função com {issue['lines']} linhas - refatorar")
         
         return "\n".join([f"  • {s}" for s in suggestions])
 
@@ -202,7 +202,7 @@ if __name__ == "__main__":
             if len(sys.argv) > 2:
                 issues = opt.analyze_file(sys.argv[2])
                 for i in issues:
-                    print(f"  [!]️  {i.get('suggestion', '')}")
+                    print(f"  [!]  {i.get('suggestion', '')}")
         elif cmd == "suggest":
             if len(sys.argv) > 2:
                 print(opt.suggest_optimization(sys.argv[2]))

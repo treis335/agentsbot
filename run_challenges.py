@@ -39,7 +39,7 @@ def challenge_1_ml_engine():
     
     for error_type, context, solution, success in errors_to_learn:
         rate = ml.learn_from_error(error_type, context, solution, success)
-        log(f"  Aprendido: {error_type} → taxa de sucesso: {rate:.2%}")
+        log(f"  Aprendido: {error_type} -> taxa de sucesso: {rate:.2%}")
     
     # Gerar nova regra
     rule = ml.generate_new_rule()

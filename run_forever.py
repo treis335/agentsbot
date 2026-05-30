@@ -83,7 +83,7 @@ def verify_integrity():
         if not path.exists():
             issues.append(f"[X] {ficheiro} - NÃO EXISTE")
         elif path.stat().st_size < 100:
-            issues.append(f"[!]️ {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
+            issues.append(f"[!] {ficheiro} - Tamanho suspeito: {path.stat().st_size} bytes")
     return issues
 
 def launch_component(component):
@@ -111,7 +111,7 @@ def launch_component(component):
             stdout, stderr = proc.communicate()
             
             if proc.returncode != 0:
-                log(f"[!]️ {name} terminou com código {proc.returncode}")
+                log(f"[!] {name} terminou com código {proc.returncode}")
                 if stderr:
                     log(f"   Erro: {stderr[-500:]}")
             
@@ -120,7 +120,7 @@ def launch_component(component):
                 log(f"[LOOP] A reiniciar {name} (componente crítico)...")
                 time.sleep(1)
             else:
-                log(f"⏸️ {name} não é crítico, a aguardar...")
+                log(f"[PAUSE] {name} não é crítico, a aguardar...")
                 time.sleep(10)
                 
         except Exception as e:
@@ -152,7 +152,7 @@ def auto_evolve_cycle():
         # Verificar integridade
         issues = verify_integrity()
         if issues:
-            log("[!]️ Problemas de integridade detetados:")
+            log("[!] Problemas de integridade detetados:")
             for issue in issues:
                 log(f"   {issue}")
         
@@ -166,21 +166,21 @@ def auto_evolve_cycle():
         update_heartbeat()
         
         # Aguardar 5 minutos entre ciclos
-        log("⏳ A aguardar 5 min até próximo ciclo...")
+        log("[TIME] A aguardar 5 min até próximo ciclo...")
         time.sleep(300)
 
 def main():
     log("=" * 60)
     log("[START] CORREOTO ECOSYSTEM v7.0 - INICIADO")
     log(f"[PASTA] Diretório: {BASE}")
-    log(f"⏰ Início: {datetime.now().isoformat()}")
+    log(f"[ALARM] Início: {datetime.now().isoformat()}")
     log("=" * 60)
     
     # Verificar integridade inicial
     log("\n[BUSCA] A verificar integridade dos ficheiros...")
     issues = verify_integrity()
     if issues:
-        log("[!]️ Problemas detetados:")
+        log("[!] Problemas detetados:")
         for issue in issues:
             log(f"   {issue}")
     else:
@@ -202,7 +202,7 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        log("\n⏹️  Sistema interrompido pelo utilizador.")
+        log("\n[STOP]  Sistema interrompido pelo utilizador.")
         running = False
     except Exception as e:
         log(f"\n[X] Erro fatal: {e}")

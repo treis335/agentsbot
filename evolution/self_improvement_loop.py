@@ -105,7 +105,7 @@ class SelfImprovementLoop:
         self.max_patches = getattr(Config, "SELF_IMPROVE_MAX_PATCHES", 3)
         self._cycle_count = self._load_cycle_count()
 
-    # ── Controlo de ciclos ─────────────────────────────────────────────────────
+    # -- Controlo de ciclos -----------------------------------------------------
 
     def _load_cycle_count(self) -> int:
         try:
@@ -127,7 +127,7 @@ class SelfImprovementLoop:
         self._save_cycle_count()
         return self._cycle_count % self.every_n == 0
 
-    # ── Ciclo principal ────────────────────────────────────────────────────────
+    # -- Ciclo principal --------------------------------------------------------
 
     async def run_cycle(self) -> ImprovementResult:
         """
@@ -135,7 +135,7 @@ class SelfImprovementLoop:
         Retorna ImprovementResult com o que foi feito.
         """
         result = ImprovementResult()
-        logger.info("[SelfImprove] ── Início do ciclo de auto-melhoria ──")
+        logger.info("[SelfImprove] -- Início do ciclo de auto-melhoria --")
 
         try:
             # 1. Análise de logs (local, sem API)
@@ -178,7 +178,7 @@ class SelfImprovementLoop:
         logger.info(f"[SelfImprove] {result.summary}")
         return result
 
-    # ── Passos individuais ─────────────────────────────────────────────────────
+    # -- Passos individuais -----------------------------------------------------
 
     async def _analyze_logs(self, result: ImprovementResult) -> Optional[dict]:
         """Passo 1: análise local de logs."""

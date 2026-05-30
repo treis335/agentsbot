@@ -407,10 +407,70 @@
     "id": "auto_969f581c",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T14:09:22.792273",
     "source": "fallback",
-    "started_at": "2026-05-30T14:09:32.798029"
+    "started_at": "2026-05-30T14:09:32.798029",
+    "completed_at": "2026-05-30T14:10:15.325676",
+    "result": "---\n\n## ✅ Relatório de Verificação do Ecossistema\n\n### 📌 Git Status\n- **5 ficheiros modificados** (todos na pasta `memory/`)\n- **38 inserções, 4 remoções** — conteúdo válido, memórias atualizadas\n\n### 📌 O que foi committado\n| Ficheiro | Mudança |\n|---|---|\n| `memory/autonomous_log.md` | +13 linhas — novas entradas de log autónomo |\n| `memory/backlog.json` | +16/-2 — tarefas atualizadas (43 tarefas no total) |\n| `memory/loop_episodes.json` | +9 linhas — 185 episódios registados |\n| `memory/self_i"
+  },
+  {
+    "id": "auto_99beeb4d",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:10:25.336007",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:10:35.351861",
+    "completed_at": "2026-05-30T14:14:41.212659",
+    "result": "Reescrevi todos os 27 souls do ecossistema com um formato padronizado que inclui: secção de **Contexto de Execução** (informando que correm num servidor Linux), **Integração com o Sistema** (como se ligam ao MemoryHub, Verifier, Retry Policy reais), e ferramentas alinhadas com as disponíveis no executor. Todos os ficheiros estão validados e à espera de `git commit` — falta apenas executar o commit e push para o GitHub."
+  },
+  {
+    "id": "auto_010ad632",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:14:51.399045",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:15:01.404732",
+    "completed_at": "2026-05-30T14:18:02.036133",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente **187 episódios** do `loop_episodes.json`, 2 ficheiros de memória episódica (`gestor_memoria-*.json`, `supervisor-*.json`), o `autonomous_log.md` (592 linhas), o `backlog.json` (45 itens) e o `semantica/licoes_aprendidas.md`. Extraí **8 lições críticas** (ver abaixo) e identifiquei que **100% dos 187 episódios reportam sucesso** — um alarme claro de falha silenciosa, especialmente porque o qa_tester ex"
+  },
+  {
+    "id": "auto_2e08b896",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:18:12.047241",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:18:22.052819",
+    "completed_at": "2026-05-30T14:21:16.118030",
+    "result": "## Resumo do que fiz\n\nAnalisei os logs (`main.log`, `wakeup_v3.log`, `supervisor.log`, `auto_recovery.log`) e código-fonte (`tools/fs_tools.py`, `core/safe_print.py`, `bot/handlers.py`, `autonomous_loop.py`) e identifiquei os **3 problemas principais**: (1) **1587 conflitos Telegram** por múltiplas instâncias causadas pelo wakeup_v3 (150 resets em loop), (2) **UnicodeEncodeError** com emojis no Windows cp1252 em 8 ficheiros, (3) **Memória fragmentada** com MemoryHub subutilizado.\n\n## O que ficou"
+  },
+  {
+    "id": "auto_c0aac456",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T14:21:26.298269",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:21:36.304321",
+    "completed_at": "2026-05-30T14:23:00.854236",
+    "result": "✅ **Agente `load_tester` criado e publicado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🆕 Novo Agente: **Load Tester**\n\n| Campo | Valor |\n|---|---|\n| **ID** | `load_tester-001` |\n| **Role** | `tester` |\n| **Soul** | `agents/souls/load_tester.md` |\n| **Prioridade** | 7 (alta) |\n| **Nível** | Qualidade |\n\n### 🎯 Especialidade\nTestes de carga, stress e performance — área **crítica e não coberta** pelo ecossistema até agora.\n\n### 🔧 Skills Registadas\n`load_testing` · `stress_testing` · `benchm"
+  },
+  {
+    "id": "auto_903a8146",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T14:23:11.065880",
+    "source": "fallback",
+    "started_at": "2026-05-30T14:23:21.071448"
   }
 ]
