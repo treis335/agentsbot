@@ -260,14 +260,28 @@ class AutonomousLoop:
         if memory_ctx:
             log_cycle(f"[Memory] Contexto injectado ({len(memory_ctx)} chars)")
 
-        # 3. Construir prompt enriquecido com memória
+        # 3. Construir prompt enriquecido com memória semântica
         full_prompt = task_desc
-        if memory_ctx:
+        
+        # Memória semântica: busca por significado, não por data
+        semantic_ctx = ""
+        try:
+            from memory.semantic_search import search_for_prompt, get_index
+            idx = get_index()
+            # Rebuild incremental se necessário (novo episódio a cada ciclo)
+            if len(idx._docs) < 5:
+                idx.rebuild()
+            semantic_ctx = search_for_prompt(task_desc, top_k=4)
+        except Exception as _se:
+            log_cycle(f"[SemanticMemory] {_se}")
+
+        if memory_ctx or semantic_ctx:
             full_prompt = (
                 task_desc + "\n\n" +
-                memory_ctx + "\n" +
-                "Usa este contexto para não repetir erros anteriores. "
-                "Se já tentaste algo que falhou, experimenta uma abordagem diferente."
+                (semantic_ctx if semantic_ctx else "") +
+                (memory_ctx if memory_ctx else "") +
+                "\nUsa este contexto para não repetir erros. "
+                "Se algo falhou antes, experimenta abordagem diferente."
             )
 
         # 4. Executar

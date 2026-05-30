@@ -94,6 +94,22 @@ class LoopMemory:
         self._save()
         logger.debug(f"[LoopMemory] Gravado: {task_id} success={success}")
 
+        # Actualizar índice semântico em tempo real
+        try:
+            from memory.semantic_search import get_index
+            idx = get_index(auto_build=False)
+            if idx._built:
+                text = f"{task_desc} {str(result)[:200]} {lesson}"
+                idx.add_document("episode", text.strip(), {
+                    "agent": agent,
+                    "success": success,
+                    "task_desc": task_desc[:200],
+                    "lesson": lesson,
+                    "timestamp": datetime.now().isoformat(),
+                })
+        except Exception:
+            pass
+
     def _extract_lesson(self, task: str, result: str) -> str:
         """Extrai lição de uma falha por heurísticas locais (sem LLM)."""
         r = result.lower()
@@ -164,7 +180,36 @@ class LoopMemory:
         return "\n## MEMÓRIA DE EXECUÇÕES ANTERIORES\n" + "\n".join(lines) + "\n"
 
     def _similarity(self, a: str, b: str) -> float:
-        """Similaridade simples por palavras comuns (Jaccard)."""
+        """
+        Similaridade semântica TF-IDF + cosine (via SemanticIndex).
+        Fallback para Jaccard se índice não disponível.
+        """
+        try:
+            from memory.semantic_search import get_index
+            idx = get_index(auto_build=False)
+            if idx._built and idx._idf:
+                import math
+                from collections import defaultdict
+                def tfidf(tokens):
+                    tf = defaultdict(float)
+                    for t in tokens: tf[t] += 1
+                    n = len(tokens) or 1
+                    return {t: (c/n) * idx._idf.get(t, 1.0) for t, c in tf.items()}
+                from memory.semantic_search import _tokenize
+                va = tfidf(_tokenize(a))
+                vb = tfidf(_tokenize(b))
+                common = set(va) & set(vb)
+                if not common:
+                    return 0.0
+                dot = sum(va[k]*vb[k] for k in common)
+                mag_a = math.sqrt(sum(x*x for x in va.values()))
+                mag_b = math.sqrt(sum(x*x for x in vb.values()))
+                if mag_a == 0 or mag_b == 0:
+                    return 0.0
+                return dot / (mag_a * mag_b)
+        except Exception:
+            pass
+        # Fallback Jaccard
         wa = set(a.lower().split())
         wb = set(b.lower().split())
         if not wa or not wb:
