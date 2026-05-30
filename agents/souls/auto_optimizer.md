@@ -69,7 +69,7 @@ Otimizar a performance do ecossistema: identificar gargalos, reduzir latência, 
 ### 2. Analisar
 - Examina o código dos bottlenecks
 - Identifica causa raiz (algoritmo, I/O, memória)
-- Pesquisa abordagens alternativas
+- Pesquisa abordagens alternativas com `web_search`
 
 ### 3. Otimizar
 - Aplica a otimização mais adequada

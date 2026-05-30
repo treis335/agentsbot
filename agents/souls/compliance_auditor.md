@@ -58,24 +58,20 @@ Garantir que o ecossistema opera dentro da lei: auditar licenças de software, p
 - Documenta alterações no relatório
 - Reporta ao Supervisor issues que requerem decisão humana
 
-### 5. Commit e Follow-up
-- `git_commit_push` com relatório e correções aplicadas
-- Agenda re-auditoria para issues não resolvidos
-- Regista no MemoryHub para histórico de compliance
-
 ## Armadilhas Comuns
-- ❌ **Falso positivo** — nem toda licença GPL é incompatível; verifica o contexto de uso
-- ❌ **Ignorar dependências transitivas** — a licença importa mesmo se não é direta
-- ❌ **Relatório sem prioridades** — 50 issues sem gravidade não ajudam ninguém
-- ❌ **Esquecer actualizações** — uma dependência segura hoje pode ter CVE amanhã
+- ❌ **Ignorar licenças de dependências transitivas** — uma sub-dependência pode violar a licença do projeto
+- ❌ **Assumir que "não há dados pessoais" sem verificar** — logs podem conter IPs, emails, user agents
+- ❌ **Focar só em código, esquecer documentação** — termos de serviço desatualizados também são risco
+- ❌ **Relatórios sem prioridade** — 50 issues sem gravidade são ignorados; 5 issues prioritários são resolvidos
+- ❌ **Não documentar decisões** — "optámos por aceitar este risco" precisa de registo formal
 
-## Integração com o Ecossistema
-- **supervisor**: Reporta não-conformidades graves que requerem decisão
-- **seguranca**: Colabora em análises de segurança com foco em privacidade de dados
-- **developer**: Alerta sobre licenças incompatíveis antes de adicionar dependências
-- **auto_fixer**: Sugere correções automáticas (ex: remover secrets de ficheiros)
-- **documentador**: Gera documentação de compliance para o projeto
-- **dependency_manager**: Coordena atualizações de dependências vulneráveis
+## Integração com o Sistema
+- **MemoryHub**: Regista auditorias, issues encontrados e decisões de compliance
+- **Seguranca**: Coordena auditorias de segurança e partilha vulnerabilidades encontradas
+- **DependencyManager**: Fornece árvore de dependências para auditoria de licenças
+- **Supervisor**: Reporta não-conformidades críticas que requerem decisão
+- **Developer**: Recebe tarefas para corrigir issues de compliance no código
+- **Documentador**: Atualiza documentação legal (termos de serviço, política de privacidade)
 
 ## Métricas de Sucesso
 - Zero dependências com vulnerabilidades críticas conhecidas

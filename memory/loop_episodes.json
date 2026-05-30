@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:06:12.280110",
-    "success": true,
-    "result_summary": "Desculpa, estou com um bug onde a ferramenta `write_file` não está a aceitar argumentos mesmo quando os forneço — fiquei preso num loop infinito de chamadas vazias. **Nada foi escrito ainda.** O que ficou por fazer: criar `core/memory_hub.py`, atualizar `core/supervisor.py` e `agents/executor.py`, adicionar o teste, e fazer commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:09:28.349434",
-    "success": true,
-    "result_summary": "Criei e validei o `core/memory_hub.py` completo com a classe MemoryHub (13284 chars) que unifica os 3 sistemas de memória, e confirmei que o `core/supervisor.py` e `agents/executor.py` já o importam e usam correctamente — todos os métodos (store_chat, store_episode, store_knowledge, get_context, record, get_failures, etc.) funcionam nos testes manuais.\n\nFalta criar o ficheiro `tests/test_memory_hu",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T04:12:15.328106",
-    "success": true,
-    "result_summary": "Modifiquei o `core/memory_hub.py` para que `get_episodes()` retorne o formato legado `{\"episode\": data, \"timestamp\": ..., \"success\": bool}` e actualizei o `agents/executor.py` para usar `get_episodes(limit=5)` em vez de `get_recent(5)`. Ficou por criar o ficheiro `tests/test_memory_hub.py` e fazer o commit com a mensagem 'feat: unifica 3 sistemas de memória em MemoryHub'.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T04:15:04.223398",
     "success": true,
     "result_summary": "Verifiquei o estado completo do ecossistema: `core/memory_hub.py` já está implementado com 365 linhas e todos os métodos necessários (store_chat, store_episode, store_knowledge, get_context, e wrappers remember/record/add/get_recent), `core/supervisor.py` e `agents/executor.py` já importam e usam MemoryHub.\n\nFicou por criar o ficheiro `tests/test_memory_hub.py` — as tentativas de usar `write_file`",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-30T18:52:57.107415",
     "success": true,
     "result_summary": "## ✅ Tarefa Concluída\n\n### 📊 Diagnóstico dos 3 Principais Problemas\n\n| # | Problema | Ocorrências | Causa | Status |\n|---|---|---|---|---|\n| 🔴 | **Telegram Conflict** (múltiplas instâncias) | **1.585** | `wakeup_v3.py`/`heartbeat`/`supervisor_ultra` reiniciam `main.py` N vezes | ⏳ `telegram_lock.py` existe, falta usar em todos os entry points |\n| 🟠 | **Corrupção de memória** (shared_memory.json) |",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_7c0e30a8",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T18:53:36.833466",
+    "success": true,
+    "result_summary": "## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Último commit**: `c5c5324` — `sync: atualização automática de memórias, logs, métricas e eventos do ecossistema`\n- **8 ficheiros alterados**, 50 inserções, 18 deleções\n\n### 📦 Ficheiros com commit\n| Ficheiro | Alteração |\n|---|---|\n| `events/2026/05/30/events.jsonl` | +1 evento",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_e4bb2d73",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T18:57:40.106118",
+    "success": true,
+    "result_summary": "Analisei os 39 souls existentes e identifiquei que a lacuna mais crítica é a **ausência de um agente especializado em arbitragem técnica e gestão de dívida técnica** (tech_debt_arbiter) — alguém que resolva conflitos entre agentes (developer quer X, arquiteto quer Y) e priorize o pagamento de dívida técnica.\n\nFicou por escrever o ficheiro do soul (`tech_debt_arbiter.md`) e registá-lo no `agents.js",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_5cc4b883",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T19:02:29.866615",
+    "success": true,
+    "result_summary": "**O que fiz:** Analisei exaustivamente 100 episódios do supervisor (96% sucesso), 2 do gestor_memória, 200 loop_episodes (0 lições preenchidas), 12 lições no shared_memory, conversation log e eventos — extraindo 8 lições críticas que documentei num relatório consolidado.\n\n**O que ficou por fazer:** Escrever o ficheiro `memory/licoes_episodicas.md` atualizado com as novas lições (a ferramenta `writ",
     "lesson": ""
   }
 ]
