@@ -1641,10 +1641,33 @@
     "id": "auto_7c99498e",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T20:19:36.702736",
     "source": "fallback",
-    "started_at": "2026-05-30T20:19:46.715265"
+    "started_at": "2026-05-30T20:19:46.715265",
+    "completed_at": "2026-05-30T20:20:11.044917",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n### 📌 Estado do Git\n- **Branch**: `main` — sincronizada com `origin/main`\n- **Commit**: `dc26210` — push feito com sucesso\n\n### 📊 Alterações cometidas (8 ficheiros, +43/-17 linhas)\n\n| Ficheiro | Alteração |\n|---|---|\n| `events/2026/05/30/events.jsonl` | +1 evento (execução do auto_optimizer) |\n| `memory/autonomous_log.md` | +13 linhas (ciclos #21-#22, debate, tarefa supervisor) |\n| `memory/backlog.json` | Tarefas actualizadas |\n| `memory/cycle_st"
+  },
+  {
+    "id": "auto_9bd20136",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-30T20:20:21.258904",
+    "source": "fallback",
+    "started_at": "2026-05-30T20:20:31.270741",
+    "completed_at": "2026-05-30T20:24:18.762034",
+    "result": "## ✅ Resumo da Análise\n\n**O que fiz:** Analisei exaustivamente toda a memória episódica do ecossistema — 200 episódios do `loop_episodes.json`, 102 episódios da pasta `episodica/`, 5 entradas do `hub.jsonl`, logs de supervisão, relatórios anteriores de lições, e o código dos sistemas de memória (`lesson_extractor.py`, `failure_memory.py`, `global_memory.py`, `semantica.py`). Extraí 6 recomendações prioritárias (3 P0, 2 P1, 1 P2) baseadas em dados quantitativos reais.\n\n**O que ficou por fazer:** "
+  },
+  {
+    "id": "auto_74f169e2",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "pending",
+    "priority": 5,
+    "created_at": "2026-05-30T20:24:28.781674",
+    "source": "fallback"
   }
 ]
