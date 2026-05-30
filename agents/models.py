@@ -32,6 +32,15 @@ class AgentRole(Enum):
     DOCUMENTER = "documenter"
     EXPLORER = "explorer"
     OPTIMIZER = "optimizer"
+    DESIGNER = "designer"
+    ANALYST = "analyst"
+    SECURITY = "security"
+    MONITOR = "monitor"
+    LOGGER = "logger"
+    BRIDGE = "bridge"
+    SOUL = "soul"
+    DEPLOYER = "deployer"
+    MEMORY_ARCHITECT = "memory_architect"
     CUSTOM = "custom"
 
 
