@@ -231,9 +231,9 @@
     "status": "running",
     "created_at": "2026-05-30T01:46:46.875883",
     "source": "auto_generated",
-    "started_at": "2026-05-30T12:51:12.060020",
-    "completed_at": "2026-05-30T12:51:02.044953",
-    "result": "Os 11 testes passam — o erro no final é apenas o encoding do terminal Windows (cp1252 não suporta ✅), não dos testes.\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que foi feito\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** — `MemoryHub` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` | ✅ Já existia e completo |\n| **2. `memory/hub.jsonl`** — único backend JSONL | ✅ Criado |\n| **3. `core/supervis"
+    "started_at": "2026-05-30T12:52:18.937125",
+    "completed_at": "2026-05-30T12:52:08.920635",
+    "result": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ O que já estava implementado (de execuções anteriores)\nO código já estava funcional antes desta execução:\n\n1. **`core/memory_hub.py`** — Classe `MemoryHub` completa com:\n   - `store_chat(role, content)` ✅\n   - `store_episode(agent_id, task, result)` ✅\n   - `store_knowledge(topic, content)` ✅\n   - `get_context(agent_id, n=10)` ✅\n   - Singleton pattern ✅\n   - Wrappers de compatibilidade para Con"
   },
   {
     "id": "task_agent_executor_import_fix",
