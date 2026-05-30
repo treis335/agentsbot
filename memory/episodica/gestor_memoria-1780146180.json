@@ -1,0 +1,24 @@
+[
+  {
+    "episode": {
+      "action": "analyze_memory",
+      "args": {
+        "source": "memory/episodica/supervisor-1094139387.json",
+        "source2": "memory/loop_episodes.json",
+        "source3": "memory/autonomous_log.md"
+      },
+      "result": "Analisei 281 episódios (100 supervisor + 181 loop). Identifiquei 6 lições críticas. O maior problema é um loop de 158 execuções da mesma tarefa sem deteção.",
+      "context": "Tarefa autónoma: Analisa a memória episódica e extrai lições para melhorar futuras execuções"
+    },
+    "timestamp": "2026-05-30T14:03:00.467404",
+    "success": true,
+    "agent": "gestor_memoria",
+    "insights": [
+      "LOOP DETECTADO: 158 execuções da mesma tarefa sem deteção",
+      "Falha silenciosa de write_file: 16+ erros ignorados",
+      "Backlog não limpo após conclusão de tarefas",
+      "Parser JSON frágil no AutoGen",
+      "Timeout de rede sem retry adequado"
+    ]
+  }
+]
