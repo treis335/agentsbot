@@ -163,51 +163,5 @@
     "metadata": {},
     "created_at": "2026-05-30T17:05:12.774642",
     "last_active": ""
-  },
-  {
-    "id": "1bb305c1-bd3f-4b01-9f8c-02a4c63147e6",
-    "name": "api_integrator",
-    "role": "integrator",
-    "soul": "API INTEGRATOR: Conectas o ecossistema a APIs externas. Crias conectores fiáveis com httpx/aiohttp, geres autenticação OAuth/tokens, implementas rate limiting, retry com backoff, circuit breakers, e webhooks. Garantes que cada integração é monitorizada, logged e resiliente.",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "integrar_apis",
-      "gerir_autenticacao",
-      "rate_limiting",
-      "webhooks",
-      "conectores_http",
-      "tratamento_erros_rede"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "integracao",
-      "prioridade": 5
-    },
-    "created_at": "2026-05-30T20:08:46.120263",
-    "last_active": ""
-  },
-  {
-    "id": "predictive-001",
-    "name": "predictive_analyst",
-    "role": "analyst",
-    "soul": "predictive_analyst",
-    "model": "deepseek-chat",
-    "status": "idle",
-    "capabilities": [
-      "forecasting_carga",
-      "previsao_tokens",
-      "analise_tendencias",
-      "deteccao_anomalias",
-      "modelos_preditivos",
-      "relatorios_tendencia"
-    ],
-    "context": [],
-    "metadata": {
-      "nivel": "analise_avancada",
-      "prioridade": 3
-    },
-    "created_at": "2026-05-30T20:13:00",
-    "last_active": ""
   }
 ]

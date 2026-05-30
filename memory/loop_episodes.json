@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:16:47.361526",
-    "success": true,
-    "result_summary": "## Resumo\n\n**O que fiz:** Analisei todo o ecossistema e confirmei que **`core/memory_hub.py` já existe com 365 linhas completas** — tem `store_chat`, `store_episode`, `store_knowledge`, `get_context`, e todos os wrappers de compatibilidade (`remember`, `summary`, `record`, etc.). O `core/supervisor.py` e `agents/executor.py` já importam e usam `MemoryHub` correctamente.\n\n**O que ficou por fazer:**",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:19:19.301239",
-    "success": true,
-    "result_summary": "## Relatório Final\n\n**O que fiz:** Analisei todo o ecossistema e confirmei que **`core/memory_hub.py` já existe com 365 linhas completas**, implementando todas as funcionalidades pedidas (store_chat, store_episode, store_knowledge, get_context, wrappers de compatibilidade, singleton). O `core/supervisor.py` e `agents/executor.py` já usam MemoryHub em vez dos sistemas antigos. Executei testes manua",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:21:32.132687",
-    "success": true,
-    "result_summary": "## Relatório\n\n**O que fiz:** Analisei todo o ecossistema e confirmei que:\n- `core/memory_hub.py` existe mas está **vazio (0 bytes)** — precisa de ser reescrito com a classe `MemoryHub` completa\n- `core/supervisor.py` já importa `MemoryHub` e `get_memory_hub` (linha 10) e usa métodos `remember()`, `summary()`, `last_human_message()`, `last_supervisor_message()` que precisam de wrappers\n- `agents/ex",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T05:24:12.127629",
     "success": true,
     "result_summary": "Fiz a análise completa do ecossistema: confirmei que `core/memory_hub.py` já existe com 28 métodos e está funcional, `core/supervisor.py` e `agents/executor.py` já usam MemoryHub correctamente, e todos os testes manuais passaram (store_chat, store_episode, store_knowledge, get_context, compatibilidade com ConversationMemory e EpisodicMemory, singleton, clear).\n\nFalta: (1) criar o teste `tests/test",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-30T20:24:18.745243",
     "success": true,
     "result_summary": "## ✅ Resumo da Análise\n\n**O que fiz:** Analisei exaustivamente toda a memória episódica do ecossistema — 200 episódios do `loop_episodes.json`, 102 episódios da pasta `episodica/`, 5 entradas do `hub.jsonl`, logs de supervisão, relatórios anteriores de lições, e o código dos sistemas de memória (`lesson_extractor.py`, `failure_memory.py`, `global_memory.py`, `semantica.py`). Extraí 6 recomendações",
+    "lesson": ""
+  },
+  {
+    "task_id": "task_unify_memory_systems",
+    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam:\n- `core/memory.py` (ConversationMemory + SystemState)\n- `cerebro/core/brain.py` (Brain com knowledge/decisions)\n- `agents/executor.py` import",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T22:50:04.071965",
+    "success": true,
+    "result_summary": "Iniciei a análise do ecossistema: verifiquei que `core/memory_hub.py` já existe com 486 linhas mas usa apenas `hub.jsonl` em vez do diretório `memory/global/` com `conversation.jsonl`, `state.json` e `knowledge.json` como pede a tarefa, e que `core/supervisor.py` já importa `MemoryHub` correctamente. Falta reescrever o `MemoryHub` com os métodos `store(domain, key, value)` e `recall(domain, key=No",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_skill_auto_generator",
+    "task_desc": "Edita agents/skills_manager.py para adicionar observe_pattern(task_desc, result, success): quando a mesma sequência de acções funciona 3x, cria automaticamente uma nova skill. Usar memory/loop_episode",
+    "agent": "developer",
+    "timestamp": "2026-05-30T22:52:32.708083",
+    "success": true,
+    "result_summary": "Analisei o código completo existente: `agents/skills_manager.py` (132 linhas), `autonomous_loop.py` (~420 linhas), `memory/loop_memory.py` e `memory/loop_episodes.json`. \n\nFicou por fazer: escrever o ficheiro `agents/skills_manager.py` atualizado com o método `observe_pattern()` e integrar a chamada no `autonomous_loop.py`. A ferramenta `write_file` não funcionou — preciso de a invocar correctamen",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_17d5167e",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T22:55:34.299639",
+    "success": true,
+    "result_summary": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente todo o ecossistema — 125.784 linhas de logs, 200+ episódios, backlog de 153 tarefas, 641 ciclos autónomos, 3 ficheiros de memória episódica, evolution_log, supervisor_log, audit.log, shared_memory e diagnóstico de sistema. Extraí **10 lições críticas** documentadas abaixo.\n\n**O que ficou por fazer:** Guarda",
     "lesson": ""
   }
 ]

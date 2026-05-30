@@ -1907,12 +1907,24 @@
       "decision": "Telegram: quando puderes visita, verifica e aprende, se algo fizer sentido para ti, usa\n\nh",
       "context": "Telegram",
       "timestamp": "2026-05-30T19:58:46.779412"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: colaborem entre toda a equipa de agentes e trabalhem autonomamente",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T22:47:31.829912"
+    },
+    {
+      "agent": "supervisor",
+      "decision": "Telegram: parabéns a todos, agora sigam em frente e evoluam sozinhos, escalem as vossas op",
+      "context": "Telegram",
+      "timestamp": "2026-05-30T22:48:11.401392"
     }
   ],
   "discoveries": [],
   "system_state": {
     "version": "2.0",
-    "last_start": "2026-05-30T19:48:22.625109",
+    "last_start": "2026-05-30T22:46:17.105664",
     "agents_count": 19,
     "tasks_count": 0
   },
