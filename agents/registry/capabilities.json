@@ -837,6 +837,41 @@
         "quanto custa"
       ],
       "priority": 7
+    },
+    "compliance_auditor": {
+      "description": "Audita conformidade legal, RGPD/LGPD, licencas de software, privacidade de dados e etica IA",
+      "skills": [
+        "compliance",
+        "rgpd",
+        "lgpd",
+        "privacy",
+        "licensing",
+        "audit",
+        "data_protection",
+        "ethics",
+        "regulation"
+      ],
+      "keywords": [
+        "compliance",
+        "rgpd",
+        "lgpd",
+        "privacidade",
+        "licencas",
+        "auditoria",
+        "conformidade",
+        "regulamentacao",
+        "dados pessoais",
+        "termos de servico",
+        "politica de privacidade",
+        "consentimento",
+        "etico",
+        "fairness",
+        "transparencia",
+        "lei",
+        "legal",
+        "regulatorio"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

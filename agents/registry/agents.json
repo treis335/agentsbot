@@ -326,5 +326,27 @@
     "metadata": {},
     "created_at": "2026-05-30T17:05:12.774642",
     "last_active": ""
+  },
+  {
+    "id": "compliance-001",
+    "name": "compliance_auditor",
+    "role": "auditor",
+    "soul": "compliance_auditor",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "auditar_conformidade",
+      "verificar_licencas",
+      "analisar_privacidade",
+      "gerar_relatorios_compliance",
+      "validar_rgpd_lgpd"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "qualidade_regulatoria",
+      "prioridade": 7
+    },
+    "created_at": "2026-05-30T18:33:56",
+    "last_active": ""
   }
 ]

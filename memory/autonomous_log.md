@@ -1480,3 +1480,44 @@
 [2026-05-30 18:08:30] [Ciclo #5] Tarefa: Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluç
 [2026-05-30 18:08:30] [MultiAgent] 'log_diagnostic' -> Analisa os logs de execução e identifica os 3 principais pro
 [2026-05-30 18:08:30] [Memory] Contexto injectado (658 chars)
+[2026-05-30 18:12:01] [Memory] Episodio de sucesso: log_diagnostic
+[2026-05-30 18:12:01] [Ciclo #5] [OK] Analisa os logs de execução e identifica os 3 principais pro -> completed
+[2026-05-30 18:12:11] [Ciclo #6] Inicio
+[2026-05-30 18:12:11] [Cognitive] Loop detetado - a mudar de abordagem
+[2026-05-30 18:12:11] [Cognitive] Ciclo #13 concluido
+[2026-05-30 18:12:11] [Ciclo] Sem tarefas pendentes — a gerar novas...
+[2026-05-30 18:12:11] [OrganicMind] Backlog vazio — a iniciar debate colectivo...
+[2026-05-30 18:12:11] [OrganicMind] Erro no debate: 'title'
+[2026-05-30 18:12:11] [AutoGen] Fallback: Analisa a memória episódica e extrai lições para melhorar fu
+[2026-05-30 18:12:21] [Ciclo #7] Inicio
+[2026-05-30 18:12:21] [Cognitive] Ciclo #14 concluido
+[2026-05-30 18:12:21] [Ciclo #7] Tarefa: Analisa a memória episódica e extrai lições para melhorar futuras execuções.
+[2026-05-30 18:12:21] [MultiAgent] 'supervisor' -> Analisa a memória episódica e extrai lições para melhorar fu
+[2026-05-30 18:12:21] [Memory] Contexto injectado (646 chars)
+[2026-05-30 18:16:25] [Memory] Episodio de sucesso: supervisor
+[2026-05-30 18:16:25] [Ciclo #7] [OK] Analisa a memória episódica e extrai lições para melhorar fu -> completed
+[2026-05-30 18:16:35] [Ciclo #8] Inicio
+[2026-05-30 18:16:35] [Cognitive] Ciclo #15 concluido
+[2026-05-30 18:16:35] [Ciclo] Sem tarefas pendentes — a gerar novas...
+[2026-05-30 18:16:35] [OrganicMind] Backlog vazio — a iniciar debate colectivo...
+[2026-05-30 18:16:35] [OrganicMind] Erro no debate: 'title'
+[2026-05-30 18:16:35] [AutoGen] Fallback: Analisa os logs de execução e identifica os 3 principais pro
+[2026-05-30 18:16:45] [Ciclo #9] Inicio
+[2026-05-30 18:16:45] [Cognitive] Loop detetado - a mudar de abordagem
+[2026-05-30 18:16:45] [Cognitive] Ciclo #16 concluido
+[2026-05-30 18:16:45] [Ciclo #9] Tarefa: Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluç
+[2026-05-30 18:16:45] [MultiAgent] 'log_diagnostic' -> Analisa os logs de execução e identifica os 3 principais pro
+[2026-05-30 18:16:45] [Memory] Contexto injectado (658 chars)
+[2026-05-30 18:32:58] [Memory] Episodio de sucesso: log_diagnostic
+[2026-05-30 18:32:58] [Ciclo #9] [OK] Analisa os logs de execução e identifica os 3 principais pro -> completed
+[2026-05-30 18:33:08] [Ciclo #10] Inicio
+[2026-05-30 18:33:08] [Cognitive] Ciclo #17 concluido
+[2026-05-30 18:33:08] [Ciclo] Sem tarefas pendentes — a gerar novas...
+[2026-05-30 18:33:08] [OrganicMind] Backlog vazio — a iniciar debate colectivo...
+[2026-05-30 18:33:08] [OrganicMind] Erro no debate: 'title'
+[2026-05-30 18:33:08] [AutoGen] Fallback: Cria um novo agente especializado numa área que o ecossistem
+[2026-05-30 18:33:18] [Ciclo #11] Inicio
+[2026-05-30 18:33:18] [Cognitive] Ciclo #18 concluido
+[2026-05-30 18:33:18] [Ciclo #11] Tarefa: Cria um novo agente especializado numa área que o ecossistema ainda não cobre be
+[2026-05-30 18:33:18] [MultiAgent] 'supervisor' -> Cria um novo agente especializado numa área que o ecossistem
+[2026-05-30 18:33:18] [Memory] Contexto injectado (646 chars)
