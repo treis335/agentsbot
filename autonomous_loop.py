@@ -182,6 +182,27 @@ class AutonomousLoop:
         save_backlog(backlog)
         log_cycle(f"[Ciclo #{cycle_id}] {'✅' if success else '❌'} {task_desc[:60]} → {status}")
 
+        # 7b. Notificações proactivas
+        try:
+            from bot.notifier import get_notifier
+            notifier = get_notifier()
+            if success:
+                asyncio.run(notifier.task_completed(
+                    title=task.get("title", task_desc[:60]),
+                    agent=task.get("_last_agent", "agente"),
+                    result=str(result_text),
+                ))
+            else:
+                asyncio.run(notifier.task_failed(
+                    title=task.get("title", task_desc[:60]),
+                    agent=task.get("_last_agent", "agente"),
+                    error=str(result_text),
+                ))
+            # Verificar se é hora do resumo diário
+            asyncio.run(notifier.check_daily_summary())
+        except Exception as _ne:
+            log_cycle(f"[Notifier] {_ne}")
+
         # 8. Batch 9 — Self-Improvement a cada N ciclos
         if self._self_improve and self._self_improve.should_run():
             log_cycle(f"[SelfImprove] Ciclo #{cycle_id} — a iniciar análise...")
@@ -240,6 +261,11 @@ class AutonomousLoop:
             # 5. Gravar na memória episódica
             mem.record(task_id, task_desc, chosen_agent, success=True, result=str(result))
             log_cycle(f"[Memory] ✅ Gravado episódio de sucesso: {chosen_agent}")
+            # Guardar agent name para o notifier
+            for t in load_backlog():
+                if t.get("id") == task_id:
+                    t["_last_agent"] = chosen_agent
+                    break
             return True, result
 
         except Exception as e:
