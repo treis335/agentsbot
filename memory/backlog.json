@@ -719,10 +719,22 @@
     "id": "auto_4f5bcb36",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T15:29:20.093157",
     "source": "fallback",
-    "started_at": "2026-05-30T15:29:30.099879"
+    "started_at": "2026-05-30T15:29:30.099879",
+    "completed_at": "2026-05-30T15:31:06.595082",
+    "result": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n### O que fiz\nAnalisei exaustivamente **200 episódios** do `memory/loop_episodes.json`, cruzei com `memory/conversation.jsonl`, `memory/global/shared_memory.json`, `memory/licoes_episodicas.md` e o `memory/lesson_extractor.py`.\n\n### 7 Lições Extraídas\n\n| # | Lição | Gravidade |\n|---|-------|-----------|\n| 1 | **LOOP CRÍTICO**: 157/200 episódios (78.5%) são a mesma tarefa repetida — o gerador não verifica histórico | 🔴 CRÍTICO |\n| 2 | **Less"
+  },
+  {
+    "id": "auto_0fcf44d8",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T15:31:16.752372",
+    "source": "fallback",
+    "started_at": "2026-05-30T15:31:26.759733"
   }
 ]

@@ -867,5 +867,66 @@
     "created_at": "2026-05-30T14:32:10.336700",
     "last_active": "",
     "role": "growth_marketer"
+  },
+  {
+    "id": "log_diagnostic-001",
+    "name": "log_diagnostic",
+    "role": "diagnostico",
+    "soul": "log_diagnostic",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "analisar_logs",
+      "diagnosticar_causa_raiz",
+      "detetar_padroes_erro",
+      "gerar_relatorios_incidente",
+      "analisar_tracebacks",
+      "correlacionar_eventos"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "diagnostico",
+      "prioridade": 7,
+      "especialidade": "analise_logs_diagnostico"
+    },
+    "created_at": "2026-05-30T15:32:13.939898",
+    "last_active": ""
+  },
+  {
+    "id": "log_diagnostic-001",
+    "name": "log_diagnostic",
+    "role": "diagnostico",
+    "soul": "log_diagnostic",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "analisar_logs",
+      "diagnosticar_causa_raiz",
+      "detetar_padroes_erro",
+      "gerar_relatorios_incidente",
+      "analisar_tracebacks",
+      "correlacionar_eventos"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "diagnostico",
+      "prioridade": 7,
+      "especialidade": "analise_logs_diagnostico"
+    },
+    "created_at": "2026-05-30T15:32:16.789624",
+    "last_active": ""
+  },
+  {
+    "id": "ee487759-7c91-4e8a-b195-7ef04e95e282",
+    "name": "log_diagnostic",
+    "soul": "Analisar logs do sistema, diagnosticar causas raiz de erros, detetar padrões de falha, e gerar relatórios de incidentes acionáveis com recomendações de correção.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [],
+    "metadata": {},
+    "created_at": "2026-05-30T15:32:37.495959",
+    "last_active": "",
+    "role": "custom"
   }
 ]

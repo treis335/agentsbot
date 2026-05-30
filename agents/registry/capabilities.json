@@ -557,6 +557,36 @@
         "engajamento"
       ],
       "priority": 7
+    },
+    "log_diagnostic": {
+      "description": "Analisa logs, diagnostica causas raiz de erros, deteta padrões de falha e gera relatórios de incidentes",
+      "skills": [
+        "log_analysis",
+        "root_cause_analysis",
+        "pattern_detection",
+        "incident_reporting",
+        "traceback_parsing",
+        "error_correlation",
+        "diagnostic_reporting"
+      ],
+      "keywords": [
+        "log",
+        "diagnostico",
+        "erro",
+        "traceback",
+        "causa raiz",
+        "padrao",
+        "incidente",
+        "analisa",
+        "log file",
+        "exception",
+        "falha",
+        "crash",
+        "debug",
+        "diagnostic",
+        "root cause"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
