@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:09:31.317150",
-    "success": true,
-    "result_summary": "Analisei todo o ecossistema e confirmei que **`core/memory_hub.py` já existe com 365 linhas** e todos os métodos pedidos (store_chat, store_episode, store_knowledge, get_context + wrappers de compatibilidade). **`core/supervisor.py` e `agents/executor.py` já importam e usam MemoryHub**. Falta apenas **criar `tests/test_memory_hub.py`** e fazer o commit — tive dificuldades com a ferramenta write_fi",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T05:12:38.142793",
     "success": true,
     "result_summary": "## Relatório Final\n\n**O que fiz:** Analisei todo o ecossistema e confirmei que `core/memory_hub.py` já existe com 365 linhas e todos os métodos pedidos (`store_chat`, `store_episode`, `store_knowledge`, `get_context`), `core/supervisor.py` e `agents/executor.py` já usam `MemoryHub`, e `memory/hub.jsonl` já existe como backend.\n\n**O que ficou por fazer:** O ficheiro `tests/test_memory_hub.py` está ",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T20:15:52.029412",
     "success": true,
     "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `predictive_analyst` 🔮📈\n\n### Lacuna Identificada\nO ecossistema tinha **43 agentes** mas **nenhum especializado em modelos preditivos, forecasting ou análise de tendências**. Havia quem analisasse dados passados (`data_analyst`, `data_pipeline_engineer`) mas ninguém a olhar para o futuro.\n\n### O que foi criado\n\n| Ficheiro | Descrição |\n|---|---|\n| `agents/s",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_4c0aff45",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-30T20:19:26.667840",
+    "success": true,
+    "result_summary": "## ✅ Resumo do que fiz\n\n### Problema identificado\nOs 43 system prompts (souls) dos agentes tinham **secções redundantes** que duplicavam informação que o `executor.py` já injecta automaticamente no runtime:\n- `## Contexto de Execução` — duplicava o `runtime_ctx` (servidor Linux, shell, etc.)\n- `## Ferramentas Disponíveis` — duplicava o `TOOL_SCHEMA` (lista de ferramentas)\n\nAlém disso, 2 souls esta",
     "lesson": ""
   }
 ]
