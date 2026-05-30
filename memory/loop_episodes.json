@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:44:54.829216",
-    "success": true,
-    "result_summary": "**O que fiz:** Confirmei que `core/memory_hub.py` já está completo (463 linhas, singleton, todos os métodos pedidos), `core/supervisor.py` e `agents/executor.py` já usam MemoryHub, e o `memory/hub.jsonl` já existe com dados.\n\n**O que falta:** Criar o teste `tests/test_memory_hub.py` (está vazio, só com `import pytest`) e fazer o commit final com a mensagem 'feat: unifica 3 sistemas de memória em M",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T05:47:48.264999",
     "success": true,
     "result_summary": "Fiz a análise completa do ecossistema: confirmei que `core/memory_hub.py` já está completo (17242 chars, 39 métodos), `core/supervisor.py` já usa MemoryHub, e corrigi 3 bugs (get_failures, get_successes, get_decisions, get_context) que impediam os testes de passar. Ficou por fazer: escrever o ficheiro `tests/test_memory_hub.py` com os testes formais e fazer o commit — a ferramenta write_file não e",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T23:19:29.577706",
     "success": true,
     "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `automation_orchestrator` 🤖⏰\n\n### Lacuna Identificada\nO ecossistema tinha **44 agentes** mas **nenhum** especializado em:\n- Automação de tarefas repetitivas\n- Agendamento CRON de tarefas recorrentes\n- Orquestração de workflows multi-agente\n- Pipelines de automação event-driven\n- Manutenção automática (backups, log rotation, limpeza)\n\n### O que foi criado\n|",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_a7b74ee7",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T23:20:26.592426",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `scenario_tester` 🧪🔍\n\n### Lacuna Identificada\nO ecossistema tinha **45 agentes** mas **nenhum** especializado em testar fluxos completos end-to-end simulando comportamento humano real. Existiam:\n- **QA Tester** → foco em testes unitários\n- **Integrador Testes** → foco em integração de código\n- **Load Tester** → foco em performance sob carga\n\nFaltava quem *",
     "lesson": ""
   }
 ]
