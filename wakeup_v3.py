@@ -25,6 +25,7 @@ from pathlib import Path
 BASE = Path(__file__).parent
 LOG_FILE = BASE / "wakeup_v3.log"
 LOCK_FILE = BASE / "wakeup_v3.lock"
+BOT_LOCK_FILE = BASE / "bot_telegram.lock"
 HEARTBEAT_FILE = BASE / "core" / "heartbeat.json"
 WAKEUP_INTERVAL = 15
 MAX_BACKOFF = 120
@@ -66,6 +67,24 @@ def is_already_running():
             pass
     with open(LOCK_FILE, "w") as f:
         f.write(str(os.getpid()))
+    return False
+
+
+def is_bot_already_running():
+    """Verifica se o bot_telegram.lock esta ativo (outra instancia do main.py)."""
+    if os.path.exists(BOT_LOCK_FILE):
+        try:
+            with open(BOT_LOCK_FILE, "r") as f:
+                pid = int(f.read().strip())
+            if pid != os.getpid():
+                result = subprocess.run(
+                    f'tasklist /FI "PID eq {pid}" /FO CSV /NH',
+                    capture_output=True, text=True, shell=True, timeout=5
+                )
+                if str(pid) in result.stdout:
+                    return True
+        except:
+            pass
     return False
 
 def is_main_running():
@@ -114,6 +133,10 @@ def check_file_integrity():
 
 def launch_main():
     """Lanca o main.py."""
+    # Verificar se o bot ja esta a correr (lock singleton)
+    if is_bot_already_running():
+        log("✅ main.py ja esta em execucao (bot_telegram.lock ativo).")
+        return None
     log("🚀 A lancar main.py...")
     try:
         proc = subprocess.Popen(

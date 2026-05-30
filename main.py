@@ -227,9 +227,16 @@ async def main():
         while True:
             await asyncio.sleep(60)
 if __name__ == "__main__":
+    # ─── Lock Singleton ────────────────────────────────────────────────
+    from lock_utils import acquire_lock, release_lock
+    if not acquire_lock():
+        sys.exit("Outra instância já está a correr. A encerrar.")
+    # ───────────────────────────────────────────────────────────────────
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("[Main] Interrompido pelo utilizador.")
     except Exception as e:
         logger.error(f"[Main] Erro fatal: {e}", exc_info=True)
+    finally:
+        release_lock()
