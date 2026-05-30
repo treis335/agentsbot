@@ -520,6 +520,43 @@
         "wrk"
       ],
       "priority": 7
+    },
+    "growth_marketer": {
+      "description": "Especialista em Marketing e Growth: conteudo, comunidade, branding, metricas de adocao",
+      "skills": [
+        "content_strategy",
+        "copywriting",
+        "community_management",
+        "growth_analytics",
+        "branding",
+        "social_media",
+        "growth_hacking",
+        "kpi_tracking"
+      ],
+      "keywords": [
+        "marketing",
+        "divulgar",
+        "promover",
+        "crescimento",
+        "redes sociais",
+        "twitter",
+        "linkedin",
+        "comunidade",
+        "growth",
+        "viral",
+        "audiencia",
+        "utilizadores",
+        "github stars",
+        "branding",
+        "posicionamento",
+        "conteudo",
+        "copy",
+        "landing page",
+        "adocao",
+        "reach",
+        "engajamento"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
