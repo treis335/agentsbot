@@ -33,20 +33,29 @@ def RETRY_CONFIGS_MAX(tool_name: str) -> int:
 TOOL_SCHEMA = """
 ## FERRAMENTAS DISPONÍVEIS
 
-Tens acesso às seguintes ferramentas para executar tarefas no servidor Linux.
+Tens acesso a **{num_tools} ferramentas** para executar tarefas no servidor Linux.
 
-| Ferramenta       | Obrigatório                    | Descrição                                          | Exemplo                                               |
-|------------------|--------------------------------|----------------------------------------------------|-------------------------------------------------------|
-| write_file       | path (str), content (str)      | Cria ou sobrescreve um ficheiro                    | write_file(path="main.py", content="print('oi')")     |
-| read_file        | path (str)                     | Lê o conteúdo de um ficheiro                       | read_file(path="main.py")                             |
-| list_files       | path (str, opcional)           | Lista ficheiros num diretório                      | list_files(path="src/")                               |
-| run_python       | code (str)                     | Executa código Python no servidor                  | run_python(code="print('ola')")                       |
-| run_shell        | command (str)                  | Executa comando bash no servidor Linux             | run_shell(command="git status")                       |
-| git_status       | (nenhum)                       | Mostra estado do repositório Git                   | git_status()                                          |
-| git_commit_push  | message (str)                  | Faz commit + push das alterações                   | git_commit_push(message="feat: adiciona x")           |
-| create_agent     | name (str), mission (str)      | Cria um novo agente no ecossistema                 | create_agent(name="X", mission="Faz Y")               |
-| search_github    | query (str)                    | Pesquisa código no GitHub                          | search_github(query="python asyncio")                 |
-| web_search       | query (str)                    | Pesquisa informação na web                         | web_search(query="ultimas novidades IA")              |
+| # | Ferramenta       | Parâmetros (obrigatórios a negrito) | Descrição                                               | Exemplo                                                       |
+|---|------------------|-------------------------------------|---------------------------------------------------------|---------------------------------------------------------------|
+| 1 | read_file        | **path** (str)                      | Lê conteúdo de um ficheiro                              | read_file(path="main.py")                                     |
+| 2 | write_file       | **path** (str), **content** (str)   | Cria ou sobrescreve um ficheiro                         | write_file(path="main.py", content="print('oi')")             |
+| 3 | list_files       | path (str, opcional)                | Lista ficheiros num diretório                           | list_files(path="src/")                                       |
+| 4 | run_python       | **code** (str), timeout (int)       | Executa código Python no servidor                       | run_python(code="print('ola')")                               |
+| 5 | run_shell        | **command** (str), timeout (int)    | Executa comando bash no servidor Linux                  | run_shell(command="git status")                               |
+| 6 | git_status       | (nenhum)                            | Mostra estado do repositório Git                        | git_status()                                                  |
+| 7 | git_commit_push  | **message** (str)                   | Faz git add, commit e push                              | git_commit_push(message="feat: adiciona login")               |
+| 8 | create_agent     | **name** (str), **mission** (str)   | Cria novo agente no ecossistema                         | create_agent(name="X", mission="Faz Y")                       |
+| 9 | search_github    | **query** (str), type (str)         | Pesquisa código ou issues no GitHub                     | search_github(query="login system")                           |
+|10 | create_website   | **name** (str), **description** (str), pages (list), style (str) | Cria site completo (HTML/CSS/JS)     | create_website(name="Portfolio", description="Meu site")      |
+|11 | add_page         | **site_name** (str), **page_name** (str), content (str) | Adiciona página a site existente       | add_page(site_name="Portfolio", page_name="sobre")            |
+|12 | github_api       | **method** (str), **endpoint** (str), body (dict) | Chama GitHub API diretamente          | github_api(method="POST", endpoint="/user/repos")             |
+|13 | web_search       | **query** (str)                     | Pesquisa informação na web                               | web_search(query="Python async patterns")                     |
+
+**IMPORTANTE**: Usa SEMPRE os nomes e parâmetros exactos da tabela acima.                        | search_github(query="python asyncio")                         |
+| web_search       | query (str)                         | Pesquisa informação na web                              | web_search(query="ultimas novidades IA")                      |
+| create_website   | name (str), pages (list, opcional)  | Cria um website no ecossistema                          | create_website(name="meusite")                                |
+| add_page         | site_name (str), route (str), ...   | Adiciona página a um website existente                  | add_page(site_name="meusite", route="/sobre", ...)            |
+| github_api       | endpoint (str), method (str)        | Chamada direta à API do GitHub                          | github_api(endpoint="/repos/.../issues", method="GET")        |
 
 ### REGRAS DE USO DAS FERRAMENTAS
 1. **Nunca** chames uma ferramenta sem os argumentos obrigatórios
@@ -54,6 +63,7 @@ Tens acesso às seguintes ferramentas para executar tarefas no servidor Linux.
 3. Prefere `run_python` a `run_shell` para lógica complexa
 4. Usa `git_status()` antes de `git_commit_push()` para ver o que mudou
 5. Lê o código antes de o alterar — contexto é essencial
+6. Se uma ferramenta falhar, tenta 1 abordagem alternativa antes de desistir
 
 ### MODO AUTÓNOMO (sem supervisão humana)
 Quando executas uma tarefa do backlog autónomo:
