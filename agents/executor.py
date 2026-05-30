@@ -15,7 +15,7 @@ from openai import AsyncOpenAI
 
 from core.config import Config
 from tools import TOOLS, execute_tool
-from memory.episodica import EpisodicMemory
+from core.memory_hub import MemoryHub
 from security.auditor import AuditLogger
 from monitoring.metrics import MetricsCollector
 from agents.verifier import verifier as tool_verifier
@@ -64,7 +64,8 @@ class AgentExecutor:
         self.agent_name  = agent_name
         self.agent_id    = agent_id or agent_name
         self.soul        = self._load_soul()
-        self.memory      = EpisodicMemory(self.agent_id)
+        self.memory      = MemoryHub()
+        self.memory.set_agent_id(self.agent_id)
         self.audit       = AuditLogger()
         self.metrics     = MetricsCollector()
 
@@ -113,22 +114,27 @@ class AgentExecutor:
         lines = ["\n## MEMÓRIA DO AGENTE\n"]
 
         # Memória episódica — últimas 5 experiências
-        recent = self.memory.get_recent(5)
-        if recent:
+        episodes = self.memory.get_episodes(self.agent_id, limit=5)
+        if episodes:
             lines.append("### Experiências Recentes")
-            for ep in recent:
-                e    = ep["episode"]
+            for ep in episodes:
+                d    = ep["data"]
                 ts   = ep["timestamp"][:16]
-                ok   = "✅" if ep["success"] else "❌"
-                lines.append(f"{ok} [{ts}] {e['action']}({list(e['args'].keys())}) → {e['result'][:80]}")
+                ok   = "[OK]" if d.get("success", True) else "[FAIL]"
+                action = d.get("action", d.get("task", "?"))
+                args_str = str(list(d.get("args", {}).keys())) if d.get("args") else "?"
+                result = d.get("result", "")[:80]
+                lines.append(f"{ok} [{ts}] {action}({args_str}) -> {result}")
 
         # Falhas recentes para evitar repetir erros
-        failures = self.memory.get_failures(3)
+        failures = self.memory.get_episodes(self.agent_id, limit=3, only_failures=True)
         if failures:
             lines.append("\n### Erros Recentes (evita repetir)")
             for ep in failures:
-                e = ep["episode"]
-                lines.append(f"❌ {e['action']}({e['args']}) → {e['result'][:60]}")
+                d = ep["data"]
+                action = d.get("action", d.get("task", "?"))
+                result = d.get("result", "")[:60]
+                lines.append(f"[FAIL] {action}({d.get('args', {})}) -> {result}")
 
         # Memória global partilhada
         try:

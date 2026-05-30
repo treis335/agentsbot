@@ -1,0 +1,486 @@
+"""
+core/memory_hub.py — Hub unificado de memória para o ecossistema Correoto.
+
+Unifica 3 sistemas de memória que antes não comunicavam:
+1. ConversationMemory (core/memory.py) — conversas
+2. EpisodicMemory (memory/episodica.py) — experiências de agentes
+3. SemanticMemory / GlobalMemory (memory/) — conhecimento
+
+Usa um único ficheiro JSONL (memory/hub.jsonl) como backend.
+Mantém compatibilidade: os métodos antigos funcionam como wrappers.
+"""
+import json
+import os
+from datetime import datetime
+from pathlib import Path
+from typing import Optional, Any
+
+
+MEMORY_DIR = "memory"
+HUB_FILE = os.path.join(MEMORY_DIR, "hub.jsonl")
+
+
+class MemoryHub:
+    """
+    Hub unificado de memória para todo o ecossistema.
+    
+    Gerencia tres tipos de memoria num unico ficheiro JSONL:
+    - chat: conversas (role, content)
+    - episode: experiencias de agentes (agent_id, task, result)
+    - knowledge: conhecimento semantico (topic, content)
+    
+    Cada linha do JSONL tem o formato:
+    {"type": "chat|episode|knowledge", "data": {...}, "timestamp": "..."}
+    """
+    
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+    
+    def __init__(self):
+        if self._initialized:
+            return
+        self._initialized = True
+        # Suporte para testes: filepath pode ser sobrescrito
+        self._filepath = HUB_FILE
+        os.makedirs(MEMORY_DIR, exist_ok=True)
+        if not os.path.exists(self._filepath):
+            with open(self._filepath, 'w', encoding='utf-8') as f:
+                f.write("")
+
+    @property
+    def filepath(self) -> str:
+        """Caminho para o ficheiro JSONL. Pode ser sobrescrito para testes."""
+        return self._filepath
+    
+    @filepath.setter
+    def filepath(self, value: str):
+        """Define o caminho do ficheiro JSONL (usado em testes)."""
+        self._filepath = value
+
+    
+    def _append(self, entry_type: str, data: dict) -> dict:
+        """Adiciona uma entrada ao hub.jsonl."""
+        entry = {
+            "type": entry_type,
+            "data": data,
+            "timestamp": datetime.now().isoformat(),
+        }
+        with open(self._filepath, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        return entry
+    
+    def _read_all(self) -> list[dict]:
+        """Le todas as entradas do hub.jsonl."""
+        if not os.path.exists(self._filepath):
+            return []
+        with open(self._filepath, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        entries = []
+        for line in lines:
+            line = line.strip()
+            if line:
+                try:
+                    entries.append(json.loads(line))
+                except json.JSONDecodeError:
+                    pass
+        return entries
+    
+    def _load_all(self) -> list[dict]:
+        """Alias para _read_all (compatibilidade com testes)."""
+        return self._read_all()
+    
+    def _filter(self, entry_type: Optional[str] = None, 
+                limit: int = 0, **kwargs) -> list[dict]:
+        """Filtra entradas por tipo e campos."""
+        all_entries = self._read_all()
+        result = all_entries
+        
+        if entry_type:
+            result = [e for e in result if e.get("type") == entry_type]
+        
+        if kwargs:
+            for key, value in kwargs.items():
+                result = [e for e in result if e.get("data", {}).get(key) == value]
+        
+        if limit > 0:
+            result = result[-limit:]
+        
+        return result
+
+    # ─── API PÚBLICA ─────────────────────────────────────────────
+    
+    def store_chat(self, role: str, content: str, metadata: Optional[dict] = None) -> dict:
+        """Guarda uma mensagem de conversa.
+        
+        Args:
+            role: "user", "assistant", "system", "supervisor", etc.
+            content: Conteudo da mensagem
+            metadata: Metadados opcionais
+            
+        Returns:
+            A entrada criada
+        """
+        return self._append("chat", {
+            "role": role,
+            "content": content,
+            "metadata": metadata or {},
+        })
+    
+    def store_episode(self, agent_id: str, task: str, result: str,
+                      success: bool = True, context: str = "",
+                      lesson: str = "", action: str = "",
+                      args: Optional[dict] = None) -> dict:
+        """Guarda um episodio (experiencia de agente).
+        
+        Args:
+            agent_id: ID do agente
+            task: Descricao da tarefa
+            result: Resultado da execucao
+            success: Se foi bem sucedido
+            context: Contexto adicional
+            lesson: Licao aprendida
+            action: Acao executada
+            args: Argumentos da acao
+        """
+        return self._append("episode", {
+            "agent_id": agent_id,
+            "task": task,
+            "result": str(result)[:500],
+            "success": success,
+            "context": context,
+            "lesson": lesson,
+            "action": action,
+            "args": args or {},
+        })
+    
+    def store_knowledge(self, topic: str, content: str,
+                        source: str = "", tags: Optional[list] = None) -> dict:
+        """Guarda conhecimento semantico.
+        
+        Args:
+            topic: Topico do conhecimento
+            content: Conteudo
+            source: Fonte (ex: "discovery", "decision", "manual")
+            tags: Tags para categorizacao
+        """
+        return self._append("knowledge", {
+            "topic": topic,
+            "content": content,
+            "source": source,
+            "tags": tags or [],
+        })
+
+    def get_context(self, agent_id: Optional[str] = None, n: int = 10) -> str:
+        """Devolve contexto formatado para LLM.
+        
+        Inclui:
+        - Ultimas n/2 conversas
+        - Ultimos n/2 episodios do agente (se agent_id fornecido)
+        - Conhecimento relevante
+        
+        Args:
+            agent_id: ID do agente para filtrar episodios
+            n: Numero total de entradas a incluir
+            
+        Returns:
+            String formatada com o contexto
+        """
+        lines = []
+        
+        # Conversas recentes
+        chats = self.get_chats(n // 2)
+        if chats:
+            lines.append("=== CONVERSAS RECENTES ===")
+            for c in chats:
+                role = c["data"]["role"]
+                content = c["data"]["content"][:200]
+                lines.append(f"[{role}] {content}")
+        
+        # Episodios do agente
+        if agent_id:
+            episodes = self.get_episodes(agent_id, n // 2)
+            if episodes:
+                lines.append("\n=== EXPERIENCIAS RECENTES ===")
+                for ep in episodes:
+                    d = ep["data"]
+                    ok = "[OK]" if d["success"] else "[FAIL]"
+                    ts = ep["timestamp"][:16]
+                    lines.append(f"{ok} [{ts}] {d['task'][:80]} → {d['result'][:80]}")
+        
+        # Conhecimento (top 3 topics)
+        knowledge = self.get_knowledge(limit=3)
+        if knowledge:
+            lines.append("\n=== CONHECIMENTO ===")
+            for k in knowledge:
+                d = k["data"]
+                topic = d.get('topic', d.get('key', 'general'))
+                content_val = d.get('content', d.get('value', str(d)))
+                lines.append(f"[{topic}] {str(content_val)[:150]}")
+        
+        if not lines:
+            return "Sem historico de memoria."
+        
+        return "\n".join(lines)
+    
+    # ─── QUERIES ─────────────────────────────────────────────────
+    
+    def get_chats(self, limit: int = 10, role: Optional[str] = None) -> list[dict]:
+        """Recupera mensagens de conversa."""
+        entries = self._filter("chat", limit=limit)
+        if role:
+            entries = [e for e in entries if e.get("data", {}).get("role") == role]
+        return entries[-limit:] if limit else entries
+    
+    def get_episodes(self, agent_id: Optional[str] = None, 
+                     limit: int = 10, 
+                     only_failures: bool = False,
+                     only_successes: bool = False) -> list[dict]:
+        """Recupera episodios de um agente."""
+        entries = self._filter("episode", limit=0)
+        if agent_id:
+            entries = [e for e in entries if e.get("data", {}).get("agent_id") == agent_id]
+        if only_failures:
+            entries = [e for e in entries if not e.get("data", {}).get("success", True)]
+        if only_successes:
+            entries = [e for e in entries if e.get("data", {}).get("success", False)]
+        return entries[-limit:] if limit else entries
+    
+    def get_knowledge(self, topic: Optional[str] = None, 
+                      limit: int = 10) -> list[dict]:
+        """Recupera conhecimento semantico."""
+        entries = self._filter("knowledge", limit=0)
+        if topic:
+            entries = [e for e in entries if e.get("data", {}).get("topic") == topic]
+        return entries[-limit:] if limit else entries
+    
+    def get_lessons(self, agent_id: Optional[str] = None, 
+                    limit: int = 10) -> list[str]:
+        """Recupera licoes aprendidas."""
+        episodes = self.get_episodes(agent_id, limit=0)
+        lessons = []
+        for ep in episodes:
+            lesson = ep.get("data", {}).get("lesson", "")
+            if lesson:
+                lessons.append(lesson)
+        return lessons[-limit:] if limit else lessons
+    
+    def count(self, entry_type: Optional[str] = None) -> int:
+        """Conta entradas no hub."""
+        entries = self._read_all()
+        if entry_type:
+            return len([e for e in entries if e.get("type") == entry_type])
+        return len(entries)
+    
+    def clear(self, entry_type: Optional[str] = None) -> bool:
+        """Limpa memoria (apenas para desenvolvimento)."""
+        if entry_type:
+            entries = self._read_all()
+            entries = [e for e in entries if e.get("type") != entry_type]
+            with open(self._filepath, 'w', encoding='utf-8') as f:
+                for e in entries:
+                    f.write(json.dumps(e, ensure_ascii=False) + "\n")
+        else:
+            with open(self._filepath, 'w', encoding='utf-8') as f:
+                f.write("")
+
+    # ─── WRAPPERS DE COMPATIBILIDADE ─────────────────────────────
+    # Estes metodos mantem a API dos sistemas antigos para nao quebrar
+    # o codigo existente.
+    
+    # --- ConversationMemory wrappers ---
+    def add(self, role: str, content: str, metadata: Optional[dict] = None) -> dict:
+        """Wrapper: igual a ConversationMemory.add()"""
+        return self.store_chat(role, content, metadata)
+    
+    def get_recent(self, n: int = 10) -> list[dict]:
+        """Wrapper: igual a ConversationMemory.get_recent()"""
+        return self.get_chats(limit=n)
+    
+    def get_all(self) -> list[dict]:
+        """Wrapper: igual a ConversationMemory.get_all()"""
+        return self.get_chats(limit=0)
+    
+    def remember(self, speaker: str, message: str, context: Optional[dict] = None) -> dict:
+        """Wrapper: usado pelo Supervisor.remember()"""
+        return self.store_chat(speaker, message, context)
+    
+    def summary(self) -> str:
+        """Wrapper: usado pelo Supervisor.get_context()"""
+        return self.get_context(n=5)
+    
+    def last_human_message(self) -> str:
+        """Wrapper: devolve a ultima mensagem do humano."""
+        chats = self.get_chats(limit=5, role="human")
+        if not chats:
+            chats = self.get_chats(limit=5, role="user")
+        if chats:
+            return chats[-1]["data"]["content"]
+        return ""
+    
+    def last_supervisor_message(self) -> str:
+        """Wrapper: devolve a ultima mensagem do supervisor."""
+        chats = self.get_chats(limit=5, role="supervisor")
+        if not chats:
+            chats = self.get_chats(limit=5, role="assistant")
+        if chats:
+            return chats[-1]["data"]["content"]
+        return ""
+    
+    def count_human_messages(self) -> int:
+        """Wrapper: conta mensagens humanas."""
+        return len(self.get_chats(limit=0, role="human")) +                len(self.get_chats(limit=0, role="user"))
+    
+    # --- EpisodicMemory wrappers ---
+    def record(self, action: str, args: dict, result: str,
+               success: bool, context: str = "", lesson: str = "") -> dict:
+        """Wrapper: igual a EpisodicMemory.record()
+        
+        NOTA: Como o EpisodicMemory e por agente, este wrapper assume
+        que o agent_id foi definido via set_agent_id() ou usa 'default'.
+        """
+        agent_id = getattr(self, '_current_agent_id', 'default')
+        return self.store_episode(
+            agent_id=agent_id,
+            task=action,
+            result=result,
+            success=success,
+            context=context,
+            lesson=lesson,
+            action=action,
+            args=args,
+        )
+    
+    def get_failures(self, agent_id: Optional[str] = None, limit: int = 10) -> list[dict]:
+        """Wrapper: igual a EpisodicMemory.get_failures()"""
+        if agent_id is None:
+            agent_id = getattr(self, '_current_agent_id', None)
+        return self.get_episodes(
+            agent_id=agent_id,
+            limit=limit,
+            only_failures=True,
+        )
+    
+    def get_successes(self, agent_id: Optional[str] = None, limit: int = 10) -> list[dict]:
+        """Wrapper: igual a EpisodicMemory.get_successes()"""
+        if agent_id is None:
+            agent_id = getattr(self, '_current_agent_id', None)
+        return self.get_episodes(
+            agent_id=agent_id,
+            limit=limit,
+            only_successes=True,
+        )
+    
+    def set_agent_id(self, agent_id: str) -> None:
+        """Define o agente actual para os wrappers episodicos."""
+        self._current_agent_id = agent_id
+
+
+# ─── Singleton ───────────────────────────────────────────────────
+    # --- Metodos de compatibilidade adicionais ---
+
+    def learn(self, topic: str, content: str, source: str = "auto") -> dict:
+        """Wrapper: armazena conhecimento aprendido (semantica)."""
+        return self.store_knowledge(topic, content)
+
+    def get_decisions(self, agent_id: Optional[str] = None, limit: int = 5) -> list[dict]:
+        """Wrapper: obtem decisoes da memoria global."""
+        entries = self._read_all()
+        decisions = [e for e in entries if e.get("type") == "knowledge" 
+                     and e.get("data", {}).get("topic") == "decision"]
+        if agent_id:
+            decisions = [e for e in decisions if agent_id in e.get("data", {}).get("content", "")]
+        if limit > 0:
+            decisions = decisions[-limit:]
+        return [
+            {
+                "timestamp": e["timestamp"],
+                "agent": agent_id or "unknown",
+                "decision": e["data"].get("content", ""),
+            }
+            for e in decisions
+        ]
+
+    def add_decision(self, agent: str, decision: str, context: str = "") -> dict:
+        """Wrapper: adiciona uma decisao a memoria global."""
+        return self.store_knowledge(
+            "decision",
+            f"[{agent}] {decision} | context: {context}"
+        )
+
+    def get_procedural(self, skill: str, limit: int = 5) -> list[dict]:
+        """Wrapper: obtem memorias procedurais (como fazer algo)."""
+        entries = self._read_all()
+        proc = [e for e in entries if e.get("type") == "knowledge"
+                and e.get("data", {}).get("topic") == "procedural"
+                and skill.lower() in e.get("data", {}).get("content", "").lower()]
+        if limit > 0:
+            proc = proc[-limit:]
+        return proc
+
+    def search(self, query: str, entry_type: Optional[str] = None, limit: int = 10) -> list[dict]:
+        """Wrapper: pesquisa em todos os tipos de memoria."""
+        entries = self._read_all()
+        if entry_type:
+            entries = [e for e in entries if e.get("type") == entry_type]
+        query_lower = query.lower()
+        results = []
+        for e in entries:
+            data_str = json.dumps(e.get("data", {}), ensure_ascii=False).lower()
+            if query_lower in data_str:
+                results.append(e)
+        if limit > 0:
+            results = results[-limit:]
+        return results
+
+    def get_conversation(self, limit: int = 20) -> list[dict]:
+        """Wrapper: obtem historico completo da conversa."""
+        return self.get_chats(limit=limit)
+
+    def add_message(self, role: str, content: str, metadata: Optional[dict] = None) -> dict:
+        """Wrapper: alias para store_chat."""
+        return self.store_chat(role, content, metadata)
+
+    def get_history(self, limit: int = 50) -> list[dict]:
+        """Wrapper: obtem todo o historial."""
+        return self._read_all()[-limit:] if limit > 0 else self._read_all()
+
+    def store(self, key: str, value: Any, entry_type: str = "knowledge") -> dict:
+        """Wrapper: armazena um par chave/valor."""
+        return self._append(entry_type, {"key": key, "value": value})
+
+    def retrieve(self, key: str, entry_type: Optional[str] = None) -> Optional[Any]:
+        """Wrapper: recupera um valor pela chave."""
+        entries = self._read_all()
+        for e in reversed(entries):
+            if entry_type and e.get("type") != entry_type:
+                continue
+            if e.get("data", {}).get("key") == key:
+                return e["data"].get("value")
+        return None
+
+    def get_stats(self) -> dict:
+        """Wrapper: estatisticas de uso da memoria."""
+        entries = self._read_all()
+        stats = {"total": len(entries), "chat": 0, "episode": 0, "knowledge": 0}
+        for e in entries:
+            t = e.get("type", "unknown")
+            if t in stats:
+                stats[t] += 1
+            else:
+                stats[t] = 1
+        stats["agents"] = len(set(
+            e.get("data", {}).get("agent_id", "")
+            for e in entries if e.get("type") == "episode"
+        ))
+        return stats
+
+
+
+def get_memory_hub() -> MemoryHub:
+    """Devolve a instancia unica do MemoryHub (singleton)."""
+    return MemoryHub()

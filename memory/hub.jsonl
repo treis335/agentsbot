@@ -1,0 +1,5 @@
+{"type": "chat", "data": {"role": "user", "content": "Ola", "metadata": {}}, "timestamp": "2026-05-30T05:56:45.431408"}
+{"type": "chat", "data": {"role": "assistant", "content": "Ola, como posso ajudar?", "metadata": {}}, "timestamp": "2026-05-30T05:56:45.431794"}
+{"type": "episode", "data": {"agent_id": "executor", "task": "calcular_imposto", "result": "{'resultado': 1500}", "success": true, "context": "", "lesson": "", "action": "", "args": {}}, "timestamp": "2026-05-30T05:56:45.432674"}
+{"type": "knowledge", "data": {"topic": "python", "content": "Python e uma linguagem de programacao", "source": "", "tags": []}, "timestamp": "2026-05-30T05:56:45.433082"}
+{"type": "episode", "data": {"agent_id": "test_agent", "task": "task_complete", "result": "done", "success": true, "context": "", "lesson": "", "action": "task_complete", "args": {"task": "test"}}, "timestamp": "2026-05-30T06:09:59.049734"}
