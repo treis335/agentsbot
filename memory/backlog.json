@@ -119,10 +119,40 @@
     "id": "auto_c2f5e3c0",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T01:13:47.296074",
     "source": "fallback",
-    "started_at": "2026-05-30T01:13:57.308506"
+    "started_at": "2026-05-30T01:13:57.308506",
+    "completed_at": "2026-05-30T01:18:52.347404",
+    "result": "✅ **Agente Designer UX/UI criado com sucesso!**\n\n---\n\n## 📋 Relatório de Criação\n\n### 🎨 Novo Agente: **Designer UX/UI**\n\n**Área descoberta:** Design de Interfaces, Experiência do Utilizador, Acessibilidade — lacuna crítica no ecossistema que tinha 26 agentes focados em código, backend, infraestrutura e documentação, mas **nenhum especializado em design e experiência do utilizador**.\n\n### O que foi criado:\n\n| Componente | Ficheiro | Detalhes |\n|---|---|---|\n| **🧠 Alma (Soul)** | `agents/souls/desi"
+  },
+  {
+    "id": "task_fix_unicode_crash",
+    "title": "Corrigir crash UnicodeEncodeError com emojis no supervisor_ultra.py e autonomous_loop.py",
+    "desc": "O print(entry, flush=True) crasha quando encontra emojis (🚀✅🔧) no Windows console porque o codec cp1252 não os suporta. Tarefa:\n1. Abrir supervisor_ultra.py\n2. Adicionar 'import sys' no topo\n3. Na função log(), antes do print, adicionar: sys.stdout.reconfigure(encoding='utf-8', errors='replace')\n4. Envolver o print() num try/except UnicodeEncodeError com fallback para entry.encode('utf-8', errors='replace').decode('utf-8')\n5. Fazer o mesmo no autonomous_loop.py (procurar todos os print() que usam f-strings com emojis)\n6. Testar com run_python: print('🚀✅🔧', flush=True) após o fix\n7. Commit e push",
+    "priority": 10,
+    "status": "running",
+    "created_at": "2026-05-30T01:20:07.548826",
+    "source": "auto_generated",
+    "started_at": "2026-05-30T01:20:17.563944"
+  },
+  {
+    "id": "task_fix_telegram_conflict",
+    "title": "Implementar singleton lock para evitar múltiplas instâncias do bot Telegram",
+    "desc": "4895 erros de 'Conflict: terminated by other getUpdates request' no main.log. Causa: várias instâncias do bot Telegram a correr em paralelo. Tarefa:\n1. Criar um mecanismo de lock/singleton no main.py\n2. Usar um ficheiro .lock (ex: 'bot_telegram.lock') com PID dentro\n3. No início do main.py, verificar se o lock existe e se o PID ainda está ativo\n4. Se sim, abortar com 'Outra instância já está a correr. A encerrar.'\n5. Se não (lock órfão), remover lock antigo e criar novo\n6. No finally/cleanup, remover o lock\n7. Garantir que wakeup_v3.py também usa o mesmo lock\n8. Commit e push",
+    "priority": 9,
+    "status": "pending",
+    "created_at": "2026-05-30T01:20:07.548837",
+    "source": "auto_generated"
+  },
+  {
+    "id": "task_fix_memory_corruption",
+    "title": "Adicionar backup automático e proteção contra corrupção de JSON na GlobalMemory",
+    "desc": "9 erros de 'Erro ao carregar: Extra data / Expecting value' no shared_memory.json. A memória global corrompe-se e não há backup. Tarefa:\n1. Abrir memory/global_memory.py\n2. No método _load(), capturar json.JSONDecodeError especificamente\n3. Se JSON estiver corrompido: (a) tentar carregar de .bak; (b) se .bak também corrompido, criar novo dict default\n4. No método _save(), ANTES de escrever, fazer backup: copiar shared_memory.json para shared_memory.json.bak\n5. Usar shutil.copy2 para preservar metadata\n6. Adicionar logging a avisar quando recupera de backup\n7. Testar: corromper intencionalmente o JSON e verificar se recupera\n8. Commit e push",
+    "priority": 8,
+    "status": "pending",
+    "created_at": "2026-05-30T01:20:07.548841",
+    "source": "auto_generated"
   }
 ]

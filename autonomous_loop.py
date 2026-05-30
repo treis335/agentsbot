@@ -49,14 +49,29 @@ def _seed_initial_backlog():
             {"id": "first_task", "desc": "Executar primeira tarefa de teste", "status": "pending"}
         ]
         save_backlog(initial)
-        print("[Seed] Backlog inicial criado")
+        try:
+            sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        except (ValueError, AttributeError):
+            pass
+        try:
+            print("[Seed] Backlog inicial criado")
+        except UnicodeEncodeError:
+            print("[Seed] Backlog inicial criado".encode('utf-8', errors='replace').decode('utf-8'))
 
 
 # ─── LOG ───────────────────────────────────────────────────────────────────────
 def log_cycle(msg: str):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{timestamp}] {msg}"
-    print(line)
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except (ValueError, AttributeError):
+        pass
+    try:
+        print(line)
+    except UnicodeEncodeError:
+        safe_line = line.encode('utf-8', errors='replace').decode('utf-8')
+        print(safe_line)
     MEMORY_DIR.mkdir(exist_ok=True)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line + "\n")
