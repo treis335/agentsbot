@@ -1,0 +1,27 @@
+�ria global partilhada
+        try:
+            from memory.global_memory import GlobalMemory
+            gm = GlobalMemory()
+
+            decisions = gm.get_decisions(5)
+            if decisions:
+                lines.append("\n### Decisões da Equipa (memória global)")
+                for d in decisions:
+                    lines.append(f"• [{d['timestamp'][:16]}] {d['agent']}: {d['decision'][:80]}")
+
+            knowledge = gm.get_knowledge()
+            if knowledge:
+                lines.append("\n### Conhecimento Partilhado")
+                for k in knowledge[-5:]:
+                    lines.append(f"• {k['topic']}: {k['content'][:80]}")
+        except Exception as e:
+            logger.debug(f"[{self.agent_name}] Memória global indisponível: {e}")
+
+                # Lições aprendidas (Batch 4)
+        try:
+            from memory.lesson_extractor import LessonExtractor
+            lessons = LessonExtractor().get_lessons_for_agent(self.agent_id, limit=4)
+            if lessons:
+                lines.append("\n### Lições Aprendidas (evita estes erros)")
+                for lesson in lessons:
+                

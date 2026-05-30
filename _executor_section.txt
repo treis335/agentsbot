@@ -1,0 +1,67 @@
+"""
+agents/executor.py — Motor de execução de agentes com SOUL + MEMÓRIA REAL.
+
+Carrega a personalidade (soul), injeta memória episódica e global no contexto,
+e executa o loop de raciocínio com DeepSeek.
+"""
+import asyncio
+import json
+import logging
+from pathlib import Path
+from typing import Callable, Optional
+from datetime import datetime
+
+from openai import AsyncOpenAI
+
+from core.config import Config
+from tools import TOOLS, execute_tool
+from core.memory_hub import MemoryHub
+from security.auditor import AuditLogger
+from monitoring.metrics import MetricsCollector
+from agents.verifier import verifier as tool_verifier
+from agents.retry_policy import retry_policy
+
+logger = logging.getLogger(__name__)
+
+
+def RETRY_CONFIGS_MAX(tool_name: str) -> int:
+    """Helper: devolve o max_retries configurado para uma ferramenta."""
+    from agents.retry_policy import RETRY_CONFIGS
+    cfg = RETRY_CONFIGS.get(tool_name, RETRY_CONFIGS["_default"])
+    return cfg.max_retries
+
+TOOL_SCHEMA = """
+## FERRAMENTAS DISPONÍVEIS
+
+| Ferramenta       | Argumentos Obrigatórios          | Exemplo                                               |
+|------------------|----------------------------------|-------------------------------------------------------|
+| write_file       | path (str), content (str)        | write_file(path="main.py", content="print('oi')")     |
+| read_file        | path (str)                       | read_file(path="main.py")                             |
+| list_files       | path (str, opcional)             | list_files(path="src/")                               |
+| run_python       | code (str)                       | run_python(code="print('ola')")                       |
+| run_shell        | command (str)                    | run_shell(command="git status")                       |
+| git_status       | (sem argumentos)                 | git_status()                                          |
+| git_commit_push  | message (str)                    | git_commit_push(message="feat: adiciona x")           |
+| create_agent     | name (str), mission (str)        | create_agent(name="X", mission="Faz Y")               |
+| search_github    | query (str)                      | search_github(query="python asyncio")                 |
+| web_search       | query (str)                      | web_search(query="ultimas novidades IA")              |
+
+REGRA: Nunca chames uma ferramenta sem os argumentos obrigatórios.
+Se não tens o valor, descobre primeiro (lê, lista, pesquisa).
+"""
+
+
+class AgentExecutor:
+    """
+    Executor de um agente com personalidade (soul) e memória real.
+
+    A memória episódica (experiências passadas) e global (decisões partilhadas)
+    são injetadas no system prompt em cada execução.
+    """
+
+    def __init__(self, agent_name: str, agent_id: str = ""):
+        self.config      = Config
+        self.agent_name  = agent_name
+        self.agent_id    = agent_id or agent_name
+        self.soul        = self._load_soul()
+        self.memory      = Memory

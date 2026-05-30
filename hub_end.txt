@@ -1,0 +1,76 @@
+ecision",
+            f"[{agent}] {decision} | context: {context}"
+        )
+
+    def get_procedural(self, skill: str, limit: int = 5) -> list[dict]:
+        """Wrapper: obtem memorias procedurais (como fazer algo)."""
+        entries = self._read_all()
+        proc = [e for e in entries if e.get("type") == "knowledge"
+                and e.get("data", {}).get("topic") == "procedural"
+                and skill.lower() in e.get("data", {}).get("content", "").lower()]
+        if limit > 0:
+            proc = proc[-limit:]
+        return proc
+
+    def search(self, query: str, entry_type: Optional[str] = None, limit: int = 10) -> list[dict]:
+        """Wrapper: pesquisa em todos os tipos de memoria."""
+        entries = self._read_all()
+        if entry_type:
+            entries = [e for e in entries if e.get("type") == entry_type]
+        query_lower = query.lower()
+        results = []
+        for e in entries:
+            data_str = json.dumps(e.get("data", {}), ensure_ascii=False).lower()
+            if query_lower in data_str:
+                results.append(e)
+        if limit > 0:
+            results = results[-limit:]
+        return results
+
+    def get_conversation(self, limit: int = 20) -> list[dict]:
+        """Wrapper: obtem historico completo da conversa."""
+        return self.get_chats(limit=limit)
+
+    def add_message(self, role: str, content: str, metadata: Optional[dict] = None) -> dict:
+        """Wrapper: alias para store_chat."""
+        return self.store_chat(role, content, metadata)
+
+    def get_history(self, limit: int = 50) -> list[dict]:
+        """Wrapper: obtem todo o historial."""
+        return self._read_all()[-limit:] if limit > 0 else self._read_all()
+
+    def store(self, key: str, value: Any, entry_type: str = "knowledge") -> dict:
+        """Wrapper: armazena um par chave/valor."""
+        return self._append(entry_type, {"key": key, "value": value})
+
+    def retrieve(self, key: str, entry_type: Optional[str] = None) -> Optional[Any]:
+        """Wrapper: recupera um valor pela chave."""
+        entries = self._read_all()
+        for e in reversed(entries):
+            if entry_type and e.get("type") != entry_type:
+                continue
+            if e.get("data", {}).get("key") == key:
+                return e["data"].get("value")
+        return None
+
+    def get_stats(self) -> dict:
+        """Wrapper: estatisticas de uso da memoria."""
+        entries = self._read_all()
+        stats = {"total": len(entries), "chat": 0, "episode": 0, "knowledge": 0}
+        for e in entries:
+            t = e.get("type", "unknown")
+            if t in stats:
+                stats[t] += 1
+            else:
+                stats[t] = 1
+        stats["agents"] = len(set(
+            e.get("data", {}).get("agent_id", "")
+            for e in entries if e.get("type") == "episode"
+        ))
+        return stats
+
+
+
+def get_memory_hub() -> MemoryHub:
+    """Devolve a instancia unica do MemoryHub (singleton)."""
+    return MemoryHub()
