@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:00:18.827135",
-    "success": true,
-    "result_summary": "Fiz **análise completa** do ecossistema: confirmei que `core/memory_hub.py` já existe com 365 linhas e todos os métodos pedidos (`store_chat`, `store_episode`, `store_knowledge`, `get_context`), `core/supervisor.py` e `agents/executor.py` já importam e usam `MemoryHub` correctamente.\n\n**Falta:** criar `tests/test_memory_hub.py` e fazer `git commit` com a mensagem 'feat: unifica 3 sistemas de memór",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:04:02.034742",
-    "success": true,
-    "result_summary": "## Relatório Final\n\n**O que fiz:**\n- Analisei todo o ecossistema e confirmei que `core/memory_hub.py` já existe com 365 linhas e todos os métodos pedidos (`store_chat`, `store_episode`, `store_knowledge`, `get_context`, mais wrappers de compatibilidade)\n- Confirmei que `core/supervisor.py` e `agents/executor.py` já usam `MemoryHub` em vez dos sistemas antigos\n- Verifiquei que `memory/hub.jsonl` já",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T05:06:39.396833",
     "success": true,
     "result_summary": "Fiz análise completa do ecossistema e confirmei que `core/memory_hub.py` já existe com todos os métodos pedidos (366 linhas, 27 métodos), e que `core/supervisor.py` já usa MemoryHub. Faltam: (1) actualizar `agents/executor.py` para substituir 4 importações antigas (GlobalMemory, LessonExtractor, ProceduralMemory, FailureMemory) por MemoryHub, (2) criar `tests/test_memory_hub.py`, e (3) fazer commi",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-30T20:07:56.244599",
     "success": true,
     "result_summary": "## ✅ Diagnóstico Concluído — 3 Problemas Identificados\n\n**O que fiz:** Analisei 125.784 linhas do `main.log` + 7 outros logs e identifiquei os 3 problemas críticos: **① 4.895 conflitos Telegram** (múltiplas instâncias do bot), **② 9 corrupções de memória** no `shared_memory.json`, **③ Pico de 766 erros às 23h** (ciclo vicioso crash→recovery). Gerei relatório completo em `_diagnostico_logs_completo",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_9acf5f27",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T20:09:08.383141",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `api_integrator` 🌐🔌\n\n### Lacuna Identificada\nO ecossistema não tinha nenhum agente especializado em **integração com APIs externas**. Havia 42 souls mas nenhum focado em:\n- Conectores HTTP resilientes (httpx, aiohttp)\n- Gestão de autenticação OAuth/tokens\n- Rate limiting e circuit breakers\n- Webhooks e eventos externos\n- Tratamento de erros de rede com ret",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_cf2d37af",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-30T20:13:17.708033",
+    "success": true,
+    "result_summary": "## ✅ Diagnóstico Concluído — 3 Problemas Identificados e 3 Corrigidos\n\n**O que fiz:** Analisei 125.784 linhas do `main.log` + 7 outros logs (wakeup, supervisor, auto_recovery, etc.) e identifiquei os 3 problemas críticos:\n\n| # | Problema | Ocorrências | Causa Raiz | Solução Aplicada |\n|---|---|---|---|---|\n| 1 | **main.py reinicia 940 vezes** | 2.802 \"não encontrado\" + 940 restarts | `wakeup.py` c",
     "lesson": ""
   }
 ]

@@ -905,6 +905,35 @@
         "incident response"
       ],
       "priority": 10
+    },
+    "predictive_analyst": {
+      "description": "Analisa padrões históricos e faz previsões de carga, tokens, tendências e anomalias no ecossistema",
+      "skills": [
+        "time_series_forecasting",
+        "statistical_modeling",
+        "anomaly_detection",
+        "trend_analysis",
+        "predictive_maintenance",
+        "data_visualization",
+        "report_generation"
+      ],
+      "keywords": [
+        "previsao",
+        "forecast",
+        "tendencia",
+        "predicao",
+        "padrao",
+        "sazonalidade",
+        "anomalia",
+        "preditivo",
+        "futuro",
+        "projecao",
+        "carga",
+        "tokens",
+        "performance",
+        "degradacao",
+        "antecipar"
+      ]
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

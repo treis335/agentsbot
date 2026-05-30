@@ -432,7 +432,7 @@ async def cmd_auto_backlog(update, context):
     else:
         lines = [f"[LISTA] Backlog ({len(pending)} pendentes):\n"]
         for i, t in enumerate(pending[:10], 1):
-            lines.append(f"{i}. [{t['priority']}[ESTRELA]] {t['title']}")
+            lines.append(f"{i}. [{t['priority']}] {t['title']}")
         if done:
             lines.append(f"\n[OK] Conclu?das: {len(done)}")
         msg = "\n".join(lines)
