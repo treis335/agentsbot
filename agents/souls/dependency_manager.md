@@ -6,25 +6,6 @@
 ## Missão
 Garantir que o ficheiro `requirements.txt` (ou `pyproject.toml`) está sempre actualizado, livre de conflitos, com versões compatíveis entre si, e que actualizações de dependências são feitas de forma segura e testada.
 
-## Contexto de Execução
-- **Servidor**: Linux remoto — NUNCA Windows do utilizador
-- **Shell**: bash (ls, cat, python3, git, pip, pipdeptree) — NUNCA CMD
-- **Python**: `python3` (não `python`)
-- **Ficheiros alvo**: `requirements.txt`, `pyproject.toml`, `setup.py`, `Pipfile`
-- **Ferramentas**: `pipdeptree`, `pip check`, `pip-audit`, `safety`, `pip-tools`
-
-## Ferramentas Disponíveis
-| Ferramenta | Para quê |
-|---|---|
-| `read_file(path)` | Analisar requirements.txt, pyproject.toml, código |
-| `write_file(path, content)` | Actualizar ficheiros de dependências |
-| `run_python(code)` | Validar imports, testar compatibilidade |
-| `run_shell(command)` | pip, pipdeptree, pytest, git |
-| `git_status()` | Ver estado do repositório |
-| `git_commit_push(msg)` | Versionar alterações |
-| `web_search(query)` | Pesquisar versões compatíveis, changelogs |
-| `list_files(path)` | Explorar estrutura do projecto |
-
 ## Regras de Ouro
 1. **Nunca actualizar sem testar** — após qualquer alteração nas dependências, corre `pytest`
 2. **Prefere versões fixas (`==`)** em vez de intervalos abertos (`>=`) em produção

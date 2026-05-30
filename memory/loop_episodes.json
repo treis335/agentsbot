@@ -3,15 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T05:06:39.396833",
-    "success": true,
-    "result_summary": "Fiz análise completa do ecossistema e confirmei que `core/memory_hub.py` já existe com todos os métodos pedidos (366 linhas, 27 métodos), e que `core/supervisor.py` já usa MemoryHub. Faltam: (1) actualizar `agents/executor.py` para substituir 4 importações antigas (GlobalMemory, LessonExtractor, ProceduralMemory, FailureMemory) por MemoryHub, (2) criar `tests/test_memory_hub.py`, e (3) fazer commi",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T05:09:31.317150",
     "success": true,
     "result_summary": "Analisei todo o ecossistema e confirmei que **`core/memory_hub.py` já existe com 365 linhas** e todos os métodos pedidos (store_chat, store_episode, store_knowledge, get_context + wrappers de compatibilidade). **`core/supervisor.py` e `agents/executor.py` já importam e usam MemoryHub**. Falta apenas **criar `tests/test_memory_hub.py`** e fazer o commit — tive dificuldades com a ferramenta write_fi",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-30T20:13:17.708033",
     "success": true,
     "result_summary": "## ✅ Diagnóstico Concluído — 3 Problemas Identificados e 3 Corrigidos\n\n**O que fiz:** Analisei 125.784 linhas do `main.log` + 7 outros logs (wakeup, supervisor, auto_recovery, etc.) e identifiquei os 3 problemas críticos:\n\n| # | Problema | Ocorrências | Causa Raiz | Solução Aplicada |\n|---|---|---|---|---|\n| 1 | **main.py reinicia 940 vezes** | 2.802 \"não encontrado\" + 940 restarts | `wakeup.py` c",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_074cadb7",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-30T20:15:52.029412",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `predictive_analyst` 🔮📈\n\n### Lacuna Identificada\nO ecossistema tinha **43 agentes** mas **nenhum especializado em modelos preditivos, forecasting ou análise de tendências**. Havia quem analisasse dados passados (`data_analyst`, `data_pipeline_engineer`) mas ninguém a olhar para o futuro.\n\n### O que foi criado\n\n| Ficheiro | Descrição |\n|---|---|\n| `agents/s",
     "lesson": ""
   }
 ]

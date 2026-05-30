@@ -33,21 +33,27 @@ def RETRY_CONFIGS_MAX(tool_name: str) -> int:
 TOOL_SCHEMA = """
 ## FERRAMENTAS DISPONÍVEIS
 
-| Ferramenta       | Argumentos Obrigatórios          | Exemplo                                               |
-|------------------|----------------------------------|-------------------------------------------------------|
-| write_file       | path (str), content (str)        | write_file(path="main.py", content="print('oi')")     |
-| read_file        | path (str)                       | read_file(path="main.py")                             |
-| list_files       | path (str, opcional)             | list_files(path="src/")                               |
-| run_python       | code (str)                       | run_python(code="print('ola')")                       |
-| run_shell        | command (str)                    | run_shell(command="git status")                       |
-| git_status       | (sem argumentos)                 | git_status()                                          |
-| git_commit_push  | message (str)                    | git_commit_push(message="feat: adiciona x")           |
-| create_agent     | name (str), mission (str)        | create_agent(name="X", mission="Faz Y")               |
-| search_github    | query (str)                      | search_github(query="python asyncio")                 |
-| web_search       | query (str)                      | web_search(query="ultimas novidades IA")              |
+Tens acesso às seguintes ferramentas para executar tarefas no servidor Linux.
 
-REGRA: Nunca chames uma ferramenta sem os argumentos obrigatórios.
-Se não tens o valor, descobre primeiro (lê, lista, pesquisa).
+| Ferramenta       | Obrigatório                    | Descrição                                          | Exemplo                                               |
+|------------------|--------------------------------|----------------------------------------------------|-------------------------------------------------------|
+| write_file       | path (str), content (str)      | Cria ou sobrescreve um ficheiro                    | write_file(path="main.py", content="print('oi')")     |
+| read_file        | path (str)                     | Lê o conteúdo de um ficheiro                       | read_file(path="main.py")                             |
+| list_files       | path (str, opcional)           | Lista ficheiros num diretório                      | list_files(path="src/")                               |
+| run_python       | code (str)                     | Executa código Python no servidor                  | run_python(code="print('ola')")                       |
+| run_shell        | command (str)                  | Executa comando bash no servidor Linux             | run_shell(command="git status")                       |
+| git_status       | (nenhum)                       | Mostra estado do repositório Git                   | git_status()                                          |
+| git_commit_push  | message (str)                  | Faz commit + push das alterações                   | git_commit_push(message="feat: adiciona x")           |
+| create_agent     | name (str), mission (str)      | Cria um novo agente no ecossistema                 | create_agent(name="X", mission="Faz Y")               |
+| search_github    | query (str)                    | Pesquisa código no GitHub                          | search_github(query="python asyncio")                 |
+| web_search       | query (str)                    | Pesquisa informação na web                         | web_search(query="ultimas novidades IA")              |
+
+### REGRAS DE USO DAS FERRAMENTAS
+1. **Nunca** chames uma ferramenta sem os argumentos obrigatórios
+2. Se não tens um valor, descobre primeiro (lê, lista, pesquisa)
+3. Prefere `run_python` a `run_shell` para lógica complexa
+4. Usa `git_status()` antes de `git_commit_push()` para ver o que mudou
+5. Lê o código antes de o alterar — contexto é essencial
 """
 
 
@@ -185,6 +191,8 @@ class AgentExecutor:
             "- Shell disponivel: bash/Linux (ls, cat, python3, git, etc.)",
             "- IMPORTANTE: O utilizador esta no Windows/PC - TU estas no servidor Linux",
             "- Comunicacao com utilizador: via Telegram (ja tratado automaticamente)",
+            f"- Data/hora: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+            f"- Agente: {self.agent_name} (ID: {self.agent_id})",
         ]
         runtime_ctx = "\n".join(runtime_lines)
 

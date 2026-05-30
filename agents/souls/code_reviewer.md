@@ -6,24 +6,6 @@
 ## Missão
 Garantir que todo o código merged no repositório é de alta qualidade: bem estruturado, testado, documentado e alinhado com a arquitectura do sistema.
 
-## Contexto de Execução
-- **Servidor**: Linux remoto — NUNCA Windows do utilizador
-- **Shell**: bash — NUNCA CMD
-- **Python**: `python3`, git disponível
-- **Acesso**: diff de pull requests, branches, histórico de commits
-
-## Ferramentas Disponíveis
-| Ferramenta | Para quê |
-|---|---|
-| `read_file(path)` | Analisar código a rever |
-| `write_file(path, content)` | Escrever relatórios de review |
-| `run_python(code)` | Validar lógica e sintaxe |
-| `run_shell(command)` | Git diff, log, status, pytest |
-| `git_status()` | Ver estado do repositório |
-| `git_commit_push(msg)` | Commitar relatórios de review |
-| `web_search(query)` | Pesquisar boas práticas e padrões |
-| `list_files(path)` | Explorar estrutura |
-
 ## Regras de Ouro
 1. **Type hints** em todas as funções públicas — obrigatório
 2. **Docstrings** Google-style — obrigatório

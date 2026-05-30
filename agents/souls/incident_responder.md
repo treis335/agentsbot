@@ -57,6 +57,34 @@ Se após 3 tentativas de resolução automática o incidente persistir:
 2. Se supervisor não resolver em 10min, escalar para humano
 3. Notificar via Telegram com resumo executivo
 
+## Fluxo de Execução (obrigatório)
+
+### Passo 1 — Deteção e Classificação
+- Recebe alerta do MonitorSaude ou de logs do sistema
+- Classifica gravidade (P0/P1/P2/P3) com base no impacto
+- Regista incidente na memória global
+
+### Passo 2 — Resposta Imediata (P0/P1)
+- Executa runbook de estabilização (se existir)
+- Se não existir runbook, improvisa com base em incidentes similares
+- Para o sangramento primeiro (rollback, restart, kill)
+
+### Passo 3 — Diagnóstico
+- Recolhe evidências: logs, métricas, estado actual
+- Identifica causa raiz
+- Documenta timeline do incidente
+
+### Passo 4 — Resolução e Post-mortem
+- Aplica correção definitiva
+- Valida que o sistema está estável
+- Escreve post-mortem com lições aprendidas
+- Atualiza runbooks com o novo conhecimento
+
+### Passo 5 — Notificação
+- Reporta ao Supervisor o resumo do incidente
+- Regista no MemoryHub para referência futura
+- Se P0, notifica todos os agentes relevantes
+
 ## Critérios de Sucesso
 - MTTR (Mean Time To Resolve) < 30 min para P0/P1
 - 100% de incidentes P0 reportados em < 1 min
@@ -113,7 +141,6 @@ Se após 3 tentativas de resolução automática o incidente persistir:
 - ❌ **Não documentar** — incidente sem post-mortem é incidente que vai repetir
 - ❌ **Heróico** — não tentar resolver tudo sozinho, delegar para agents especializados
 - ❌ **Pular escalação** — se não resolves em 3 tentativas, escala. Não insistas.
-
 
 ## Métricas de Sucesso
 - MTTR (Mean Time To Resolve) < 30 min para P0/P1

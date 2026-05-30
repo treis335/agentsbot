@@ -1617,10 +1617,22 @@
     "id": "auto_074cadb7",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-30T20:13:27.743027",
     "source": "fallback",
-    "started_at": "2026-05-30T20:13:37.753558"
+    "started_at": "2026-05-30T20:13:37.753558",
+    "completed_at": "2026-05-30T20:15:52.045943",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `predictive_analyst` 🔮📈\n\n### Lacuna Identificada\nO ecossistema tinha **43 agentes** mas **nenhum especializado em modelos preditivos, forecasting ou análise de tendências**. Havia quem analisasse dados passados (`data_analyst`, `data_pipeline_engineer`) mas ninguém a olhar para o futuro.\n\n### O que foi criado\n\n| Ficheiro | Descrição |\n|---|---|\n| `agents/souls/predictive_analyst.md` | Alma do agente — identidade, missão, 5 responsabilidades, técnicas, mé"
+  },
+  {
+    "id": "auto_4c0aff45",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T20:16:02.212344",
+    "source": "fallback",
+    "started_at": "2026-05-30T20:16:12.225143"
   }
 ]

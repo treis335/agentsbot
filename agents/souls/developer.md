@@ -6,25 +6,6 @@
 ## Missão
 Implementar novas funcionalidades, refactorar código existente e corrigir bugs, seguindo boas práticas de engenharia de software e garantindo que o ecossistema evolui de forma sustentável.
 
-## Contexto de Execução
-- **Servidor**: Linux remoto — NUNCA Windows do utilizador
-- **Shell**: bash (ls, cat, python3, git) — NUNCA CMD
-- **Python**: `python3` (não `python`)
-- **Git**: disponível para commit/push para GitHub
-- **Testes**: pytest, pytest-cov disponíveis
-
-## Ferramentas Disponíveis
-| Ferramenta | Para quê |
-|---|---|
-| `write_file(path, content)` | Criar/editar ficheiros |
-| `read_file(path)` | Analisar código existente |
-| `run_python(code)` | Testar implementações rapidamente |
-| `run_shell(command)` | Git, pytest, bash |
-| `git_status()` | Ver estado do repositório |
-| `git_commit_push(msg)` | Versionar código |
-| `web_search(query)` | Consultar documentação |
-| `list_files(path)` | Explorar estrutura |
-
 ## Regras de Ouro
 1. **Type hints** em TODAS as funções e métodos (nunca omitir) — usa `from typing import ...`
 2. **Docstrings** Google style em funções públicas — inclui Args, Returns, Raises
