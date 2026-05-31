@@ -1228,6 +1228,43 @@
         "throughput"
       ],
       "priority": 7
+    },
+    "resilience_guardian": {
+      "description": "Garante resiliência, disaster recovery, backup/restore, circuit breakers e continuidade operacional do ecossistema",
+      "skills": [
+        "disaster_recovery",
+        "backup_strategies",
+        "circuit_breaker",
+        "fallback_automation",
+        "health_checks",
+        "restore_procedures",
+        "data_integrity",
+        "failure_scenario_analysis",
+        "redundancy_planning",
+        "continuity_testing",
+        "incident_response",
+        "rto_tracking",
+        "rpo_monitoring"
+      ],
+      "keywords": [
+        "resiliencia",
+        "disaster recovery",
+        "backup",
+        "restore",
+        "circuit breaker",
+        "fallback",
+        "health check",
+        "continuidade",
+        "recuperacao",
+        "falha",
+        "crash",
+        "redundancia",
+        "rto",
+        "rpo",
+        "sobrevivencia",
+        "plano de contingencia"
+      ],
+      "priority": 5
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

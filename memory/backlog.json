@@ -2807,10 +2807,22 @@
     "id": "auto_1a57e430",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:56:37.831708",
     "source": "fallback",
-    "started_at": "2026-05-31T02:56:47.847626"
+    "started_at": "2026-05-31T02:56:47.847626",
+    "completed_at": "2026-05-31T02:57:07.588794",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ 9 ficheiros modificados detetados |\n| **Alterações principais** | `executor.py` — correção de indentação no `build_system_prompt` (estava aninhado dentro de outro método) + atualização de logs, backlog, ciclo, episódios, métricas |\n| **Commit** | ✅ `1615921` — `fix: correção de indentação no executor.py + atualização de estado do ecossistema` |\n| **Push** | ✅ Feito para `origin/main` |\n| **"
+  },
+  {
+    "id": "auto_75a916f7",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:57:17.818210",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:57:27.835525"
   }
 ]
