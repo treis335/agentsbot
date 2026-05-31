@@ -1,9 +1,9 @@
 {
-  "total_cycles": 289,
+  "total_cycles": 325,
   "current_phase": "pensar",
   "last_action_key": "analyze",
   "identical_action_count": 0,
-  "last_learn_time": 1780193539.6965349,
+  "last_learn_time": 1780196660.1341064,
   "errors": [],
   "insights": [
     {
@@ -675,6 +675,91 @@
       "timestamp": "2026-05-31T03:12:19.696504",
       "observation": "loop_detetado",
       "cycle": 289
+    },
+    {
+      "timestamp": "2026-05-31T03:12:44.505660",
+      "observation": "ciclo_290_completo",
+      "cycle": 290
+    },
+    {
+      "timestamp": "2026-05-31T03:15:18.951532",
+      "observation": "loop_detetado",
+      "cycle": 292
+    },
+    {
+      "timestamp": "2026-05-31T03:17:27.147165",
+      "observation": "loop_detetado",
+      "cycle": 295
+    },
+    {
+      "timestamp": "2026-05-31T03:22:15.724626",
+      "observation": "loop_detetado",
+      "cycle": 298
+    },
+    {
+      "timestamp": "2026-05-31T03:25:17.380596",
+      "observation": "ciclo_300_completo",
+      "cycle": 300
+    },
+    {
+      "timestamp": "2026-05-31T03:25:27.407327",
+      "observation": "loop_detetado",
+      "cycle": 301
+    },
+    {
+      "timestamp": "2026-05-31T03:30:13.591407",
+      "observation": "loop_detetado",
+      "cycle": 304
+    },
+    {
+      "timestamp": "2026-05-31T03:30:23.615534",
+      "observation": "ciclo_305_completo",
+      "cycle": 305
+    },
+    {
+      "timestamp": "2026-05-31T03:35:00.789384",
+      "observation": "loop_detetado",
+      "cycle": 307
+    },
+    {
+      "timestamp": "2026-05-31T03:41:20.583516",
+      "observation": "loop_detetado",
+      "cycle": 310
+    },
+    {
+      "timestamp": "2026-05-31T03:43:28.320818",
+      "observation": "loop_detetado",
+      "cycle": 313
+    },
+    {
+      "timestamp": "2026-05-31T03:47:22.455870",
+      "observation": "ciclo_315_completo",
+      "cycle": 315
+    },
+    {
+      "timestamp": "2026-05-31T03:51:29.778069",
+      "observation": "loop_detetado",
+      "cycle": 316
+    },
+    {
+      "timestamp": "2026-05-31T03:54:23.019877",
+      "observation": "loop_detetado",
+      "cycle": 319
+    },
+    {
+      "timestamp": "2026-05-31T03:57:40.950509",
+      "observation": "ciclo_320_completo",
+      "cycle": 320
+    },
+    {
+      "timestamp": "2026-05-31T03:59:43.784020",
+      "observation": "loop_detetado",
+      "cycle": 322
+    },
+    {
+      "timestamp": "2026-05-31T04:04:20.134095",
+      "observation": "loop_detetado",
+      "cycle": 325
     }
   ]
 }

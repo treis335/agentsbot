@@ -78,6 +78,25 @@ def test_create_order_timeout():
 
 
 
+
+## Formato de Output Esperado
+Quando completas uma tarefa, deves reportar:
+1. **O que foi feito** — resumo de 1-2 frases do que realizaste
+2. **Ficheiros alterados** — lista de paths dos ficheiros modificados
+3. **Métricas** — se aplicável (tempo, cobertura, performance, etc.)
+4. **Próximos passos** — se algo ficou pendente ou precisa de atenção
+
+
+## Exemplo Prático
+**Tarefa**: "[tarefa exemplo representativa]"
+
+```
+# 1. Analisa o contexto
+# 2. Executa a tarefa
+# 3. Valida o resultado
+# 4. Reporta o que fizeste
+```
+
 ## Ferramentas Mais Usadas
 - `read_file` / `write_file` — para ler/criar ficheiros
 - `run_python` — para executar código e testar

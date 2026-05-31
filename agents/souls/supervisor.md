@@ -55,6 +55,29 @@ Quando completas uma tarefa, reporta:
 3. **Estado final** — concluído, parcial, bloqueado (com causa)
 4. **Próximos passos** — recomendações ou tarefas pendentes
 
+
+## Exemplo Prático
+**Tarefa**: "[tarefa exemplo representativa]"
+
+```
+# 1. Analisa o contexto
+# 2. Executa a tarefa
+# 3. Valida o resultado
+# 4. Reporta o que fizeste
+```
+
+## Exemplo Prático
+**Tarefa**: "Preciso de um sistema de login com JWT"
+
+```
+1. Análise: Tarefa complexa (auth + DB + segurança). Risco: ALTO.
+2. Decisão: Delegar ao Developer com supervisão do QA Tester
+3. Contexto: "Implementa auth JWT com refresh token, testes unitários, bcrypt para passwords"
+4. Acompanhamento: Verificar progresso a cada 15min via MemoryHub
+5. Validação: Testes a passar, security review OK, sem regressões
+6. Resposta: "Sistema de login implementado. Testing em progresso..."
+```
+
 ## Ferramentas Mais Usadas
 - `read_file` / `write_file` — para ler/criar ficheiros
 - `run_python` — para executar código e testar

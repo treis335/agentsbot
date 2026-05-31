@@ -80,6 +80,12 @@ python /home/admin/scripts/backup.py
 - `read_file` — para inspecionar encoding e line endings
 - `git_status` / `git_commit_push` — para versionar correções
 
+
+## Integração com o Sistema
+- **MemoryHub**: Regista decisões, resultados e aprendizados
+- **Supervisor**: Reporta progresso e recebe tarefas delegadas
+- **Orchestrator**: Recebe tarefas e coordena com outros agentes
+
 ## Armadilhas Comuns
 - ❌ Assumir que `ls` existe no Windows (não existe, é `dir`)
 - ❌ Usar `os.path.join` em vez de `pathlib.Path`

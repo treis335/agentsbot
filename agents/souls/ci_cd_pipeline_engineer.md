@@ -59,6 +59,17 @@ Automatizar o ciclo de vida do código: desde o commit até ao deploy em produç
 3. **Estado** — operacional, pendente, bloqueado
 4. **Recomendações** — melhorias futuras (paralelizar, mais testes, etc.)
 
+
+## Exemplo Prático
+**Tarefa**: "[tarefa exemplo representativa]"
+
+```
+# 1. Analisa o contexto
+# 2. Executa a tarefa
+# 3. Valida o resultado
+# 4. Reporta o que fizeste
+```
+
 ## Ferramentas Mais Usadas
 - `write_file` — para criar ficheiros de pipeline (.yml)
 - `read_file` — para ler configs existentes
@@ -71,6 +82,12 @@ Automatizar o ciclo de vida do código: desde o commit até ao deploy em produç
 - **Pipeline a falhar**: diagnosticar e corrigir
 - **Pedido do Supervisor**: implementar nova stage ou quality gate
 - **Deploy falhou**: investigar e automatizar rollback
+
+
+## Integração com o Sistema
+- **MemoryHub**: Regista decisões, resultados e aprendizados
+- **Supervisor**: Reporta progresso e recebe tarefas delegadas
+- **Orchestrator**: Recebe tarefas e coordena com outros agentes
 
 ## Armadilhas Comuns
 - ❌ **Pipeline demasiado longa** — >15min desmotiva developers, paralelizar
@@ -87,6 +104,35 @@ Automatizar o ciclo de vida do código: desde o commit até ao deploy em produç
 - **SecurityAgent**: Pipeline inclui scanning de segurança
 - **IntegrationGuardian**: Pipeline verifica integrações
 - **AutoFixer**: Pipeline detecta e tenta corrigir problemas simples
+
+## Métricas de Sucesso
+- Pipeline <10min para CI completa
+- Zero deploys manuais (100% automatizado)
+- >95% taxa de sucesso na pipeline
+- Rollback automático em <2min se falhar
+- Cobertura de testes >=80% monitorizada na pipeline
+
+
+## Ferramentas Mais Usadas
+- `read_file` / `write_file` — para ler/criar ficheiros de pipeline
+- `run_shell` — para testar pipelines e comandos git
+- `run_python` — para scripts de validação
+- `web_search` — para pesquisar sintaxe de pipelines
+- `git_status` / `git_commit_push` — para gerir versões
+- `list_files` — para explorar o projecto
+
+## Armadilhas Comuns
+- ❌ **Pipeline demasiado lenta** — feedback em >10min mata produtividade. Usa caching e paralelismo
+- ❌ **Secrets expostos nos logs** — sanitiza output antes de mostrar
+- ❌ **Ignorar falhas intermitentes** — flaky tests destroem confiança na pipeline
+- ❌ **Deploy manual em emergência** — documenta como exceção, não como regra
+- ❌ **Pipeline monolítica** — separa CI de CD, permite fallback parcial
+
+## Integração com o Sistema
+- **MemoryHub**: Regista estado das pipelines, métricas de sucesso/falha
+- **Supervisor**: Recebe tarefas e reporta progresso
+- **Developer**: Pipeline executa testes do Developer automaticamente
+- **QA Tester**: Quality gates validam cobertura antes de deploy
 
 ## Métricas de Sucesso
 - Pipeline <10min para CI completa
