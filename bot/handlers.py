@@ -343,7 +343,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_msg = update.message.text
 
     # Indicador de "a pensar..."
-    thinking_msg = await update.message.reply_text("[PENSAR]")
+    thinking_msg = await update.message.reply_text("⏳ A processar...")
 
     try:
         from agents.llm_agent import get_agent
@@ -356,7 +356,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         async def on_progress(text: str):
             progress_updates.append(text)
             try:
-                await thinking_msg.edit_text("\n".join(progress_updates[-3:]))
+                await thinking_msg.edit_text("⏳ " + "\n".join(progress_updates[-3:]))
             except Exception:
                 pass
 
@@ -378,12 +378,36 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await _send(update, resposta)
 
     except Exception as e:
+        err_str = str(e)
         logger.error(f"[handle_message] Erro: {e}", exc_info=True)
         try:
             await thinking_msg.delete()
         except Exception:
             pass
-        await _send(update, f"[X] Erro inesperado: {e}\n\nVerifica os logs para mais detalhes.")
+
+        # Mensagem de erro clara consoante o tipo
+        if "402" in err_str or "Payment Required" in err_str or "sem créditos" in err_str.lower():
+            msg = (
+                "💳 *Sem créditos DeepSeek e Ollama não disponível.*\n\n"
+                "Para continuar a usar o bot:\n\n"
+                "*Opção A — Ollama local (grátis):*\n"
+                "```\nollama serve\n```\n"
+                "```\nollama pull qwen2.5-coder:7b\n```\n\n"
+                "*Opção B — Recarregar DeepSeek:*\n"
+                "https://platform.deepseek.com\n\n"
+                "_O loop autónomo continua a trabalhar com memória local._"
+            )
+        elif "Ollama" in err_str and "indisponível" in err_str:
+            msg = (
+                "📡 *Ollama não está a correr.*\n\n"
+                "Abre um CMD e executa:\n"
+                "```\nollama serve\n```\n\n"
+                "Depois tenta outra vez."
+            )
+        else:
+            msg = f"❌ Erro: {err_str[:200]}\n\nVerifica os logs para mais detalhes."
+
+        await _send(update, msg)
 
 # --- COMANDOS DO LOOP AUTÓNOMO -------------------------------------------------
 
