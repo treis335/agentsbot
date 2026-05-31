@@ -1,32 +1,5 @@
 [
   {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T13:26:18.720540",
-    "success": true,
-    "result_summary": "Tudo já está consolidado e no remote. Aqui está o relatório final:\n\n---\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### ✅ Checklist — 7/7\n\n| # | Item | Estado |\n|---|------|--------|\n| 1 | `core/memory_hub.py` com `MemoryHub` (store_chat, store_episode, store_knowledge, get_context) | ✅ 486 linhas, completa |\n| 2 | Usa `memory/hub.jsonl` como ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T13:29:47.989000",
-    "success": true,
-    "result_summary": "Criei o ficheiro `core/memory_hub.py` com a classe `MemoryHub`, os wrappers de compatibilidade (`core/memory.py`, `memory/global_memory.py`, `memory/episodica.py`, `memory/semantica.py`), actualizei `core/supervisor.py` e `agents/executor.py` para usarem o MemoryHub, e escrevi `tests/test_memory_hub.py` com 9 testes.\n\nFalta executar os testes com sucesso (o teste `test_get_context` falhou devido a",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_self_healing_watchdog",
-    "task_desc": "O ecossistema tem vários pontos de falha conhecidos: (1) Push GitHub falha por timeout de rede, (2) Telegram bot crasha com 'Conflict: terminated by other getUpdates request', (3) O ciclo autónomo pod",
-    "agent": "devops",
-    "timestamp": "2026-05-30T13:39:39.585826",
-    "success": true,
-    "result_summary": "Desculpa, tive um problema técnico com a ferramenta `write_file` — não consegui passar os parâmetros corretamente. Fiz toda a análise exploratória do ecossistema (estrutura de ficheiros, estado do git, locks existentes, conteúdo do main.py, autonomous_loop.py, backlog.json, autonomous_log.md), mas **não consegui criar nenhum dos 4 ficheiros necessários** (core/watchdog.py, tests/test_watchdog.py, ",
-    "lesson": ""
-  },
-  {
     "task_id": "auto_a43452fe",
     "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
     "agent": "gestor_memoria",
@@ -1798,5 +1771,32 @@
     "success": false,
     "result_summary": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (backlog.json com 233 tarefas, 200 episódios do loop_episodes.json, hub.jsonl, licoes_episodicas.md, semantic_index.json com 260 docs, failure_memory.py, lesson_extractor.py, cycle_state.json com 251 ciclos, autonomous_log.md) e extraí **7 lições acionáveis** para o ecossis",
     "lesson": "Tarefa falhou. Tentar abordagem diferente."
+  },
+  {
+    "task_id": "auto_df80ebfc",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T02:36:14.701763",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Diagnóstico Completo — 3 Problemas Identificados & Corrigidos\n\n### Os 3 Problemas:\n\n| # | Problema | Severidade | Fonte |\n|---|----------|-----------|-------|\n| 1 | 🔴 **UnicodeEncodeError** — supervisor crash ao imprimir 🚀 no Windows | **Crítico** | `supervisor.log` |\n| 2 | 🔴 **Telegram f-string mal formatada** — bot desativado em todas as execuções | **Alto** | `main_stderr.log`, `run_s",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_67c99a13",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T02:38:48.553242",
+    "success": true,
+    "result_summary": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (loop_episodes.json com 200+ episódios, autonomous_log.md com 255 ciclos, licoes_episodicas.md, semantica/licoes_aprendidas.md, episodica/, backlog.json, cycle_state.json, _diagnostico_sistema.txt, _diagnostico_logs.md, supervisor_log.json, failure_memory.py, lesson_extract",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_b680c72c",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T02:41:43.995239",
+    "success": true,
+    "result_summary": "## ✅ Missão Concluída — Novo Agente: `third_party_integrator` 🤝🔌\n\n### O que foi feito\nAnalisei todo o ecossistema de 55+ souls e identifiquei que **não existe um agente especializado em integração com APIs externas de terceiros** (GitHub, Slack, Discord, Google, OpenAI, etc.). Criei o ficheiro `third_party_integrator.md` na pasta `agents/souls/` — um agente completo com identidade, missão, skills ",
+    "lesson": ""
   }
 ]

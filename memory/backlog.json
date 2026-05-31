@@ -1959,11 +1959,13 @@
     "id": "auto_125e379f",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "failed",
     "priority": 5,
     "created_at": "2026-05-30T23:39:04.146410",
     "source": "fallback",
-    "started_at": "2026-05-30T23:39:14.158530"
+    "started_at": "2026-05-30T23:39:14.158530",
+    "completed_at": "2026-05-31T02:42:42.292412",
+    "result": "Auto-fix: tarefa running presa >30min, marcada como failed"
   },
   {
     "id": "auto_6de015b5",
@@ -1981,11 +1983,13 @@
     "id": "auto_d3bc9cf9",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "running",
+    "status": "failed",
     "priority": 5,
     "created_at": "2026-05-31T00:23:41.120376",
     "source": "fallback",
-    "started_at": "2026-05-31T00:23:51.135298"
+    "started_at": "2026-05-31T00:23:51.135298",
+    "completed_at": "2026-05-31T02:42:42.292412",
+    "result": "Auto-fix: tarefa running presa >30min, marcada como failed"
   },
   {
     "id": "auto_b85f809a",
@@ -2687,10 +2691,55 @@
     "id": "auto_df80ebfc",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:35:04.413409",
     "source": "fallback",
-    "started_at": "2026-05-31T02:35:14.429488"
+    "started_at": "2026-05-31T02:35:14.429488",
+    "completed_at": "2026-05-31T02:36:14.719297",
+    "result": "---\n\n## ✅ Diagnóstico Completo — 3 Problemas Identificados & Corrigidos\n\n### Os 3 Problemas:\n\n| # | Problema | Severidade | Fonte |\n|---|----------|-----------|-------|\n| 1 | 🔴 **UnicodeEncodeError** — supervisor crash ao imprimir 🚀 no Windows | **Crítico** | `supervisor.log` |\n| 2 | 🔴 **Telegram f-string mal formatada** — bot desativado em todas as execuções | **Alto** | `main_stderr.log`, `run_stderr.log`, `startup.log` |\n| 3 | 🟡 **10 agentes duplicados no registry** — 26 registos para apenas "
+  },
+  {
+    "id": "auto_67c99a13",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:36:25.222368",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:36:35.239628",
+    "completed_at": "2026-05-31T02:38:48.571985",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (loop_episodes.json com 200+ episódios, autonomous_log.md com 255 ciclos, licoes_episodicas.md, semantica/licoes_aprendidas.md, episodica/, backlog.json, cycle_state.json, _diagnostico_sistema.txt, _diagnostico_logs.md, supervisor_log.json, failure_memory.py, lesson_extractor.py). Cruzei dados para extrair **10 lições críticas** consolidadas e atualizar o conhecimento do "
+  },
+  {
+    "id": "auto_b680c72c",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:38:58.597614",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:39:08.614312",
+    "completed_at": "2026-05-31T02:41:44.015327",
+    "result": "## ✅ Missão Concluída — Novo Agente: `third_party_integrator` 🤝🔌\n\n### O que foi feito\nAnalisei todo o ecossistema de 55+ souls e identifiquei que **não existe um agente especializado em integração com APIs externas de terceiros** (GitHub, Slack, Discord, Google, OpenAI, etc.). Criei o ficheiro `third_party_integrator.md` na pasta `agents/souls/` — um agente completo com identidade, missão, skills (OAuth, rate_limiter, webhook_handler, error_recovery), regras de ouro, fluxo de execução detalhado "
+  },
+  {
+    "id": "auto_e93e946a",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:41:54.206585",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:42:04.223533"
+  },
+  {
+    "id": "task_1780191762_001",
+    "title": "Gerar novas tarefas úteis para o backlog",
+    "description": "O backlog está vazio de tarefas pendentes. Gera 5-10 tarefas reais de melhoria do sistema: correção de bugs, otimizações, documentação, testes.",
+    "priority": 1,
+    "source": "log_diagnostic",
+    "created": "2026-05-31T02:42:42.292412",
+    "status": "pending"
   }
 ]

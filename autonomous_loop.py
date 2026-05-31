@@ -15,6 +15,7 @@ from pathlib import Path
 from core.cognitive_cycle import CognitiveCycle
 
 # --- CONFIGURAÇÃO --------------------------------------------------------------
+STALE_TASK_TIMEOUT_MINUTES = 30  # Tarefas "running" há mais tempo são auto-failed
 CYCLE_INTERVAL_SECONDS = 10
 MAX_TASKS_PER_CYCLE = 1
 MEMORY_DIR = Path("memory")
@@ -212,6 +213,29 @@ class AutonomousLoop:
                 log_cycle(f"[ERRO] No ciclo: {e}")
             time.sleep(CYCLE_INTERVAL_SECONDS)
 
+    def _cleanup_stale_tasks(self, backlog: list) -> list:
+        """Marca como failed tarefas running há mais de STALE_TASK_TIMEOUT_MINUTES."""
+        from datetime import datetime, timedelta
+        now = datetime.now()
+        cleaned = 0
+        for t in backlog:
+            if t.get("status") == "running":
+                started = t.get("started_at", t.get("created_at", ""))
+                if started:
+                    try:
+                        started_dt = datetime.fromisoformat(started)
+                        if (now - started_dt) > timedelta(minutes=STALE_TASK_TIMEOUT_MINUTES):
+                            t["status"] = "failed"
+                            t["completed_at"] = now.isoformat()
+                            t["result"] = "Auto-failed: stale task (>{}min)".format(STALE_TASK_TIMEOUT_MINUTES)
+                            cleaned += 1
+                    except:
+                        pass
+        if cleaned:
+            log_cycle(f"[Cleanup] {cleaned} stale task(s) auto-failed")
+            save_backlog(backlog)
+        return backlog
+
     def _run_cycle(self):
         """Um ciclo completo do loop autonomo — executa tarefas reais via LLMAgent."""
         self.cycle_count += 1
@@ -246,6 +270,9 @@ class AutonomousLoop:
 
         # 2. Carregar backlog
         backlog = load_backlog()
+        
+        # 2a. Cleanup de tarefas presas (timeout)
+        backlog = self._cleanup_stale_tasks(backlog)
 
         # 3. Filtrar tarefas pendentes
         pending = [t for t in backlog if t.get("status") in ("pending", "")]
