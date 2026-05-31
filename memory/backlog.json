@@ -2591,10 +2591,34 @@
     "id": "auto_7f4548b3",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:16:52.460645",
     "source": "fallback",
-    "started_at": "2026-05-31T02:17:02.475680"
+    "started_at": "2026-05-31T02:17:02.475680",
+    "completed_at": "2026-05-31T02:17:20.586254",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — working tree clean |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Commits feitos** | 1 novo commit: `8005511` |\n| **Push** | ✅ Enviado com sucesso para GitHub |\n| **Ficheiros alterados** | 8 (logs, backlog, métricas, ciclo de estado) |\n\n### 📋 Detalhes do Commit\n- **Hash**: `8005511`\n- **Mensagem**: `autonomous: actualização de estado do ecossistema (logs, backlog, mé"
+  },
+  {
+    "id": "auto_d74781a6",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:17:31.039797",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:17:41.056174",
+    "completed_at": "2026-05-31T02:20:15.426728",
+    "result": "## ✅ Missão Concluída — Novo Agente: `e2e_test_automator` 🧪🔄\n\n### O que foi feito\nAnalisei todo o ecossistema (60+ souls) e identifiquei uma lacuna crítica: **não existe um agente especializado em testes end-to-end (E2E) automatizados**. O `qa_tester` foca-se em testes unitários, o `integration_guardian` em testes de integração, mas ninguém coordena **cenários completos de utilizador** que simulam o fluxo real do sistema do início ao fim. Criei a soul `e2e_test_automator.md` — um agente que orqu"
+  },
+  {
+    "id": "auto_5329cae5",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:20:25.450415",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:20:35.466990"
   }
 ]
