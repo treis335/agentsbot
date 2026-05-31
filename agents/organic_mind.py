@@ -195,8 +195,7 @@ def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
                 desc = str(t.get("description", "") or t.get("title", "") or title)[:300]
                 valid_tasks.append({
                     "title": title,
-                    "description": desc,
-                    "description": str(t.get("description", t.get("title", "")))[:300],
+                    "description": desc[:300],
                     "agent": str(t.get("agent", "Developer")),
                     "priority": int(t.get("priority", 5)),
                 })

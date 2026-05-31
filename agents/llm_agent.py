@@ -47,7 +47,7 @@ def _build_system_prompt() -> str:
             "- Tarefas pendentes: {}".format(len(pending))
         )
         if pending:
-            loop_context += " -> " + ", ".join("'{}'".format(t["title"]) for t in pending[:3])
+            loop_context += " -> " + ", ".join("'{}'".format(t.get("title", "?")) for t in pending[:3])
         loop_context += "\n- Concluídas: {} | Falhadas: {}".format(len(done), len(failed))
 
         log_path = MEMORY_DIR / "autonomous_log.md"

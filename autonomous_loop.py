@@ -154,6 +154,7 @@ class AutonomousLoop:
         self.running = False
         self.thread = None
         self.cycle_count = 0
+        self._debate_failures = 0  # Contador de falhas consecutivas do debate
 
         # Batch 9 — Self-Improvement Loop
         try:
@@ -504,10 +505,23 @@ class AutonomousLoop:
             self._notify_debate(debate)
 
         except Exception as e:
-            log_cycle(f"[OrganicMind] Erro no debate: {e}")
+            self._debate_failures += 1
+            log_cycle(f"[OrganicMind] Erro no debate: {e} (falha #{self._debate_failures})")
             import traceback
             log_cycle(f"[OrganicMind] Stack: {traceback.format_exc()[:200]}")
-            self._add_fallback_task(backlog)
+            if self._debate_failures >= 3:
+                log_cycle(f"[OrganicMind] 3+ falhas consecutivas. A usar tarefas pre-definidas em vez de debate.")
+                for fb in [
+                    "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+                    "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+                    "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+                ]:
+                    task = {"id": f"auto_{int(time.time())}_{random.randint(100,999)}", "title": fb[:60], "desc": fb, "status": "pending", "priority": 3, "created_at": datetime.now().isoformat(), "source": "fallback_cooldown"}
+                    backlog.append(task)
+                save_backlog(backlog)
+                self._debate_failures = 0  # Reset after adding tasks
+            else:
+                self._add_fallback_task(backlog)
 
     def _notify_debate(self, debate: dict) -> None:
         """Envia resumo do debate colectivo ao utilizador via Telegram."""
@@ -545,17 +559,26 @@ class AutonomousLoop:
             log_cycle(f"[OrganicMind] Notifica??o falhou: {e}")
 
     def _add_fallback_task(self, backlog: list) -> None:
-        """Adiciona tarefa de auto-análise quando geração automática falha."""
+        """Adiciona tarefa de auto-análise quando geração automática falha.
+        Usa rotação para evitar repetir sempre as mesmas tarefas."""
         import uuid
-        fallback_tasks = [
+        # Fallback tasks com rotação baseada no contador de falhas
+        all_tasks = [
             "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
             "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
             "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
             "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
             "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+            "Verifica a integridade dos ficheiros de configuração e corrige erros de sintaxe.",
+            "Analisa as métricas de performance e identifica gargalos no sistema.",
+            "Verifica se há dependências desatualizadas e propõe atualizações.",
+            "Examina os logs de erro e sugere melhorias de robustez.",
+            "Audita a segurança do sistema: tokens, permissões, secrets expostos.",
         ]
         import random
-        desc = random.choice(fallback_tasks)
+        # Usar rotação determinística + aleatoriedade para variedade
+        cycle_pos = self._debate_failures % len(all_tasks)
+        desc = all_tasks[(cycle_pos + random.randint(0, 2)) % len(all_tasks)]
         task = {
             "id": f"auto_{uuid.uuid4().hex[:8]}",
             "title": desc[:60],
@@ -567,4 +590,4 @@ class AutonomousLoop:
         }
         backlog.append(task)
         save_backlog(backlog)
-        log_cycle(f"[AutoGen] Fallback: {desc[:60]}")
+        log_cycle(f"[AutoGen] Fallback ({self._debate_failures}): {desc[:60]}")
