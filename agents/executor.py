@@ -210,24 +210,24 @@ class AgentExecutor:
         # === PROCEDIMENTOS RELEVANTES (HOW-TO) ===
         proc_ctx = ""
         try:
-        from memory.procedural import ProceduralMemory
-        proc_mem = ProceduralMemory()
-        relevant_procs = proc_mem.get_relevant(task, limit=2)
-        if relevant_procs:
-        proc_ctx = "\n" + proc_mem.format_for_prompt(relevant_procs)
+            from memory.procedural import ProceduralMemory
+            proc_mem = ProceduralMemory()
+            relevant_procs = proc_mem.get_relevant(task, limit=2)
+            if relevant_procs:
+                proc_ctx = "\n" + proc_mem.format_for_prompt(relevant_procs)
         except Exception as e:
-        logger.debug(f"[{self.agent_name}] Procedimentos indisponiveis: {e}")
+            logger.debug(f"[{self.agent_name}] Procedimentos indisponiveis: {e}")
 
         # === FALHAS SIMILARES (aprender com erros passados) ===
         failure_ctx = ""
         try:
-        from memory.failure_memory import FailureMemory
-        fm = FailureMemory(self.agent_id)
-        similar = fm.get_similar_failures(task, limit=2)
-        if similar:
-        failure_ctx = "\n" + fm.format_for_prompt(similar)
+            from memory.failure_memory import FailureMemory
+            fm = FailureMemory(self.agent_id)
+            similar = fm.get_similar_failures(task, limit=2)
+            if similar:
+                failure_ctx = "\n" + fm.format_for_prompt(similar)
         except Exception as e:
-        logger.debug(f"[{self.agent_name}] Failure memory indisponivel: {e}")
+            logger.debug(f"[{self.agent_name}] Failure memory indisponivel: {e}")
 
         # === INSTRUÇÕES DE EXECUÇÃO (obrigatório cumprir) ===
         exec_instructions = (
@@ -258,211 +258,212 @@ class AgentExecutor:
         f"{memory_ctx}{proc_ctx}{failure_ctx}\n\n"
         f"## TAREFA ATUAL\n{task}"
         )
-        async def run(
-        self,
-        task: str,
-        context: Optional[list] = None,
-        on_tool_call: Optional[Callable] = None,
-        max_iterations: int = 30,
+
+    async def run(
+    self,
+    task: str,
+    context: Optional[list] = None,
+    on_tool_call: Optional[Callable] = None,
+    max_iterations: int = 30,
     ) -> tuple[str, list]:
-        """
-        Executa uma tarefa com o agente.
+    """
+    Executa uma tarefa com o agente.
 
-        Returns:
-            (texto_final, contexto_atualizado)
-        """
-        system_prompt = self.build_system_prompt(task)
+    Returns:
+        (texto_final, contexto_atualizado)
+    """
+    system_prompt = self.build_system_prompt(task)
 
-        if context:
-            messages = list(context)
-        else:
-            messages = [{"role": "system", "content": system_prompt}]
+    if context:
+        messages = list(context)
+    else:
+        messages = [{"role": "system", "content": system_prompt}]
+        messages.append({
+            "role": "user",
+            "content": "Executa a tarefa indicada no system prompt. Usa as ferramentas disponíveis para agir de verdade."
+        })
+
+    # Batch 6 — escolher cliente via router (DeepSeek vs Ollama)
+    try:
+        active_client, active_model, routing = await self._router.get_client(
+            task,
+            context_size=len(str(messages)),
+        )
+        logger.debug(
+            f"[{self.agent_name}] Router: {routing.provider.upper()} "
+            f"{active_model} (score={routing.complexity_score:.2f}, {routing.complexity_label})"
+        )
+    except Exception as router_err:
+        logger.warning(f"[{self.agent_name}] Router falhou, usando DeepSeek: {router_err}")
+        active_client = self._deepseek_client
+        active_model = "deepseek-chat"
+        routing = None
+
+    # Ollama não suporta tools — se local, desativar tool_use
+    use_tools = (routing is None or not routing.use_local)
+
+    for iteration in range(max_iterations):
+        try:
+            call_kwargs = dict(
+                model       = active_model,
+                messages    = messages,
+                temperature = 0.3,
+                max_tokens  = 2000,
+            )
+            if use_tools:
+                call_kwargs["tools"]       = TOOLS
+                call_kwargs["tool_choice"] = "auto"
+
+            response = await active_client.chat.completions.create(**call_kwargs)
+        except Exception as e:
+            # Se Ollama falhou, tentar DeepSeek como fallback
+            if routing and routing.use_local:
+                logger.warning(f"[{self.agent_name}] Ollama falhou ({e}), fallback DeepSeek")
+                self._router.invalidate_ollama_cache()
+                active_client = self._deepseek_client
+                active_model  = "deepseek-chat"
+                use_tools     = True
+                routing       = None
+                try:
+                    response = await active_client.chat.completions.create(
+                        model       = active_model,
+                        messages    = messages,
+                        tools       = TOOLS,
+                        tool_choice = "auto",
+                        temperature = 0.3,
+                        max_tokens  = 2000,
+                    )
+                except Exception as e2:
+                    logger.error(f"[{self.agent_name}] Erro API (fallback): {e2}")
+                    return f"Erro na API: {e2}", messages
+            else:
+                logger.error(f"[{self.agent_name}] Erro API: {e}")
+                return f"Erro na API: {e}", messages
+
+        msg    = response.choices[0].message
+        finish = response.choices[0].finish_reason
+        messages.append(msg.model_dump(exclude_none=True))
+
+        # Registar uso de tokens
+        if hasattr(response, "usage") and response.usage:
+            self.metrics.track_token_usage(
+                self.agent_name, active_model,
+                response.usage.prompt_tokens,
+                response.usage.completion_tokens,
+            )
+
+        if finish == "stop" or not msg.tool_calls:
+            logger.info(f"[{self.agent_name}] Conclu?do em {iteration + 1} itera??o(?es)")
+            # Registar conclusão na memória episódica
+            self.memory.record(
+                action  = "task_complete",
+                args    = {"task": task[:100]},
+                result  = (msg.content or "Concluído")[:200],
+                success = True,
+                context = f"Itera??o {iteration + 1}",
+            )
+            # Registar na memória global (via MemoryHub)
+            try:
+                self.memory.add_decision(
+                    agent    = self.agent_name,
+                    decision = f"Completou: {task[:80]}",
+                    context  = (msg.content or "")[:200],
+                )
+            except Exception:
+                pass
+            return msg.content or "Tarefa concluída.", messages
+
+        # Executar tool calls (com verificação e retry automático)
+        for tc in msg.tool_calls:
+            name = tc.function.name
+            try:
+                args = json.loads(tc.function.arguments) if tc.function.arguments else {}
+            except json.JSONDecodeError:
+                args = {}
+
+            logger.info(f"[{self.agent_name}] Tool: {name}({list(args.keys())})")
+
+            if on_tool_call:
+                await on_tool_call(name, args, "")
+
+            # -- Loop de execução + verificação + retry ----------------
+            retry_state = retry_policy.new_state(name)
+            result      = None
+            verified_ok = False
+
+            while True:
+                start_time = asyncio.get_event_loop().time()
+                result     = await execute_tool(name, args)
+                elapsed    = (asyncio.get_event_loop().time() - start_time) * 1000
+
+                # Verificar resultado heuristicamente (zero API)
+                check = tool_verifier.verify(name, args, result)
+                retry_state.record_attempt(str(result), "" if check["ok"] else check["reason"])
+
+                if check["ok"]:
+                    verified_ok = True
+                    logger.debug(f"[{self.agent_name}] Verifica??o OK: {name}")
+                    break
+
+                # Falhou verificação
+                logger.warning(
+                    f"[{self.agent_name}] Verifica??o falhou: {name} ? {check['reason']}"
+                )
+
+                if not check["recoverable"] or not retry_state.can_retry:
+                    logger.warning(
+                        f"[{self.agent_name}] Sem retry para {name} "
+                        f"(recuper?vel={check['recoverable']}, tentativas={retry_state.attempt})"
+                    )
+                    break
+
+                # Ajustar args e aguardar antes de retry
+                args = retry_policy.adjust_args(name, args, retry_state)
+                delay = retry_state.next_delay
+                logger.info(
+                    f"[{self.agent_name}] Retry {retry_state.attempt}/{RETRY_CONFIGS_MAX(name)}"
+                    f" para '{name}' em {delay:.1f}s"
+                )
+                await asyncio.sleep(delay)
+            # ---------------------------------------------------------
+
+            success = verified_ok
+
+            # Registar métricas
+            self.metrics.track_tool_call(self.agent_name, name, elapsed, success)
+
+            # Registar auditoria
+            self.audit.log(
+                "tool_call",
+                agent      = self.agent_name,
+                tool       = name,
+                args       = args,
+                result     = str(result)[:200],
+                success    = success,
+                latency_ms = round(elapsed, 1),
+            )
+
+            # Registar memória episódica — aprende de cada tool call
+            lesson = ""
+            if not success:
+                lesson = retry_policy.format_retry_log(retry_state)
+            self.memory.record(
+                action  = name,
+                args    = args,
+                result  = str(result)[:200],
+                success = success,
+                context = f"Tarefa: {task[:80]}, Itera??o {iteration + 1}",
+                lesson  = lesson,
+            )
+
+            if on_tool_call:
+                await on_tool_call(name, args, str(result)[:500])
+
             messages.append({
-                "role": "user",
-                "content": "Executa a tarefa indicada no system prompt. Usa as ferramentas disponíveis para agir de verdade."
+                "role":        "tool",
+                "tool_call_id": tc.id,
+                "content":     str(result)[:2000],
             })
 
-        # Batch 6 — escolher cliente via router (DeepSeek vs Ollama)
-        try:
-            active_client, active_model, routing = await self._router.get_client(
-                task,
-                context_size=len(str(messages)),
-            )
-            logger.debug(
-                f"[{self.agent_name}] Router: {routing.provider.upper()} "
-                f"{active_model} (score={routing.complexity_score:.2f}, {routing.complexity_label})"
-            )
-        except Exception as router_err:
-            logger.warning(f"[{self.agent_name}] Router falhou, usando DeepSeek: {router_err}")
-            active_client = self._deepseek_client
-            active_model = "deepseek-chat"
-            routing = None
-
-        # Ollama não suporta tools — se local, desativar tool_use
-        use_tools = (routing is None or not routing.use_local)
-
-        for iteration in range(max_iterations):
-            try:
-                call_kwargs = dict(
-                    model       = active_model,
-                    messages    = messages,
-                    temperature = 0.3,
-                    max_tokens  = 2000,
-                )
-                if use_tools:
-                    call_kwargs["tools"]       = TOOLS
-                    call_kwargs["tool_choice"] = "auto"
-
-                response = await active_client.chat.completions.create(**call_kwargs)
-            except Exception as e:
-                # Se Ollama falhou, tentar DeepSeek como fallback
-                if routing and routing.use_local:
-                    logger.warning(f"[{self.agent_name}] Ollama falhou ({e}), fallback DeepSeek")
-                    self._router.invalidate_ollama_cache()
-                    active_client = self._deepseek_client
-                    active_model  = "deepseek-chat"
-                    use_tools     = True
-                    routing       = None
-                    try:
-                        response = await active_client.chat.completions.create(
-                            model       = active_model,
-                            messages    = messages,
-                            tools       = TOOLS,
-                            tool_choice = "auto",
-                            temperature = 0.3,
-                            max_tokens  = 2000,
-                        )
-                    except Exception as e2:
-                        logger.error(f"[{self.agent_name}] Erro API (fallback): {e2}")
-                        return f"Erro na API: {e2}", messages
-                else:
-                    logger.error(f"[{self.agent_name}] Erro API: {e}")
-                    return f"Erro na API: {e}", messages
-
-            msg    = response.choices[0].message
-            finish = response.choices[0].finish_reason
-            messages.append(msg.model_dump(exclude_none=True))
-
-            # Registar uso de tokens
-            if hasattr(response, "usage") and response.usage:
-                self.metrics.track_token_usage(
-                    self.agent_name, active_model,
-                    response.usage.prompt_tokens,
-                    response.usage.completion_tokens,
-                )
-
-            if finish == "stop" or not msg.tool_calls:
-                logger.info(f"[{self.agent_name}] Conclu?do em {iteration + 1} itera??o(?es)")
-                # Registar conclusão na memória episódica
-                self.memory.record(
-                    action  = "task_complete",
-                    args    = {"task": task[:100]},
-                    result  = (msg.content or "Concluído")[:200],
-                    success = True,
-                    context = f"Itera??o {iteration + 1}",
-                )
-                # Registar na memória global (via MemoryHub)
-                try:
-                    self.memory.add_decision(
-                        agent    = self.agent_name,
-                        decision = f"Completou: {task[:80]}",
-                        context  = (msg.content or "")[:200],
-                    )
-                except Exception:
-                    pass
-                return msg.content or "Tarefa concluída.", messages
-
-            # Executar tool calls (com verificação e retry automático)
-            for tc in msg.tool_calls:
-                name = tc.function.name
-                try:
-                    args = json.loads(tc.function.arguments) if tc.function.arguments else {}
-                except json.JSONDecodeError:
-                    args = {}
-
-                logger.info(f"[{self.agent_name}] Tool: {name}({list(args.keys())})")
-
-                if on_tool_call:
-                    await on_tool_call(name, args, "")
-
-                # -- Loop de execução + verificação + retry ----------------
-                retry_state = retry_policy.new_state(name)
-                result      = None
-                verified_ok = False
-
-                while True:
-                    start_time = asyncio.get_event_loop().time()
-                    result     = await execute_tool(name, args)
-                    elapsed    = (asyncio.get_event_loop().time() - start_time) * 1000
-
-                    # Verificar resultado heuristicamente (zero API)
-                    check = tool_verifier.verify(name, args, result)
-                    retry_state.record_attempt(str(result), "" if check["ok"] else check["reason"])
-
-                    if check["ok"]:
-                        verified_ok = True
-                        logger.debug(f"[{self.agent_name}] Verifica??o OK: {name}")
-                        break
-
-                    # Falhou verificação
-                    logger.warning(
-                        f"[{self.agent_name}] Verifica??o falhou: {name} ? {check['reason']}"
-                    )
-
-                    if not check["recoverable"] or not retry_state.can_retry:
-                        logger.warning(
-                            f"[{self.agent_name}] Sem retry para {name} "
-                            f"(recuper?vel={check['recoverable']}, tentativas={retry_state.attempt})"
-                        )
-                        break
-
-                    # Ajustar args e aguardar antes de retry
-                    args = retry_policy.adjust_args(name, args, retry_state)
-                    delay = retry_state.next_delay
-                    logger.info(
-                        f"[{self.agent_name}] Retry {retry_state.attempt}/{RETRY_CONFIGS_MAX(name)}"
-                        f" para '{name}' em {delay:.1f}s"
-                    )
-                    await asyncio.sleep(delay)
-                # ---------------------------------------------------------
-
-                success = verified_ok
-
-                # Registar métricas
-                self.metrics.track_tool_call(self.agent_name, name, elapsed, success)
-
-                # Registar auditoria
-                self.audit.log(
-                    "tool_call",
-                    agent      = self.agent_name,
-                    tool       = name,
-                    args       = args,
-                    result     = str(result)[:200],
-                    success    = success,
-                    latency_ms = round(elapsed, 1),
-                )
-
-                # Registar memória episódica — aprende de cada tool call
-                lesson = ""
-                if not success:
-                    lesson = retry_policy.format_retry_log(retry_state)
-                self.memory.record(
-                    action  = name,
-                    args    = args,
-                    result  = str(result)[:200],
-                    success = success,
-                    context = f"Tarefa: {task[:80]}, Itera??o {iteration + 1}",
-                    lesson  = lesson,
-                )
-
-                if on_tool_call:
-                    await on_tool_call(name, args, str(result)[:500])
-
-                messages.append({
-                    "role":        "tool",
-                    "tool_call_id": tc.id,
-                    "content":     str(result)[:2000],
-                })
-
-        logger.warning(f"[{self.agent_name}] Limite de {max_iterations} itera??es atingido")
-        return "Limite de iterações atingido.", messages
+    logger.warning(f"[{self.agent_name}] Limite de {max_iterations} itera??es atingido")
+    return "Limite de iterações atingido.", messages
