@@ -2183,10 +2183,22 @@
     "id": "auto_2d513161",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T01:03:47.863483",
     "source": "fallback",
-    "started_at": "2026-05-31T01:03:57.878186"
+    "started_at": "2026-05-31T01:03:57.878186",
+    "completed_at": "2026-05-31T01:05:03.494461",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `user_advocate` 👤🗣️\n\n### Lacuna Identificada\nO ecossistema tinha **~50 agentes** focados em código, segurança, dados, testes, DevOps, estratégia... mas **zero** dedicados à **experiência do utilizador humano**. Ninguém fazia onboarding, ninguém recolhia feedback de forma sistemática, ninguém defendia a simplicidade contra a complexidade técnica.\n\n### O que foi feito\n1. **Análise do ecossistema** — mapeei os 46+ souls existentes e confirmei a lacuna\n2. **"
+  },
+  {
+    "id": "auto_bde7b410",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T01:05:13.666944",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:05:23.680861"
   }
 ]
