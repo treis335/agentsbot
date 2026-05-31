@@ -2219,10 +2219,58 @@
     "id": "auto_e46330d0",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T01:09:00.344468",
     "source": "fallback",
-    "started_at": "2026-05-31T01:09:10.359650"
+    "started_at": "2026-05-31T01:09:10.359650",
+    "completed_at": "2026-05-31T01:09:38.708672",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Commit feito** | ✅ `ecc0d33` — 8 ficheiros alterados, 93 inserções, 29 remoções |\n| **Push para GitHub** | ✅ Sucesso — `main -> main` |\n\n### 📦 Ficheiros comitados\n| Ficheiro | Descrição |\n|----------|-----------|\n| `events/2026/05/31/events.jsonl` | +2 eventos (supervisor + auto_op"
+  },
+  {
+    "id": "auto_4432f77f",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:09:48.730655",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:09:58.745274",
+    "completed_at": "2026-05-31T01:11:55.560517",
+    "result": "Terminei o diagnóstico e implementei 2 das 3 correções:\n1. **✅ main.py restaurado**: recuperei a versão completa (317→325 linhas) do commit `1cdd15b` que estava truncada, adicionando `import fix_encoding` para prevenir o crash por UnicodeEncodeError com emojis.\n2. **✅ Cache limpo**: apaguei 15 diretórios `__pycache__` para eliminar bytecode corrompido que causava o erro \"unterminated f-string literal\" no Telegram.\n3. **❌ wakeup.py pendente**: falta melhorar o backoff exponencial no wakeup.py par"
+  },
+  {
+    "id": "auto_d2648c61",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:12:05.728223",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:12:15.744158",
+    "completed_at": "2026-05-31T01:14:04.082353",
+    "result": "Analisei 13 ficheiros de log (wakeup.log, supervisor.log, main_stderr.log, evolution.log, auto_recovery.log, etc.) e identifiquei os 3 problemas principais: **1)** UnicodeEncodeError com emojis no Windows (já parcialmente corrigido com fix_encoding.py), **2)** Telegram não inicializa por f-string mal formatada (já corrigido no handlers.py), **3)** Ciclo infinito de reset entre wakeup_v3 e auto_recovery (wakeup_v3.py já foi removido, mas wakeup.py v2 ainda existe e pode causar loop). \n\n**Ficou po"
+  },
+  {
+    "id": "auto_5dad5ea8",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:14:14.104532",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:14:24.119040",
+    "completed_at": "2026-05-31T01:17:10.535334",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei 8+ fontes de memória (diagnóstico, logs, eventos, backlog, ciclo, episódios, índice semântico, métricas) e extraí 6 lições práticas para melhorar execuções futuras.\n\n**Lições Extraídas (resumo):**\n1. **UnicodeEncodeError com emojis** — usar `sys.stdout.reconfigure(encoding='utf-8')` antes de qualquer print() no Windows\n2. **Ciclo de reset infinito** — implementar circuit breaker no wakeup_v3 (max 3 resets s"
+  },
+  {
+    "id": "auto_318faf22",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T01:17:21.001363",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:17:31.018560"
   }
 ]

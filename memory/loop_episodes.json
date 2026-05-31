@@ -3,42 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:55:19.813750",
-    "success": true,
-    "result_summary": "Substituí no `agents/executor.py` os imports directos de `GlobalMemory` e `LessonExtractor` na `_build_memory_context` por chamadas ao `MemoryHub`. Falta substituir os imports de `ProceduralMemory` e `FailureMemory` no `build_system_prompt`, e o import de `GlobalMemory` no `run()`, depois escrever o ficheiro, correr os testes e fazer commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:58:48.308836",
-    "success": true,
-    "result_summary": "## Resumo do que fiz\n\nModifiquei o `agents/executor.py` para usar `MemoryHub` em vez de `GlobalMemory` e `LessonExtractor`, substituindo 3 blocos de código que importavam directamente dos módulos antigos de `memory/`. O `core/memory_hub.py` já estava completo com todos os métodos necessários (`store_chat`, `store_episode`, `store_knowledge`, `get_context`, `remember`, `summary`, `get_decisions`, `",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T07:00:48.277999",
-    "success": true,
-    "result_summary": "Criei o script `fix4.py` que faz as 3 substituições necessárias no `agents/executor.py` (remover `GlobalMemory`, `LessonExtractor` e usar `self.memory` do `MemoryHub`) e escreve o resultado para `agents/executor_new.py`. Falta executar o script e depois copiar `executor_new.py` por cima de `executor.py` usando `copy` do CMD.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T07:04:01.839540",
-    "success": true,
-    "result_summary": "Preparei o script `_fix_executor_memory.py` que faz as 5 substituições no `agents/executor.py` (GlobalMemory, LessonExtractor, ProceduralMemory, FailureMemory → MemoryHub), mas a escrita directa falha no Windows (permissão/encoding). Falta executar o script com sucesso, criar `tests/test_memory_hub.py` e fazer o commit.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T07:06:07.885384",
     "success": true,
     "result_summary": "## Resumo\n\n**O que fiz:** Verifiquei e validei que os 3 sistemas de memória já estão unificados no `MemoryHub` (`core/memory_hub.py`), com `core/memory.py`, `core/supervisor.py` e `agents/executor.py` todos a delegar no MemoryHub. Executei os 25 testes (todos passaram), validei manualmente o funcionamento do singleton, store/retrieve, get_context, wrappers de compatibilidade, e fiz commit com a me",
@@ -1797,6 +1761,42 @@
     "timestamp": "2026-05-31T01:08:50.160858",
     "success": true,
     "result_summary": "Analisei todos os 51 souls e identifiquei que 49 estão incompletos — faltam **Skills/Capacidades**, **Exemplo Prático** e **Formato de Output** na maioria. Também analisei o `executor.py` (TOOL_SCHEMA completo, 13 ferramentas) e o `llm_agent.py` (SYSTEM_PROMPT com identidade Supervisor + ferramentas).\n\n**O que ficou por fazer**: Aplicar as correções aos 49 ficheiros `.md` (adicionar secções em fal",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_e46330d0",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T01:09:38.691941",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Commit feito** | ✅ `ecc0d33` — 8 ficheiros alterados, 93 inserções, 29 remoções |\n| **Push para GitHub** | ✅ Sucesso — `main -> main` |\n\n### 📦 Ficheiros comitados\n| Ficheiro | Descri",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_4432f77f",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T01:11:55.541698",
+    "success": true,
+    "result_summary": "Terminei o diagnóstico e implementei 2 das 3 correções:\n1. **✅ main.py restaurado**: recuperei a versão completa (317→325 linhas) do commit `1cdd15b` que estava truncada, adicionando `import fix_encoding` para prevenir o crash por UnicodeEncodeError com emojis.\n2. **✅ Cache limpo**: apaguei 15 diretórios `__pycache__` para eliminar bytecode corrompido que causava o erro \"unterminated f-string lite",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_d2648c61",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T01:14:04.065820",
+    "success": true,
+    "result_summary": "Analisei 13 ficheiros de log (wakeup.log, supervisor.log, main_stderr.log, evolution.log, auto_recovery.log, etc.) e identifiquei os 3 problemas principais: **1)** UnicodeEncodeError com emojis no Windows (já parcialmente corrigido com fix_encoding.py), **2)** Telegram não inicializa por f-string mal formatada (já corrigido no handlers.py), **3)** Ciclo infinito de reset entre wakeup_v3 e auto_rec",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_5dad5ea8",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T01:17:10.518390",
+    "success": true,
+    "result_summary": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei 8+ fontes de memória (diagnóstico, logs, eventos, backlog, ciclo, episódios, índice semântico, métricas) e extraí 6 lições práticas para melhorar execuções futuras.\n\n**Lições Extraídas (resumo):**\n1. **UnicodeEncodeError com emojis** — usar `sys.stdout.reconfigure(encoding='utf-8')` antes de qualquer print() ",
     "lesson": ""
   }
 ]
