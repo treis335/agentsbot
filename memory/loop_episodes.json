@@ -1,32 +1,5 @@
 [
   {
-    "task_id": "auto_6fdb1dbe",
-    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
-    "agent": "developer",
-    "timestamp": "2026-05-30T13:56:10.135119",
-    "success": true,
-    "result_summary": "Fiz a revisão e melhoria completa de todos os 27 souls do ecossistema, padronizando-os com: formato consistente (Identidade, Responsabilidades, Ferramentas, Fluxo de Execução, Interação, Indicadores de Sucesso), tabelas de ferramentas reais, checklists accionáveis, e métricas de sucesso claras. Ficou por fazer: criar um soul para o `api_integrator.md` (que não existia originalmente e criei agora) ",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_8bb05a3f",
-    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "agent": "supervisor",
-    "timestamp": "2026-05-30T13:58:31.005683",
-    "success": true,
-    "result_summary": "---\n\n## 📊 Relatório Final — Supervisor\n\n### Diagnóstico: 3 Problemas Principais Identificados\n\n| # | Problema | Gravidade | Ficheiros Afetados |\n|---|---|---|---|\n| **1** | **UnicodeEncodeError com emojis no Windows** | 🔴 **CRÍTICO** | 45 ficheiros `.py` |\n| **2** | **Loop infinito de reboot** (wakeup canibaliza-se) | 🔴 **CRÍTICO** | `wakeup.py`, `wakeup_v3.py`, `supervisor_ultra.py` |\n| **3** | *",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_6573b0ff",
-    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "agent": "gestor_memoria",
-    "timestamp": "2026-05-30T14:03:16.179631",
-    "success": true,
-    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente toda a memória do ecossistema (281 episódios no total) e extraí **6 lições críticas** para melhorar futuras execuções.\n\n### Dados Analisados\n| Fonte | Episódios | Período |\n|-------|-----------|---------|\n| `memory/episodica/supervisor-1094139387.json` | 100 | 26 Maio |\n| `memory/loop_episodes.json` | 18",
-    "lesson": ""
-  },
-  {
     "task_id": "auto_e585975f",
     "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
     "agent": "supervisor",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-31T02:48:49.848773",
     "success": true,
     "result_summary": "Commit e push concluídos com sucesso.\n\n---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ 8 ficheiros modificados detectados |\n| **Ficheiros alterados** | `events.jsonl`, `autonomous_log.md`, `backlog.json`, `cycle_state.json`, `loop_episodes.json`, `self_improve_cycle.json`, `semantic_index.json`, `metrics.json` |\n| **Commit** | ✅ `ff7af30` ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_ad85465c",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T02:50:53.353374",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `performance_profiler` 🚀📊\n\n### O que foi feito\nCriei o agente **`performance_profiler`** — um especialista em **profiling contínuo, deteção de bottlenecks e otimização de performance** baseada em métricas reais.\n\n### Agentes envolvidos\n- **Supervisor**: Análise do ecossistema, identificação do gap, criação e registo\n- **Git**: Commit e push com 11 ficheiro",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_afa32a60",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T02:53:57.182695",
+    "success": true,
+    "result_summary": "## ✅ Missão Concluída — Novo Agente: `penetration_tester` 🛡️🔍\n\n### O que foi feito\nAnalisei o ecossistema de 54 souls e identifiquei que **segurança ofensiva / ethical hacking / penetration testing** é a área crítica não coberta — o `seguranca` existente é puramente defensivo (audita credenciais, permissões, dependências), mas ninguém testa ativamente vulnerabilidades, simula ataques ou faz stress",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_815cdcf4",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T02:56:27.788517",
+    "success": true,
+    "result_summary": "## ✅ Diagnóstico Completo — 3 Problemas Identificados\n\n### Os 3 Problemas:\n\n| # | Problema | Severidade | Causa | Solução |\n|---|----------|-----------|-------|---------|\n| **1** | **Erro de sintaxe no `executor.py`** — `build_system_prompt` e `async def run` mal indentados dentro de `_build_memory_context` após `return` | 🔴 **CRÍTICO** | Bloco de ~80 linhas com indentação errada (8 espaços em vez",
     "lesson": ""
   }
 ]

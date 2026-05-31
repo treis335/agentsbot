@@ -2771,10 +2771,46 @@
     "id": "auto_ad85465c",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:49:00.079860",
     "source": "fallback",
-    "started_at": "2026-05-31T02:49:10.096497"
+    "started_at": "2026-05-31T02:49:10.096497",
+    "completed_at": "2026-05-31T02:50:53.371537",
+    "result": "---\n\n## ✅ Missão Concluída — Novo Agente: `performance_profiler` 🚀📊\n\n### O que foi feito\nCriei o agente **`performance_profiler`** — um especialista em **profiling contínuo, deteção de bottlenecks e otimização de performance** baseada em métricas reais.\n\n### Agentes envolvidos\n- **Supervisor**: Análise do ecossistema, identificação do gap, criação e registo\n- **Git**: Commit e push com 11 ficheiros alterados\n\n### Lacuna identificada\nO ecossistema tinha **53 souls** cobrindo dev, QA, segurança, d"
+  },
+  {
+    "id": "auto_afa32a60",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:51:03.397921",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:51:13.417370",
+    "completed_at": "2026-05-31T02:53:57.202370",
+    "result": "## ✅ Missão Concluída — Novo Agente: `penetration_tester` 🛡️🔍\n\n### O que foi feito\nAnalisei o ecossistema de 54 souls e identifiquei que **segurança ofensiva / ethical hacking / penetration testing** é a área crítica não coberta — o `seguranca` existente é puramente defensivo (audita credenciais, permissões, dependências), mas ninguém testa ativamente vulnerabilidades, simula ataques ou faz stress-testing de segurança.\n\nCriei o ficheiro `agents/souls/penetration_tester.md` com:\n- Identidade como"
+  },
+  {
+    "id": "auto_815cdcf4",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:54:07.384975",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:54:17.401817",
+    "completed_at": "2026-05-31T02:56:27.806304",
+    "result": "## ✅ Diagnóstico Completo — 3 Problemas Identificados\n\n### Os 3 Problemas:\n\n| # | Problema | Severidade | Causa | Solução |\n|---|----------|-----------|-------|---------|\n| **1** | **Erro de sintaxe no `executor.py`** — `build_system_prompt` e `async def run` mal indentados dentro de `_build_memory_context` após `return` | 🔴 **CRÍTICO** | Bloco de ~80 linhas com indentação errada (8 espaços em vez de 4), e sem sub-indentação interna (try/except/if ao mesmo nível) | Reescrever linhas 188-468 com "
+  },
+  {
+    "id": "auto_1a57e430",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:56:37.831708",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:56:47.847626"
   }
 ]
