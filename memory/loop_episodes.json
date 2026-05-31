@@ -1,14 +1,5 @@
 [
   {
-    "task_id": "auto_a43452fe",
-    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "agent": "gestor_memoria",
-    "timestamp": "2026-05-30T13:42:51.347861",
-    "success": true,
-    "result_summary": "## ✅ RELATÓRIO — Análise de Memória Episódica Completa\n\n**O que fiz:** Analisei exaustivamente toda a memória do ecossistema — 100 episódios, 33 tarefas do backlog, 175 ciclos do log autónomo, logs de eventos, evolução, diagnóstico e o hub de memória. Extraí **9 lições críticas** e atualizei o ficheiro `memory/semantica/licoes_aprendidas.md` com 3 novas lições detetadas: (L9) **Loop infinito de ta",
-    "lesson": ""
-  },
-  {
     "task_id": "auto_a5c857a2",
     "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
     "agent": "developer",
@@ -1797,6 +1788,15 @@
     "timestamp": "2026-05-31T02:41:43.995239",
     "success": true,
     "result_summary": "## ✅ Missão Concluída — Novo Agente: `third_party_integrator` 🤝🔌\n\n### O que foi feito\nAnalisei todo o ecossistema de 55+ souls e identifiquei que **não existe um agente especializado em integração com APIs externas de terceiros** (GitHub, Slack, Discord, Google, OpenAI, etc.). Criei o ficheiro `third_party_integrator.md` na pasta `agents/souls/` — um agente completo com identidade, missão, skills ",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_e93e946a",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T02:43:27.973990",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Missão Cumprida — Diagnóstico Completo\n\n### Os 3 Problemas Identificados:\n\n| # | Problema | Severidade | Ação |\n|---|----------|-----------|------|\n| 🔴 **1** | **Tarefas \"running\" presas no backlog** — 3 tarefas bloqueadas, 0 pendentes, sistema parado | **CRÍTICO** | ✅ **Corrigido** — libertadas 2 tarefas, adicionado timeout automático de 30min no `autonomous_loop.py` |\n| 🔴 **2** | **Uni",
     "lesson": ""
   }
 ]

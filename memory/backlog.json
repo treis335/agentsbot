@@ -1959,13 +1959,11 @@
     "id": "auto_125e379f",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "failed",
+    "status": "running",
     "priority": 5,
     "created_at": "2026-05-30T23:39:04.146410",
     "source": "fallback",
-    "started_at": "2026-05-30T23:39:14.158530",
-    "completed_at": "2026-05-31T02:42:42.292412",
-    "result": "Auto-fix: tarefa running presa >30min, marcada como failed"
+    "started_at": "2026-05-30T23:39:14.158530"
   },
   {
     "id": "auto_6de015b5",
@@ -1983,13 +1981,11 @@
     "id": "auto_d3bc9cf9",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "failed",
+    "status": "running",
     "priority": 5,
     "created_at": "2026-05-31T00:23:41.120376",
     "source": "fallback",
-    "started_at": "2026-05-31T00:23:51.135298",
-    "completed_at": "2026-05-31T02:42:42.292412",
-    "result": "Auto-fix: tarefa running presa >30min, marcada como failed"
+    "started_at": "2026-05-31T00:23:51.135298"
   },
   {
     "id": "auto_b85f809a",
@@ -2727,19 +2723,22 @@
     "id": "auto_e93e946a",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:41:54.206585",
     "source": "fallback",
-    "started_at": "2026-05-31T02:42:04.223533"
+    "started_at": "2026-05-31T02:42:04.223533",
+    "completed_at": "2026-05-31T02:43:27.993434",
+    "result": "---\n\n## ✅ Missão Cumprida — Diagnóstico Completo\n\n### Os 3 Problemas Identificados:\n\n| # | Problema | Severidade | Ação |\n|---|----------|-----------|------|\n| 🔴 **1** | **Tarefas \"running\" presas no backlog** — 3 tarefas bloqueadas, 0 pendentes, sistema parado | **CRÍTICO** | ✅ **Corrigido** — libertadas 2 tarefas, adicionado timeout automático de 30min no `autonomous_loop.py` |\n| 🔴 **2** | **UnicodeEncodeError com emojis no Supervisor** — Crash fatal no Windows (cp1252) | **ALTO** | ⏳ **Diagno"
   },
   {
-    "id": "task_1780191762_001",
-    "title": "Gerar novas tarefas úteis para o backlog",
-    "description": "O backlog está vazio de tarefas pendentes. Gera 5-10 tarefas reais de melhoria do sistema: correção de bugs, otimizações, documentação, testes.",
-    "priority": 1,
-    "source": "log_diagnostic",
-    "created": "2026-05-31T02:42:42.292412",
-    "status": "pending"
+    "id": "auto_0294c105",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:43:38.018349",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:43:48.034280"
   }
 ]
