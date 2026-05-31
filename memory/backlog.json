@@ -2867,10 +2867,46 @@
     "id": "auto_42ccf060",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T03:05:11.979386",
     "source": "fallback",
-    "started_at": "2026-05-31T03:05:21.996717"
+    "started_at": "2026-05-31T03:05:21.996717",
+    "completed_at": "2026-05-31T03:05:42.325442",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — sem alterações pendentes |\n| **Ficheiros alterados** | 9 ficheiros (324 inserções, 235 deleções) |\n| **Commit realizado** | ✅ `26fb0d5` — correção de indentação no `executor.py` + estado do ecossistema |\n| **Push para GitHub** | ✅ `origin/main` sincronizado |\n| **Melhoria principal** | Indentação corrigida em 3 blocos `try/except` e no método `run` — sintaxe Python que estava quebra"
+  },
+  {
+    "id": "auto_86e46482",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T03:05:52.351242",
+    "source": "fallback",
+    "started_at": "2026-05-31T03:06:02.368605",
+    "completed_at": "2026-05-31T03:08:48.782752",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8 fontes de memória (loop_episodes.json com 200 episódios, supervisor_log.json, cycle_state.json com 285 ciclos, evolution_log.json com 251 eventos, backlog.json com 250 tarefas, memória episódica com 102 episódios, licoes_episodicas.md, shared_memory.json) e executei 2 análises Python que revelaram dados críticos: 94 loops detetados em 285 ciclos (33%), 95% sucesso artificial sem validação r"
+  },
+  {
+    "id": "auto_780c1cf6",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T03:08:58.946891",
+    "source": "fallback",
+    "started_at": "2026-05-31T03:09:08.964313",
+    "completed_at": "2026-05-31T03:11:59.660176",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8 fontes de memória (loop_episodes.json com 200 episódios, autonomous_log.md com 3444 linhas, hub.jsonl, conversation.jsonl, event_logs, episodica/, backlog.json, supervisor_log.json) e extraí **10 lições críticas** com métricas quantitativas: 99% dos episódios são loops repetitivos (5 tarefas executadas 198x), 0% de lições registadas nos episódios, 3 sistemas de memória subutilizados, e o ci"
+  },
+  {
+    "id": "auto_0130bab7",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T03:12:09.686354",
+    "source": "fallback",
+    "started_at": "2026-05-31T03:12:19.705553"
   }
 ]
