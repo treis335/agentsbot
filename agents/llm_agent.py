@@ -299,14 +299,19 @@ def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) ->
         except Exception as e:
             logger.debug(f"[LLM] Ollama falhou: {e}")
             if not api_key:
-                raise RuntimeError(
-                    f"Sem DeepSeek API key e Ollama indisponível.\n"
-                    f"Para usar localmente:\n"
-                    f"  1. instala Ollama: https://ollama.com\n"
-                    f"  2. corre: ollama serve\n"
-                    f"  3. corre: ollama pull {local_model}\n"
-                    f"  4. (opcional) adiciona ao .env: OLLAMA_URL=http://localhost:11434"
+                # Sem DeepSeek e sem Ollama — resposta local baseada em memória
+                task = next(
+                    (m["content"] for m in reversed(messages)
+                     if m.get("role") == "user" and isinstance(m.get("content"), str)),
+                    ""
                 )
+                local_resp = _respond_from_memory(task)
+                return {
+                    "choices": [{"message": {"role": "assistant", "content": local_resp},
+                                 "finish_reason": "stop"}],
+                    "usage": {"prompt_tokens": 0, "completion_tokens": 0},
+                    "_source": "local_memory",
+                }
 
     # Chamar DeepSeek
     payload = {
@@ -387,6 +392,56 @@ def _call_ollama_sync(messages: list, base_url: str, model: str, max_tokens: int
         "model":   model,
         "_source": "ollama",
     }
+
+
+def _respond_from_memory(task: str) -> str:
+    """
+    Resposta de último recurso quando nem DeepSeek nem Ollama disponíveis.
+    Usa memória acumulada: reflexões, knowledge base, episódios.
+    """
+    parts = ["⚠️ *Modo memória local* — sem API disponível.\n"]
+
+    # Tentar knowledge base
+    try:
+        from agents.collaboration.knowledge_base import get_knowledge_base
+        kb = get_knowledge_base()
+        entries = kb.query(task, limit=3)
+        if entries:
+            parts.append("📚 *Conhecimento relevante:*")
+            for e in entries:
+                parts.append(f"• {e.to_prompt_line()}")
+    except Exception:
+        pass
+
+    # Tentar reflection engine
+    try:
+        from agents.reflection_engine import get_reflection_engine
+        ctx = get_reflection_engine().get_prompt_context(task)
+        if ctx and len(ctx) > 50:
+            parts.append("\n🔍 *Reflexões anteriores:*")
+            parts.append(ctx[:300])
+    except Exception:
+        pass
+
+    # Tentar loop memory
+    try:
+        from memory.loop_memory import get_loop_memory
+        ctx = get_loop_memory().get_context_for_task(task)
+        if ctx and len(ctx) > 50:
+            parts.append("\n💾 *Memória de execuções:*")
+            parts.append(ctx[:200])
+    except Exception:
+        pass
+
+    if len(parts) == 1:
+        parts.append(
+            "Sem informação relevante na memória local.\n\n"
+            "Para responder a esta pergunta precisas de:\n"
+            "• **Ollama**: `ollama serve` + `ollama pull qwen2.5-coder:7b`\n"
+            "• **DeepSeek**: adicionar créditos em platform.deepseek.com"
+        )
+
+    return "\n".join(parts)
 
 
 def _report_api_success() -> None:
