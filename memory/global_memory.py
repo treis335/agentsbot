@@ -46,44 +46,76 @@ class GlobalMemory:
         self._data: dict = self._load()
 
     def _load(self) -> dict:
-        """Carrega memoria do ficheiro."""
+        """Carrega memoria do ficheiro com tolerancia a corrupcao."""
         if not self.memory_file.exists():
             return self._default()
+        # Tentar ler com diferentes estrategias
+        erros = []
+        for tentativa in range(3):
+            try:
+                raw = self.memory_file.read_text(encoding="utf-8")
+                if not raw.strip():
+                    raise ValueError("Ficheiro vazio")
+                data = json.loads(raw)
+                if isinstance(data, dict):
+                    return data
+                raise ValueError(f"JSON nao e dict: {type(data)}")
+            except (json.JSONDecodeError, ValueError, UnicodeDecodeError) as e:
+                erros.append(str(e))
+                if tentativa == 0:
+                    # Tentar ler com replace
+                    try:
+                        raw = self.memory_file.read_text(encoding="utf-8", errors="replace")
+                        data = json.loads(raw)
+                        if isinstance(data, dict):
+                            logger.warning(f"[GlobalMemory] Recuperado com replace: {e}")
+                            return data
+                    except:
+                        pass
+                time.sleep(0.1)
+        logger.error(f"[GlobalMemory] Erro ao carregar ({len(erros)} tentativas): {erros[-1]}")
+        # Ultimo recurso: fazer backup do ficheiro corrompido
         try:
-            return json.loads(self.memory_file.read_text(encoding="utf-8"))
-        except Exception as e:
-            logger.error(f"[GlobalMemory] Erro ao carregar: {e}")
-            return self._default()
+            backup = self.memory_file.with_suffix(".json.corrupted." + str(int(time.time())))
+            import shutil
+            shutil.copy2(str(self.memory_file), str(backup))
+            logger.info(f"[GlobalMemory] Backup do ficheiro corrompido: {backup.name}")
+        except:
+            pass
+        return self._default()
 
     def _save(self) -> None:
-        """Guarda memoria no ficheiro com escrita atomica e locking."""
+        """Guarda memoria no ficheiro com escrita atomica e locking robusto."""
         self.memory_file.parent.mkdir(parents=True, exist_ok=True)
         lock_file = self.memory_file.with_suffix(".json.lock")
-        # Tentar adquirir lock (max 5s)
-        for attempt in range(50):
+        # Tentar adquirir lock (max 10s com backoff)
+        acquired = False
+        for attempt in range(100):
             try:
                 # Criar lock file atomicamente
                 fd = os.open(str(lock_file), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
                 os.close(fd)
+                acquired = True
                 break
             except FileExistsError:
-                # Lock existe - verificar se e' stale (>2s)
+                # Lock existe - verificar se e' stale (>3s)
                 try:
                     age = time.time() - os.path.getmtime(lock_file)
-                    if age > 2.0:
+                    if age > 3.0:
                         os.unlink(str(lock_file))
                         continue
                 except:
                     pass
                 time.sleep(0.1)
-        else:
+        if not acquired:
             # Timeout - forcar lock
             try:
                 os.unlink(str(lock_file))
                 fd = os.open(str(lock_file), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
                 os.close(fd)
             except:
-                pass
+                logger.error("[GlobalMemory] Nao foi possivel adquirir lock para escrita")
+                return  # Desistir em vez de corromper
         try:
             # Escrita atomica: temp file -> rename
             tmp = tempfile.NamedTemporaryFile(

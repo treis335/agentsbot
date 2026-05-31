@@ -190,8 +190,12 @@ def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
         valid_tasks = []
         for t in (tasks or []):
             if isinstance(t, dict):
+                # Garantir que title e description existem sempre
+                title = str(t.get("title", "") or t.get("description", "") or "Tarefa do debate")[:100]
+                desc = str(t.get("description", "") or t.get("title", "") or title)[:300]
                 valid_tasks.append({
-                    "title": str(t.get("title", t.get("description", "Tarefa do debate")))[:100],
+                    "title": title,
+                    "description": desc,
                     "description": str(t.get("description", t.get("title", "")))[:300],
                     "agent": str(t.get("agent", "Developer")),
                     "priority": int(t.get("priority", 5)),

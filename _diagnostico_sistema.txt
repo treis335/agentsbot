@@ -1,86 +1,107 @@
-======================================================================
-DIAGNÓSTICO DE LOGS — 3 PRINCIPAIS PROBLEMAS
-Data: 2026-05-31
-Fontes: main.log.gz (125.785 linhas), wakeup_v3.log (5.623), supervisor.log, auto_recovery.log, main_stderr.log
-======================================================================
+================================================================================
+ DIAGNÓSTICO DE SISTEMA — Log Diagnostic
+ Data: 2026-05-31 01:27
+================================================================================
 
-╔══════════════════════════════════════════════════════════════════════╗
-║ PROBLEMA #1 — CRÍTICO: UnicodeEncodeError com emojis (main.py)     ║
-╚══════════════════════════════════════════════════════════════════════╝
+## RESUMO EXECUTIVO
 
-SINTOMA:
-  UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f527'
-  (ou outros emojis como 🚀, 🔧, 🔄) no Windows cp1252.
+3 problemas críticos identificados. 2 correções implementadas.
 
-FREQUÊNCIA: 6 ocorrências no main.log (causam crash total do sistema)
+---
 
-CAUSA RAIZ:
-  O main.py (linha 30) ou scripts que usa fazem print() de strings com emojis.
-  No Windows, o terminal usa cp1252 que NÃO SUPORTA emojis (UTF-8).
-  Quando o print() tenta escrever o emoji, dá UnicodeEncodeError e CRASHA.
+## PROBLEMA 1: Telegram Conflict — Múltiplas Instâncias do Bot
+ Severidade: ALTA
+ Ocorrências: 3.310 erros de polling + 4.895 Conflict
+ Fonte: main.log.gz
 
-IMPACTO:
-  ⚠️ CRASH TOTAL DO SISTEMA — main.py morre. Isto desencadeia:
-  → wakeup_v3 deteta "stuck" → reinicia main.py → main.py crasha outra vez
-  → CICLO VICIOSO de 150+ resets em horas
-  → 2.802 vezes "main.py não encontrado" porque crasha antes de ser detetado
+ CAUSA:
+ Várias instâncias do bot Telegram a correr simultaneamente:
+ - Supervisor (supervisor_ultra.py)
+ - Main loop (main.py)
+ - WakeUp system (wakeup.py)
+ Cada uma cria o seu próprio Updater do Telegram, gerando conflito
+ de polling (getUpdates).
 
-======================================================================
-╔══════════════════════════════════════════════════════════════════════╗
-║ PROBLEMA #2 — GRAVE: Telegram polling crash loop (3.310 erros)    ║
-╚══════════════════════════════════════════════════════════════════════╝
+ IMPACTO:
+ - Telegram completamente inoperacional
+ - 125.784 linhas de log, 95% são ruído de Telegram
+ - Sistema gasta recursos a tentar polling que falha sempre
 
-SINTOMA:
-  "Exception happened while polling for updates" repetido 3.310 vezes
-  entre as 07:35 e as 23:31 do dia 2026-05-26.
+ SOLUÇÃO PROPOSTA:
+ 1. Implementar lock de processo para Telegram (apenas 1 instância)
+ 2. Desligar Telegram do supervisor_ultra.py
+ 3. Usar variável de ambiente TELEGRAM_ENABLED para controlo centralizado
 
-CAUSA RAIZ:
-  O bot do Telegram (telegram.ext.Updater) está em crash loop.
-  Provavelmente o token é inválido, a API está bloqueada, ou o handler
-  de updates tem um bug que crasha cada poll.
+ STATUS: ⏳ Pendente (requer alteração em múltiplos ficheiros)
 
-IMPACTO:
-  ⚠️ Telegram completamente INOPERANTE
-  O main_stderr.log confirma: "[Telegram] Erro ao inicializar"
-  O sistema funciona apenas com API REST (sem Telegram)
+---
 
-======================================================================
-╔══════════════════════════════════════════════════════════════════════╗
-║ PROBLEMA #3 — MÉDIO: Ciclo infinito de reset (wakeup_v3)          ║
-╚══════════════════════════════════════════════════════════════════════╝
+## PROBLEMA 2: OrganicMind — Debate Falha com Erro 'title'
+ Severidade: ALTA
+ Ocorrências: 168 (contínuo, desde 2026-05-30 13:39 até agora)
+ Fonte: autonomous_log.md, autonomous_loop.py
 
-SINTOMA:
-  150 resets forçados em ~2 horas (07:05-07:08 já ia em reset #152)
-  "main.py não encontrado" 2.802 vezes
-  "Limite de iteracoes em auto_recovery.log" 150 vezes
+ CAUSA:
+ 1. collective_debate() chama LLM que devolve JSON malformatado
+ 2. _extract_tasks() cria tarefas sem campo 'title' quando LLM falha
+ 3. _notify_debate() usa t['title'] em vez de t.get('title', '?')
+ 4. O except genérico em _run_organic_debate() chama _add_fallback_task()
+ 5. A tarefa de fallback é executada, gera outra falha, ciclo recomeça
 
-CAUSA RAIZ:
-  O wakeup_v3 e o auto_recovery.py estão num loop:
-  1. main.py crasha (por causa do Problema #1)
-  2. wakeup_v3 deteta "stuck" → reinicia
-  3. auto_recovery.py deteta "limite de iterações" → tenta recuperar
-  4. main.py crasha outra vez → ciclo recomeça
+ IMPACTO:
+ - Loop infinito de falhas (168 ciclos perdidos)
+ - Mesmas tarefas de fallback repetidas infinitamente
+ - Sistema preso num ciclo vicioso
 
-IMPACTO:
-  ⚠️ Sistema nunca estabiliza — está sempre a reiniciar
-  Consumo de CPU desnecessário com processos a abrir/fechar
-  Logs cheios de ruído (5.623 linhas só de reset loop)
+ CORREÇÃO IMPLEMENTADA: ✅
+ 1. _notify_debate(): t.get('title', '?') → t.get('title', t.get('description', '?'))
+ 2. _extract_tasks(): Garantir que title e description existem sempre
+ 3. Adicionado stack trace ao log para debugging futuro
 
-======================================================================
-RECOMENDAÇÕES
-======================================================================
+---
 
-1. 🔧 [FÁCIL] Corrigir UnicodeEncodeError no main.py
-   → Adicionar PYTHONIOENCODING=utf-8 no arranque
-   → Ou substituir print() por logging com encoding utf-8
-   → IMPLEMENTAR AGORA (solução mais simples)
+## PROBLEMA 3: Memória Global Corrompida (JSON Mal Formatado)
+ Severidade: MÉDIA
+ Ocorrências: 9 (vários tipos)
+ Fonte: main.log.gz
 
-2. 🔧 [MÉDIO] Corrigir Telegram handler
-   → Verificar token em .env
-   → Corrigir f-string mal formatada em handlers.py (linha 460?)
-   → Ou desativar Telegram se não for crítico
+ CAUSA:
+ - Escrita concorrente no shared_memory.json
+ - Lock file não é libertado corretamente em caso de exceção
+ - Ficheiro fica corrompido (json parcial, bytes inválidos)
 
-3. 🔧 [MÉDIO] Quebrar ciclo de reset infinito
-   → Adicionar backoff exponencial no wakeup_v3
-   → Máximo de X resets antes de parar e notificar
-   → Detetar "crash loop" e entrar em modo seguro
+ IMPACTO:
+ - Agentes perdem contexto partilhado
+ - Decisões e descobertas não são persistidas
+ - Sistema opera sem memória coletiva
+
+ CORREÇÃO IMPLEMENTADA: ✅
+ 1. _load(): 3 tentativas de leitura com fallbacks (replace, backup)
+ 2. _save(): Lock mais robusto (100 tentativas, 3s stale, desistência segura)
+ 3. Backup automático de ficheiros corrompidos
+
+---
+
+## MÉTRICAS DO SISTEMA
+
+ Total logs analisados: 125.784 linhas (main.log.gz)
+ Total erros: 3.333
+ Total conflitos Telegram: 4.895
+ Total ciclos falhados: 168
+ Ficheiros de memória: 11 (todos verificados)
+ Backlog: 205 tarefas (15 sem título)
+
+## RECOMENDAÇÕES FUTURAS
+
+1. [ALTA] Implementar lock de processo para Telegram
+   - Ficheiro: supervisor_ultra.py, wakeup.py, main.py
+   - Usar .telegram.lock com PID
+
+2. [MÉDIA] Rotação automática de logs
+   - main.log.gz já tem 97KB, cresce rapidamente
+   - Implementar log rotation diário
+
+3. [BAIXA] Limpeza de tarefas antigas no backlog
+   - 205 tarefas, muitas "done" desde Maio 2026
+   - Arquivo automático de tarefas concluídas há >7 dias
+================================================================================

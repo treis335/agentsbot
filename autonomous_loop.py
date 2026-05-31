@@ -505,6 +505,8 @@ class AutonomousLoop:
 
         except Exception as e:
             log_cycle(f"[OrganicMind] Erro no debate: {e}")
+            import traceback
+            log_cycle(f"[OrganicMind] Stack: {traceback.format_exc()[:200]}")
             self._add_fallback_task(backlog)
 
     def _notify_debate(self, debate: dict) -> None:
@@ -526,7 +528,10 @@ class AutonomousLoop:
             if tasks:
                 lines.append(f"\n[LISTA] **Tarefas geradas:** {len(tasks)}")
                 for t in tasks[:2]:
-                    lines.append(f"  ? {t.get('title', '?')}")
+                    if isinstance(t, dict):
+                        lines.append(f"  ? {t.get('title', t.get('description', '?'))[:60]}")
+                    else:
+                        lines.append(f"  ? {str(t)[:60]}")
 
             msg = "\n".join(lines)
 
