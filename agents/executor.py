@@ -260,13 +260,13 @@ class AgentExecutor:
         )
 
     async def run(
-    self,
-    task: str,
-    context: Optional[list] = None,
-    on_tool_call: Optional[Callable] = None,
-    max_iterations: int = 30,
+        self,
+        task: str,
+        context: Optional[list] = None,
+        on_tool_call: Optional[Callable] = None,
+        max_iterations: int = 30,
     ) -> tuple[str, list]:
-    """
+        """
     Executa uma tarefa com o agente.
 
     Returns:
