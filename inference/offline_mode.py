@@ -171,43 +171,121 @@ class OfflineMode:
         return await self._execute_deterministic(task_desc)
 
     async def _try_ollama(self, task: str) -> Optional[str]:
-        """Tenta usar Ollama local se disponível."""
+        """
+        Usa Ollama local com execução real de ferramentas.
+
+        Ollama não suporta function calling nativo — em vez disso,
+        pedimos ao modelo que gere acções em formato JSON estruturado,
+        e nós executamo-las directamente com as ferramentas reais.
+        """
         try:
             from inference.local_client import OllamaClient
             from core.config import Config
 
             ollama_url = getattr(Config, "OLLAMA_URL", "http://localhost:11434")
-            client = OllamaClient(base_url=ollama_url, timeout=60)
+            local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
+            client = OllamaClient(base_url=ollama_url, timeout=120)
 
             if not await client.is_available():
+                logger.debug("[OfflineMode] Ollama não está disponível")
                 return None
 
-            models = await client.list_models()
-            if not models:
-                return None
+            logger.info(f"[OfflineMode] Ollama disponível — a usar {local_model}")
 
-            # Usar o primeiro modelo disponível
-            model = models[0]
-            logger.info(f"[OfflineMode] Usando Ollama: {model}")
+            # Sistema prompt que instrui o modelo a gerar acções executáveis
+            system_prompt = """És um agente autónomo de desenvolvimento de software.
+Tens acesso a estas ferramentas locais (executa-as gerando JSON):
+- write_file(path, content) — escreve ficheiro
+- read_file(path) — lê ficheiro
+- run_shell(command) — executa comando bash/cmd
+- git_commit_push(message) — commit e push para GitHub
+
+Quando receberes uma tarefa:
+1. Analisa o que é necessário fazer
+2. Gera as acções necessárias em formato JSON
+3. Inclui sempre git_commit_push no final se fizeste alterações
+
+Formato obrigatório para acções:
+ACTIONS:
+[
+  {"tool": "write_file", "path": "caminho/ficheiro.py", "content": "conteúdo aqui"},
+  {"tool": "run_shell", "command": "python -c 'print(1)'"},
+  {"tool": "git_commit_push", "message": "feat: descrição do que foi feito"}
+]
+
+Se não há nada concreto a fazer, responde apenas com: NO_ACTION"""
 
             response = await client.chat.completions.create(
-                model=model,
+                model=local_model,
                 messages=[
-                    {"role": "system", "content": (
-                        "És um agente de sistema autónomo a trabalhar em modo offline. "
-                        "Sem acesso à internet. Usa apenas o que sabes e as ferramentas locais. "
-                        "Sê directo e executa o que conseguires."
-                    )},
-                    {"role": "user", "content": task},
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Tarefa: {task}"},
                 ],
-                max_tokens=1000,
-                temperature=0.3,
+                max_tokens=2000,
+                temperature=0.2,
             )
-            return response.choices[0].message.content
+
+            raw = response.choices[0].message.content
+            logger.debug(f"[OfflineMode] Ollama respondeu: {raw[:200]}")
+
+            # Executar as acções geradas
+            result = await self._execute_ollama_actions(raw, task)
+            return result
 
         except Exception as e:
-            logger.debug(f"[OfflineMode] Ollama indisponível: {e}")
+            logger.warning(f"[OfflineMode] Ollama erro: {e}")
             return None
+
+    async def _execute_ollama_actions(self, ollama_response: str, task: str) -> str:
+        """
+        Interpreta a resposta do Ollama e executa as acções reais.
+        Dá ao Ollama acesso efectivo a write_file, run_shell, git_commit_push.
+        """
+        import json, re
+
+        if "NO_ACTION" in ollama_response:
+            return f"Análise offline concluída: {ollama_response[:200]}"
+
+        # Extrair bloco de acções JSON
+        actions_match = re.search(r'ACTIONS:\s*(\[.*?\])', ollama_response, re.DOTALL)
+        if not actions_match:
+            # Sem acções estruturadas — retornar resposta como análise
+            return f"[Ollama] {ollama_response[:500]}"
+
+        try:
+            actions = json.loads(actions_match.group(1))
+        except json.JSONDecodeError:
+            return f"[Ollama] Resposta gerada mas JSON inválido: {ollama_response[:300]}"
+
+        results = []
+        tools_used = []
+
+        from tools.fs_tools import execute_tool
+
+        for action in actions:
+            tool = action.get("tool", "")
+            if not tool:
+                continue
+
+            # Construir args para a ferramenta
+            args = {k: v for k, v in action.items() if k != "tool"}
+
+            try:
+                logger.info(f"[OfflineMode] Ollama executa: {tool}({list(args.keys())})")
+                import asyncio as _ai
+                result = await execute_tool(tool, args)
+                results.append(f"✅ {tool}: {str(result)[:150]}")
+                tools_used.append(tool)
+            except Exception as e:
+                results.append(f"❌ {tool}: {e}")
+                logger.warning(f"[OfflineMode] Erro em {tool}: {e}")
+
+        summary = f"[Ollama+Tools] Executadas {len(tools_used)} acções: {', '.join(tools_used)}"
+        if results:
+            summary += "\n" + "\n".join(results[:5])
+
+        logger.info(f"[OfflineMode] {summary[:200]}")
+        return summary
 
     def _try_memory(self, task: str) -> Optional[str]:
         """Tenta resolver com conhecimento memorizado."""
