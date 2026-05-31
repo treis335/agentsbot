@@ -623,21 +623,52 @@ class AutonomousLoop:
 
 
         while self.running:
-
-
             try:
+                # Verificar fila prioritária ANTES do ciclo normal
+                # Tarefas do utilizador executam IMEDIATAMENTE, sem esperar
+                try:
+                    from core.priority_queue import get_priority_queue
+                    pq = get_priority_queue()
+                    user_task = pq.get_next_user_task()
+                    if user_task:
+                        log_cycle(f"[PriorityQueue] 👤 Tarefa urgente: {user_task.title[:60]}")
+                        success, result = self._execute_task_real(
+                            user_task.description, user_task.id
+                        )
+                        if success:
+                            pq.mark_done(user_task.id, result)
+                        else:
+                            pq.mark_failed(user_task.id, result)
+                        # Notificar utilizador
+                        import asyncio as _aq
+                        try:
+                            _nl = _aq.new_event_loop()
+                            _nl.run_until_complete(pq.notify_user(user_task))
+                            _nl.close()
+                        except Exception:
+                            pass
+                        # Não dormir — verificar se há mais tarefas do utilizador
+                        continue
+                except Exception as _pq_err:
+                    logger.debug(f"[PriorityQueue] Erro: {_pq_err}")
 
-
+                # Ciclo normal de auto-evolução
                 self._run_cycle()
 
-
             except Exception as e:
-
-
                 log_cycle(f"[ERRO] No ciclo: {e}")
 
-
-            time.sleep(CYCLE_INTERVAL_SECONDS)
+            # Dormir o intervalo económico (só para auto-evolução)
+            # Acordar cedo se chegarem tarefas do utilizador
+            sleep_start = time.time()
+            while time.time() - sleep_start < CYCLE_INTERVAL_SECONDS:
+                time.sleep(2)  # verificar a cada 2s se há tarefas urgentes
+                try:
+                    from core.priority_queue import get_priority_queue
+                    if get_priority_queue().has_user_tasks():
+                        break  # acordar imediatamente
+                except Exception:
+                    pass
 
 
 

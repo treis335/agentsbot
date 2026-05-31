@@ -375,6 +375,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Registar na memória global
         _register_global_memory("supervisor", f"Telegram: {user_msg[:80]}")
 
+        # Se a mensagem parece um pedido de acção concreta,
+        # garantir execução via priority queue (não fica presa no ciclo de 120s)
+        _maybe_queue_action(user_msg, user_id)
+
         await _send(update, resposta)
 
     except Exception as e:
@@ -408,6 +412,49 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg = f"❌ Erro: {err_str[:200]}\n\nVerifica os logs para mais detalhes."
 
         await _send(update, msg)
+
+# --- FILA PRIORITÁRIA ----------------------------------------------------------
+
+def _maybe_queue_action(user_msg: str, user_id: int) -> None:
+    """
+    Detecta se a mensagem é um pedido de acção concreta e coloca
+    na fila prioritária para execução imediata pelo loop autónomo.
+    
+    Só para acções que precisam de ferramentas (escrita, git, etc.)
+    Conversas normais são respondidas directamente pelo LLMAgent.
+    """
+    msg_lower = user_msg.lower().strip()
+    
+    # Keywords que indicam pedido de acção concreta
+    action_keywords = [
+        "cria ", "criar ", "implementa", "implementar",
+        "faz ", "fazer ", "adiciona", "adicionar",
+        "corrige", "corrigir", "actualiza", "atualiza",
+        "remove", "apaga", "muda", "altera",
+        "commit", "push", "deploy", "instala",
+        "escreve", "escrever", "constrói", "construir",
+        "desenvolve", "desenvolver", "gera ", "gerar ",
+    ]
+    
+    is_action = any(msg_lower.startswith(kw) or f" {kw}" in msg_lower
+                    for kw in action_keywords)
+    
+    if not is_action:
+        return  # É conversa normal — LLMAgent já respondeu
+    
+    try:
+        from core.priority_queue import get_priority_queue
+        pq = get_priority_queue()
+        pq.add_user_task(
+            title=user_msg[:80],
+            description=user_msg,
+            user_id=user_id,
+            priority=1,
+        )
+        logger.info(f"[PriorityQueue] Acção do utilizador em fila: {user_msg[:60]}")
+    except Exception as e:
+        logger.debug(f"[PriorityQueue] Erro ao enfileirar: {e}")
+
 
 # --- COMANDOS DO LOOP AUTÓNOMO -------------------------------------------------
 
