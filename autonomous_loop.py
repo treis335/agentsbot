@@ -894,6 +894,20 @@ class AutonomousLoop:
 
         success, result_text = self._execute_task_real(task_desc, task_id)
 
+        # Se modo offline e tarefa requer API — manter como pending
+        if result_text == "OFFLINE_NEEDS_API" or (
+            isinstance(result_text, str) and "OFFLINE_NEEDS_API" in result_text
+        ):
+            log_cycle(f"[Ciclo #{cycle_id}] API indisponível — tarefa {task_id} volta a pending")
+            for t in backlog:
+                if t.get("id") == task_id:
+                    t["status"] = "pending"
+                    t.pop("started_at", None)
+                    break
+            save_backlog(backlog)
+            time.sleep(30)  # Esperar antes de tentar próxima
+            return
+
 
 
 

@@ -186,10 +186,39 @@ class OfflineMode:
             local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
             client = OllamaClient(base_url=ollama_url, timeout=120)
 
-            if not await client.is_available():
+            # Verificar se Ollama está a correr (sem modelo obrigatório)
+            try:
+                import aiohttp as _aiohttp
+                async with _aiohttp.ClientSession(timeout=_aiohttp.ClientTimeout(total=3)) as s:
+                    async with s.get(f"{ollama_url}/api/tags") as r:
+                        ollama_running = r.status == 200
+                        if ollama_running:
+                            data = await r.json()
+                            available_models = [m["name"] for m in data.get("models", [])]
+                        else:
+                            available_models = []
+            except Exception:
+                logger.debug("[OfflineMode] Ollama não está a correr")
+                return None
+
+            if not ollama_running:
                 logger.debug("[OfflineMode] Ollama não está disponível")
                 return None
 
+            # Encontrar o melhor modelo disponível
+            best_model = await client.get_best_available_model()
+
+            # Se nenhum modelo disponível, tentar pull do modelo mais leve
+            if not available_models:
+                logger.warning("[OfflineMode] Ollama sem modelos — a tentar pull de tinyllama:latest")
+                pull_ok = await client.pull_model("tinyllama:latest")
+                if not pull_ok:
+                    logger.warning("[OfflineMode] Pull falhou — Ollama indisponível")
+                    return None
+                best_model = "tinyllama:latest"
+                logger.info("[OfflineMode] tinyllama instalado com sucesso")
+
+            local_model = best_model
             logger.info(f"[OfflineMode] Ollama disponível — a usar {local_model}")
 
             # Sistema prompt que instrui o modelo a gerar acções executáveis
@@ -392,11 +421,8 @@ Se não há nada concreto a fazer, responde apenas com: NO_ACTION"""
                 results.append(f"Métricas: {e}")
 
         if not results:
-            return (
-                f"[MODO OFFLINE] API DeepSeek indisponível ({self._status}).\n"
-                f"Tarefa requer raciocínio LLM — não é possível executar localmente.\n"
-                f"Tarefa guardada no backlog para quando a API voltar."
-            )
+            # Retornar marcador especial — o loop vai manter a tarefa como pending
+            return "OFFLINE_NEEDS_API"
 
         return "[MODO OFFLINE] " + "\n\n".join(results)
 
