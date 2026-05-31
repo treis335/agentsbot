@@ -351,12 +351,8 @@ Se não há nada concreto a fazer, responde apenas com: NO_ACTION"""
         except Exception:
             pass
 
-        if results:
-            return (
-                f"[MODO OFFLINE — sem API] Resposta baseada em conhecimento local:\n\n"
-                + "\n\n".join(results)
-                + "\n\n⚠️ API indisponível. Para tarefas complexas, aguardar restauração."
-            )
+        # _try_memory só fornece contexto — não executa tarefas
+        # Devolver None para cair no _execute_deterministic
         return None
 
     async def _execute_deterministic(self, task: str) -> str:

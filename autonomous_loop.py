@@ -717,8 +717,18 @@ class AutonomousLoop:
 
         """Um ciclo completo do loop autonomo — executa tarefas reais via LLMAgent."""
 
-
         self.cycle_count += 1
+
+        # Verificar se API está offline — pausar em vez de rodar em círculos
+        try:
+            from inference.offline_mode import get_offline_manager
+            mgr = get_offline_manager()
+            if mgr.is_offline():
+                log_cycle(f"[Ciclo #{self.cycle_count}] API offline — pausa 60s")
+                time.sleep(60)
+                return
+        except Exception:
+            pass
 
 
         cycle_id = self.cycle_count
@@ -958,9 +968,15 @@ class AutonomousLoop:
 
 
             if success:
-
-
-                asyncio.run(notifier.task_completed(
+                # Não spammar Telegram quando offline
+                _is_offline = False
+                try:
+                    from inference.offline_mode import get_offline_manager
+                    _is_offline = get_offline_manager().is_offline()
+                except Exception:
+                    pass
+                if not _is_offline:
+                 asyncio.run(notifier.task_completed(
 
 
                     title=task.get("title", task_desc[:60]),
