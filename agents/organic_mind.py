@@ -1,3 +1,4 @@
+import os
 """
 agents/organic_mind.py — Mente orgânica colectiva.
 
@@ -122,7 +123,7 @@ def agent_think(agent_name: str, topic: str, context: str = "") -> str:
         return f"[{agent_name} indispon?vel: {e}]"
 
 
-def collective_debate(topic: str, agents: list = None, rounds: int = 1) -> dict:
+def collective_debate(topic: str, agents: list = None, rounds: int = 1, max_agents: int = None) -> dict:
     """
     Debate colectivo real entre agentes sobre um tópico.
 
@@ -133,7 +134,11 @@ def collective_debate(topic: str, agents: list = None, rounds: int = 1) -> dict:
         {topic, contributions, synthesis, tasks}
     """
     if agents is None:
-        agents = ["Explorador", "Developer", "Arquiteto", "AutoFixer", "Supervisor"]
+        import random as _rnd
+        # Modo económico: 2 agentes por debate por default (configurável via MAX_DEBATE_AGENTS)
+        all_agents = ["Explorador", "Developer", "Arquiteto", "AutoFixer", "Supervisor"]
+        n = int(os.getenv("MAX_DEBATE_AGENTS", "2"))
+        agents = _rnd.sample(all_agents, min(n, len(all_agents)))
 
     contributions = []
     context_so_far = ""

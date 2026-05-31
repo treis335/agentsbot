@@ -52,7 +52,7 @@ from core.cognitive_cycle import CognitiveCycle
 STALE_TASK_TIMEOUT_MINUTES = 30  # Tarefas "running" há mais tempo são auto-failed
 
 
-CYCLE_INTERVAL_SECONDS = 10
+CYCLE_INTERVAL_SECONDS = int(os.getenv('CYCLE_INTERVAL_SECONDS', '120'))  # default: 2 min
 
 
 MAX_TASKS_PER_CYCLE = 1
@@ -843,14 +843,16 @@ class AutonomousLoop:
 
 
         if not pending:
-
-
-            log_cycle("[Ciclo] Sem tarefas pendentes — a gerar novas...")
-
-
-            self._generate_new_tasks(backlog)
-
-
+            now = time.time()
+            debate_cooldown = int(os.getenv("DEBATE_COOLDOWN_SECONDS", "600"))
+            last_debate = getattr(self, "_last_debate_ts", 0)
+            if now - last_debate >= debate_cooldown:
+                log_cycle("[Ciclo] Sem tarefas pendentes — a gerar novas...")
+                self._generate_new_tasks(backlog)
+                self._last_debate_ts = now
+            else:
+                remaining = int(debate_cooldown - (now - last_debate))
+                log_cycle(f"[Ciclo] Backlog vazio — próximo debate em {remaining}s")
             return
 
 
@@ -1061,8 +1063,8 @@ class AutonomousLoop:
 
 
 
-        # 9. Brainstorming colaborativo a cada 15 ciclos
-        if self.cycle_count % 15 == 0:
+        # 9. Brainstorming colaborativo (controlado para poupar API)
+        if self.cycle_count % int(os.getenv('BRAINSTORM_EVERY_N_CYCLES', '20')) == 0:
             log_cycle(f"[Brainstorm] Sessão colaborativa (ciclo #{self.cycle_count})")
             try:
                 import asyncio as _ab

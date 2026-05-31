@@ -255,7 +255,7 @@ TOOLS_SCHEMA = [
 
 # --- Cliente LLM (DeepSeek com fallback) -------------------------------------
 
-def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) -> dict:
+def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = int(os.getenv('DEFAULT_MAX_TOKENS', '800'))) -> dict:
     """
     Router inteligente: Ollama local (GPU/CPU) OU DeepSeek (cloud).
 
@@ -529,7 +529,7 @@ class LLMAgent:
     - Máximo 50 iterações de tools por mensagem
     """
 
-    MAX_TOOL_ITERATIONS = 50
+    MAX_TOOL_ITERATIONS = int(os.getenv('MAX_TOOL_ITERATIONS', '12'))
 
     def __init__(self, agent_name: str = "supervisor"):
         self.agent_name = agent_name
