@@ -16,7 +16,7 @@ import fix_encoding  # noqa: F401 — previne UnicodeEncodeError com emojis
 
 
 # Configuracoes
-WAKEUP_INTERVAL_FAST = 5       # 5 segundos para detecao rapida
+WAKEUP_INTERVAL_FAST = 15      # 15 segundos para evitar loop
 WAKEUP_INTERVAL_NORMAL = 60    # 60 segundos para monitorizacao normal
 MAX_ITERATIONS = 5          # Reduzido de 10 para quebrar loop mais cedo
 LOG_FILE = "wakeup.log"
@@ -51,7 +51,7 @@ class WakeUpSystemV2:
     def detect_stuck_fast(self):
         """Deteccao RAPIDA de stuck - verifica a cada 5 segundos"""
         # 1. Verifica ficheiros de log por "Limite de iteracoes"
-        log_files = ["auto_recovery.log", "orchestrator.log", "wakeup.log", "main.log"]
+        log_files = ["orchestrator.log", "main.log"]  # APENAS externos - evita auto-loop
         for log_file in log_files:
             if os.path.exists(log_file):
                 try:
@@ -112,8 +112,8 @@ class WakeUpSystemV2:
             time.sleep(cooldown)
             self.reset_timestamps = []
             self.log("[CRASH_LOOP] Backoff concluído. A tentar novamente...")
-    
-def force_restart(self):
+
+    def force_restart(self):
         """Forca o reinicio do sistema principal com rate limiting"""
         # Rate limiting: max 3 reinícios por minuto
         now = time.time()
@@ -171,7 +171,13 @@ def force_restart(self):
         
         self.stuck_detected = False
         self.iteration_count = 0
-    
+        # Limpar logs para evitar re-deteccao
+        for logf in ["auto_recovery.log", "wakeup.log"]:
+            try:
+                open(logf, "w").close()
+            except:
+                pass
+
     def monitor_loop_fast(self):
         """Loop de monitorizacao RAPIDA (5 segundos)"""
         self.log("[BUSCA] Iniciando monitorizacao RAPIDA (5s)...")

@@ -156,7 +156,8 @@ def _supervisor_synthesize(topic: str, debate: str) -> str:
 
 
 def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
-    """Extrai tarefas concretas do debate para o backlog."""
+    """Extrai tarefas concretas do debate para o backlog.
+    Retorna SEMPRE uma lista de dicionarios com title, description, agent, priority."""
     prompt = (
         f"Com base neste debate sobre '{topic}' e sintese:\n{synthesis}\n\n"
         "Gera 1-2 tarefas CONCRETAS e IMPLEMENTAVEIS para o backlog.\n"
@@ -172,21 +173,55 @@ def _extract_tasks(topic: str, debate: str, synthesis: str) -> list:
         raw = raw.replace("```json", "").replace("```", "").strip()
         # Tentar parse direto primeiro
         try:
-            return json.loads(raw)
+            tasks = json.loads(raw)
         except json.JSONDecodeError:
             # Fallback: tentar extrair array JSON com regex
             import re
             match = re.search(r'\[.*?\]', raw, re.DOTALL)
             if match:
                 try:
-                    return json.loads(match.group())
-                except json.JSONDecodeError:
-                    pass
-            logger.warning(f"[OrganicMind] JSON invalido, fallback vazio: {raw[:100]}")
-            return []
+                    tasks = json.loads(match.group())
+                except (json.JSONDecodeError, ValueError):
+                    tasks = []
+            else:
+                tasks = []
+        
+        # Validar e normalizar cada tarefa
+        valid_tasks = []
+        for t in (tasks or []):
+            if isinstance(t, dict):
+                valid_tasks.append({
+                    "title": str(t.get("title", t.get("description", "Tarefa do debate")))[:100],
+                    "description": str(t.get("description", t.get("title", "")))[:300],
+                    "agent": str(t.get("agent", "Developer")),
+                    "priority": int(t.get("priority", 5)),
+                })
+            elif isinstance(t, str):
+                valid_tasks.append({
+                    "title": t[:100],
+                    "description": t[:300],
+                    "agent": "Developer",
+                    "priority": 5,
+                })
+        
+        if not valid_tasks:
+            logger.warning(f"[OrganicMind] Nenhuma tarefa valida extraida")
+            return _fallback_tasks(topic)
+        
+        return valid_tasks
     except Exception as e:
         logger.warning(f"[OrganicMind] Extracao de tarefas falhou: {e}")
-        return []
+        return _fallback_tasks(topic)
+
+
+def _fallback_tasks(topic: str) -> list:
+    """Tarefas de fallback quando a extracao por LLM falha."""
+    return [{
+        "title": topic[:60] if len(topic) > 5 else "Melhorar o sistema",
+        "description": topic,
+        "agent": "Developer",
+        "priority": 5,
+    }]
 
 def save_debate(debate: dict, path: str = "memory/debates/"):
     """Persiste debate no disco."""
@@ -216,33 +251,50 @@ def generate_topics_from_context() -> list:
     """
     Gera tópicos de debate baseados no estado actual do sistema.
     Olha para falhas recentes, backlog, e último debate.
+    Retorna SEMPRE uma lista de strings.
     """
     from autonomous_loop import load_backlog
     backlog = load_backlog()
     failed = [t for t in backlog if t.get("status") == "failed"]
-    done = [t["title"] for t in backlog if t.get("status") == "done"][-5:]
+    done_titles = []
+    for t in backlog:
+        if t.get("status") == "done":
+            title = t.get("title", "")
+            if title:
+                done_titles.append(title)
+    done = done_titles[-5:]
     recent_debates = load_recent_debates(2)
     recent_topics = [d.get("topic", "") for d in recent_debates]
 
     prompt = (
-        "És o Supervisor do ecossistema agentsbot.\n"
-        f"Tarefas conclu?das recentemente: {done}\n"
-        f"Tarefas falhadas: {[t['title'] for t in failed[:3]]}\n"
-        f"?ltimos t?picos debatidos: {recent_topics}\n\n"
-        "Propõe 3 tópicos NOVOS e relevantes para a equipa debater agora.\n"
+        "Es o Supervisor do ecossistema agentsbot.\n"
+        f"Tarefas concluidas recentemente: {done}\n"
+        f"Tarefas falhadas: {[t.get('title', '?') for t in failed[:3]]}\n"
+        f"Ultimos topicos debatidos: {recent_topics}\n\n"
+        "Propoe 3 topicos NOVOS e relevantes para a equipa debater agora.\n"
         "Foca em: melhorias concretas, problemas a resolver, ou novas capacidades.\n"
-        "Responde APENAS em JSON: [\"tópico 1\", \"tópico 2\", \"tópico 3\"]"
+        "Responde APENAS em JSON: [\"topico 1\", \"topico 2\", \"topico 3\"]"
     )
     try:
         raw = _call_llm_simple([{"role": "user", "content": prompt}], max_tokens=200)
         raw = raw.replace("```json", "").replace("```", "").strip()
         topics = json.loads(raw)
-        logger.info(f"[OrganicMind] T?picos gerados: {topics}")
-        return topics
+        # Garantir que é uma lista de strings
+        if isinstance(topics, list) and all(isinstance(t, str) for t in topics):
+            logger.info(f"[OrganicMind] Topicos gerados: {topics}")
+            return topics
+        else:
+            logger.warning(f"[OrganicMind] Formato inesperado: {type(topics)}")
+            return _fallback_topics()
     except Exception as e:
-        logger.warning(f"[OrganicMind] Gera??o de t?picos falhou: {e}")
-        return [
-            "Como melhorar a fiabilidade do sistema?",
-            "Que nova capacidade traria mais valor?",
-            "Que erro recorrente devemos resolver definitivamente?",
-        ]
+        logger.warning(f"[OrganicMind] Geracao de topicos falhou: {e}")
+        return _fallback_topics()
+
+
+def _fallback_topics() -> list:
+    """Topicos de fallback quando a geracao por LLM falha."""
+    return [
+        "Como melhorar a fiabilidade do sistema?",
+        "Que nova capacidade traria mais valor?",
+        "Que erro recorrente devemos resolver definitivamente?",
+    ]
