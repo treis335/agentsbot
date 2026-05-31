@@ -18,7 +18,7 @@ import fix_encoding  # noqa: F401 — previne UnicodeEncodeError com emojis
 # Configuracoes
 WAKEUP_INTERVAL_FAST = 5       # 5 segundos para detecao rapida
 WAKEUP_INTERVAL_NORMAL = 60    # 60 segundos para monitorizacao normal
-MAX_ITERATIONS = 10
+MAX_ITERATIONS = 5          # Reduzido de 10 para quebrar loop mais cedo
 LOG_FILE = "wakeup.log"
 
 class WakeUpSystemV2:
@@ -35,8 +35,8 @@ class WakeUpSystemV2:
         self.stuck_detected = False
         self._stop_event = threading.Event()
         self.reset_count = 0
-        self.max_resets = 10  # Máximo de resets antes de entrar em modo seguro
-        self.reset_window = 300  # Janela de 5 minutos para contar resets
+        self.max_resets = 5           # Reduzido de 10 para entrar em modo seguro mais cedo
+        self.reset_window = 120       # Janela reduzida de 300s para 120s
         self.reset_timestamps = []
         
     def log(self, message):
@@ -96,7 +96,24 @@ class WakeUpSystemV2:
         
         return False
     
-    def force_restart(self):
+    
+    def _check_crash_loop(self):
+        """Deteta crash loop e aplica backoff exponencial para evitar reset infinito."""
+        now = time.time()
+        # Janela de 5 minutos
+        window = 300
+        # Limpar timestamps antigos
+        self.reset_timestamps = [t for t in self.reset_timestamps if now - t < window]
+        
+        max_resets_in_window = 10
+        if len(self.reset_timestamps) >= max_resets_in_window:
+            cooldown = min(600, 30 * (2 ** (len(self.reset_timestamps) // max_resets_in_window)))
+            self.log(f"[CRASH_LOOP] {len(self.reset_timestamps)} resets em 5min! Backoff de {cooldown}s...")
+            time.sleep(cooldown)
+            self.reset_timestamps = []
+            self.log("[CRASH_LOOP] Backoff concluído. A tentar novamente...")
+    
+def force_restart(self):
         """Forca o reinicio do sistema principal com rate limiting"""
         # Rate limiting: max 3 reinícios por minuto
         now = time.time()
