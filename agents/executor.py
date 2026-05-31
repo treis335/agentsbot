@@ -187,30 +187,28 @@ class AgentExecutor:
 
         return "\n".join(lines)
 
-    def build_system_prompt(self, task: str) -> str:
-        """Constroi o system prompt completo: soul + runtime context + memoria + tools + tarefa."""
+        def build_system_prompt(self, task: str) -> str:
+        """Constroi o system prompt completo: soul + runtime + memoria + tools + tarefa."""
         import platform
         memory_ctx = self._build_memory_context()
 
-        # Contexto de runtime real injectado em cada prompt
+        # === CONTEXTO DE EXECUÇÃO ===
         repo_path = str(self.config.REPO_LOCAL_PATH)
         sandbox_on = getattr(self.config, "SANDBOX_ENABLED", False)
-        sandbox_status = "ACTIVO" if sandbox_on else "DESACTIVADO - execucao directa no servidor Linux"
         runtime_lines = [
-            "## CONTEXTO DE EXECUCAO (gerado automaticamente - nao alterar)",
-            f"- Sistema operativo: {platform.system()} {platform.release()}",
-            f"- Directorio do projecto: {repo_path}",
-            f"- Python: {platform.python_version()}",
-            f"- Sandbox Docker: {sandbox_status}",
-            "- Shell disponivel: bash/Linux (ls, cat, python3, git, etc.)",
-            "- IMPORTANTE: O utilizador esta no Windows/PC - TU estas no servidor Linux",
-            "- Comunicacao com utilizador: via Telegram (ja tratado automaticamente)",
+            "## CONTEXTO DE EXECUÇÃO (gerado automaticamente)",
+            f"- Sistema: {platform.system()} {platform.release()} | Python {platform.python_version()}",
+            f"- Projeto: {repo_path}",
+            f"- Sandbox: {'ATIVO' if sandbox_on else 'DESATIVADO (execução direta no servidor)'}",
+            "- Shell: bash Linux (ls, cat, python3, git) — NUNCA CMD Windows",
+            "- NOTA: O utilizador está no Windows/PC — TU estás no servidor Linux",
+            "- Comunicação com utilizador: via Telegram (já tratado automaticamente)",
             f"- Data/hora: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
             f"- Agente: {self.agent_name} (ID: {self.agent_id})",
         ]
         runtime_ctx = "\n".join(runtime_lines)
 
-        # Procedimentos HOW-TO relevantes (Batch 4)
+        # === PROCEDIMENTOS RELEVANTES (HOW-TO) ===
         proc_ctx = ""
         try:
             from memory.procedural import ProceduralMemory
@@ -221,7 +219,7 @@ class AgentExecutor:
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Procedimentos indisponiveis: {e}")
 
-        # Falhas similares (Batch 4)
+        # === FALHAS SIMILARES (aprender com erros passados) ===
         failure_ctx = ""
         try:
             from memory.failure_memory import FailureMemory
@@ -232,26 +230,35 @@ class AgentExecutor:
         except Exception as e:
             logger.debug(f"[{self.agent_name}] Failure memory indisponivel: {e}")
 
-        # INSTRUÇÕES DE EXECUÇÃO (cumprir sempre)
+        # === INSTRUÇÕES DE EXECUÇÃO (obrigatório cumprir) ===
         exec_instructions = (
-            "\n## INSTRUÇÕES DE EXECUÇÃO\n"
-            "1. Lê a tarefa abaixo e o contexto fornecido\n"
-            "2. Usa as ferramentas disponíveis para AGIR (não apenas falar)\n"
-            "3. Lê o código antes de o alterar — contexto é essencial\n"
-            "4. Verifica o resultado com testes ou validação\n"
-            "5. Se falhar, tenta uma abordagem alternativa\n"
-            "6. No final, reporta o que fizeste\n"
+            "\n## INSTRUÇÕES DE EXECUÇÃO (cumpre sempre)\n"
+            "1. LÊ A TAREFA e TODO o contexto fornecido antes de agir\n"
+            "2. USA AS FERRAMENTAS para AGIR — não te limites a falar\n"
+            "3. LÊ o código antes de o alterar — contexto é essencial\n"
+            "4. VALIDA o resultado (testes, sintaxe, verificação)\n"
+            "5. SE FALHAR, tenta abordagem alternativa (máx 3 tentativas)\n"
+            "6. REPORTA o que fizeste no final\n"
         )
-        
+
+        # === MODO AUTÓNOMO (quando não há supervisão humana) ===
+        auto_mode = (
+            "\n## MODO AUTÓNOMO\n"
+            "Estás a executar uma tarefa do backlog autónomo, sem supervisão humana.\n"
+            "Segue o fluxo completo: (1) analisa, (2) executa, (3) valida, (4) faz commit.\n"
+            "NÃO peças confirmação para executar ações. Age diretamente.\n"
+            "Reporta o que fizeste de forma concisa no final.\n"
+        )
+
         return (
             f"{self.soul}\n\n"
             f"{runtime_ctx}\n\n"
             f"{TOOL_SCHEMA}\n\n"
             f"{exec_instructions}\n"
+            f"{auto_mode}\n"
             f"{memory_ctx}{proc_ctx}{failure_ctx}\n\n"
             f"## TAREFA ATUAL\n{task}"
         )
-
     async def run(
         self,
         task: str,
