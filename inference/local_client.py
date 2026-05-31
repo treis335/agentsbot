@@ -156,21 +156,74 @@ class OllamaClient:
         resp = await client.chat.completions.create(model="qwen2.5-coder:7b", ...)
     """
 
-    def __init__(self, base_url: str = "http://localhost:11434", timeout: int = 120):
+    def __init__(self, base_url: str = "http://localhost:11434", timeout: int = 120, model: str = None):
         self.base_url = base_url
+        self.timeout = timeout
+        # Modelo padrão — pode ser overridden
+        from core.config import Config
+        self.model = model or getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
         completions = ChatCompletions(base_url, timeout)
         self.chat = ChatNamespace(completions)
 
     async def is_available(self) -> bool:
-        """Verifica se o servidor Ollama está a correr."""
+        """Verifica se o servidor Ollama está a correr E tem o modelo disponível."""
         try:
             async with aiohttp.ClientSession(
                 timeout=aiohttp.ClientTimeout(total=3)
             ) as session:
                 async with session.get(f"{self.base_url}/api/tags") as resp:
-                    return resp.status == 200
+                    if resp.status != 200:
+                        return False
+                    data = await resp.json()
+                    models = [m["name"] for m in data.get("models", [])]
+                    # Verificar se o modelo configurado existe
+                    model = self.model
+                    # Match exacto ou prefixo (ex: qwen2.5-coder:7b vs qwen2.5-coder)
+                    available = any(
+                        m == model or m.startswith(model.split(":")[0])
+                        for m in models
+                    )
+                    if not available:
+                        logger.warning(
+                            f"[OllamaClient] Ollama a correr mas modelo '{model}' "
+                            f"não encontrado. Disponíveis: {models}"
+                        )
+                    return available
         except Exception:
             return False
+
+    async def get_best_available_model(self) -> str:
+        """
+        Retorna o melhor modelo disponível localmente.
+        Tenta o modelo configurado primeiro, depois alternativas leves.
+        """
+        fallback_models = [
+            self.model,
+            "qwen2.5-coder:7b",
+            "qwen2.5:7b",
+            "qwen2.5-coder:3b",
+            "qwen2.5:3b",
+            "llama3.2:3b",
+            "llama3.2:1b",
+            "phi3:mini",
+            "phi3.5:mini",
+            "tinyllama:latest",
+        ]
+        try:
+            models = await self.list_models()
+            if not models:
+                return self.model
+            for candidate in fallback_models:
+                # Match exacto ou por prefixo
+                for available in models:
+                    if available == candidate or available.startswith(candidate.split(":")[0]):
+                        logger.info(f"[OllamaClient] Usando modelo: {available}")
+                        return available
+            # Usar o primeiro disponível
+            logger.info(f"[OllamaClient] Usando primeiro modelo disponível: {models[0]}")
+            return models[0]
+        except Exception:
+            return self.model
 
     async def list_models(self) -> list[str]:
         """Retorna modelos disponíveis localmente."""

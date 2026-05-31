@@ -107,7 +107,9 @@ class ModelRegistry:
         """
         try:
             from inference.local_client import OllamaClient
-            client = OllamaClient(base_url=ollama_url)
+            from core.config import Config as _Cfg
+            local_model = getattr(_Cfg, "LOCAL_MODEL", "qwen2.5-coder:7b")
+            client = OllamaClient(base_url=ollama_url, model=local_model)
             available = await client.list_models()
 
             # Normalizar nomes (Ollama pode retornar "qwen2.5-coder:7b" ou variações)

@@ -120,8 +120,22 @@ class OfflineMode:
                 self._offline_since = time.time()
                 self._notified = False
                 logger.warning(f"[OfflineMode] API indisponível: {status} — {str(error)[:80]}")
-                # Notificar asyncio-safe
-                asyncio.create_task(self._notify_offline(status))
+                # Notificar — seguro em qualquer contexto (com ou sem event loop)
+                try:
+                    loop = asyncio.get_running_loop()
+                    loop.create_task(self._notify_offline(status))
+                except RuntimeError:
+                    # Sem event loop — tentar em thread separada
+                    try:
+                        import threading
+                        def _notify():
+                            try:
+                                asyncio.run(self._notify_offline(status))
+                            except Exception:
+                                pass
+                        threading.Thread(target=_notify, daemon=True).start()
+                    except Exception:
+                        pass
 
         return status
 
@@ -133,7 +147,21 @@ class OfflineMode:
             self._status = APIStatus.ONLINE
             self._offline_since = None
             self._notified = False
-            asyncio.create_task(self._notify_online(offline_duration))
+            # Notificar — seguro em qualquer contexto
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(self._notify_online(offline_duration))
+            except RuntimeError:
+                try:
+                    import threading
+                    def _notify():
+                        try:
+                            asyncio.run(self._notify_online(offline_duration))
+                        except Exception:
+                            pass
+                    threading.Thread(target=_notify, daemon=True).start()
+                except Exception:
+                    pass
 
     def should_retry_api(self) -> bool:
         """True se já passou tempo suficiente para re-tentar a API."""
@@ -146,6 +174,58 @@ class OfflineMode:
         self._last_retry = time.time()
 
     # ── Execução local (sem API) ───────────────────────────────────────────────
+
+
+    async def chat_with_ollama(self, messages: list, system: str = "") -> str:
+        """
+        Chat directo com Ollama — para respostas rápidas ao utilizador.
+        Sem JSON de acções, sem ferramentas — só conversa.
+        """
+        try:
+            import aiohttp as _aiohttp
+            from inference.local_client import OllamaClient
+            from core.config import Config
+
+            ollama_url = getattr(Config, "OLLAMA_URL", "http://localhost:11434")
+            local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
+
+            # Verificar disponibilidade
+            async with _aiohttp.ClientSession(
+                timeout=_aiohttp.ClientTimeout(total=5)
+            ) as s:
+                async with s.get(f"{ollama_url}/api/tags") as r:
+                    if r.status != 200:
+                        return None
+                    data = await r.json()
+                    available = [m["name"] for m in data.get("models", [])]
+                    if not available:
+                        return None
+                    # Usar o modelo configurado ou o primeiro disponível
+                    model = local_model
+                    if not any(model.split(":")[0] in m for m in available):
+                        model = available[0]
+
+            client = OllamaClient(base_url=ollama_url, timeout=120, model=model)
+
+            # Construir mensagens com system prompt
+            chat_messages = []
+            if system:
+                chat_messages.append({"role": "system", "content": system})
+            chat_messages.extend(messages)
+
+            response = await client.chat.completions.create(
+                model=model,
+                messages=chat_messages,
+                max_tokens=1000,
+                temperature=0.7,
+            )
+            result = response.choices[0].message.content.strip()
+            logger.info(f"[OfflineMode] Ollama chat OK ({len(result)} chars)")
+            return result
+
+        except Exception as e:
+            logger.warning(f"[OfflineMode] chat_with_ollama falhou: {e}")
+            return None
 
     async def execute_locally(self, task_desc: str, agent_name: str = "supervisor") -> str:
         """
@@ -171,43 +251,150 @@ class OfflineMode:
         return await self._execute_deterministic(task_desc)
 
     async def _try_ollama(self, task: str) -> Optional[str]:
-        """Tenta usar Ollama local se disponível."""
+        """
+        Usa Ollama local com execução real de ferramentas.
+
+        Ollama não suporta function calling nativo — em vez disso,
+        pedimos ao modelo que gere acções em formato JSON estruturado,
+        e nós executamo-las directamente com as ferramentas reais.
+        """
         try:
             from inference.local_client import OllamaClient
             from core.config import Config
 
             ollama_url = getattr(Config, "OLLAMA_URL", "http://localhost:11434")
-            client = OllamaClient(base_url=ollama_url, timeout=60)
+            local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
+            client = OllamaClient(base_url=ollama_url, timeout=120, model=local_model)
 
-            if not await client.is_available():
+            # Verificar se Ollama está a correr (sem modelo obrigatório)
+            try:
+                import aiohttp as _aiohttp
+                async with _aiohttp.ClientSession(timeout=_aiohttp.ClientTimeout(total=10)) as s:
+                    async with s.get(f"{ollama_url}/api/tags") as r:
+                        ollama_running = r.status == 200
+                        if ollama_running:
+                            data = await r.json()
+                            available_models = [m["name"] for m in data.get("models", [])]
+                        else:
+                            available_models = []
+            except Exception:
+                logger.debug("[OfflineMode] Ollama não está a correr")
                 return None
 
-            models = await client.list_models()
-            if not models:
+            if not ollama_running:
+                logger.debug("[OfflineMode] Ollama não está disponível")
                 return None
 
-            # Usar o primeiro modelo disponível
-            model = models[0]
-            logger.info(f"[OfflineMode] Usando Ollama: {model}")
+            # Encontrar o melhor modelo disponível
+            best_model = await client.get_best_available_model()
+
+            # Se nenhum modelo disponível, tentar pull do modelo mais leve
+            if not available_models:
+                logger.warning("[OfflineMode] Ollama sem modelos — a tentar pull de tinyllama:latest")
+                pull_ok = await client.pull_model("tinyllama:latest")
+                if not pull_ok:
+                    logger.warning("[OfflineMode] Pull falhou — Ollama indisponível")
+                    return None
+                best_model = "tinyllama:latest"
+                logger.info("[OfflineMode] tinyllama instalado com sucesso")
+
+            local_model = best_model
+            logger.warning(f"[OfflineMode] ✅ Ollama disponível — a usar {local_model} para responder")
+
+            # Sistema prompt que instrui o modelo a gerar acções executáveis
+            system_prompt = """És um agente autónomo de desenvolvimento de software.
+Tens acesso a estas ferramentas locais (executa-as gerando JSON):
+- write_file(path, content) — escreve ficheiro
+- read_file(path) — lê ficheiro
+- run_shell(command) — executa comando bash/cmd
+- git_commit_push(message) — commit e push para GitHub
+
+Quando receberes uma tarefa:
+1. Analisa o que é necessário fazer
+2. Gera as acções necessárias em formato JSON
+3. Inclui sempre git_commit_push no final se fizeste alterações
+
+Formato obrigatório para acções:
+ACTIONS:
+[
+  {"tool": "write_file", "path": "caminho/ficheiro.py", "content": "conteúdo aqui"},
+  {"tool": "run_shell", "command": "python -c 'print(1)'"},
+  {"tool": "git_commit_push", "message": "feat: descrição do que foi feito"}
+]
+
+Se não há nada concreto a fazer, responde apenas com: NO_ACTION"""
 
             response = await client.chat.completions.create(
-                model=model,
+                model=local_model,
                 messages=[
-                    {"role": "system", "content": (
-                        "És um agente de sistema autónomo a trabalhar em modo offline. "
-                        "Sem acesso à internet. Usa apenas o que sabes e as ferramentas locais. "
-                        "Sê directo e executa o que conseguires."
-                    )},
-                    {"role": "user", "content": task},
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Tarefa: {task}"},
                 ],
-                max_tokens=1000,
-                temperature=0.3,
+                max_tokens=2000,
+                temperature=0.2,
             )
-            return response.choices[0].message.content
+
+            raw = response.choices[0].message.content
+            logger.debug(f"[OfflineMode] Ollama respondeu: {raw[:200]}")
+
+            # Executar as acções geradas
+            result = await self._execute_ollama_actions(raw, task)
+            return result
 
         except Exception as e:
-            logger.debug(f"[OfflineMode] Ollama indisponível: {e}")
+            logger.warning(f"[OfflineMode] Ollama erro: {e}")
             return None
+
+    async def _execute_ollama_actions(self, ollama_response: str, task: str) -> str:
+        """
+        Interpreta a resposta do Ollama e executa as acções reais.
+        Dá ao Ollama acesso efectivo a write_file, run_shell, git_commit_push.
+        """
+        import json, re
+
+        if "NO_ACTION" in ollama_response:
+            return f"Análise offline concluída: {ollama_response[:200]}"
+
+        # Extrair bloco de acções JSON
+        actions_match = re.search(r'ACTIONS:\s*(\[.*?\])', ollama_response, re.DOTALL)
+        if not actions_match:
+            # Sem acções estruturadas — retornar resposta como análise
+            return f"[Ollama] {ollama_response[:500]}"
+
+        try:
+            actions = json.loads(actions_match.group(1))
+        except json.JSONDecodeError:
+            return f"[Ollama] Resposta gerada mas JSON inválido: {ollama_response[:300]}"
+
+        results = []
+        tools_used = []
+
+        from tools.fs_tools import execute_tool
+
+        for action in actions:
+            tool = action.get("tool", "")
+            if not tool:
+                continue
+
+            # Construir args para a ferramenta
+            args = {k: v for k, v in action.items() if k != "tool"}
+
+            try:
+                logger.info(f"[OfflineMode] Ollama executa: {tool}({list(args.keys())})")
+                import asyncio as _ai
+                result = await execute_tool(tool, args)
+                results.append(f"✅ {tool}: {str(result)[:150]}")
+                tools_used.append(tool)
+            except Exception as e:
+                results.append(f"❌ {tool}: {e}")
+                logger.warning(f"[OfflineMode] Erro em {tool}: {e}")
+
+        summary = f"[Ollama+Tools] Executadas {len(tools_used)} acções: {', '.join(tools_used)}"
+        if results:
+            summary += "\n" + "\n".join(results[:5])
+
+        logger.info(f"[OfflineMode] {summary[:200]}")
+        return summary
 
     def _try_memory(self, task: str) -> Optional[str]:
         """Tenta resolver com conhecimento memorizado."""
@@ -244,12 +431,8 @@ class OfflineMode:
         except Exception:
             pass
 
-        if results:
-            return (
-                f"[MODO OFFLINE — sem API] Resposta baseada em conhecimento local:\n\n"
-                + "\n\n".join(results)
-                + "\n\n⚠️ API indisponível. Para tarefas complexas, aguardar restauração."
-            )
+        # _try_memory só fornece contexto — não executa tarefas
+        # Devolver None para cair no _execute_deterministic
         return None
 
     async def _execute_deterministic(self, task: str) -> str:
@@ -314,11 +497,8 @@ class OfflineMode:
                 results.append(f"Métricas: {e}")
 
         if not results:
-            return (
-                f"[MODO OFFLINE] API DeepSeek indisponível ({self._status}).\n"
-                f"Tarefa requer raciocínio LLM — não é possível executar localmente.\n"
-                f"Tarefa guardada no backlog para quando a API voltar."
-            )
+            # Retornar marcador especial — o loop vai manter a tarefa como pending
+            return "OFFLINE_NEEDS_API"
 
         return "[MODO OFFLINE] " + "\n\n".join(results)
 
@@ -366,3 +546,6 @@ _offline_mode = OfflineMode()
 
 def get_offline_mode() -> OfflineMode:
     return _offline_mode
+
+# Alias para compatibilidade
+get_offline_manager = get_offline_mode

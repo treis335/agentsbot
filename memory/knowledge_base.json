@@ -1,0 +1,178 @@
+[
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "Melhorar soul do developer para execução autónoma",
+    "content": "[MODO OFFLINE — sem API] Resposta baseada em conhecimento local:\n\n\n## MEMÓRIA DE EXECUÇÕES ANTERIORES\n\n## Lições de tarefas similares\n- Tarefa falhou. Tentar abordagem diferente.\n\n## Nota: agente 'sup",
+    "keywords": [
+      "modo",
+      "conhecimento",
+      "autónoma",
+      "diferente",
+      "soul",
+      "similares",
+      "offline",
+      "execução",
+      "falhou",
+      "tarefas"
+    ],
+    "confidence": 7,
+    "uses": 21,
+    "k_id": "20260531121225",
+    "timestamp": "2026-05-31T12:12:25.086534"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "Popular a knowledge base com aprendizagens dos episódios",
+    "content": "[Ollama] Resposta gerada mas JSON inválido: Aqui está o plano para completar a tarefa:\n\n1. Ler o arquivo `memory/loop_episodes.json`.\n2. Extrair os top 10 episódios com sucesso.\n3. Identificar padrões",
+    "keywords": [
+      "modo",
+      "conhecimento",
+      "diferente",
+      "similares",
+      "offline",
+      "falhou",
+      "tarefas",
+      "execuções",
+      "memória",
+      "agente"
+    ],
+    "confidence": 7,
+    "uses": 12,
+    "k_id": "20260531121240",
+    "timestamp": "2026-05-31T17:31:24.650204"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "Sessão de brainstorming sobre melhorias prioritárias",
+    "content": "[MODO OFFLINE — sem API] Resposta baseada em conhecimento local:\n\n\n## MEMÓRIA DE EXECUÇÕES ANTERIORES\n\n## Lições de tarefas similares\n- Tarefa falhou. Tentar abordagem diferente.\n\n## Nota: agente 'sup",
+    "keywords": [
+      "modo",
+      "conhecimento",
+      "diferente",
+      "sessão",
+      "similares",
+      "offline",
+      "brainstorming",
+      "falhou",
+      "tarefas",
+      "execuções"
+    ],
+    "confidence": 7,
+    "uses": 7,
+    "k_id": "20260531121250",
+    "timestamp": "2026-05-31T12:12:50.441286"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "Como melhorar a fiabilidade do sistema?",
+    "content": "[MODO OFFLINE] Backlog: 'charmap' codec can't decode byte 0x81 in position 6929: character maps to <undefined>",
+    "keywords": [
+      "modo",
+      "conhecimento",
+      "offline",
+      "06:30",
+      "agente=supervisor(offline",
+      "sistema",
+      "desta",
+      "execuções",
+      "memória",
+      "2026-05-31"
+    ],
+    "confidence": 7,
+    "uses": 97,
+    "k_id": "20260531121341",
+    "timestamp": "2026-05-31T12:43:45.735101"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "[Brainstorm] Como resolver problemas como: 'Analisa a memória e",
+    "content": "[MODO OFFLINE — sem API] Resposta baseada em conhecimento local:\n\nConhecimento relevante da equipa:\n✅ [sistema] Melhorar soul do developer para execução autónoma: [MODO OFFLINE — sem API] Resposta bas",
+    "keywords": [
+      "local",
+      "knowledge",
+      "problemas",
+      "equipa",
+      "conhecimento",
+      "sistema",
+      "resolver",
+      "episódios",
+      "modo",
+      "memória"
+    ],
+    "confidence": 7,
+    "uses": 75,
+    "k_id": "20260531122144",
+    "timestamp": "2026-05-31T12:24:19.979662"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "[Brainstorm] Como melhorar a qualidade das respostas dos agente",
+    "content": "[MODO OFFLINE — sem API] Resposta baseada em conhecimento local:\n\nConhecimento relevante da equipa:\n✅ [sistema] Melhorar soul do developer para execução autónoma: [MODO OFFLINE — sem API] Resposta bas",
+    "keywords": [
+      "local",
+      "equipa",
+      "agente",
+      "respostas",
+      "conhecimento",
+      "developer",
+      "sistema",
+      "modo",
+      "soul",
+      "execução"
+    ],
+    "confidence": 7,
+    "uses": 66,
+    "k_id": "20260531122654",
+    "timestamp": "2026-05-31T12:39:53.354842"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "Verificar que todas as ferramentas executam correctamente",
+    "content": "[Ollama+Tools] Executadas 4 acções: run_shell, write_file, read_file, git_status\n✅ run_shell: STDOUT:\n'test ok' \r\nOn branch main\nYour branch is up to date with 'origin/main'.\n\nChanges not staged for c",
+    "keywords": [
+      "write_file",
+      "acções",
+      "ferramentas",
+      "date",
+      "main",
+      "branch",
+      "'test",
+      "your",
+      "with",
+      "read_file"
+    ],
+    "confidence": 7,
+    "uses": 0,
+    "k_id": "20260531172836",
+    "timestamp": "2026-05-31T17:28:36.296279"
+  },
+  {
+    "agent": "sistema",
+    "k_type": "best_practice",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "content": "⚠️ API DeepSeek sem créditos e Ollama indisponível.\nO Ollama está instalado? Corre: ollama serve\nModelo instalado? Corre: ollama pull qwen2.5-coder:7b",
+    "keywords": [
+      "deepseek",
+      "ecossistema",
+      "verifica",
+      "créditos",
+      "está",
+      "qwen2.5-coder:7b",
+      "pull",
+      "status",
+      "estado",
+      "instalado"
+    ],
+    "confidence": 7,
+    "uses": 0,
+    "k_id": "20260531181321",
+    "timestamp": "2026-05-31T18:13:21.358497"
+  }
+]

@@ -717,8 +717,18 @@ class AutonomousLoop:
 
         """Um ciclo completo do loop autonomo — executa tarefas reais via LLMAgent."""
 
-
         self.cycle_count += 1
+
+        # Verificar se API está offline — pausar em vez de rodar em círculos
+        try:
+            from inference.offline_mode import get_offline_manager
+            mgr = get_offline_mode()
+            if mgr.is_offline:
+                log_cycle(f"[Ciclo #{self.cycle_count}] API offline — pausa 60s")
+                time.sleep(60)
+                return
+        except Exception:
+            pass
 
 
         cycle_id = self.cycle_count
@@ -894,6 +904,20 @@ class AutonomousLoop:
 
         success, result_text = self._execute_task_real(task_desc, task_id)
 
+        # Se modo offline e tarefa requer API — manter como pending
+        if result_text == "OFFLINE_NEEDS_API" or (
+            isinstance(result_text, str) and "OFFLINE_NEEDS_API" in result_text
+        ):
+            log_cycle(f"[Ciclo #{cycle_id}] API indisponível — tarefa {task_id} volta a pending")
+            for t in backlog:
+                if t.get("id") == task_id:
+                    t["status"] = "pending"
+                    t.pop("started_at", None)
+                    break
+            save_backlog(backlog)
+            time.sleep(30)  # Esperar antes de tentar próxima
+            return
+
 
 
 
@@ -944,9 +968,15 @@ class AutonomousLoop:
 
 
             if success:
-
-
-                asyncio.run(notifier.task_completed(
+                # Não spammar Telegram quando offline
+                _is_offline = False
+                try:
+                    from inference.offline_mode import get_offline_manager
+                    _is_offline = get_offline_mode().is_offline
+                except Exception:
+                    pass
+                if not _is_offline:
+                 asyncio.run(notifier.task_completed(
 
 
                     title=task.get("title", task_desc[:60]),
@@ -1527,6 +1557,16 @@ class AutonomousLoop:
 
         """
 
+
+                # Não gerar tarefas quando offline — evita loop com fallback hardcoded
+        try:
+            from inference.offline_mode import get_offline_mode
+            if get_offline_mode().is_offline:
+                log_cycle("[OrganicMind] API offline — pausa 120s antes de gerar tarefas")
+                time.sleep(120)
+                return
+        except Exception:
+            pass
 
         log_cycle("[OrganicMind] Backlog vazio — a iniciar debate colectivo...")
 
