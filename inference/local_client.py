@@ -156,8 +156,12 @@ class OllamaClient:
         resp = await client.chat.completions.create(model="qwen2.5-coder:7b", ...)
     """
 
-    def __init__(self, base_url: str = "http://localhost:11434", timeout: int = 120):
+    def __init__(self, base_url: str = "http://localhost:11434", timeout: int = 120, model: str = None):
         self.base_url = base_url
+        self.timeout = timeout
+        # Modelo padrão — pode ser overridden
+        from core.config import Config
+        self.model = model or getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
         completions = ChatCompletions(base_url, timeout)
         self.chat = ChatNamespace(completions)
 

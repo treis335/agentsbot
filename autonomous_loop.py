@@ -722,7 +722,7 @@ class AutonomousLoop:
         # Verificar se API está offline — pausar em vez de rodar em círculos
         try:
             from inference.offline_mode import get_offline_manager
-            mgr = get_offline_manager()
+            mgr = get_offline_mode()
             if mgr.is_offline():
                 log_cycle(f"[Ciclo #{self.cycle_count}] API offline — pausa 60s")
                 time.sleep(60)
@@ -972,7 +972,7 @@ class AutonomousLoop:
                 _is_offline = False
                 try:
                     from inference.offline_mode import get_offline_manager
-                    _is_offline = get_offline_manager().is_offline()
+                    _is_offline = get_offline_mode().is_offline()
                 except Exception:
                     pass
                 if not _is_offline:
@@ -1557,6 +1557,16 @@ class AutonomousLoop:
 
         """
 
+
+                # Não gerar tarefas quando offline — evita loop com fallback hardcoded
+        try:
+            from inference.offline_mode import get_offline_mode
+            if get_offline_mode().is_offline():
+                log_cycle("[OrganicMind] API offline — pausa 120s antes de gerar tarefas")
+                time.sleep(120)
+                return
+        except Exception:
+            pass
 
         log_cycle("[OrganicMind] Backlog vazio — a iniciar debate colectivo...")
 

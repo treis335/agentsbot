@@ -466,3 +466,6 @@ _offline_mode = OfflineMode()
 
 def get_offline_mode() -> OfflineMode:
     return _offline_mode
+
+# Alias para compatibilidade
+get_offline_manager = get_offline_mode
