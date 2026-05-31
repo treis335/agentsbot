@@ -38,6 +38,7 @@ PARTIALLY_PROTECTED = {
     "main.py",
     "autonomous_loop.py",
     "agents/llm_agent.py",
+    "agents/executor.py",
     "tools/fs_tools.py",
 }
 
