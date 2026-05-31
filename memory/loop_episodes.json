@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:48:03.921737",
-    "success": true,
-    "result_summary": "Analisei o estado atual: `core/memory_hub.py` já está completo com todos os métodos e wrappers, `core/supervisor.py` já usa MemoryHub, e `tests/test_memory_hub.py` já existe com 10 testes. Falta: (1) atualizar `agents/executor.py` para usar MemoryHub em vez dos sistemas antigos (GlobalMemory, LessonExtractor, ProceduralMemory, FailureMemory), e (2) fazer commit final.\n\nVou agora completar as subst",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:48:52.961158",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — QA Tester\n\n### Tarefa Concluída: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit:** `458385e` — `feat: unifica 3 sistemas de memoria em MemoryHub`\n\n### Verificação completa:\n\n| Requisito | Estado |\n|-----------|--------|\n| 1. `core/memory_hub.py` com MemoryHub (store_chat, store_episode, store_knowledge, get_context) | ✅ OK |\n| 2. Usa `memory/hub.jsonl` como backend ún",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:50:55.516508",
     "success": true,
     "result_summary": "Fiz o commit `8666356` com a mensagem \"feat: unifica 3 sistemas de memória em MemoryHub\" — actualizei `core/memory.py` para delegar no MemoryHub como wrapper, confirmei que `core/memory_hub.py`, `core/supervisor.py`, `agents/executor.py` e `tests/test_memory_hub.py` já estavam correctamente implementados e todos os 11 testes passam.\n\nNada ficou por fazer — a tarefa está completa: os 3 sistemas de ",
@@ -1798,5 +1780,23 @@
     "success": true,
     "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Último commit** | `aca89e6` — chore: atualiza estado do ecossistema — logs, métricas, ciclo, backlog e episódios |\n| **Ficheiros comitted** | 8 ficheiros (50 inserções, 18 remoções) ",
     "lesson": ""
+  },
+  {
+    "task_id": "auto_5ef508d7",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T01:01:33.241551",
+    "success": true,
+    "result_summary": "---\n\n## ✅ DIAGNÓSTICO E CORREÇÕES CONCLUÍDAS\n\n### 📊 Análise de Logs (13 ficheiros analisados)\n\n| Fonte | Linhas | Conteúdo |\n|-------|--------|----------|\n| `wakeup_v3.log` | 5.622 | Loop de reset — 940 reinícios, 2.802 \"não encontrado\" |\n| `wakeup.log` | 1.172 | WakeUp System v2.0 monitorização |\n| `supervisor.log` | 43 | **UnicodeEncodeError** com emoji 🚀 → crash |\n| `main_stderr.log` | 18 | Sis",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_ca3618f9",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T01:03:37.825539",
+    "success": false,
+    "result_summary": "## ✅ Diagnóstico Completo — 3 Problemas Identificados e Documentados\n\n### 📊 Análise de Logs (7 ficheiros analisados)\n\n| Fonte | Linhas | Conteúdo |\n|-------|--------|----------|\n| `wakeup_v3.log` | 5.623 | 150 resets em loop, `main.py` crasha sempre |\n| `supervisor.log` | 42 | Crash por `UnicodeEncodeError` com emojis |\n| `main_stderr.log` | 18 | Telegram falha: `unterminated f-string` |\n| `run_st",
+    "lesson": "Tarefa falhou. Tentar abordagem diferente."
   }
 ]

@@ -296,7 +296,7 @@
   {
     "id": "0c8cb977-629f-43d0-8a72-7e21132ca85d",
     "name": "strategic_advisor",
-    "soul": "Conselheiro estrat\u00c3\u00a9gico: analisa riscos, custos, impacto e ROI antes de decis\u00c3\u00b5es importantes. Ajuda a priorizar o backlog, avalia trade-offs entre abordagens, e produz recomenda\u00c3\u00a7\u00c3\u00b5es claras para evitar decis\u00c3\u00b5es impulsivas. \u00c3\u2030 o \"segundo par de olhos\" do supervisor para decis\u00c3\u00b5es cr\u00c3\u00adticas.",
+    "soul": "Conselheiro estratÃ©gico: analisa riscos, custos, impacto e ROI antes de decisÃµes importantes. Ajuda a priorizar o backlog, avalia trade-offs entre abordagens, e produz recomendaÃ§Ãµes claras para evitar decisÃµes impulsivas. Ã‰ o \"segundo par de olhos\" do supervisor para decisÃµes crÃ­ticas.",
     "model": "deepseek-chat",
     "status": "idle",
     "context": [],
@@ -330,5 +330,40 @@
     "created_at": "2026-05-31T00:40:44.500010",
     "last_active": "",
     "role": "guardian"
+  },
+  {
+    "id": "b528a122-5ce0-4066-b50d-71620f03437b",
+    "name": "user_advocate",
+    "role": "advocate",
+    "soul": "USER ADVOCATE: Defensor do utilizador. Garanto que o ecossistema serve humanos. Faço onboarding, recolho feedback, traduzo complexidade em simplicidade. A voz do utilizador no ecossistema.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "onboarding_utilizador",
+      "recolher_feedback",
+      "comunicacao_clara",
+      "defesa_usabilidade",
+      "analise_experiencia"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "experiencia_utilizador",
+      "prioridade": 4
+    },
+    "created_at": "2026-05-31T01:03:00",
+    "last_active": ""
+  },
+  {
+    "id": "8fb08cbf-b2ce-4d18-af1a-87ac5d71e6a5",
+    "name": "user_advocate",
+    "soul": "Defensor do utilizador no ecossistema. Faço onboarding de novos utilizadores, recolho e interpreto feedback, defendo a usabilidade e simplicidade, e traduzo complexidade técnica em valor real para humanos.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "context": [],
+    "capabilities": [],
+    "metadata": {},
+    "created_at": "2026-05-31T01:04:53.714053",
+    "last_active": "",
+    "role": "custom"
   }
 ]
