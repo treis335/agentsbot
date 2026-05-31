@@ -2531,10 +2531,46 @@
     "id": "auto_765fed7a",
     "title": "Cria um novo agente especializado numa área que o ecossistem",
     "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:07:36.097887",
     "source": "fallback",
-    "started_at": "2026-05-31T02:07:46.114610"
+    "started_at": "2026-05-31T02:07:46.114610",
+    "completed_at": "2026-05-31T02:09:14.602635",
+    "result": "## ✅ Missão Concluída — Novo Agente: `cross_platform_bridge` 🌉🔧\n\n### O que foi feito\nCriei o agente **`cross_platform_bridge`** — especialista em compatibilidade entre Windows (cliente) e Linux (servidor).\n\n### Porquê esta lacuna?\nAnalisei os 53+ souls existentes e reparei que **nenhum** cobre especificamente a ponte Windows-Linux. O ecossistema sofre repetidamente de:\n- Comandos `ls` a falhar no Windows\n- Paths com `\\` vs `/`\n- Erros de permissão (PermissionError)\n- Problemas de encoding (CP125"
+  },
+  {
+    "id": "auto_5217bd0f",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:09:24.626001",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:09:34.642158",
+    "completed_at": "2026-05-31T02:12:12.233402",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (licoes_episodicas.md, loop_episodes.json com 200 episódios, episodica/, hub.jsonl, event_logs, backlog.json, cycle_state.json, semantic_index.json, global_memory.py, failure_memory.py, lesson_extractor.py, supervisor_log.json) e consolidei **8 lições acionáveis** em categorias 🔴 Críticas, 🟡 Médias e 🟢 Oportunidades.\n\n**O que ficou por fazer:** O write_file falhou repetid"
+  },
+  {
+    "id": "auto_6786c21d",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:12:22.441187",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:12:32.456456",
+    "completed_at": "2026-05-31T02:15:07.501512",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (autonomous_log.md, supervisor_log.json, licoes_episodicas.md, relatorio_licoes.md, loop_episodes.json, backlog.json, event_logs, episodica/, semantica/, hub.jsonl, state.json, cycle_state.json, checkpoint.json, master_context.json) e extraí **10 lições acionáveis** agrupadas em 3 categorias (críticas, importantes, oportunidades). As lições documentam: o loop de 158 execu"
+  },
+  {
+    "id": "auto_dd8fd6b3",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:15:17.525010",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:15:27.540287"
   }
 ]
