@@ -2447,10 +2447,34 @@
     "id": "auto_622de16d",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T01:52:16.565986",
     "source": "fallback",
-    "started_at": "2026-05-31T01:52:26.581234"
+    "started_at": "2026-05-31T01:52:26.581234",
+    "completed_at": "2026-05-31T01:52:40.237069",
+    "result": "✅ **Commit feito e enviado com sucesso!**\n\n---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Ficheiros modificados** | 8 (196 inserções, 50 remoções) |\n| **Commit** | `df27fdd` — enviado para `main` no GitHub |\n| **Agentes ativos** | Supervisor, Auto-Optimizer, LogDiagnostic — todos operacionais |\n| **Último evento** | Supervisor executou verificação às 01:52 |\n\n**O que foi commitado:**"
+  },
+  {
+    "id": "auto_704f34d1",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:52:50.432345",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:53:00.447161",
+    "completed_at": "2026-05-31T01:55:27.715016",
+    "result": "## ✅ Missão Concluída — Novo Agente: `code_quality_refactor` 🧹🔧\n\n### O que foi feito\nCriei o agente **`code_quality_refactor`** (Guardião da Qualidade do Código) — especializado em **análise proactiva de dívida técnica**, identificação de anti-patterns, código duplicado e complexidade excessiva, com capacidade de planear e executar refactorings estruturais. O ficheiro foi salvo em `agents/souls/code_quality_refactor.md`.\n\n### Agentes envolvidos\n- **Supervisor**: análise de lacunas no ecossistema"
+  },
+  {
+    "id": "auto_cdcb4f5f",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T01:55:37.737909",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:55:47.753653"
   }
 ]
