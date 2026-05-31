@@ -1,9 +1,9 @@
 {
-  "total_cycles": 87,
+  "total_cycles": 325,
   "current_phase": "pensar",
   "last_action_key": "analyze",
-  "identical_action_count": 2,
-  "last_learn_time": 1780168821.250429,
+  "identical_action_count": 0,
+  "last_learn_time": 1780196660.1341064,
   "errors": [],
   "insights": [
     {
@@ -200,6 +200,566 @@
       "timestamp": "2026-05-30T20:20:21.250418",
       "observation": "loop_detetado",
       "cycle": 85
+    },
+    {
+      "timestamp": "2026-05-30T22:46:17.465566",
+      "observation": "loop_detetado",
+      "cycle": 88
+    },
+    {
+      "timestamp": "2026-05-30T22:52:42.736426",
+      "observation": "ciclo_90_completo",
+      "cycle": 90
+    },
+    {
+      "timestamp": "2026-05-30T22:55:44.509548",
+      "observation": "loop_detetado",
+      "cycle": 91
+    },
+    {
+      "timestamp": "2026-05-30T23:00:32.678108",
+      "observation": "loop_detetado",
+      "cycle": 94
+    },
+    {
+      "timestamp": "2026-05-30T23:00:42.693121",
+      "observation": "ciclo_95_completo",
+      "cycle": 95
+    },
+    {
+      "timestamp": "2026-05-30T23:04:10.528682",
+      "observation": "loop_detetado",
+      "cycle": 97
+    },
+    {
+      "timestamp": "2026-05-30T23:10:42.199667",
+      "observation": "loop_detetado",
+      "cycle": 100
+    },
+    {
+      "timestamp": "2026-05-30T23:13:30.178417",
+      "observation": "loop_detetado",
+      "cycle": 103
+    },
+    {
+      "timestamp": "2026-05-30T23:15:17.023854",
+      "observation": "ciclo_105_completo",
+      "cycle": 105
+    },
+    {
+      "timestamp": "2026-05-30T23:18:09.349333",
+      "observation": "loop_detetado",
+      "cycle": 106
+    },
+    {
+      "timestamp": "2026-05-30T23:19:49.619987",
+      "observation": "loop_detetado",
+      "cycle": 109
+    },
+    {
+      "timestamp": "2026-05-30T23:20:36.767767",
+      "observation": "ciclo_110_completo",
+      "cycle": 110
+    },
+    {
+      "timestamp": "2026-05-30T23:21:13.492933",
+      "observation": "loop_detetado",
+      "cycle": 112
+    },
+    {
+      "timestamp": "2026-05-30T23:24:16.270534",
+      "observation": "loop_detetado",
+      "cycle": 115
+    },
+    {
+      "timestamp": "2026-05-30T23:27:43.506670",
+      "observation": "loop_detetado",
+      "cycle": 118
+    },
+    {
+      "timestamp": "2026-05-30T23:28:39.914136",
+      "observation": "ciclo_120_completo",
+      "cycle": 120
+    },
+    {
+      "timestamp": "2026-05-30T23:28:49.929890",
+      "observation": "loop_detetado",
+      "cycle": 121
+    },
+    {
+      "timestamp": "2026-05-30T23:29:57.378651",
+      "observation": "loop_detetado",
+      "cycle": 124
+    },
+    {
+      "timestamp": "2026-05-30T23:30:07.395094",
+      "observation": "ciclo_125_completo",
+      "cycle": 125
+    },
+    {
+      "timestamp": "2026-05-30T23:31:05.556428",
+      "observation": "loop_detetado",
+      "cycle": 127
+    },
+    {
+      "timestamp": "2026-05-30T23:39:04.136355",
+      "observation": "loop_detetado",
+      "cycle": 130
+    },
+    {
+      "timestamp": "2026-05-31T00:20:49.271717",
+      "observation": "loop_detetado",
+      "cycle": 133
+    },
+    {
+      "timestamp": "2026-05-31T00:23:51.128462",
+      "observation": "ciclo_135_completo",
+      "cycle": 135
+    },
+    {
+      "timestamp": "2026-05-31T00:25:25.721199",
+      "observation": "loop_detetado",
+      "cycle": 136
+    },
+    {
+      "timestamp": "2026-05-31T00:28:42.594425",
+      "observation": "loop_detetado",
+      "cycle": 139
+    },
+    {
+      "timestamp": "2026-05-31T00:29:42.657176",
+      "observation": "ciclo_140_completo",
+      "cycle": 140
+    },
+    {
+      "timestamp": "2026-05-31T00:32:38.287903",
+      "observation": "loop_detetado",
+      "cycle": 142
+    },
+    {
+      "timestamp": "2026-05-31T00:34:40.398251",
+      "observation": "loop_detetado",
+      "cycle": 145
+    },
+    {
+      "timestamp": "2026-05-31T00:39:51.971277",
+      "observation": "loop_detetado",
+      "cycle": 148
+    },
+    {
+      "timestamp": "2026-05-31T00:41:11.571009",
+      "observation": "ciclo_150_completo",
+      "cycle": 150
+    },
+    {
+      "timestamp": "2026-05-31T00:41:21.589569",
+      "observation": "loop_detetado",
+      "cycle": 151
+    },
+    {
+      "timestamp": "2026-05-31T00:46:53.880584",
+      "observation": "loop_detetado",
+      "cycle": 154
+    },
+    {
+      "timestamp": "2026-05-31T00:47:03.902087",
+      "observation": "ciclo_155_completo",
+      "cycle": 155
+    },
+    {
+      "timestamp": "2026-05-31T00:49:34.196481",
+      "observation": "loop_detetado",
+      "cycle": 157
+    },
+    {
+      "timestamp": "2026-05-31T00:55:21.368645",
+      "observation": "loop_detetado",
+      "cycle": 160
+    },
+    {
+      "timestamp": "2026-05-31T00:58:36.692642",
+      "observation": "loop_detetado",
+      "cycle": 163
+    },
+    {
+      "timestamp": "2026-05-31T00:59:14.442219",
+      "observation": "ciclo_165_completo",
+      "cycle": 165
+    },
+    {
+      "timestamp": "2026-05-31T01:01:43.410556",
+      "observation": "loop_detetado",
+      "cycle": 166
+    },
+    {
+      "timestamp": "2026-05-31T01:03:57.871681",
+      "observation": "loop_detetado",
+      "cycle": 169
+    },
+    {
+      "timestamp": "2026-05-31T01:05:13.656895",
+      "observation": "ciclo_170_completo",
+      "cycle": 170
+    },
+    {
+      "timestamp": "2026-05-31T01:05:55.747463",
+      "observation": "loop_detetado",
+      "cycle": 172
+    },
+    {
+      "timestamp": "2026-05-31T01:09:10.352595",
+      "observation": "loop_detetado",
+      "cycle": 175
+    },
+    {
+      "timestamp": "2026-05-31T01:12:05.717112",
+      "observation": "loop_detetado",
+      "cycle": 178
+    },
+    {
+      "timestamp": "2026-05-31T01:14:14.094137",
+      "observation": "ciclo_180_completo",
+      "cycle": 180
+    },
+    {
+      "timestamp": "2026-05-31T01:14:24.112520",
+      "observation": "loop_detetado",
+      "cycle": 181
+    },
+    {
+      "timestamp": "2026-05-31T01:18:16.692183",
+      "observation": "loop_detetado",
+      "cycle": 184
+    },
+    {
+      "timestamp": "2026-05-31T01:18:26.711381",
+      "observation": "ciclo_185_completo",
+      "cycle": 185
+    },
+    {
+      "timestamp": "2026-05-31T01:19:00.755108",
+      "observation": "loop_detetado",
+      "cycle": 187
+    },
+    {
+      "timestamp": "2026-05-31T01:23:19.670196",
+      "observation": "loop_detetado",
+      "cycle": 190
+    },
+    {
+      "timestamp": "2026-05-31T01:26:09.376543",
+      "observation": "loop_detetado",
+      "cycle": 193
+    },
+    {
+      "timestamp": "2026-05-31T01:27:02.211952",
+      "observation": "ciclo_195_completo",
+      "cycle": 195
+    },
+    {
+      "timestamp": "2026-05-31T01:29:23.951431",
+      "observation": "loop_detetado",
+      "cycle": 196
+    },
+    {
+      "timestamp": "2026-05-31T01:32:37.592173",
+      "observation": "loop_detetado",
+      "cycle": 199
+    },
+    {
+      "timestamp": "2026-05-31T01:35:15.669586",
+      "observation": "ciclo_200_completo",
+      "cycle": 200
+    },
+    {
+      "timestamp": "2026-05-31T01:38:34.201093",
+      "observation": "loop_detetado",
+      "cycle": 202
+    },
+    {
+      "timestamp": "2026-05-31T01:41:15.494049",
+      "observation": "loop_detetado",
+      "cycle": 205
+    },
+    {
+      "timestamp": "2026-05-31T01:47:07.415001",
+      "observation": "loop_detetado",
+      "cycle": 208
+    },
+    {
+      "timestamp": "2026-05-31T01:49:45.550350",
+      "observation": "ciclo_210_completo",
+      "cycle": 210
+    },
+    {
+      "timestamp": "2026-05-31T01:49:55.569725",
+      "observation": "loop_detetado",
+      "cycle": 211
+    },
+    {
+      "timestamp": "2026-05-31T01:52:50.420175",
+      "observation": "loop_detetado",
+      "cycle": 214
+    },
+    {
+      "timestamp": "2026-05-31T01:53:00.440623",
+      "observation": "ciclo_215_completo",
+      "cycle": 215
+    },
+    {
+      "timestamp": "2026-05-31T01:55:47.746125",
+      "observation": "loop_detetado",
+      "cycle": 217
+    },
+    {
+      "timestamp": "2026-05-31T01:59:32.461045",
+      "observation": "loop_detetado",
+      "cycle": 220
+    },
+    {
+      "timestamp": "2026-05-31T02:02:12.522533",
+      "observation": "loop_detetado",
+      "cycle": 223
+    },
+    {
+      "timestamp": "2026-05-31T02:05:20.412650",
+      "observation": "ciclo_225_completo",
+      "cycle": 225
+    },
+    {
+      "timestamp": "2026-05-31T02:07:36.085967",
+      "observation": "loop_detetado",
+      "cycle": 226
+    },
+    {
+      "timestamp": "2026-05-31T02:09:34.634785",
+      "observation": "loop_detetado",
+      "cycle": 229
+    },
+    {
+      "timestamp": "2026-05-31T02:12:22.429441",
+      "observation": "ciclo_230_completo",
+      "cycle": 230
+    },
+    {
+      "timestamp": "2026-05-31T02:15:17.513176",
+      "observation": "loop_detetado",
+      "cycle": 232
+    },
+    {
+      "timestamp": "2026-05-31T02:16:13.578115",
+      "observation": "loop_detetado",
+      "cycle": 235
+    },
+    {
+      "timestamp": "2026-05-31T02:17:31.025459",
+      "observation": "loop_detetado",
+      "cycle": 238
+    },
+    {
+      "timestamp": "2026-05-31T02:20:25.438721",
+      "observation": "ciclo_240_completo",
+      "cycle": 240
+    },
+    {
+      "timestamp": "2026-05-31T02:20:35.459481",
+      "observation": "loop_detetado",
+      "cycle": 241
+    },
+    {
+      "timestamp": "2026-05-31T02:22:49.807610",
+      "observation": "loop_detetado",
+      "cycle": 244
+    },
+    {
+      "timestamp": "2026-05-31T02:22:59.828592",
+      "observation": "ciclo_245_completo",
+      "cycle": 245
+    },
+    {
+      "timestamp": "2026-05-31T02:25:38.810547",
+      "observation": "loop_detetado",
+      "cycle": 247
+    },
+    {
+      "timestamp": "2026-05-31T02:32:06.451844",
+      "observation": "loop_detetado",
+      "cycle": 250
+    },
+    {
+      "timestamp": "2026-05-31T02:35:14.421829",
+      "observation": "loop_detetado",
+      "cycle": 253
+    },
+    {
+      "timestamp": "2026-05-31T02:36:35.231901",
+      "observation": "ciclo_255_completo",
+      "cycle": 255
+    },
+    {
+      "timestamp": "2026-05-31T02:38:58.585037",
+      "observation": "loop_detetado",
+      "cycle": 256
+    },
+    {
+      "timestamp": "2026-05-31T02:42:04.215437",
+      "observation": "loop_detetado",
+      "cycle": 259
+    },
+    {
+      "timestamp": "2026-05-31T02:43:38.006524",
+      "observation": "ciclo_260_completo",
+      "cycle": 260
+    },
+    {
+      "timestamp": "2026-05-31T02:44:25.777057",
+      "observation": "loop_detetado",
+      "cycle": 262
+    },
+    {
+      "timestamp": "2026-05-31T02:48:29.928731",
+      "observation": "loop_detetado",
+      "cycle": 265
+    },
+    {
+      "timestamp": "2026-05-31T02:51:03.384675",
+      "observation": "loop_detetado",
+      "cycle": 268
+    },
+    {
+      "timestamp": "2026-05-31T02:54:07.372152",
+      "observation": "ciclo_270_completo",
+      "cycle": 270
+    },
+    {
+      "timestamp": "2026-05-31T02:54:17.393493",
+      "observation": "loop_detetado",
+      "cycle": 271
+    },
+    {
+      "timestamp": "2026-05-31T02:57:17.805213",
+      "observation": "loop_detetado",
+      "cycle": 274
+    },
+    {
+      "timestamp": "2026-05-31T02:57:27.827424",
+      "observation": "ciclo_275_completo",
+      "cycle": 275
+    },
+    {
+      "timestamp": "2026-05-31T02:59:20.618075",
+      "observation": "loop_detetado",
+      "cycle": 277
+    },
+    {
+      "timestamp": "2026-05-31T03:02:39.144048",
+      "observation": "loop_detetado",
+      "cycle": 280
+    },
+    {
+      "timestamp": "2026-05-31T03:05:21.988603",
+      "observation": "loop_detetado",
+      "cycle": 283
+    },
+    {
+      "timestamp": "2026-05-31T03:06:02.361057",
+      "observation": "ciclo_285_completo",
+      "cycle": 285
+    },
+    {
+      "timestamp": "2026-05-31T03:08:58.932906",
+      "observation": "loop_detetado",
+      "cycle": 286
+    },
+    {
+      "timestamp": "2026-05-31T03:12:19.696504",
+      "observation": "loop_detetado",
+      "cycle": 289
+    },
+    {
+      "timestamp": "2026-05-31T03:12:44.505660",
+      "observation": "ciclo_290_completo",
+      "cycle": 290
+    },
+    {
+      "timestamp": "2026-05-31T03:15:18.951532",
+      "observation": "loop_detetado",
+      "cycle": 292
+    },
+    {
+      "timestamp": "2026-05-31T03:17:27.147165",
+      "observation": "loop_detetado",
+      "cycle": 295
+    },
+    {
+      "timestamp": "2026-05-31T03:22:15.724626",
+      "observation": "loop_detetado",
+      "cycle": 298
+    },
+    {
+      "timestamp": "2026-05-31T03:25:17.380596",
+      "observation": "ciclo_300_completo",
+      "cycle": 300
+    },
+    {
+      "timestamp": "2026-05-31T03:25:27.407327",
+      "observation": "loop_detetado",
+      "cycle": 301
+    },
+    {
+      "timestamp": "2026-05-31T03:30:13.591407",
+      "observation": "loop_detetado",
+      "cycle": 304
+    },
+    {
+      "timestamp": "2026-05-31T03:30:23.615534",
+      "observation": "ciclo_305_completo",
+      "cycle": 305
+    },
+    {
+      "timestamp": "2026-05-31T03:35:00.789384",
+      "observation": "loop_detetado",
+      "cycle": 307
+    },
+    {
+      "timestamp": "2026-05-31T03:41:20.583516",
+      "observation": "loop_detetado",
+      "cycle": 310
+    },
+    {
+      "timestamp": "2026-05-31T03:43:28.320818",
+      "observation": "loop_detetado",
+      "cycle": 313
+    },
+    {
+      "timestamp": "2026-05-31T03:47:22.455870",
+      "observation": "ciclo_315_completo",
+      "cycle": 315
+    },
+    {
+      "timestamp": "2026-05-31T03:51:29.778069",
+      "observation": "loop_detetado",
+      "cycle": 316
+    },
+    {
+      "timestamp": "2026-05-31T03:54:23.019877",
+      "observation": "loop_detetado",
+      "cycle": 319
+    },
+    {
+      "timestamp": "2026-05-31T03:57:40.950509",
+      "observation": "ciclo_320_completo",
+      "cycle": 320
+    },
+    {
+      "timestamp": "2026-05-31T03:59:43.784020",
+      "observation": "loop_detetado",
+      "cycle": 322
+    },
+    {
+      "timestamp": "2026-05-31T04:04:20.134095",
+      "observation": "loop_detetado",
+      "cycle": 325
     }
   ]
 }

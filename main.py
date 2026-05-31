@@ -23,7 +23,15 @@ import threading
 from pathlib import Path
 
 # ============================================================
-# FIX: Instance Lock + UTF-8 encoding
+# FIX #1: Correção de encoding UTF-8 (ANTES de qualquer print/log)
+# ============================================================
+# Importa fix_encoding PRIMEIRO para substituir print() globalmente
+# e configurar PYTHONIOENCODING=utf-8 antes de qualquer output.
+# Isto previne UnicodeEncodeError com emojis no Windows.
+import fix_encoding  # noqa: F401
+
+# ============================================================
+# FIX #2: Instance Lock (evita múltiplas instâncias)
 # ============================================================
 _INSTANCE_LOCK_FILE = Path(__file__).parent / ".instance.lock"
 
@@ -256,12 +264,12 @@ async def main():
         if app:
             # Lock Telegram: garantir que apenas uma instancia faz polling
             if not acquire_telegram_lock():
-                logger.warning("[Telegram] Outra instancia ja ativa. A ignorar polling.")
-            else:
-                logger.info("[Telegram] Bot a correr...")
-                await app.initialize()
-                await app.start()
-                await app.updater.start_polling()
+                logger.warning("[Telegram] Outra instancia ja ativa. A encerrar esta.")
+                return  # ← FIX: sair em vez de ficar em loop
+            logger.info("[Telegram] Bot a correr...")
+            await app.initialize()
+            await app.start()
+            await app.updater.start_polling()
             logger.info("[Telegram] Bot online. A aguardar mensagens...")
             # Dar o bot ao loop para enviar relatórios Telegram
             auto_loop.telegram_bot = app.bot
@@ -279,6 +287,15 @@ async def main():
                     logger.info("[Notifier] Notifica??es proactivas activas")
             except Exception as e:
                 logger.warning(f"[Notifier] Falhou ao iniciar: {e}")
+            # Ligar OfflineMode ao bot para notificações
+            try:
+                from inference.offline_mode import get_offline_mode
+                from core.config import Config
+                owner_id = getattr(Config, "OWNER_TELEGRAM_ID", 0)
+                get_offline_mode().set_notifier(app.bot, int(owner_id))
+                logger.info("[OfflineMode] Modo offline configurado")
+            except Exception as e:
+                logger.warning(f"[OfflineMode] Setup falhou: {e}")
             while True:
                 await asyncio.sleep(1)
         else:
@@ -287,17 +304,19 @@ async def main():
             while True:
                 await asyncio.sleep(60)
     else:
-        logger.info("[Main] Modo sem Telegram. A manter servi?os...")
+        logger.info("[Main] Modo sem Telegram. Sistema autonomo a correr...")
         set_auto_loop(auto_loop)
+        # Keepalive — o loop autonomo corre em daemon thread, precisamos manter o processo vivo
+        logger.info("[Main] Sistema activo. Ctrl+C para sair.")
         while True:
             await asyncio.sleep(60)
+    # (fim da função main)
+# ── Entry point ──────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    # --- Lock Singleton ------------------------------------------------
     from lock_utils import acquire_lock, release_lock
     from telegram_lock import acquire_telegram_lock, release_telegram_lock
     if not acquire_lock():
-        sys.exit("Outra instância já está a correr. A encerrar.")
-    # -------------------------------------------------------------------
+        sys.exit("Outra instancia ja esta a correr. A encerrar.")
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
@@ -305,5 +324,11 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"[Main] Erro fatal: {e}", exc_info=True)
     finally:
-        release_telegram_lock()
-        release_lock()
+        try:
+            release_telegram_lock()
+        except Exception:
+            pass
+        try:
+            release_lock()
+        except Exception:
+            pass

@@ -47,7 +47,7 @@ def _build_system_prompt() -> str:
             "- Tarefas pendentes: {}".format(len(pending))
         )
         if pending:
-            loop_context += " -> " + ", ".join("'{}'".format(t["title"]) for t in pending[:3])
+            loop_context += " -> " + ", ".join("'{}'".format(t.get("title", "?")) for t in pending[:3])
         loop_context += "\n- Concluídas: {} | Falhadas: {}".format(len(done), len(failed))
 
         log_path = MEMORY_DIR / "autonomous_log.md"
@@ -59,37 +59,83 @@ def _build_system_prompt() -> str:
     except Exception:
         pass
 
-    return """És o Supervisor — agente IA principal do ecossistema agentsbot.
+    return """És o Supervisor — líder do ecossistema agentsbot.
 
 ## IDENTIDADE
 - Língua: Português de Portugal (sempre)
-- Personalidade: Direto, proativo. Fazes coisas, não apenas falas delas.
+- Personalidade: Direto, proativo, orientado a ação. Fazes coisas, não apenas falas delas.
+- És o líder da equipa: coordenas, delegas e garantes que o trabalho é feito.
+- Pensas em termos de impacto, risco e prioridade.
 
-## AMBIENTE REAL — CRÍTICO
-- Corres num **servidor Linux remoto**, NÃO no computador do utilizador
-- Diretório do projeto: `{repo_path}`
-- Repositório GitHub: `{github_repo}`
-- Shell: **bash Linux** (ls, cat, mkdir, python3) — NUNCA CMD Windows
+## AMBIENTE REAL
+- Corres num **servidor Linux remoto** (NÃO no Windows do utilizador)
+- Projeto: {repo_path} | GitHub: {github_repo}
+- Shell: bash Linux (ls, cat, python3, git) — NUNCA CMD Windows
+- Caminhos Windows (C:\\Users\\...) não existem no servidor
 
-## O QUE PODES FAZER
-- Ler/escrever ficheiros em `{repo_path}` no servidor
-- Executar Python e bash no servidor
-- Git commit/push para `{github_repo}`
-- Criar e evoluir agentes e código
-- Adicionar tarefas ao backlog autónomo para os agentes executarem
+## FERRAMENTAS (13 disponíveis)
+Tens acesso às seguintes ferramentas para executar tarefas:
 
-## O QUE NÃO PODES FAZER
-- Aceder ao computador do utilizador (não tens acesso a C:\\Users\\...)
-- Se pedido algo no computador dele: "Isso tens de correr tu localmente."{loop_context}
+| Ferramenta       | Para quê                                        |
+|------------------|-------------------------------------------------|
+| read_file        | Ler conteúdo de ficheiros                       |
+| write_file       | Criar/editar ficheiros                          |
+| list_files       | Explorar diretórios                             |
+| run_python       | Executar código Python                          |
+| run_shell        | Executar comandos bash                          |
+| git_status       | Ver estado do git                               |
+| git_commit_push  | Commitar e fazer push para GitHub               |
+| create_agent     | Criar novo agente especialista                  |
+| search_github    | Pesquisar código/issues no GitHub               |
+| create_website   | Criar sites completos (HTML/CSS/JS)             |
+| add_page         | Adicionar página a site existente               |
+| github_api       | Chamar GitHub API diretamente                   |
+| web_search       | Pesquisar informação na web                     |
 
-## REGRAS
-1. Conversa normal -> responde directamente, sem ferramentas
-2. Ações concretas -> usa ferramentas, reporta o que fizeste
-3. Shell: sempre Linux/bash
-4. Nunca inventes resultados
-5. Foca-te APENAS em `{github_repo}` — não toques em outros repos sem ordem explícita
-6. Antes de agir em múltiplos ficheiros, confirma o plano
-""".format(repo_path=repo_path, github_repo=github_repo, loop_context=loop_context)
+## REGRAS DE OURO
+1. **Nunca apagar sem backup** — antes de modificar algo crítico, faz `git commit`
+2. **Nunca expor credenciais** — API keys, tokens, passwords ficam em `.env`
+3. **Nunca entrar em loop infinito** — se falha 3x seguidas, regista e escala
+4. **Sempre documentar** — cada commit tem mensagem descritiva
+5. **Nunca assumir — verificar** — confirma o estado actual antes de agir
+6. **Estabilidade > velocidade** — um sistema lento mas estável vence um rápido mas frágil
+7. **Confiar mas verificar** — delega mas monitoriza resultados
+
+## FLUXO DE EXECUÇÃO
+
+### 1. Receber Mensagem
+- Lê a mensagem do utilizador
+- Analisa contexto (memória, logs recentes)
+- Decide se responde diretamente ou age (ferramentas)
+
+### 2. Agir (se necessário)
+- Escolhe a ferramenta certa para cada tarefa
+- Executa e verifica o resultado
+- Se falhar, tenta abordagem alternativa (máx 2x)
+
+### 3. Responder
+- Responde em Português PT claro
+- Reporta o que fez e o resultado
+- Se algo falhou, explica porquê
+
+## CONTEXTO DO SISTEMA
+{loop_context}arch, create_agent, search_github,
+create_website, add_page, github_api.
+Usa-as para agir — não te limites a falar sobre o que fazer.
+
+## REGRAS DE CONDUTA
+1. **Conversa normal** -> responde diretamente, sem tools
+2. **Ações concretas** -> usa tools imediatamente (não perguntes "queres que faça?")
+3. **Shell: sempre bash Linux** — comandos como ls, cat, python3, git
+4. **Nunca inventes** — se não sabes, descobre (lê, pesquisa, executa)
+5. **Foca-te APENAS em {github_repo}** — não toques noutros repositórios
+6. **Lê antes de alterar** — contexto é essencial antes de modificar
+7. **Português de Portugal sempre** — mesmo que te perguntem noutra língua
+8. **Sê conciso** — respostas diretas, sem rodeios
+9. **Se falhar, tenta de novo** — abordagem diferente antes de desistir
+10. **Mantém contexto** — lembra-te do que foi dito antes
+{loop_context}
+""".format(repo_path=repo_path, github_repo=github_repo, loop_context=loop_context).format(repo_path=repo_path, github_repo=github_repo, loop_context=loop_context)
 SYSTEM_PROMPT = _build_system_prompt()
 
 # --- Schema de ferramentas (formato OpenAI/DeepSeek) -------------------------
@@ -343,16 +389,43 @@ class LLMAgent:
         from core.config import Config
         soul = self._load_soul()
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        # Tools disponíveis
+        tools_list = (
+            "\n\n## FERRAMENTAS DISPONÍVEIS\n"
+            "- write_file(path, content): Criar/sobrescrever ficheiros\n"
+            "- read_file(path): Ler conteúdo de ficheiros\n"
+            "- list_files(path): Listar ficheiros num diretório\n"
+            "- run_python(code): Executar código Python\n"
+            "- run_shell(command): Executar comandos bash Linux\n"
+            "- git_status(): Ver estado do repositório\n"
+            "- git_commit_push(message): Commit + push\n"
+            "- create_agent(name, mission): Criar novo agente\n"
+            "- web_search(query): Pesquisar na web\n"
+            "\nUsa estas ferramentas para AGIR - não apenas falar sobre o que fazer."
+        )
+        
         runtime = (
             f"\n\n## CONTEXTO DE EXECU??O\n"
             f"- Agente: {self.agent_name}\n"
             f"- Data/hora: {now}\n"
             f"- Sistema: {platform.system()} Linux servidor\n"
             f"- Projecto: {Config.REPO_LOCAL_PATH}\n"
-            f"- Shell: bash (ls, cat, python3, git ? nunca CMD Windows)\n"
-            f"- O utilizador est? no Windows/PC ? TU est?s no servidor Linux\n"
+            f"- Shell: bash (ls, cat, python3, git - nunca CMD Windows)\n"
+            f"- O utilizador está no Windows/PC - TU estás no servidor Linux\n"
         )
-        return soul + runtime
+        
+        # Instruções de execução
+        exec_instructions = (
+            "\n## INSTRUÇÕES DE EXECUÇÃO\n"
+            "1. Lê a tarefa e age - usa as ferramentas disponíveis\n"
+            "2. Lê o código antes de o alterar\n"
+            "3. Verifica o resultado (testes, validação)\n"
+            "4. Se falhar, tenta alternativa antes de desistir\n"
+            "5. Reporta o que fizeste de forma concisa\n"
+        )
+        
+        return soul + tools_list + runtime + exec_instructions
 
     def _check_and_reset_if_looping(self) -> bool:
         """Detecta se o agente entrou em loop sobre 'preso no docker' e limpa o histórico."""
@@ -428,15 +501,40 @@ class LLMAgent:
                     lambda: _call_llm(messages, use_tools=True)
                 )
             except RuntimeError as e:
-                # API key não configurada — resposta de fallback
-                reply = f"[!] {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+                # API key não configurada
+                reply = f"[!] {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env."
                 self._update_history(history, user_message, reply, user_id)
                 return reply
             except Exception as e:
-                logger.error(f"[LLMAgent] Erro API itera??o {iteration}: {e}")
+                logger.error(f"[LLMAgent] Erro API iteração {iteration}: {e}")
+
+                # Detectar e gerir modo offline
+                try:
+                    from inference.offline_mode import get_offline_mode
+                    offline = get_offline_mode()
+                    api_status = offline.report_api_error(e)
+                    logger.warning(f"[LLMAgent] API status: {api_status}")
+
+                    if iteration == 0:
+                        # Primeira iteração — tentar execução local
+                        local_result = asyncio.get_event_loop().run_until_complete(
+                            offline.execute_locally(user_message, self.agent_name)
+                        ) if not asyncio.get_event_loop().is_running() else None
+
+                        if local_result is None:
+                            # Estamos dentro de event loop — usar create_task
+                            local_result = (
+                                f"[MODO OFFLINE] API indisponível ({api_status}). "
+                                f"A guardar tarefa para quando API voltar. "
+                                f"Ollama local será tentado automaticamente."
+                            )
+                        self._update_history(history, user_message, local_result, user_id)
+                        return local_result
+                except Exception as offline_err:
+                    logger.debug(f"[OfflineMode] Erro: {offline_err}")
+
                 if iteration == 0:
-                    return f"[X] Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a liga??o ? internet."
-                # Se falhou após já ter feito algo, retorna o que temos
+                    return f"[X] Erro ao contactar o LLM: {e}\nVerifique DEEPSEEK_API_KEY e ligação à internet."
                 break
 
             choice = response.get("choices", [{}])[0]

@@ -22,6 +22,23 @@ Uso directo:
     print(result.summary)
 """
 
+# ============================================================
+# FIX: Forcar UTF-8 no stdout/stderr para evitar UnicodeEncodeError
+# com emojis no Windows (CP1252)
+# ============================================================
+import sys
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+if hasattr(sys.stderr, "reconfigure"):
+    try:
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+
 import asyncio
 import json
 import logging
@@ -247,13 +264,31 @@ class SelfImprovementLoop:
         """Passo 4: validar patches — sintaxe local + Conselho Multi-Agente."""
         from evolution.patch_validator import PatchValidator
         from evolution.council import get_council
+        try:
+            from council.council import get_council
+        except ImportError:
+            pass  # usa evolution.council
 
-        validator = PatchValidator()
-        council = get_council()
-        approved = []
+        validator  = PatchValidator()
+        council    = get_council()
+        approved   = []
+
+        # Core Protection check
+        try:
+            from core.core_protection import get_protection
+            protection = get_protection()
+        except Exception:
+            protection = None
 
         for patch in patches:
             desc = patch.get("description", "?")[:60]
+
+            # Core protection — bloquear ficheiros imutáveis
+            if protection:
+                prot_ok, prot_reason = protection.validate_patch(patch)
+                if not prot_ok:
+                    logger.warning(f"[CoreProtection] 🚨 Bloqueado: {prot_reason}")
+                    continue
 
             # 4a: validacao local (sintaxe, search_str existe)
             local_result = validator.validate(patch)
@@ -280,7 +315,65 @@ class SelfImprovementLoop:
         logger.info(f"[SelfImprove] {len(approved)}/{len(patches)} patches aprovados")
         return approved
 
+    async def _council_review_patches(self, patches: list[dict]) -> list[dict]:
+        """Submete patches ao Council para aprovação antes de aplicar."""
+        from council.council import get_council
+        council  = get_council()
+        approved = []
+        for patch in patches:
+            try:
+                decision = council.review(patch)
+                if decision.final_verdict == "approve":
+                    approved.append(patch)
+                    logger.info(f"[Council] ✅ Aprovado: {patch.get('title','?')}")
+                else:
+                    logger.info(f"[Council] ❌ Rejeitado: {patch.get('title','?')} — {decision.final_reasoning[:80]}")
+                    # Notificar via Telegram se disponível
+                    if self.telegram_bot:
+                        try:
+                            msg = council.format_for_telegram(decision)
+                            asyncio.create_task(
+                                self.telegram_bot.send_message(
+                                    int(os.getenv("JOEL_TELEGRAM_ID", "0")), msg,
+                                    parse_mode="Markdown"
+                                )
+                            )
+                        except Exception:
+                            pass
+            except Exception as e:
+                logger.warning(f"[Council] Erro na revisão: {e}")
+                approved.append(patch)  # em caso de falha do council, deixa passar
+        return approved
+
     async def _apply_patches(self, patches: list[dict], result: ImprovementResult) -> int:
+        # Criar snapshot antes de aplicar — para rollback se necessário
+        try:
+            from core.rollback_manager import get_rollback_manager
+            rm = get_rollback_manager()
+            files_to_backup = list({p.get("file","") for p in patches if p.get("file")})
+            snap_id = rm.create_snapshot(
+                f"Antes de self-improve ciclo #{self.cycle_count}",
+                files=files_to_backup,
+            )
+            result._snapshot_id = snap_id
+        except Exception:
+            snap_id = None
+
+        applied = await self._do_apply_patches(patches, result)
+
+        # Verificar integridade após aplicar
+        if snap_id and applied > 0:
+            try:
+                from core.core_protection import get_protection
+                check = get_protection().check_all_integrity()
+                if check["changed"]:
+                    logger.warning(f"[SelfImprove] ⚠️  Ficheiros protegidos alterados: {check['changed']}")
+            except Exception:
+                pass
+
+        return applied
+
+    async def _do_apply_patches(self, patches: list[dict], result: ImprovementResult) -> int:
         """Passo 5: aplicar patches nos ficheiros reais."""
         applied = 0
         repo_root = Config.REPO_LOCAL_PATH

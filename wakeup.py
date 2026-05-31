@@ -12,11 +12,13 @@ import json
 import threading
 from datetime import datetime
 from pathlib import Path
+import fix_encoding  # noqa: F401 — previne UnicodeEncodeError com emojis
+
 
 # Configuracoes
-WAKEUP_INTERVAL_FAST = 5       # 5 segundos para detecao rapida
+WAKEUP_INTERVAL_FAST = 15      # 15 segundos para evitar loop
 WAKEUP_INTERVAL_NORMAL = 60    # 60 segundos para monitorizacao normal
-MAX_ITERATIONS = 10
+MAX_ITERATIONS = 5          # Reduzido de 10 para quebrar loop mais cedo
 LOG_FILE = "wakeup.log"
 
 class WakeUpSystemV2:
@@ -32,6 +34,10 @@ class WakeUpSystemV2:
         self.wakeup_history = []
         self.stuck_detected = False
         self._stop_event = threading.Event()
+        self.reset_count = 0
+        self.max_resets = 5           # Reduzido de 10 para entrar em modo seguro mais cedo
+        self.reset_window = 120       # Janela reduzida de 300s para 120s
+        self.reset_timestamps = []
         
     def log(self, message):
         """Regista mensagem no log"""
@@ -45,7 +51,7 @@ class WakeUpSystemV2:
     def detect_stuck_fast(self):
         """Deteccao RAPIDA de stuck - verifica a cada 5 segundos"""
         # 1. Verifica ficheiros de log por "Limite de iteracoes"
-        log_files = ["auto_recovery.log", "orchestrator.log", "wakeup.log", "main.log"]
+        log_files = ["orchestrator.log", "main.log"]  # APENAS externos - evita auto-loop
         for log_file in log_files:
             if os.path.exists(log_file):
                 try:
@@ -62,14 +68,18 @@ class WakeUpSystemV2:
         # 2. Verifica se o processo python principal (main.py) ainda existe
         try:
             result = subprocess.run(
-                ["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"],
+                ["tasklist", "/FI", "IMAGENAME eq python3.13.exe", "/FO", "CSV"],
                 capture_output=True, text=True, timeout=3
             )
-            python_count = result.stdout.count("python.exe")
+            python_count = result.stdout.count("python3.13.exe")
             # Só considera stuck se houver 0 ou 1 processos (apenas o wakeup)
             if python_count <= 1:
                 self.log("[!] Apenas wakeup.py ativo - main.py pode ter morrido!")
                 return True
+            # Se houver mais de 3 processos python, há duplicatas - não reiniciar
+            if python_count > 3:
+                self.log(f"[!] {python_count} processos detetados - possivel duplicacao. A aguardar...")
+                return False
         except:
             pass
         
@@ -86,20 +96,52 @@ class WakeUpSystemV2:
         
         return False
     
+    
+    def _check_crash_loop(self):
+        """Deteta crash loop e aplica backoff exponencial para evitar reset infinito."""
+        now = time.time()
+        # Janela de 5 minutos
+        window = 300
+        # Limpar timestamps antigos
+        self.reset_timestamps = [t for t in self.reset_timestamps if now - t < window]
+        
+        max_resets_in_window = 10
+        if len(self.reset_timestamps) >= max_resets_in_window:
+            cooldown = min(600, 30 * (2 ** (len(self.reset_timestamps) // max_resets_in_window)))
+            self.log(f"[CRASH_LOOP] {len(self.reset_timestamps)} resets em 5min! Backoff de {cooldown}s...")
+            time.sleep(cooldown)
+            self.reset_timestamps = []
+            self.log("[CRASH_LOOP] Backoff concluído. A tentar novamente...")
+
     def force_restart(self):
-        """Forca o reinicio do sistema principal"""
+        """Forca o reinicio do sistema principal com rate limiting"""
+        # Rate limiting: max 3 reinícios por minuto
+        now = time.time()
+        if now - self.last_restart_time < 60:
+            self.restart_count += 1
+            if self.restart_count > self.max_restarts_per_minute:
+                cooldown = 120  # 2 minutos de espera
+                self.log(f"[BACKOFF] Demasiados reinicios ({self.restart_count}/min). A aguardar {cooldown}s...")
+                time.sleep(cooldown)
+                self.restart_count = 0
+        else:
+            self.restart_count = 1
+        self.last_restart_time = now
+        
+        self.reset_timestamps.append(time.time())
+        self._check_crash_loop()
         self.log("[LANCAR] A FORCAR REINICIO DO SISTEMA...")
         
         # Mata processos python antigos (exceto este)
         try:
             result = subprocess.run(
-                ["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"],
+                ["tasklist", "/FI", "IMAGENAME eq python3.13.exe", "/FO", "CSV"],
                 capture_output=True, text=True, timeout=3
             )
             
             current_pid = os.getpid()
             for line in result.stdout.split("\n"):
-                if "python.exe" in line and str(current_pid) not in line:
+                if "python3.13.exe" in line and str(current_pid) not in line:
                     # Extrai PID
                     parts = line.split(",")
                     if len(parts) >= 2:
@@ -129,7 +171,13 @@ class WakeUpSystemV2:
         
         self.stuck_detected = False
         self.iteration_count = 0
-    
+        # Limpar logs para evitar re-deteccao
+        for logf in ["auto_recovery.log", "wakeup.log"]:
+            try:
+                open(logf, "w").close()
+            except:
+                pass
+
     def monitor_loop_fast(self):
         """Loop de monitorizacao RAPIDA (5 segundos)"""
         self.log("[BUSCA] Iniciando monitorizacao RAPIDA (5s)...")

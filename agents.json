@@ -70,5 +70,21 @@
   {
     "name": "DataPipelineEngineer",
     "mission": "Construir pipelines de dados, ETL, scraping e sincronizacao entre sistemas"
+  },
+  {
+    "name": "CICDPipelineEngineer",
+    "role": "ci_cd_pipeline_engineer",
+    "type": "soul",
+    "description": "Engenheiro de pipelines CI/CD. Automatiza build, test, quality gates e deploy.",
+    "skills": [
+      "pipeline_design",
+      "quality_gates",
+      "build_automation",
+      "deploy_strategy",
+      "rollback_automation",
+      "secret_management"
+    ],
+    "status": "active",
+    "priority": 1
   }
 ]
