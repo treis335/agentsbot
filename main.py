@@ -287,6 +287,15 @@ async def main():
                     logger.info("[Notifier] Notifica??es proactivas activas")
             except Exception as e:
                 logger.warning(f"[Notifier] Falhou ao iniciar: {e}")
+            # Ligar OfflineMode ao bot para notificações
+            try:
+                from inference.offline_mode import get_offline_mode
+                from core.config import Config
+                owner_id = getattr(Config, "OWNER_TELEGRAM_ID", 0)
+                get_offline_mode().set_notifier(app.bot, int(owner_id))
+                logger.info("[OfflineMode] Modo offline configurado")
+            except Exception as e:
+                logger.warning(f"[OfflineMode] Setup falhou: {e}")
             while True:
                 await asyncio.sleep(1)
         else:

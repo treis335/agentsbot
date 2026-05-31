@@ -501,15 +501,40 @@ class LLMAgent:
                     lambda: _call_llm(messages, use_tools=True)
                 )
             except RuntimeError as e:
-                # API key não configurada — resposta de fallback
-                reply = f"[!] {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env para ativar o agente LLM."
+                # API key não configurada
+                reply = f"[!] {e}\n\nConfigure a DEEPSEEK_API_KEY no ficheiro .env."
                 self._update_history(history, user_message, reply, user_id)
                 return reply
             except Exception as e:
-                logger.error(f"[LLMAgent] Erro API itera??o {iteration}: {e}")
+                logger.error(f"[LLMAgent] Erro API iteração {iteration}: {e}")
+
+                # Detectar e gerir modo offline
+                try:
+                    from inference.offline_mode import get_offline_mode
+                    offline = get_offline_mode()
+                    api_status = offline.report_api_error(e)
+                    logger.warning(f"[LLMAgent] API status: {api_status}")
+
+                    if iteration == 0:
+                        # Primeira iteração — tentar execução local
+                        local_result = asyncio.get_event_loop().run_until_complete(
+                            offline.execute_locally(user_message, self.agent_name)
+                        ) if not asyncio.get_event_loop().is_running() else None
+
+                        if local_result is None:
+                            # Estamos dentro de event loop — usar create_task
+                            local_result = (
+                                f"[MODO OFFLINE] API indisponível ({api_status}). "
+                                f"A guardar tarefa para quando API voltar. "
+                                f"Ollama local será tentado automaticamente."
+                            )
+                        self._update_history(history, user_message, local_result, user_id)
+                        return local_result
+                except Exception as offline_err:
+                    logger.debug(f"[OfflineMode] Erro: {offline_err}")
+
                 if iteration == 0:
-                    return f"[X] Erro ao contactar o LLM: {e}\n\nVerifique a DEEPSEEK_API_KEY e a liga??o ? internet."
-                # Se falhou após já ter feito algo, retorna o que temos
+                    return f"[X] Erro ao contactar o LLM: {e}\nVerifique DEEPSEEK_API_KEY e ligação à internet."
                 break
 
             choice = response.get("choices", [{}])[0]
