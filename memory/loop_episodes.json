@@ -1,23 +1,5 @@
 [
   {
-    "task_id": "auto_a5c857a2",
-    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
-    "agent": "developer",
-    "timestamp": "2026-05-30T13:46:18.013895",
-    "success": true,
-    "result_summary": "Analisei todos os 27 souls do ecossistema, identifiquei 7 problemas críticos (inconsistência de formato, sobreposição de responsabilidades, falta de secções de falha, ferramentas desactualizadas, sem template standard) e criei backup completo dos originais.\n\nFicou por escrever os ficheiros melhorados — preciso de os escrever com `write_file(path, content)` com o novo template consistente para cada",
-    "lesson": ""
-  },
-  {
-    "task_id": "auto_34fd28dd",
-    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
-    "agent": "supervisor",
-    "timestamp": "2026-05-30T13:49:01.442028",
-    "success": true,
-    "result_summary": "Analisei todo o ecossistema de 27 agentes/souls e identifiquei que a área mais crítica descoberta é **integração de dados e pipelines** — não existe nenhum agente especializado em buscar, processar e integrar dados de fontes externas (APIs, web scraping, ETL). Ficou por escrever o ficheiro `agents/souls/data_integrator.md` com a alma do novo agente e registá-lo no `agents/registry/agents.json` e `",
-    "lesson": ""
-  },
-  {
     "task_id": "auto_d95baeb2",
     "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
     "agent": "supervisor",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-31T02:43:27.973990",
     "success": true,
     "result_summary": "---\n\n## ✅ Missão Cumprida — Diagnóstico Completo\n\n### Os 3 Problemas Identificados:\n\n| # | Problema | Severidade | Ação |\n|---|----------|-----------|------|\n| 🔴 **1** | **Tarefas \"running\" presas no backlog** — 3 tarefas bloqueadas, 0 pendentes, sistema parado | **CRÍTICO** | ✅ **Corrigido** — libertadas 2 tarefas, adicionado timeout automático de 30min no `autonomous_loop.py` |\n| 🔴 **2** | **Uni",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_0294c105",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T02:44:15.308971",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — working tree clean |\n| **Ficheiros modificados** | 8 (eventos, logs, backlog, ciclo, episódios, métricas, índice semântico) |\n| **Commit** | `93d2678` — `chore: atualiza estado do ecossistema — eventos, logs, backlog, ciclo, episódios, métricas e índice semântico (31/05 02:43)` |\n| **",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_17b3634e",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T02:48:09.876870",
+    "success": true,
+    "result_summary": "## Resumo do que fiz\n\n**Concluído:**\n1. **Analisei todos os 53 souls** e identifiquei que 46 estão incompletos — faltam principalmente a secção \"Skills / Capacidades\" (essencial para o orquestrador fazer match de tarefas), e alguns souls também não têm \"MODO AUTÓNOMO\" nem \"Integração com o Sistema\"\n2. **Diagnostiquei os problemas específicos** de cada soul: 44 souls sem Skills, 3 sem MODO AUTÓNOMO",
     "lesson": ""
   }
 ]

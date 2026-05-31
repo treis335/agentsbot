@@ -2735,10 +2735,34 @@
     "id": "auto_0294c105",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T02:43:38.018349",
     "source": "fallback",
-    "started_at": "2026-05-31T02:43:48.034280"
+    "started_at": "2026-05-31T02:43:48.034280",
+    "completed_at": "2026-05-31T02:44:15.328270",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — working tree clean |\n| **Ficheiros modificados** | 8 (eventos, logs, backlog, ciclo, episódios, métricas, índice semântico) |\n| **Commit** | `93d2678` — `chore: atualiza estado do ecossistema — eventos, logs, backlog, ciclo, episódios, métricas e índice semântico (31/05 02:43)` |\n| **Push** | ✅ Feito para `origin/main` |\n\n### Detalhes do que foi commitado\n\n| Ficheiro | Alteração |\n|"
+  },
+  {
+    "id": "auto_17b3634e",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T02:44:25.790063",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:44:35.807243",
+    "completed_at": "2026-05-31T02:48:09.895358",
+    "result": "## Resumo do que fiz\n\n**Concluído:**\n1. **Analisei todos os 53 souls** e identifiquei que 46 estão incompletos — faltam principalmente a secção \"Skills / Capacidades\" (essencial para o orquestrador fazer match de tarefas), e alguns souls também não têm \"MODO AUTÓNOMO\" nem \"Integração com o Sistema\"\n2. **Diagnostiquei os problemas específicos** de cada soul: 44 souls sem Skills, 3 sem MODO AUTÓNOMO, 1 sem Integração, 1 sem Armadilhas\n\n**Pendente:**\n- Aplicar as correções nos 46 ficheiros — estou "
+  },
+  {
+    "id": "auto_2d78bcac",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T02:48:19.920096",
+    "source": "fallback",
+    "started_at": "2026-05-31T02:48:29.936300"
   }
 ]
