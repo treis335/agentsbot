@@ -147,7 +147,21 @@ class OfflineMode:
             self._status = APIStatus.ONLINE
             self._offline_since = None
             self._notified = False
-            asyncio.create_task(self._notify_online(offline_duration))
+            # Notificar — seguro em qualquer contexto
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(self._notify_online(offline_duration))
+            except RuntimeError:
+                try:
+                    import threading
+                    def _notify():
+                        try:
+                            asyncio.run(self._notify_online(offline_duration))
+                        except Exception:
+                            pass
+                    threading.Thread(target=_notify, daemon=True).start()
+                except Exception:
+                    pass
 
     def should_retry_api(self) -> bool:
         """True se já passou tempo suficiente para re-tentar a API."""
@@ -203,7 +217,7 @@ class OfflineMode:
             # Verificar se Ollama está a correr (sem modelo obrigatório)
             try:
                 import aiohttp as _aiohttp
-                async with _aiohttp.ClientSession(timeout=_aiohttp.ClientTimeout(total=3)) as s:
+                async with _aiohttp.ClientSession(timeout=_aiohttp.ClientTimeout(total=10)) as s:
                     async with s.get(f"{ollama_url}/api/tags") as r:
                         ollama_running = r.status == 200
                         if ollama_running:
@@ -233,7 +247,7 @@ class OfflineMode:
                 logger.info("[OfflineMode] tinyllama instalado com sucesso")
 
             local_model = best_model
-            logger.info(f"[OfflineMode] Ollama disponível — a usar {local_model}")
+            logger.warning(f"[OfflineMode] ✅ Ollama disponível — a usar {local_model} para responder")
 
             # Sistema prompt que instrui o modelo a gerar acções executáveis
             system_prompt = """És um agente autónomo de desenvolvimento de software.
