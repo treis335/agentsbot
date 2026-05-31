@@ -1164,6 +1164,37 @@
         "eisenhower"
       ],
       "priority": 2
+    },
+    "cross_platform_bridge": {
+      "description": "Especialista em compatibilidade Windows-Linux, normaliza caminhos, shells, permissões e encoding",
+      "skills": [
+        "path_normalizer",
+        "shell_adaptor",
+        "permission_mapper",
+        "encoding_detector",
+        "line_ending_fixer",
+        "env_bridge",
+        "compatibility_check",
+        "cross_platform"
+      ],
+      "keywords": [
+        "windows",
+        "linux",
+        "compatibilidade",
+        "caminho",
+        "path",
+        "shell",
+        "permissão",
+        "encoding",
+        "newline",
+        "crlf",
+        "lf",
+        "cross-platform",
+        "converter",
+        "normalizar",
+        "adaptar"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",

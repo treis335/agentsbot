@@ -12,24 +12,24 @@
   },
   {
     "skill_id": "code_implement",
-    "successes": 46,
+    "successes": 47,
     "failures": 0,
     "success_rate": 1.0,
     "avg_duration_s": 0.0,
     "avg_cost_tokens": 0.0,
     "quality_score": 0.5,
     "composite_score": 80.0,
-    "last_used": "2026-05-31T01:49:35.372446"
+    "last_used": "2026-05-31T02:07:25.902361"
   },
   {
     "skill_id": "system_evolve",
-    "successes": 39,
+    "successes": 43,
     "failures": 0,
     "success_rate": 1.0,
     "avg_duration_s": 0.0,
     "avg_cost_tokens": 0.0,
     "quality_score": 0.5,
     "composite_score": 80.0,
-    "last_used": "2026-05-31T01:55:27.709499"
+    "last_used": "2026-05-31T02:05:00.376976"
   }
 ]

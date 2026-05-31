@@ -64,7 +64,10 @@ def _seed_initial_backlog():
 # --- LOG -----------------------------------------------------------------------
 def log_cycle(msg: str):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    line = f"[{timestamp}] {msg}"
+    # Sanitizar: substituir caracteres que o Windows cp1252 nao suporta
+    safe_msg = msg.encode('utf-8', errors='replace').decode('utf-8')
+    line = f"[{timestamp}] {safe_msg}"
+    # Tentar forcar utf-8 no stdout (funciona em alguns Windows)
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except (ValueError, AttributeError):
@@ -72,8 +75,12 @@ def log_cycle(msg: str):
     try:
         print(line)
     except UnicodeEncodeError:
-        safe_line = line.encode('utf-8', errors='replace').decode('utf-8')
-        print(safe_line)
+        # Fallback: remover tudo que nao seja ASCII
+        ascii_line = line.encode('ascii', errors='replace').decode('ascii')
+        print(ascii_line)
+    except Exception:
+        # Ultimo recurso: print basico
+        print(f"[{timestamp}] [log]")
     MEMORY_DIR.mkdir(exist_ok=True)
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line + "\n")

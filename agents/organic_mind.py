@@ -51,10 +51,14 @@ AGENT_PERSONAS = {
 
 
 def _call_llm_simple(messages: list, max_tokens: int = 400) -> str:
-    """Chama LLM sem tools — só para pensar e responder."""
-    from agents.llm_agent import _call_llm
-    response = _call_llm(messages, use_tools=False, max_tokens=max_tokens)
-    return response["choices"][0]["message"]["content"].strip()
+    """Chama LLM sem tools — só para pensar e responder. Com fallback."""
+    try:
+        from agents.llm_agent import _call_llm
+        response = _call_llm(messages, use_tools=False, max_tokens=max_tokens)
+        return response["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        logger.warning(f"[OrganicMind] _call_llm_simple falhou: {e}")
+        return ""
 
 
 def agent_think(agent_name: str, topic: str, context: str = "") -> str:
@@ -124,10 +128,14 @@ def collective_debate(topic: str, agents: list = None, rounds: int = 1) -> dict:
     synthesis = _supervisor_synthesize(topic, context_so_far)
     tasks = _extract_tasks(topic, context_so_far, synthesis)
 
+    # Garantir que tasks e uma lista valida (fallback se algo falhou)
+    if not isinstance(tasks, list):
+        logger.warning(f"[OrganicMind] tasks nao e lista: {type(tasks)}. Usando fallback.")
+        tasks = _fallback_tasks(topic)
     return {
         "topic": topic,
         "contributions": contributions,
-        "synthesis": synthesis,
+        "synthesis": synthesis if synthesis else "Sintese indisponivel",
         "tasks": tasks,
         "ts": datetime.now().isoformat(),
     }
