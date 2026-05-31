@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:52:00.636323",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — QA Tester\n\n### Tarefa Concluída: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit:** `a42a2ec` — \"feat: unifica 3 sistemas de memória em MemoryHub\"\n\n### O que foi validado:\n\n| Ficheiro | Estado | Detalhes |\n|----------|--------|----------|\n| `core/memory_hub.py` | ✅ Completo (487 linhas) | Singleton, 3 tipos de memória (chat/episode/knowledge), get_context, wrappers de ",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T06:53:01.743907",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — QA Tester\n\n### Tarefa Concluída: Unificar 3 sistemas de memória em MemoryHub\n\n**Commit:** `73f0b0c` — \"feat: unifica 3 sistemas de memória em MemoryHub\"\n\n### O que foi verificado/validado:\n\n1. **`core/memory_hub.py`** — Já existia e está completo com:\n   - `store_chat(role, content)` — conversas\n   - `store_episode(agent_id, task, result)` — memória episódica\n   - `store_kno",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T06:55:19.813750",
     "success": true,
     "result_summary": "Substituí no `agents/executor.py` os imports directos de `GlobalMemory` e `LessonExtractor` na `_build_memory_context` por chamadas ao `MemoryHub`. Falta substituir os imports de `ProceduralMemory` e `FailureMemory` no `build_system_prompt`, e o import de `GlobalMemory` no `run()`, depois escrever o ficheiro, correr os testes e fazer commit.",
@@ -1797,6 +1779,24 @@
     "timestamp": "2026-05-31T01:05:03.477587",
     "success": true,
     "result_summary": "---\n\n## ✅ Missão Concluída — Novo Agente: `user_advocate` 👤🗣️\n\n### Lacuna Identificada\nO ecossistema tinha **~50 agentes** focados em código, segurança, dados, testes, DevOps, estratégia... mas **zero** dedicados à **experiência do utilizador humano**. Ninguém fazia onboarding, ninguém recolhia feedback de forma sistemática, ninguém defendia a simplicidade contra a complexidade técnica.\n\n### O que",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_bde7b410",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T01:05:45.719653",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ 8 ficheiros alterados → commit feito e **push para GitHub** |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Ficheiros comitted** | `events.jsonl`, `autonomous_log.md`, `backlog.json`, `cycle_state.json`, `loop_episodes.json`, `self_improve_cycle.json`, `semantic_index.json`, `m",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_3492e045",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T01:08:50.160858",
+    "success": true,
+    "result_summary": "Analisei todos os 51 souls e identifiquei que 49 estão incompletos — faltam **Skills/Capacidades**, **Exemplo Prático** e **Formato de Output** na maioria. Também analisei o `executor.py` (TOOL_SCHEMA completo, 13 ferramentas) e o `llm_agent.py` (SYSTEM_PROMPT com identidade Supervisor + ferramentas).\n\n**O que ficou por fazer**: Aplicar as correções aos 49 ficheiros `.md` (adicionar secções em fal",
     "lesson": ""
   }
 ]
