@@ -257,31 +257,70 @@ TOOLS_SCHEMA = [
 
 def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) -> dict:
     """
-    Chama a API DeepSeek (compatível OpenAI).
-    Retorna o dict de resposta completo ou levanta exceção.
+    Router inteligente: Ollama local (GPU/CPU) OU DeepSeek (cloud).
+
+    Prioridade:
+      1. Se DEEPSEEK_API_KEY vazia → usa sempre Ollama (modo 100% local)
+      2. Se Ollama disponível E tarefa simples (score < threshold) → Ollama
+      3. Caso contrário → DeepSeek
+      4. Fallback: se DeepSeek falhar → tenta Ollama; se Ollama falhar → DeepSeek
+
+    Funciona com GPU (CUDA/Metal via Ollama) ou CPU — automaticamente.
     """
-    try:
-        from core.config import Config
-        api_key = Config.DEEPSEEK_API_KEY
-        base_url = Config.DEEPSEEK_BASE_URL or "https://api.deepseek.com"
-    except Exception:
-        raise RuntimeError("Configuração não disponível")
+    from core.config import Config
 
-    if not api_key:
-        raise RuntimeError("DEEPSEEK_API_KEY não configurada no .env")
+    api_key  = getattr(Config, "DEEPSEEK_API_KEY", "")
+    base_url = getattr(Config, "DEEPSEEK_BASE_URL", "https://api.deepseek.com") or "https://api.deepseek.com"
+    ollama_url  = getattr(Config, "OLLAMA_URL", "http://localhost:11434")
+    local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
+    threshold   = float(getattr(Config, "ROUTING_THRESHOLD", "0.4"))
 
+    # Decidir rota
+    use_local = not api_key  # sem API key → sempre local
+
+    if not use_local:
+        # Score local de complexidade (zero API)
+        try:
+            task_text = next(
+                (m["content"] if isinstance(m["content"], str) else ""
+                 for m in reversed(messages) if m.get("role") == "user"), ""
+            )
+            from inference.complexity_scorer import score_task
+            use_local = score_task(task_text).score < threshold
+        except Exception:
+            pass
+
+    # Tentar Ollama
+    if use_local:
+        try:
+            result = _call_ollama_sync(messages, ollama_url, local_model, max_tokens)
+            _report_api_success()
+            return result
+        except Exception as e:
+            logger.debug(f"[LLM] Ollama falhou: {e}")
+            if not api_key:
+                raise RuntimeError(
+                    f"Sem DeepSeek API key e Ollama indisponível.\n"
+                    f"Para usar localmente:\n"
+                    f"  1. instala Ollama: https://ollama.com\n"
+                    f"  2. corre: ollama serve\n"
+                    f"  3. corre: ollama pull {local_model}\n"
+                    f"  4. (opcional) adiciona ao .env: OLLAMA_URL=http://localhost:11434"
+                )
+
+    # Chamar DeepSeek
     payload = {
-        "model": "deepseek-chat",
+        "model": getattr(Config, "DEEPSEEK_MODEL", "deepseek-chat"),
         "messages": messages,
         "max_tokens": max_tokens,
         "temperature": 0.7,
     }
     if use_tools:
-        payload["tools"] = TOOLS_SCHEMA
+        payload["tools"]       = TOOLS_SCHEMA
         payload["tool_choice"] = "auto"
 
     data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
+    req  = urllib.request.Request(
         f"{base_url}/v1/chat/completions",
         data=data,
         headers={
@@ -289,8 +328,81 @@ def _call_llm(messages: list, use_tools: bool = True, max_tokens: int = 1500) ->
             "Authorization": f"Bearer {api_key}",
         },
     )
-    with urllib.request.urlopen(req, timeout=90) as r:
-        return json.loads(r.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=90) as r:
+            resp = json.loads(r.read().decode("utf-8"))
+        _report_api_success()
+        return resp
+    except Exception as api_err:
+        _report_api_error(api_err)
+        # Fallback para Ollama se DeepSeek falhar
+        try:
+            logger.warning(f"[LLM] DeepSeek falhou ({api_err}), fallback Ollama")
+            return _call_ollama_sync(messages, ollama_url, local_model, max_tokens)
+        except Exception:
+            raise api_err  # re-raise o erro original se ambos falharem
+
+
+def _call_ollama_sync(messages: list, base_url: str, model: str, max_tokens: int) -> dict:
+    """
+    Chama Ollama local (REST /api/chat).
+    Funciona com GPU (CUDA/Metal) ou CPU automaticamente — o Ollama detecta.
+    Retorna dict no formato OpenAI para compatibilidade.
+    """
+    # Ollama não suporta tool_use — remover se presente
+    clean_messages = [
+        {"role": m["role"], "content": m["content"] if isinstance(m["content"], str)
+         else str(m.get("content",""))}
+        for m in messages
+        if m.get("role") in ("system", "user", "assistant")
+        and m.get("content")
+    ]
+
+    payload = {
+        "model": model,
+        "messages": clean_messages,
+        "stream": False,
+        "options": {
+            "num_predict": max_tokens,
+            "temperature": 0.3,
+        },
+    }
+    data = json.dumps(payload).encode("utf-8")
+    req  = urllib.request.Request(
+        f"{base_url}/api/chat",
+        data=data,
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = json.loads(r.read().decode("utf-8"))
+
+    content = raw.get("message", {}).get("content", "")
+    if not content:
+        raise ValueError("Ollama retornou resposta vazia")
+
+    return {
+        "choices": [{"message": {"role": "assistant", "content": content}, "finish_reason": "stop"}],
+        "usage":   {"prompt_tokens": raw.get("prompt_eval_count", 0),
+                    "completion_tokens": raw.get("eval_count", 0)},
+        "model":   model,
+        "_source": "ollama",
+    }
+
+
+def _report_api_success() -> None:
+    try:
+        from inference.offline_mode import get_offline_mode
+        get_offline_mode().report_api_success()
+    except Exception:
+        pass
+
+
+def _report_api_error(e: Exception) -> None:
+    try:
+        from inference.offline_mode import get_offline_mode
+        get_offline_mode().report_api_error(e)
+    except Exception:
+        pass
 
 
 # --- Memória de conversa persistente -----------------------------------------

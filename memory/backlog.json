@@ -1051,11 +1051,10 @@
     "id": "auto_125e379f",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "running",
+    "status": "pending",
     "priority": 5,
     "created_at": "2026-05-30T23:39:04.146410",
-    "source": "fallback",
-    "started_at": "2026-05-31T18:05:53.900544"
+    "source": "fallback"
   },
   {
     "id": "auto_6de015b5",
@@ -1073,11 +1072,10 @@
     "id": "auto_d3bc9cf9",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "running",
+    "status": "pending",
     "priority": 5,
     "created_at": "2026-05-31T00:23:41.120376",
-    "source": "fallback",
-    "started_at": "2026-05-31T18:08:13.769757"
+    "source": "fallback"
   },
   {
     "id": "auto_b85f809a",
@@ -2278,5 +2276,32 @@
     "started_at": "2026-05-31T17:31:34.662759",
     "completed_at": "2026-05-31T18:05:53.890624",
     "result": "Auto-failed: stale task (>30min)"
+  },
+  {
+    "id": "seed_ollama_test",
+    "title": "Testar Ollama local e reportar resultado",
+    "desc": "Verifica se o Ollama está disponível localmente. Corre: from inference.local_client import OllamaClient; import asyncio; c = OllamaClient(); print(asyncio.run(c.is_available())); print(asyncio.run(c.list_models())). Reporta o resultado e quais modelos estão instalados.",
+    "status": "pending",
+    "priority": 10,
+    "source": "seed",
+    "created_at": "2026-05-31T17:19:27.087057"
+  },
+  {
+    "id": "seed_analise_e_plano",
+    "title": "Analisar ecossistema e criar plano de acção",
+    "desc": "Faz git log --oneline -10 para ver últimos commits. Lê memory/loop_episodes.json e conta sucessos vs falhas. Cria memory/global/plano_accao.md com: estado actual, 3 prioridades, próximas tarefas sugeridas. Faz commit.",
+    "status": "pending",
+    "priority": 9,
+    "source": "seed",
+    "created_at": "2026-05-31T17:19:27.087100"
+  },
+  {
+    "id": "seed_optimize_prompts",
+    "title": "Optimizar system prompts dos agentes principais",
+    "desc": "Lê agents/souls/developer.md, agents/souls/auto_fixer.md e agents/souls/supervisor.md. Para cada um: verifica se tem instruções claras para usar ferramentas (run_shell, write_file, git), não pedir confirmação, e funcionar em modo offline com Ollama. Melhora o que estiver vago. Faz commit.",
+    "status": "pending",
+    "priority": 8,
+    "source": "seed",
+    "created_at": "2026-05-31T17:19:27.087103"
   }
 ]
