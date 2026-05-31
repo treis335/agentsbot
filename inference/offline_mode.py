@@ -120,8 +120,22 @@ class OfflineMode:
                 self._offline_since = time.time()
                 self._notified = False
                 logger.warning(f"[OfflineMode] API indisponível: {status} — {str(error)[:80]}")
-                # Notificar asyncio-safe
-                asyncio.create_task(self._notify_offline(status))
+                # Notificar — seguro em qualquer contexto (com ou sem event loop)
+                try:
+                    loop = asyncio.get_running_loop()
+                    loop.create_task(self._notify_offline(status))
+                except RuntimeError:
+                    # Sem event loop — tentar em thread separada
+                    try:
+                        import threading
+                        def _notify():
+                            try:
+                                asyncio.run(self._notify_offline(status))
+                            except Exception:
+                                pass
+                        threading.Thread(target=_notify, daemon=True).start()
+                    except Exception:
+                        pass
 
         return status
 
