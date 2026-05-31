@@ -516,17 +516,14 @@ class LLMAgent:
                     logger.warning(f"[LLMAgent] API status: {api_status}")
 
                     if iteration == 0:
-                        # Primeira iteração — tentar execução local
-                        local_result = asyncio.get_event_loop().run_until_complete(
-                            offline.execute_locally(user_message, self.agent_name)
-                        ) if not asyncio.get_event_loop().is_running() else None
+                        # Tentar Ollama — estamos dentro de um coroutine, usar await directamente
+                        local_result = await offline.execute_locally(user_message, self.agent_name)
 
-                        if local_result is None:
-                            # Estamos dentro de event loop — usar create_task
+                        if not local_result:
                             local_result = (
-                                f"[MODO OFFLINE] API indisponível ({api_status}). "
-                                f"A guardar tarefa para quando API voltar. "
-                                f"Ollama local será tentado automaticamente."
+                                f"⚠️ API sem créditos e Ollama indisponível.\n"
+                                f"Instala o Ollama (ollama.com) e corre: ollama pull qwen2.5-coder:7b\n"
+                                f"O sistema retoma automaticamente quando a API ou o Ollama estiverem disponíveis."
                             )
                         self._update_history(history, user_message, local_result, user_id)
                         return local_result
@@ -534,7 +531,7 @@ class LLMAgent:
                     logger.debug(f"[OfflineMode] Erro: {offline_err}")
 
                 if iteration == 0:
-                    return f"[X] Erro ao contactar o LLM: {e}\nVerifique DEEPSEEK_API_KEY e ligação à internet."
+                    return f"❌ Erro ao contactar o LLM: {e}\nVerifique DEEPSEEK_API_KEY e ligação à internet."
                 break
 
             choice = response.get("choices", [{}])[0]
