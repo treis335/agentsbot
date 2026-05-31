@@ -175,6 +175,58 @@ class OfflineMode:
 
     # ── Execução local (sem API) ───────────────────────────────────────────────
 
+
+    async def chat_with_ollama(self, messages: list, system: str = "") -> str:
+        """
+        Chat directo com Ollama — para respostas rápidas ao utilizador.
+        Sem JSON de acções, sem ferramentas — só conversa.
+        """
+        try:
+            import aiohttp as _aiohttp
+            from inference.local_client import OllamaClient
+            from core.config import Config
+
+            ollama_url = getattr(Config, "OLLAMA_URL", "http://localhost:11434")
+            local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
+
+            # Verificar disponibilidade
+            async with _aiohttp.ClientSession(
+                timeout=_aiohttp.ClientTimeout(total=5)
+            ) as s:
+                async with s.get(f"{ollama_url}/api/tags") as r:
+                    if r.status != 200:
+                        return None
+                    data = await r.json()
+                    available = [m["name"] for m in data.get("models", [])]
+                    if not available:
+                        return None
+                    # Usar o modelo configurado ou o primeiro disponível
+                    model = local_model
+                    if not any(model.split(":")[0] in m for m in available):
+                        model = available[0]
+
+            client = OllamaClient(base_url=ollama_url, timeout=120, model=model)
+
+            # Construir mensagens com system prompt
+            chat_messages = []
+            if system:
+                chat_messages.append({"role": "system", "content": system})
+            chat_messages.extend(messages)
+
+            response = await client.chat.completions.create(
+                model=model,
+                messages=chat_messages,
+                max_tokens=1000,
+                temperature=0.7,
+            )
+            result = response.choices[0].message.content.strip()
+            logger.info(f"[OfflineMode] Ollama chat OK ({len(result)} chars)")
+            return result
+
+        except Exception as e:
+            logger.warning(f"[OfflineMode] chat_with_ollama falhou: {e}")
+            return None
+
     async def execute_locally(self, task_desc: str, agent_name: str = "supervisor") -> str:
         """
         Executa tarefa sem API usando capacidades locais.

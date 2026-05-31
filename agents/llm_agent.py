@@ -516,14 +516,17 @@ class LLMAgent:
                     logger.warning(f"[LLMAgent] API status: {api_status}")
 
                     if iteration == 0:
-                        # Tentar Ollama — estamos dentro de um coroutine, usar await directamente
-                        local_result = await offline.execute_locally(user_message, self.agent_name)
+                        # Chat directo via Ollama (mais rápido que execute_locally)
+                        local_result = await offline.chat_with_ollama(
+                            messages=messages,
+                            system=self._system,
+                        )
 
                         if not local_result:
                             local_result = (
-                                f"⚠️ API sem créditos e Ollama indisponível.\n"
-                                f"Instala o Ollama (ollama.com) e corre: ollama pull qwen2.5-coder:7b\n"
-                                f"O sistema retoma automaticamente quando a API ou o Ollama estiverem disponíveis."
+                                f"⚠️ API DeepSeek sem créditos e Ollama indisponível.\n"
+                                f"O Ollama está instalado? Corre: ollama serve\n"
+                                f"Modelo instalado? Corre: ollama pull qwen2.5-coder:7b"
                             )
                         self._update_history(history, user_message, local_result, user_id)
                         return local_result
