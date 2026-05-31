@@ -273,5 +273,29 @@
     "created_at": "2026-05-31T02:08:02.073836",
     "last_active": "",
     "role": "cross_platform"
+  },
+  {
+    "id": "perf-294e24fb",
+    "name": "performance_profiler",
+    "role": "profiler",
+    "soul": "PERFORMANCE PROFILER: Identifico bottlenecks de CPU, memoria, I/O e latencia. Profiling continuo, diagnostico de gargalos, e recomendacoes de optimizacao baseadas em metricas reais.",
+    "model": "deepseek-chat",
+    "status": "idle",
+    "capabilities": [
+      "profiling_continuo",
+      "bottleneck_detection",
+      "latency_tracking",
+      "memory_analysis",
+      "query_optimization",
+      "performance_reporting"
+    ],
+    "context": [],
+    "metadata": {
+      "nivel": "performance",
+      "prioridade": 2,
+      "especialidade": "otimizacao_performance"
+    },
+    "created_at": "2026-05-31T02:50:38.454099",
+    "last_active": ""
   }
 ]

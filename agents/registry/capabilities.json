@@ -1195,6 +1195,39 @@
         "adaptar"
       ],
       "priority": 7
+    },
+    "performance_profiler": {
+      "description": "Profiling contínuo, deteção de bottlenecks, análise de latência e otimização de performance",
+      "skills": [
+        "profiling",
+        "bottleneck_detection",
+        "latency_tracking",
+        "memory_analysis",
+        "query_optimization",
+        "performance_reporting",
+        "cpu_analysis",
+        "io_analysis"
+      ],
+      "keywords": [
+        "performance",
+        "profiling",
+        "lento",
+        "bottleneck",
+        "gargalo",
+        "latência",
+        "cpu",
+        "memória",
+        "memoria",
+        "optimiza",
+        "otimiza",
+        "rápido",
+        "rapido",
+        "velocidade",
+        "carregamento",
+        "tempo de resposta",
+        "throughput"
+      ],
+      "priority": 7
     }
   },
   "analisar_dados": "Analisar dados brutos, logs e metricas do sistema",
