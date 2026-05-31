@@ -3,33 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T07:27:55.386314",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `aafb31b` (push para origin/main)\n\n### O que foi verificado/confirmado:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** | ✅ Já existia completo com `store_chat`, `store_episode`, `store_knowledge`, `get_context`, `remember`, `summary`, `clear`, `get_stats` |\n| **2. `mem",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T07:29:57.330038",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `4fcead8`\n\n### O que foi verificado/validado:\n\n1. **`core/memory_hub.py`** (486 linhas) — Classe `MemoryHub` completa com:\n   - `store_chat(role, content)` — conversas\n   - `store_episode(agent_id, task, result)` — memória episódica\n   - `store_knowledge(topic, content)` — memória semânti",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T12:43:09.308366",
-    "success": true,
-    "result_summary": "✅ **Todos os 19 testes passam!** (11 do MemoryHub + 8 do executor)\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `4660a23` — `feat: unifica 3 sistemas de memória em MemoryHub`\n\n### O que foi verificado/feito:\n\n1. **`core/memory_hub.py`** ✅ — Já existia completo com:\n   - `store_chat(role, content, metadata)` — conversas\n   - `store_",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T12:45:40.143977",
     "success": true,
     "result_summary": "## ✅ Relatório de Progresso\n\n**O que fiz:** Verifiquei que o `core/memory_hub.py` já está completo (486 linhas, 11 métodos públicos), o `core/memory.py` já delega no MemoryHub, o `core/supervisor.py` já importa `MemoryHub` corretamente, e **11 testes do `test_memory_hub.py` passam com sucesso**.\n\n**O que ficou por fazer:** O `agents/executor.py` ainda importa `GlobalMemory`, `LessonExtractor`, `Pr",
@@ -1797,6 +1770,33 @@
     "timestamp": "2026-05-31T01:44:53.063785",
     "success": true,
     "result_summary": "## Resumo do que fiz\n\n**Concluído:**\n1. **Analisei todos os 51 souls** e identifiquei que 49 estão incompletos — faltam **Skills/Capacidades**, **Exemplo Prático** e **Formato de Output Esperado** na maioria\n2. **Melhorei o `TEMPLATE.md`** — adicionei secções em falta (MODO AUTÓNOMO, Métricas de Sucesso, Armadilhas Comuns, Integração com o Sistema) e tornei-o mais completo como referência\n3. **Dia",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_0ecb2743",
+    "task_desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "agent": "log_diagnostic",
+    "timestamp": "2026-05-31T01:46:57.383284",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Diagnóstico e Correções Concluídas\n\n### Os 3 Problemas Identificados & Corrigidos:\n\n| # | Problema | Severidade | O que fiz |\n|---|---------|-----------|-----------|\n| 🔴 | **Locks Fantasma** — 3 ficheiros de lock com PID morto (22196) impediam o sistema de reiniciar | **CRÍTICA** | Removi `.telegram.lock`, `.instance.lock`, `.correoto.lock` |\n| 🔴 | **Bytecode Corrompido** — Erro \"untermi",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_0511bfd5",
+    "task_desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "agent": "auto_optimizer",
+    "timestamp": "2026-05-31T01:49:35.358970",
+    "success": true,
+    "result_summary": "Desculpa pela repetição. Vou usar `run_python` para escrever os ficheiros, que é mais fiável.\n\nFiz o diagnóstico completo: analisei todos os 6 agentes Python (BaseAgent, Comunicador, CodeReviewer, Developer, QATester, Supervisor, MonitorSaude) e 2 souls `.md`. Identifiquei que os system prompts são fracos porque:\n- **BaseAgent** não gera system prompts — só tem name/role/mission genéricos\n- **Nenh",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_f19789df",
+    "task_desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T01:52:06.524711",
+    "success": true,
+    "result_summary": "## ✅ Missão Concluída — Novo Agente: `insights_engine` 🧠📊\n\n### O que foi feito\nCriei o agente **`insights_engine`** (Motor de Inteligência de Negócio) — um especialista em transformar dados brutos do ecossistema (logs, métricas, erros, performance) em **insights accionáveis**, dashboards automáticos e alertas inteligentes. O ficheiro `insights_engine.md` foi criado em `agents/souls/` e o registo a",
     "lesson": ""
   }
 ]

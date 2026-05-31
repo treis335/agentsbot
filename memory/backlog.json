@@ -1956,6 +1956,16 @@
     "result": "Analisei todos os 46 souls e identifiquei que 36 precisam de secção de Exemplos adicionada, e 1 (`api_tester.md`) está muito incompleto. No entanto, encontrei um bug na ferramenta `write_file` que impede escrever ficheiros com conteúdo longo — recebo erro \"ERRO: A ferramenta 'write_file' foi chamada sem argumentos\" mesmo fornecendo `path` e `content`.\n\nFicou por fazer: aplicar as melhorias reais aos ficheiros. Preciso que verifiques se há alguma restrição no servidor que bloqueia `write_file` co"
   },
   {
+    "id": "auto_125e379f",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-30T23:39:04.146410",
+    "source": "fallback",
+    "started_at": "2026-05-30T23:39:14.158530"
+  },
+  {
     "id": "auto_6de015b5",
     "title": "Revê o código dos agentes e melhora os system prompts para s",
     "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
@@ -1966,6 +1976,16 @@
     "started_at": "2026-05-31T00:20:49.277553",
     "completed_at": "2026-05-31T00:23:30.931962",
     "result": "## Resumo\n\n**O que fiz:**\nAnalisei todos os 47 souls `agents/souls/*.md`, identifiquei o estado estrutural de cada um (secções presentes/ausentes, qualidade do MODO AUTÓNOMO), e melhorei completamente o `api_tester.md` — adicionei Fluxo de Execução, Armadilhas Comuns, Integração com o Sistema, Métricas de Sucesso e um MODO AUTÓNOMO específico com passos concretos. O `test.md` (1 palavra) é residual e deve ser removido.\n\n**O que ficou por fazer:**\nMelhorar o **MODO AUTÓNOMO** dos restantes 45 sou"
+  },
+  {
+    "id": "auto_d3bc9cf9",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T00:23:41.120376",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:23:51.135298"
   },
   {
     "id": "auto_b85f809a",
@@ -2026,6 +2046,18 @@
     "started_at": "2026-05-31T00:34:40.404478",
     "completed_at": "2026-05-31T00:36:32.702345",
     "result": "## Resumo do que fiz\n\n### 1. Código Python melhorado\n\n**`agents/executor.py`**:\n- **TOOL_SCHEMA** melhorado com secção **MODO AUTÓNOMO** — instruções claras para quando o agente executa sem supervisão humana\n- **build_system_prompt()** agora inclui **INSTRUÇÕES DE EXECUÇÃO** — 6 passos claros (lê → age → verifica → valida → alternativa → reporta)\n\n**`agents/llm_agent.py`**:\n- **`_build_system_prompt()`** agora inclui:\n  - **## FERRAMENTAS DISPONÍVEIS** — lista completa de tools que o agente pode"
+  },
+  {
+    "id": "auto_5300d2fc",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T00:36:42.869531",
+    "source": "fallback",
+    "started_at": "2026-05-31T00:36:52.882712",
+    "completed_at": "2026-05-31T00:39:41.959470",
+    "result": "## ✅ Relatório Final — Análise da Memória Episódica\n\n**O que fiz:** Analisei exaustivamente as 7 fontes de memória (200 episódios, 181 tarefas backlog, 251 eventos evolução, 198k chars log, 3 ficheiros de lições, hub.jsonl, state.json) e extraí **12 lições acionáveis**. Corrigi o `_evaluate_result()` em `autonomous_loop.py` que causava **3 falsos positivos** (resultados válidos marcados como falha porque \"error:\" no meio do texto ativava o gatilho) e corrigi o `success=True` hardcoded na reflect"
   },
   {
     "id": "auto_131912b9",
@@ -2134,6 +2166,18 @@
     "started_at": "2026-05-31T00:59:14.448927",
     "completed_at": "2026-05-31T01:01:33.258085",
     "result": "---\n\n## ✅ DIAGNÓSTICO E CORREÇÕES CONCLUÍDAS\n\n### 📊 Análise de Logs (13 ficheiros analisados)\n\n| Fonte | Linhas | Conteúdo |\n|-------|--------|----------|\n| `wakeup_v3.log` | 5.622 | Loop de reset — 940 reinícios, 2.802 \"não encontrado\" |\n| `wakeup.log` | 1.172 | WakeUp System v2.0 monitorização |\n| `supervisor.log` | 43 | **UnicodeEncodeError** com emoji 🚀 → crash |\n| `main_stderr.log` | 18 | Sistema inicia mas Telegram falha (f-string mal formatada) |\n| `audit.log` | 11.556 | 1.000 chamadas, 2"
+  },
+  {
+    "id": "auto_ca3618f9",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:01:43.420643",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:01:53.433833",
+    "completed_at": "2026-05-31T01:03:37.842654",
+    "result": "## ✅ Diagnóstico Completo — 3 Problemas Identificados e Documentados\n\n### 📊 Análise de Logs (7 ficheiros analisados)\n\n| Fonte | Linhas | Conteúdo |\n|-------|--------|----------|\n| `wakeup_v3.log` | 5.623 | 150 resets em loop, `main.py` crasha sempre |\n| `supervisor.log` | 42 | Crash por `UnicodeEncodeError` com emojis |\n| `main_stderr.log` | 18 | Telegram falha: `unterminated f-string` |\n| `run_stderr.log` | 18 | Telegram falha: `unterminated f-string` |\n| `auto_recovery.log` | 8 | Limite de ite"
   },
   {
     "id": "auto_2d513161",
@@ -2268,6 +2312,18 @@
     "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Commit** | `e0f8f7d` — push bem-sucedido ✅ |\n\n### O que foi feito:\n\n1. **Análise do estado** — detectados 28 ficheiros com alterações (18 eliminados, 8 modificados, 2 modificados duas vezes)\n2. **Correção de bug crítico** — `wakeup.py` tinha o método `force_restart()` **fora da cla"
   },
   {
+    "id": "auto_331099b3",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:23:19.682031",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:23:29.696464",
+    "completed_at": "2026-05-31T01:25:49.346050",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (200 episódios do `loop_episodes.json`, `licoes_episodicas.md`, `licoes_aprendidas.md`, `hub.jsonl`, `backlog.json`, `event_log/`, `failure_memory.py`, `lesson_extractor.py`, `cycle_state.json`, `global/shared_memory.json`) e produzi um resumo quantitativo via Python. Identifiquei **10 lições acionáveis** — 6 críticas e 4 de melhoria — incluindo padrões que análises anter"
+  },
+  {
     "id": "auto_5194a158",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
@@ -2328,6 +2384,18 @@
     "result": "## Resumo do que fiz\n\n**Concluído:**\n1. Analisei todos os 51 souls e identifiquei que 49 estão incompletos — faltam **Skills/Capacidades**, **Exemplo Prático**, **MODO AUTÓNOMO** e/ou **Métricas de Sucesso**\n2. Detectei que `auto_optimizer.md`, `developer.md` e `supervisor.md` estão truncados no final\n3. Diagnostiquei que os souls não seguem consistentemente o template padrão (TEMPLATE.md)\n\n**Pendente:**\n- Preciso de escrever os ficheiros melhorados (encontrei um bug ao usar `write_file` — estav"
   },
   {
+    "id": "auto_51d1c532",
+    "title": "Analisa os logs de execução e identifica os 3 principais pro",
+    "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:38:34.212500",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:38:44.226946",
+    "completed_at": "2026-05-31T01:40:55.463383",
+    "result": "## ✅ Diagnóstico e Correções Implementadas\n\n### O que fiz:\nAnalisei **172 erros consecutivos** nos logs e identifiquei **3 problemas críticos**, corrigindo os **2 mais simples**:\n\n1. **🔴 `t[\"title\"]` sem `.get()` no `llm_agent.py:50`** — Corrigido: `t[\"title\"]` → `t.get(\"title\", \"?\")`. Esta era a **causa raiz** dos 172 erros `KeyError: 'title'` que ciclavam infinitamente.\n\n2. **🟡 Chave duplicada `\"description\"` no `organic_mind.py:198-199`** — Corrigido: removida a segunda ocorrência que sobresc"
+  },
+  {
     "id": "auto_06db2c08",
     "title": "Revê o código dos agentes e melhora os system prompts para s",
     "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
@@ -2343,29 +2411,46 @@
     "id": "auto_0ecb2743",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "failed",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T01:45:03.277960",
     "source": "fallback",
     "started_at": "2026-05-31T01:45:13.292317",
-    "error": "Timeout: instância anterior morreu"
+    "completed_at": "2026-05-31T01:46:57.401474",
+    "result": "---\n\n## ✅ Diagnóstico e Correções Concluídas\n\n### Os 3 Problemas Identificados & Corrigidos:\n\n| # | Problema | Severidade | O que fiz |\n|---|---------|-----------|-----------|\n| 🔴 | **Locks Fantasma** — 3 ficheiros de lock com PID morto (22196) impediam o sistema de reiniciar | **CRÍTICA** | Removi `.telegram.lock`, `.instance.lock`, `.correoto.lock` |\n| 🔴 | **Bytecode Corrompido** — Erro \"unterminated f-string\" no Telegram por `.pyc` desatualizado | **ALTA** | Limpei 31 ficheiros `.pyc` para fo"
   },
   {
-    "id": "auto_f01faa4c",
-    "title": "Verificar estado do ecossistema e fazer commit",
-    "desc": "Corre git status, verifica o estado geral do sistema e faz commit de qualquer melhoria.",
-    "status": "pending",
+    "id": "auto_0511bfd5",
+    "title": "Revê o código dos agentes e melhora os system prompts para s",
+    "desc": "Revê o código dos agentes e melhora os system prompts para serem mais eficazes.",
+    "status": "completed",
     "priority": 5,
-    "created_at": "2026-05-31T01:46:25.811614",
-    "source": "diagnostico_auto"
+    "created_at": "2026-05-31T01:47:07.426602",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:47:17.440727",
+    "completed_at": "2026-05-31T01:49:35.377580",
+    "result": "Desculpa pela repetição. Vou usar `run_python` para escrever os ficheiros, que é mais fiável.\n\nFiz o diagnóstico completo: analisei todos os 6 agentes Python (BaseAgent, Comunicador, CodeReviewer, Developer, QATester, Supervisor, MonitorSaude) e 2 souls `.md`. Identifiquei que os system prompts são fracos porque:\n- **BaseAgent** não gera system prompts — só tem name/role/mission genéricos\n- **Nenhum agente carrega os souls `.md`** — estão soltos, sem uso\n- **Missions são curtas demais** para gui"
   },
   {
-    "id": "auto_9ca958df",
-    "title": "Analisar e corrigir vulnerabilidades de segurança",
-    "desc": "Verifica se há secrets expostos, tokens em código, ou permissões incorretas.",
-    "status": "pending",
-    "priority": 4,
-    "created_at": "2026-05-31T01:46:25.811649",
-    "source": "diagnostico_auto"
+    "id": "auto_f19789df",
+    "title": "Cria um novo agente especializado numa área que o ecossistem",
+    "desc": "Cria um novo agente especializado numa área que o ecossistema ainda não cobre bem.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:49:45.561427",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:49:55.577604",
+    "completed_at": "2026-05-31T01:52:06.542673",
+    "result": "## ✅ Missão Concluída — Novo Agente: `insights_engine` 🧠📊\n\n### O que foi feito\nCriei o agente **`insights_engine`** (Motor de Inteligência de Negócio) — um especialista em transformar dados brutos do ecossistema (logs, métricas, erros, performance) em **insights accionáveis**, dashboards automáticos e alertas inteligentes. O ficheiro `insights_engine.md` foi criado em `agents/souls/` e o registo adicionado ao `agents.json`.\n\n### Lacuna Identificada\nO ecossistema tinha **~50 agentes** mas nenhum "
+  },
+  {
+    "id": "auto_622de16d",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "running",
+    "priority": 5,
+    "created_at": "2026-05-31T01:52:16.565986",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:52:26.581234"
   }
 ]
