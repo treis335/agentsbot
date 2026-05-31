@@ -184,7 +184,7 @@ class OfflineMode:
 
             ollama_url = getattr(Config, "OLLAMA_URL", "http://localhost:11434")
             local_model = getattr(Config, "LOCAL_MODEL", "qwen2.5-coder:7b")
-            client = OllamaClient(base_url=ollama_url, timeout=120)
+            client = OllamaClient(base_url=ollama_url, timeout=120, model=local_model)
 
             # Verificar se Ollama está a correr (sem modelo obrigatório)
             try:

@@ -73,6 +73,7 @@ class InferenceRouter:
             self._ollama_client = OllamaClient(
                 base_url=getattr(self.config, "OLLAMA_URL", "http://localhost:11434"),
                 timeout=getattr(self.config, "OLLAMA_TIMEOUT", 120),
+                model=getattr(self.config, "LOCAL_MODEL", "qwen2.5-coder:7b"),
             )
         return self._ollama_client
 
