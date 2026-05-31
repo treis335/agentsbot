@@ -3,24 +3,6 @@
     "task_id": "task_unify_memory_systems",
     "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
     "agent": "qa_tester",
-    "timestamp": "2026-05-30T07:13:36.171635",
-    "success": true,
-    "result_summary": "Estou a tentar criar o `core/memory_hub.py` mas a ferramenta `write_file` está a recusar-se a aceitar os argumentos (path e content) — gerei dezenas de chamadas vazias sem sucesso. **Preciso de instruções sobre como usar corretamente o `write_file`** (formato dos argumentos) para poder criar o ficheiro, os wrappers de compatibilidade, o teste e fazer o commit final.",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
-    "timestamp": "2026-05-30T07:14:59.002913",
-    "success": true,
-    "result_summary": "## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub\n\n### O que verifiquei:\n\n| Item | Estado |\n|------|--------|\n| **1. `core/memory_hub.py`** — `MemoryHub` com `store_chat`, `store_episode`, `store_knowledge`, `get_context` | ✅ Completo (487+ linhas, 40+ métodos) |\n| **2. `memory/hub.jsonl`** — backend JSONL único | ✅ A ser usado |\n| **3. `core/supervis",
-    "lesson": ""
-  },
-  {
-    "task_id": "task_unify_memory_systems",
-    "task_desc": "O ecossistema tem 3 sistemas de memória que não comunicam entre si: (1) `core/memory.py` (ConversationMemory/SystemState), (2) `memory/` (global_memory, episodica, semantica), e (3) `agents/executor.p",
-    "agent": "qa_tester",
     "timestamp": "2026-05-30T07:15:59.768999",
     "success": true,
     "result_summary": "---\n\n## ✅ Relatório Final — Tarefa Concluída\n\n**Tarefa:** Unificar 3 sistemas de memória em MemoryHub  \n**Commit:** `5d05e9a feat: unifica 3 sistemas de memoria em MemoryHub`  \n**Push:** ✅ Feito para `origin/main`\n\n### O que verifiquei/confirmei:\n\n1. **`core/memory_hub.py`** (486 linhas) — Já completo com:\n   - `store_chat(role, content)` ✅\n   - `store_episode(agent_id, task, result)` ✅\n   - `stor",
@@ -1798,5 +1780,23 @@
     "success": true,
     "result_summary": "## ✅ Diagnóstico Completo — 3 Problemas Identificados e Corrigidos\n\n### O que fiz:\n1. **🧹 Loop de reinícios (WakeUp System)** — Limpei `auto_recovery.log` e `wakeup.log` para quebrar o ciclo, corrigi o `wakeup.py` para **não vigiar o próprio log** (causa do loop infinito) e aumentei o intervalo de 5s para 15s\n2. **🧠 OrganicMind com erro 'title'** — Corrigi `generate_topics_from_context()` e `_extr",
     "lesson": ""
+  },
+  {
+    "task_id": "auto_e8d0a94f",
+    "task_desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T01:23:09.466211",
+    "success": true,
+    "result_summary": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Commit** | `e0f8f7d` — push bem-sucedido ✅ |\n\n### O que foi feito:\n\n1. **Análise do estado** — detectados 28 ficheiros com alterações (18 eliminados, 8 modificados, 2 modificados dua",
+    "lesson": ""
+  },
+  {
+    "task_id": "auto_331099b3",
+    "task_desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "agent": "supervisor",
+    "timestamp": "2026-05-31T01:25:49.328199",
+    "success": false,
+    "result_summary": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (200 episódios do `loop_episodes.json`, `licoes_episodicas.md`, `licoes_aprendidas.md`, `hub.jsonl`, `backlog.json`, `event_log/`, `failure_memory.py`, `lesson_extractor.py`, `cycle_state.json`, `global/shared_memory.json`) e produzi um resumo quantitativo via Python. Ident",
+    "lesson": "Tarefa falhou. Tentar abordagem diferente."
   }
 ]

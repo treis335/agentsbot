@@ -2303,10 +2303,36 @@
     "id": "auto_e8d0a94f",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "running",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T01:21:48.185787",
     "source": "fallback",
-    "started_at": "2026-05-31T01:21:58.200037"
+    "started_at": "2026-05-31T01:21:58.200037",
+    "completed_at": "2026-05-31T01:23:09.483252",
+    "result": "---\n\n## ✅ Relatório — Verificação do Ecossistema\n\n| Item | Estado |\n|------|--------|\n| **Git status** | ✅ Limpo — `nothing to commit, working tree clean` |\n| **Branch** | `main` — sincronizada com `origin/main` |\n| **Commit** | `e0f8f7d` — push bem-sucedido ✅ |\n\n### O que foi feito:\n\n1. **Análise do estado** — detectados 28 ficheiros com alterações (18 eliminados, 8 modificados, 2 modificados duas vezes)\n2. **Correção de bug crítico** — `wakeup.py` tinha o método `force_restart()` **fora da cla"
+  },
+  {
+    "id": "auto_331099b3",
+    "title": "Analisa a memória episódica e extrai lições para melhorar fu",
+    "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
+    "status": "failed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:23:19.682031",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:23:29.696464",
+    "completed_at": "2026-05-31T01:25:49.346050",
+    "result": "## ✅ Relatório — Análise da Memória Episódica e Lições Extraídas\n\n**O que fiz:** Analisei exaustivamente 8+ fontes de memória (200 episódios do `loop_episodes.json`, `licoes_episodicas.md`, `licoes_aprendidas.md`, `hub.jsonl`, `backlog.json`, `event_log/`, `failure_memory.py`, `lesson_extractor.py`, `cycle_state.json`, `global/shared_memory.json`) e produzi um resumo quantitativo via Python. Identifiquei **10 lições acionáveis** — 6 críticas e 4 de melhoria — incluindo padrões que análises anter"
+  },
+  {
+    "id": "auto_5194a158",
+    "title": "Verifica o estado do ecossistema, corre git status e faz com",
+    "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
+    "status": "completed",
+    "priority": 5,
+    "created_at": "2026-05-31T01:25:59.368554",
+    "source": "fallback",
+    "started_at": "2026-05-31T01:26:09.383498",
+    "completed_at": "2026-05-31T01:26:29.611511",
+    "result": "✅ Git status verificado — 8 ficheiros com alterações de estado/memória. Commit realizado com sucesso."
   }
 ]
