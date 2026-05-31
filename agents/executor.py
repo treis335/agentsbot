@@ -267,40 +267,40 @@ class AgentExecutor:
         max_iterations: int = 30,
     ) -> tuple[str, list]:
         """
-    Executa uma tarefa com o agente.
+        Executa uma tarefa com o agente.
 
-    Returns:
-        (texto_final, contexto_atualizado)
-    """
-    system_prompt = self.build_system_prompt(task)
+        Returns:
+            (texto_final, contexto_atualizado)
+        """
+        system_prompt = self.build_system_prompt(task)
 
-    if context:
-        messages = list(context)
-    else:
-        messages = [{"role": "system", "content": system_prompt}]
-        messages.append({
-            "role": "user",
-            "content": "Executa a tarefa indicada no system prompt. Usa as ferramentas disponíveis para agir de verdade."
-        })
+        if context:
+            messages = list(context)
+        else:
+            messages = [{"role": "system", "content": system_prompt}]
+            messages.append({
+                "role": "user",
+                "content": "Executa a tarefa indicada no system prompt. Usa as ferramentas disponíveis para agir de verdade."
+            })
 
-    # Batch 6 — escolher cliente via router (DeepSeek vs Ollama)
-    try:
-        active_client, active_model, routing = await self._router.get_client(
-            task,
-            context_size=len(str(messages)),
-        )
-        logger.debug(
-            f"[{self.agent_name}] Router: {routing.provider.upper()} "
-            f"{active_model} (score={routing.complexity_score:.2f}, {routing.complexity_label})"
-        )
-    except Exception as router_err:
-        logger.warning(f"[{self.agent_name}] Router falhou, usando DeepSeek: {router_err}")
-        active_client = self._deepseek_client
-        active_model = "deepseek-chat"
-        routing = None
+        # Batch 6 — escolher cliente via router (DeepSeek vs Ollama)
+        try:
+            active_client, active_model, routing = await self._router.get_client(
+                task,
+                context_size=len(str(messages)),
+            )
+            logger.debug(
+                f"[{self.agent_name}] Router: {routing.provider.upper()} "
+                f"{active_model} (score={routing.complexity_score:.2f}, {routing.complexity_label})"
+            )
+        except Exception as router_err:
+            logger.warning(f"[{self.agent_name}] Router falhou, usando DeepSeek: {router_err}")
+            active_client = self._deepseek_client
+            active_model = "deepseek-chat"
+            routing = None
 
-    # Ollama não suporta tools — se local, desativar tool_use
-    use_tools = (routing is None or not routing.use_local)
+        # Ollama não suporta tools — se local, desativar tool_use
+        use_tools = (routing is None or not routing.use_local)
 
     for iteration in range(max_iterations):
         try:
