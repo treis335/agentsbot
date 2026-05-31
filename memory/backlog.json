@@ -1051,10 +1051,11 @@
     "id": "auto_125e379f",
     "title": "Analisa os logs de execução e identifica os 3 principais pro",
     "desc": "Analisa os logs de execução e identifica os 3 principais problemas. Propõe soluções e implementa a mais simples.",
-    "status": "pending",
+    "status": "running",
     "priority": 5,
     "created_at": "2026-05-30T23:39:04.146410",
-    "source": "fallback"
+    "source": "fallback",
+    "started_at": "2026-05-31T18:05:53.900544"
   },
   {
     "id": "auto_6de015b5",
@@ -1072,10 +1073,11 @@
     "id": "auto_d3bc9cf9",
     "title": "Analisa a memória episódica e extrai lições para melhorar fu",
     "desc": "Analisa a memória episódica e extrai lições para melhorar futuras execuções.",
-    "status": "pending",
+    "status": "running",
     "priority": 5,
     "created_at": "2026-05-31T00:23:41.120376",
-    "source": "fallback"
+    "source": "fallback",
+    "started_at": "2026-05-31T18:08:13.769757"
   },
   {
     "id": "auto_b85f809a",
@@ -2209,54 +2211,72 @@
     "id": "auto_ba1767bf",
     "title": "Verifica o estado do ecossistema, corre git status e faz com",
     "desc": "Verifica o estado do ecossistema, corre git status e faz commit de qualquer melhoria pendente.",
-    "status": "pending",
+    "status": "completed",
     "priority": 5,
     "created_at": "2026-05-31T04:04:10.124410",
-    "source": "fallback"
+    "source": "fallback",
+    "started_at": "2026-05-31T18:11:19.374365",
+    "completed_at": "2026-05-31T18:13:21.132025",
+    "result": "⚠️ API DeepSeek sem créditos e Ollama indisponível.\nO Ollama está instalado? Corre: ollama serve\nModelo instalado? Corre: ollama pull qwen2.5-coder:7b"
   },
   {
     "id": "seed_analise_ecossistema",
     "title": "Analisar estado do ecossistema e criar plano de evolução",
     "desc": "Analisa o estado actual do ecossistema CORREOTO: lê os últimos 10 commits (git log --oneline -10), verifica ficheiros principais (agents/, memory/, evolution/), identifica o que está funcional e o que precisa atenção. Cria um plano de 3 próximas melhorias em memory/global/plano_evolucao.md e faz commit.",
-    "status": "pending",
+    "status": "failed",
     "priority": 10,
     "source": "seed",
-    "created_at": "2026-05-31T10:57:02.427662"
+    "created_at": "2026-05-31T10:57:02.427662",
+    "started_at": "2026-05-31T17:25:47.384660",
+    "completed_at": "2026-05-31T18:05:53.890624",
+    "result": "Auto-failed: stale task (>30min)"
   },
   {
     "id": "seed_test_tools",
     "title": "Verificar que todas as ferramentas executam correctamente",
     "desc": "Testa cada ferramenta disponível com exemplos reais: 1) run_shell: echo 'test ok' && git status, 2) run_python: print(1+1), 3) write_file: escreve memory/tool_test.txt com 'OK', 4) read_file: lê o ficheiro criado, 5) git_status. Reporta quais funcionam.",
-    "status": "pending",
+    "status": "completed",
     "priority": 9,
     "source": "seed",
-    "created_at": "2026-05-31T10:57:02.427682"
+    "created_at": "2026-05-31T10:57:02.427682",
+    "started_at": "2026-05-31T17:27:43.720919",
+    "completed_at": "2026-05-31T17:28:36.120792",
+    "result": "[Ollama+Tools] Executadas 4 acções: run_shell, write_file, read_file, git_status\n✅ run_shell: STDOUT:\n'test ok' \r\nOn branch main\nYour branch is up to date with 'origin/main'.\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to update \n✅ write_file: [OK] Ficheiro escrito: memory/tool_test.txt (2 chars)\n✅ read_file: OK\n✅ git_status: M agents/registry/agents.json\n M events/2026/05/31/events.jsonl\n M memory/autonomous_log.md\n M memory/backlog.json\n M memory/cycle_state.json\n M memor"
   },
   {
     "id": "seed_melhorar_developer_soul",
     "title": "Melhorar soul do developer para execução autónoma",
     "desc": "Lê agents/souls/developer.md. Avalia se tem instruções claras para: usar ferramentas directamente, não pedir confirmação, fazer commits após cada mudança. Se não tiver, melhora e faz commit. O agente developer deve ser o mais proactivo do ecossistema.",
-    "status": "pending",
+    "status": "failed",
     "priority": 8,
     "source": "seed",
-    "created_at": "2026-05-31T10:57:02.427684"
+    "created_at": "2026-05-31T10:57:02.427684",
+    "started_at": "2026-05-31T17:28:46.338510",
+    "completed_at": "2026-05-31T18:05:53.890624",
+    "result": "Auto-failed: stale task (>30min)"
   },
   {
     "id": "seed_knowledge_base_populate",
     "title": "Popular a knowledge base com aprendizagens dos episódios",
     "desc": "Lê memory/loop_episodes.json, extrai os top 10 episódios com sucesso, identifica padrões e adiciona entradas à knowledge base. Usa: from agents.collaboration.knowledge_base import get_knowledge_base; kb = get_knowledge_base(); kb.add(agent='developer', k_type='best_practice', title='...', content='...'). Faz commit das melhorias.",
-    "status": "pending",
+    "status": "completed",
     "priority": 7,
     "source": "seed",
-    "created_at": "2026-05-31T10:57:02.427686"
+    "created_at": "2026-05-31T10:57:02.427686",
+    "started_at": "2026-05-31T17:29:58.661326",
+    "completed_at": "2026-05-31T17:31:24.483339",
+    "result": "[Ollama] Resposta gerada mas JSON inválido: Aqui está o plano para completar a tarefa:\n\n1. Ler o arquivo `memory/loop_episodes.json`.\n2. Extrair os top 10 episódios com sucesso.\n3. Identificar padrões nos dados extraídos.\n4. Adicionar as entradas identificadas à knowledge base.\n5. Fazer commit das melhorias.\n\nACTIONS:\n[\n  {\"tool\": \"read_file\""
   },
   {
     "id": "seed_brainstorm_melhorias",
     "title": "Sessão de brainstorming sobre melhorias prioritárias",
     "desc": "Executa uma sessão de brainstorming colectivo sobre o tema: 'Quais as 3 melhorias que mais impacto teriam no ecossistema CORREOTO agora?'. Usa o módulo agents/collaboration/brainstorm_session.py: from agents.collaboration.brainstorm_session import BrainstormSession; s = BrainstormSession(); import asyncio; result = asyncio.run(s.run()); print(result). Faz commit do resultado.",
-    "status": "pending",
+    "status": "failed",
     "priority": 7,
     "source": "seed",
-    "created_at": "2026-05-31T10:57:02.427687"
+    "created_at": "2026-05-31T10:57:02.427687",
+    "started_at": "2026-05-31T17:31:34.662759",
+    "completed_at": "2026-05-31T18:05:53.890624",
+    "result": "Auto-failed: stale task (>30min)"
   }
 ]
