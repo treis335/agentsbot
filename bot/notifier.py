@@ -62,7 +62,11 @@ class Notifier:
         logger.info(f"[Notifier] Bot registado. Owner: {owner_id}")
         # Enviar mensagens que ficaram em fila
         if self._queue:
-            asyncio.create_task(self._flush_queue())
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(self._flush_queue())
+            except RuntimeError:
+                pass  # Sem loop running — fila será enviada na próxima send()
 
     # -- Interface pública ------------------------------------------------------
 
@@ -89,11 +93,12 @@ class Notifier:
         with self._lock:
             self._queue.append((text, "Markdown"))
         try:
-            loop = asyncio.get_event_loop()
-            if loop.is_running():
-                asyncio.ensure_future(self._flush_queue())
-        except Exception:
-            pass
+            loop = asyncio.get_running_loop()
+            loop.call_soon_threadsafe(
+                lambda: asyncio.ensure_future(self._flush_queue())
+            )
+        except RuntimeError:
+            pass  # Sem loop running — mensagem fica em fila
 
     async def _flush_queue(self) -> None:
         """Envia todas as mensagens em fila."""

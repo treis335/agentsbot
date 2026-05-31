@@ -50,14 +50,38 @@ AGENT_PERSONAS = {
 }
 
 
+# Controlo de modo offline — evita spam de chamadas 402
+_API_FAILED = False
+_API_FAILED_AT = 0.0
+_API_RETRY_AFTER = 300  # só retry após 5 minutos
+
+
 def _call_llm_simple(messages: list, max_tokens: int = 400) -> str:
-    """Chama LLM sem tools — só para pensar e responder. Com fallback."""
+    """Chama LLM sem tools. Se API indisponível, usa fallback local imediatamente."""
+    import time
+    global _API_FAILED, _API_FAILED_AT
+
+    # Se API falhou recentemente, não tentar novamente
+    if _API_FAILED:
+        if time.time() - _API_FAILED_AT < _API_RETRY_AFTER:
+            return ""  # fallback silencioso
+        else:
+            _API_FAILED = False  # tentar de novo após timeout
+
     try:
         from agents.llm_agent import _call_llm
         response = _call_llm(messages, use_tools=False, max_tokens=max_tokens)
-        return response["choices"][0]["message"]["content"].strip()
+        result = response["choices"][0]["message"]["content"].strip()
+        _API_FAILED = False  # sucesso — reset flag
+        return result
     except Exception as e:
-        logger.warning(f"[OrganicMind] _call_llm_simple falhou: {e}")
+        err_str = str(e)
+        if "402" in err_str or "Payment Required" in err_str or "401" in err_str:
+            _API_FAILED = True
+            _API_FAILED_AT = time.time()
+            logger.warning(f"[OrganicMind] API sem créditos/auth — modo offline por {_API_RETRY_AFTER}s")
+        else:
+            logger.warning(f"[OrganicMind] _call_llm_simple falhou: {e}")
         return ""
 
 

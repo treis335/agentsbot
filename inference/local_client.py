@@ -25,7 +25,13 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
-import aiohttp
+try:
+    import aiohttp
+    _AIOHTTP_AVAILABLE = True
+except ImportError:
+    _AIOHTTP_AVAILABLE = False
+    aiohttp = None  # type: ignore
+
 
 logger = logging.getLogger(__name__)
 
