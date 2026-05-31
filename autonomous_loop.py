@@ -1030,6 +1030,39 @@ class AutonomousLoop:
 
 
 
+
+        # 9. Brainstorming colaborativo a cada 15 ciclos
+        if self.cycle_count % 15 == 0:
+            log_cycle(f"[Brainstorm] Sessão colaborativa (ciclo #{self.cycle_count})")
+            try:
+                import asyncio as _ab
+                from agents.collaboration.brainstorm_session import BrainstormSession
+                from core.config import Config as _Cfg
+                _bs = BrainstormSession(
+                    telegram_bot=self.telegram_bot,
+                    owner_id=getattr(_Cfg, "OWNER_TELEGRAM_ID", 0),
+                )
+                _bl = _ab.new_event_loop()
+                _br = _bl.run_until_complete(_bs.run())
+                _bl.close()
+                log_cycle(f"[Brainstorm] {_br.get('final_idea','?')[:80]}")
+            except Exception as _be:
+                log_cycle(f"[Brainstorm] Erro: {_be}")
+
+        # 10. Partilhar conhecimento bem-sucedido na knowledge base
+        try:
+            if success and result_text and len(str(result_text)) > 80:
+                from agents.collaboration.knowledge_base import get_knowledge_base, KnowledgeType
+                _kb = get_knowledge_base()
+                _agent = task.get("_last_agent", "sistema")
+                _summary = str(result_text)[:200]
+                if not any(w in _summary.lower() for w in ["erro","error","preso","falha","desculp"]):
+                    _kb.add(agent=_agent, k_type=KnowledgeType.BEST_PRACTICE,
+                            title=task.get("title", task_desc[:50]),
+                            content=_summary, confidence=7)
+        except Exception:
+            pass
+
     def _execute_task_real(self, task_desc: str, task_id: str) -> tuple:
 
 
@@ -1502,14 +1535,8 @@ class AutonomousLoop:
 
 
             from agents.organic_mind import (
-
-
                 generate_topics_from_context,
-
-
                 collective_debate,
-
-
                 save_debate,
 
 
